@@ -1,0 +1,24 @@
+
+<!--<a (click)="previousPage()">&laquo;Previous</a> Page:{{gt.currentPage}}/{{gt.pagesTotal}} <a (click)="nextPage()">Next&raquo;</a>{{gt.filtered}}-->
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th *ngFor="let column of gtFields | gtVisible:gtSettings" ngClass="{{column.objectKey +'-column' | dashCase}} {{column.classNames}}" (click)="gtSort(column.objectKey,$event)">{{column.name}}</th>
+  </tr>
+  </thead>
+  <tbody *ngIf="gtLazy">
+    <tr *ngFor="let row of gtData[gt.currentPage-1]">
+      <td *ngFor="let column of row | gtRender:gtSettings:gtFields" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}" [innerHTML]="column.renderValue"></td>
+    </tr>
+  </tbody>
+  <tbody *ngIf="!gtAsync && !gtLazy">
+  <tr *ngFor="let row of gtData | gtFilter:gt.filter:gt | gtOrderBy:sortOrder | gtChunk:gt.rowLength:gt.currentPage">
+    <td *ngFor="let column of row | gtRender:gtSettings:gtFields" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}" [innerHTML]="column.renderValue"></td>
+  </tr>
+  </tbody>
+  <tbody *ngIf="gtAsync && !gtLazy">
+  <tr *ngFor="let row of gtData | async | gtFilter:gt.filter:gt | gtOrderBy:sortOrder | gtChunk:gt.rowLength:gt.currentPage">
+    <td *ngFor="let column of row | gtRender:gtSettings:gtFields" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}" [innerHTML]="column.renderValue"></td>
+  </tr>
+  </tbody>
+</table>
