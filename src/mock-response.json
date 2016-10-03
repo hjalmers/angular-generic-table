@@ -1,0 +1,150 @@
+{
+  "request": {
+    "status_code": 200,
+    "status_message": "OK",
+    "path": "/data",
+    "method": "GET",
+    "params": {
+      "birthday.lt": 1097736151,
+      "fullName.eq": "Marie Jacobs"
+    }
+  },
+  "paging": {
+    "next_page": 2,
+    "current_page": 1,
+    "previous_page": null,
+    "per_page": 25,
+    "filtered_records": 1499,
+    "total_records": 1499,
+    "first_timestamp": 1403156620.0609322,
+    "last_timestamp": 1400008286.827591
+  },
+  "data": [
+    {
+      "fullName": "Judith Williamson",
+      "favoriteColor": "#0e1774",
+      "birthday": "-173378861"
+    },
+    {
+      "fullName": "Thomas Weaver",
+      "favoriteColor": "#5dec11",
+      "birthday": "384231883"
+    },
+    {
+      "fullName": "Phyllis Boyd",
+      "favoriteColor": "#37fd04",
+      "birthday": "1390102270"
+    },
+    {
+      "fullName": "Phillip Washington",
+      "favoriteColor": "#cbad34",
+      "birthday": "495480594"
+    },
+    {
+      "fullName": "Jane Austin",
+      "favoriteColor": "#96500a",
+      "birthday": "1195395077"
+    },
+    {
+      "fullName": "Benjamin Diaz",
+      "favoriteColor": "#f3df3e",
+      "birthday": "995579582"
+    },
+    {
+      "fullName": "Janice Mccoy",
+      "favoriteColor": "#5874c5",
+      "birthday": "1229711760"
+    },
+    {
+      "fullName": "Lawrence Anderson",
+      "favoriteColor": "#bb120c",
+      "birthday": "-285098607"
+    },
+    {
+      "fullName": "Joe Gonzales",
+      "favoriteColor": "#6f0e5d",
+      "birthday": "1133999210"
+    },
+    {
+      "fullName": "Deborah Simmons",
+      "favoriteColor": "#f81805",
+      "birthday": "1310920667"
+    },
+    {
+      "fullName": "Teresa Meyer",
+      "favoriteColor": "#abf936",
+      "birthday": "41896386"
+    },
+    {
+      "fullName": "Margaret Arnold",
+      "favoriteColor": "#4c5d96",
+      "birthday": "-180701458"
+    },
+    {
+      "fullName": "Fred Morales",
+      "favoriteColor": "#862c62",
+      "birthday": "1401339716"
+    },
+    {
+      "fullName": "Benjamin Arnold",
+      "favoriteColor": "#4b8770",
+      "birthday": "566914372"
+    },
+    {
+      "fullName": "John Wallace",
+      "favoriteColor": "#e34f16",
+      "birthday": "1031987662"
+    },
+    {
+      "fullName": "Phillip Johnson",
+      "favoriteColor": "#38e0bb",
+      "birthday": "1148244189"
+    },
+    {
+      "fullName": "Linda Harrison",
+      "favoriteColor": "#ec74a1",
+      "birthday": "-256475309"
+    },
+    {
+      "fullName": "Fred Gardner",
+      "favoriteColor": "#b13c9a",
+      "birthday": "915546211"
+    },
+    {
+      "fullName": "Joshua Scott",
+      "favoriteColor": "#86b6ca",
+      "birthday": "799129502"
+    },
+    {
+      "fullName": "Sandra Day",
+      "favoriteColor": "#4ec4e3",
+      "birthday": "441861540"
+    },
+    {
+      "fullName": "David Hill",
+      "favoriteColor": "#22a7b9",
+      "birthday": "26990145"
+    },
+    {
+      "fullName": "William Chavez",
+      "favoriteColor": "#4def99",
+      "birthday": "772973160"
+    },
+    {
+      "fullName": "Harold Cunningham",
+      "favoriteColor": "#e57e7c",
+      "birthday": "383427310"
+    },
+    {
+      "fullName": "Steve Howell",
+      "favoriteColor": "#eb4838",
+      "birthday": "-157940222"
+    },
+    {
+      "fullName": "Kimberly Schmidt",
+      "favoriteColor": "#6d93b7",
+      "birthday": "-191567790"
+    }
+  ],
+  "errors": {}
+}

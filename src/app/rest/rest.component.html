@@ -1,0 +1,30 @@
+<div class="container-fluid">
+  <h3>REST demo</h3>
+  <form class="form form-inline" style="margin-bottom: 10px;">
+    <div class="form-group form-group-sm">
+      <label for="rows" class="control-label">Rows</label>
+      <select id="rows" class="form-control" #rowLength (change)="myTable.changeRowLength(rowLength.value)">
+        <option value=10>10</option>
+        <option value=25>25</option>
+        <option value=50>50</option>
+        <option value=100>100</option>
+      </select>
+    </div>
+    <button class="btn btn-default btn-sm" (click)="myTable.gtApplyFilter({
+        fullName:['Gregory Little','Billy Gilbert','Jason Snyder','Brandon Austin','Robert Hjalmers']
+      })">Apply filter</button>
+    <button class="btn btn-default btn-sm" (click)="myTable.gtClearFilter()">Remove filter</button>
+    <button class="btn btn-default btn-sm" (click)="addData()">Add data</button>
+    <div class="form-group pull-right">
+      <a (click)="myTable.previousPage()">&laquo;Previous</a>
+      <a (click)="myTable.nextPage()">Next&raquo;</a>
+    </div>
+  </form>
+  <!--Page:{{myTable.gt.currentPage}}/{{myTable.gt.pagesTotal}}-->
+  <app-generic-table #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtLazy]="false"></app-generic-table>
+  <div class="text-center">
+    <a (click)="myTable.previousPage()">&laquo;Previous</a>
+    <a (click)="myTable.nextPage()">Next&raquo;</a>
+  </div>
+  <!--<app-generic-table #my2Table [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtLazy]="false"></app-generic-table>-->
+</div>
