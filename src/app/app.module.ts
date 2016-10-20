@@ -11,12 +11,16 @@ import {Observable} from 'rxjs/Observable';
 import { LazyLoadingComponent } from './lazy-loading/lazy-loading.component';
 import { RestComponent } from './rest/rest.component';
 import {GenericTableModule} from '../generic-table/generic-table.module';
+import { FinanceTestComponent } from './finance-test/finance-test.component';
+import { MyCustomRowComponent } from './my-custom-row/my-custom-row.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LazyLoadingComponent,
-    RestComponent
+    RestComponent,
+    FinanceTestComponent,
+    MyCustomRowComponent
   ],
   imports: [
     BrowserModule,
@@ -25,6 +29,7 @@ import {GenericTableModule} from '../generic-table/generic-table.module';
     GenericTableModule,
     routing
   ],
+  entryComponents: [ MyCustomRowComponent ],
   providers: [appRoutingProviders],
   bootstrap: [AppComponent]
 })

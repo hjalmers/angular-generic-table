@@ -1,0 +1,31 @@
+<div class="col-xs-12">
+  <div class="row">
+    <h4 class="col-xs-8">My custom row component</h4>
+    <div class="col-xs-4 text-right">
+      <i class="fa fa-close fa-lg" (click)="$hide()" aria-hidden="true"></i>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-sm-3">
+      <label class="control-label">First name</label>
+      <div class="form-control-static">{{row.first_name}}</div>
+    </div>
+    <div class="form-group col-sm-3">
+      <label class="control-label">Last name</label>
+      <div class="form-control-static">{{row.last_name}}</div>
+    </div>
+    <div class="form-group col-sm-3">
+      <label class="control-label">Favorite color</label>
+      <div class="form-control-static">{{row.favorite_color}}</div>
+    </div>
+    <div class="form-group col-sm-3">
+      <div style="border-radius: 50%;width: 55px;height: 55px;display: inline-block;vertical-align: middle;" [style.background]="row.favorite_color"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-3 col-lg-2">
+      <button class="btn btn-primary btn-block" (click)="newRandomColor();$redraw();">New random color</button>
+    </div>
+  </div>
+</div>
+

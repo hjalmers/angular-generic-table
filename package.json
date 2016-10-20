@@ -1,6 +1,6 @@
 {
   "name": "angular2-generic-table",
-  "version": "0.0.0",
+  "version": "1.0.0-alpha.2",
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
@@ -12,8 +12,11 @@
     "prepublish": "tsc",
     "e2e": "protractor"
   },
-  "private": true,
+  "private": false,
   "main": "angular2-generic-table.js",
+  "publishConfig":{
+    "registry":"https://registry.npmjs.org/"
+  },
   "typings": "./angular2-generic-table.d.ts",
   "dependencies": {},
   "devDependencies": {

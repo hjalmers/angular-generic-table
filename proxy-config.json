@@ -1,0 +1,6 @@
+{
+  "/api/temporary": {
+    "target": "http://lsp2029c:44765/",
+    "secure": "false"
+  }
+}

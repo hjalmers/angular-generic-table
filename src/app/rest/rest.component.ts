@@ -1,6 +1,8 @@
 import {Component, Output, EventEmitter, ViewChild} from '@angular/core';
 import {Response, Http } from '@angular/http';
 import {GenericTableComponent} from '../../generic-table/generic-table.component';
+import {MyCustomRowComponent} from '../my-custom-row/my-custom-row.component';
+import {GtConfig} from '../../../lib/src/generic-table/interfaces/gt-config';
 
 @Component({
   selector: 'app-rest',
@@ -9,137 +11,128 @@ import {GenericTableComponent} from '../../generic-table/generic-table.component
 })
 export class RestComponent {
 
-  public configObject:any;
-  public asyncConfigObject:any;
+  public configObject:GtConfig;
 
-
-  //public data: [Object];
   @Output() data = new EventEmitter();
+
   @ViewChild(GenericTableComponent)
   private myTable: GenericTableComponent;
-  //queries: FirebaseListObservable<any[]>;
-
-  public customNext = function(comp){
-    console.log('test',comp);
-    comp.nextPage();
-  };
-
-  ngAfterViewInit() {
-
-  }
+  public expandendRow = MyCustomRowComponent;
 
 
   constructor(private http: Http) {
-    /*this.queries = af.database.list('/queries');
 
-     this.af.auth.subscribe(response => {
-     //Here you get the user information
-     console.log('auth',response);
-     });
-     this.asyncConfigObject = {
-     settings:[{
-     objectKey:'name'
-     },{
-     objectKey:'description'
-     },{
-     objectKey:'created'
-     },{
-     objectKey:'query'
-     }],
-     fields:[{
-     name:'Name',
-     objectKey:'name'
-     },{
-     name:'Description',
-     objectKey:'description',
-     },{
-     name:'Created',
-     objectKey:'created'
-     },{
-     name:'Query',
-     objectKey:'query'
-     }],
-     data:this.queries
-     };
-     */
     let url = 'https://private-730c61-generictable.apiary-mock.com/data'; // apiary end point
-    //let url = './app/generic-table/data.json'; // json mock file
+
+
     this.configObject = {
       settings:[{
-        objectKey:'fullName',
+        objectKey:'id',
         visible:true,
-        sort:'asc',
-        columnOrder:3
+        sort:'desc',
+        columnOrder:0
       },{
-        objectKey:'favoriteColor'
+        objectKey:'name',
+        visible:true,
+        sort:'enable',
+        columnOrder:1
       },{
-        objectKey:'birthday',
-        visible:true
-      },{
-        objectKey:'age',
+        objectKey:'email',
         visible:true,
         enabled:true,
         sort:'enable',
         sortOrder:0,
         columnOrder:2
+      },{
+        objectKey:'gender',
+        visible:true,
+        enabled:true,
+        sort:'enable',
+        sortOrder:0,
+        columnOrder:3
+      },{
+        objectKey:'favorite_color',
+        visible:true,
+        enabled:true,
+        sort:'enable',
+        sortOrder:0,
+        columnOrder:4
+      },{
+        objectKey:'checkbox',
+        visible:true,
+        enabled:true,
+        sort:'enable',
+        sortOrder:0,
+        columnOrder:5
       }],
       fields:[{
+        name:'Id',
+        objectKey:'id',
+        expand:true
+      },{
         name:'Name',
-        objectKey:'fullName'
+        objectKey:'name',
+        value:function(row){return row.first_name + ' ' + row.last_name},
+        render:function(row){return '<div>'+row.first_name + ' ' + row.last_name +'</div>'},
+        sort:function(row){return row.first_name + ' ' + row.last_name}
       },{
         name:'Favorite color',
-        objectKey:'favoriteColor',
+        objectKey:'favorite_color',
         classNames:'text-right',
-        render:function(row){return '<div style="float:right;width:15px;height:15px;border-radius:50%;background: '+row.favoriteColor+'"></div>'}
+        render:function(row){return '<div style="float:right;width:15px;height:15px;border-radius:50%;background: '+row.favorite_color+'"></div>'},
+        click:(row)=>{return console.log(row.first_name + '\'s favorite color is: ' + row.favorite_color );}
       },{
-        name:'Birthday',
-        objectKey:'birthday'
+        name:'Gender',
+        objectKey:'gender'
       },{
-        name:'Age',
-        objectKey:'age',
-        classNames:"text-right",
-        render: function(row){return row.birthday },
-        value: function(row){return row.birthday }
+        name:'Email',
+        objectKey:'email',
+        render: function(row){return '<a href="mailto:'+row.email+'">'+row.email+'</a>' },
+      },{
+        name:'Selected',
+        objectKey:'checkbox',
+        click:function(row){console.log(row)},
+        value: (row)=>{return !row.checkbox ? true:row.checkbox},
+        render: (row)=>{return '<input type="checkbox" checked="'+row.checkbox+'">' }
       }],
       data:[]
     };
     http.get(url)
       .map((res: Response) => res.json())
       .subscribe(res => {
-        console.log(res,this.data);
         this.configObject.data = res.data;
-        //this.myTable.nextPage();
-        //this.data.emit(res);
-        /*.filter(function(obj){
-         //if(true){
-         console.log('use filters');
-
-         for (let property in filter) {
-         if (filter.hasOwnProperty(property)) {
-         //console.log(property);
-         //console.log(filter[property].indexOf(obj[property]));
-         return filter[property].indexOf(obj[property]) !== -1
-
-         // do stuff
-         }
-         }*/
-        //return obj.fullName === 'Aaron Lynch'
-        //} else {
-        //console.log('don´t use filters');
-        //return obj
-        //}
-
-        //});
-        //this.getTotalPages();
-        //console.log(`Prices higher than $30:`,res)
       });
   }
+
   public addData = function(){
-    this.configObject.data.push({"fullName":"Robert Hjalmers","favoriteColor":"#00BBD5","birthday":"871179502"});
-    console.log(this.configObject.data.length);
+
+    // create mock data
+    let random = Math.floor(Math.random() * this.configObject.data.length -1) + 1;
+    let firstName = this.configObject.data[random].first_name;
+    let lastName = this.configObject.data[Math.floor(Math.random() * this.configObject.data.length -1) + 1].last_name;
+    let gender = this.configObject.data[random].gender;
+    let favoriteColor = this.configObject.data[Math.floor(Math.random() * this.configObject.data.length - 1) + 1].favorite_color;
+    let birthday = this.configObject.data[Math.floor(Math.random() * this.configObject.data.length - 1) + 1].birthday;
+
+    // push data to data array (could be swapped to a method for persisting the data to a database).
+    this.configObject.data.push({
+      "id":this.configObject.data.length + 1,
+      "first_name":firstName,
+      "last_name":lastName,
+      "email":firstName +'.'+lastName +'@some_email_address.xyz',
+      "gender":gender,
+      "favorite_color":favoriteColor,
+      "birthday":birthday
+    });
   };
-  public addFireData = function(){
-    this.queries.push({"name":"test","created":1471784814971,"description":"Hello","query":{}});
+
+
+  /** Apply predefined filter using first_name.
+   * */
+  public applyFilter = function(){
+    this.myTable.gtApplyFilter({
+      first_name:['Victor','Joe','Carol']
+    })
   };
 
 }
