@@ -1,12 +1,15 @@
 import { OnInit, EventEmitter } from '@angular/core';
 import 'rxjs/Rx';
-import { GtConfig } from './gt-config';
-import { GtConfigField } from "./gt-config-field";
-import { GtConfigSetting } from "./gt-config-setting";
+import { GtConfig } from './interfaces/gt-config';
+import { GtConfigField } from "./interfaces/gt-config-field";
+import { GtConfigSetting } from "./interfaces/gt-config-setting";
 import { Observable } from 'rxjs/Observable';
-import { GtTexts } from './gt-texts';
-import { GtPagingInfo } from './gt-paging-info';
+import { GtTexts } from './interfaces/gt-texts';
+import { GtPagingInfo } from './interfaces/gt-paging-info';
+import { DomSanitizer } from '@angular/platform-browser';
 export declare class GenericTableComponent implements OnInit {
+    private sanitizer;
+    component: any;
     data: [Object];
     configObject: GtConfig;
     sortOrder: Array<any>;
@@ -21,7 +24,11 @@ export declare class GenericTableComponent implements OnInit {
     gtEvent: EventEmitter<{}>;
     store: Array<any>;
     loading: boolean;
-    constructor();
+    debounceTimer: void;
+    debounceTime: number;
+    loadingProperty: string;
+    private refreshPipe;
+    constructor(sanitizer: DomSanitizer);
     /**
      * Sort table by object key.
      * @param {string} objectKey - name of key to sort on.
@@ -47,10 +54,17 @@ export declare class GenericTableComponent implements OnInit {
      * @returns {Array} a nested array to hold records per page.
      */
     private refresh;
+    /**
+     * Force a redraw of table rows.
+     * As the table uses pure pipes, we need to force a redraw if an object in the array is changed to see the changes.
+     */
+    private redraw;
     /** Go to next page. */
     nextPage: () => void;
     /** Go to previous page. */
     previousPage: () => void;
+    /** Request more data (used when lazy loading) */
+    private getData;
     /**
      * Go to specific page.
      * @param {number} page - page number.
@@ -84,4 +98,6 @@ export declare class GenericTableComponent implements OnInit {
     ngOnInit(): void;
     ngAfterViewInit(): void;
     ngOnChanges(): void;
+    refreshRender: boolean;
+    doSomething: (event: any) => void;
 }

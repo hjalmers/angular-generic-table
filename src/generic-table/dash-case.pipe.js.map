@@ -1,1 +1,0 @@
-{"version":3,"file":"dash-case.pipe.js","sourceRoot":"","sources":["dash-case.pipe.ts"],"names":[],"mappings":";;;;;;;;;;AAAA,uBAAoC,eAAe,CAAC,CAAA;AAKpD;IAEE,SAAS,CAAC,MAAc;QACtB,MAAM,CAAC,MAAM,CAAC,OAAO,CAAC,iBAAiB,EAAE,OAAO,CAAC,CAAC,WAAW,EAAE,CAAC;IAClE,CAAC;AAEH,CAAC;AATD;IAAC,WAAI,CAAC;QACJ,IAAI,EAAE,UAAU;KACjB,CAAC;;gBAAA;AACW,oBAAY,eAMxB,CAAA"}

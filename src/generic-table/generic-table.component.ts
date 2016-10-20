@@ -1,21 +1,25 @@
-import {Component, OnInit, NgModule, Output, Input, EventEmitter} from '@angular/core';
+import {
+  Component, OnInit, NgModule, Output, Input, EventEmitter, ChangeDetectionStrategy
+} from '@angular/core';
 import 'rxjs/Rx';
-import {GtConfig} from './gt-config';
-import {GtConfigField} from "./gt-config-field";
-import {GtConfigSetting} from "./gt-config-setting";
+import {GtConfig} from './interfaces/gt-config';
+import {GtConfigField} from "./interfaces/gt-config-field";
+import {GtConfigSetting} from "./interfaces/gt-config-setting";
 import {Observable} from 'rxjs/Observable';
-import {GtTexts} from './gt-texts';
-import {GtInformation} from './gt-information';
-import {GtPagingInfo} from './gt-paging-info';
+import {GtTexts} from './interfaces/gt-texts';
+import {GtInformation} from './interfaces/gt-information';
+import {GtPagingInfo} from './interfaces/gt-paging-info';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-generic-table',
-  //templateUrl: './generic-table.component.html',
-  template:`<strong>Test</strong>`,
+  templateUrl: './generic-table.component.html',
   styleUrls: ['./generic-table.component.scss']
 })
 export class GenericTableComponent implements OnInit {
 
+  //public safeInnerHtml = this.sanitizer.bypassSecurityTrustHtml('<gt-expanded-row></gt-expanded-row>');
+  @Input() component:any;
   public data: [Object];
   public configObject:GtConfig;
   public sortOrder:Array<any> = [];
@@ -33,8 +37,12 @@ export class GenericTableComponent implements OnInit {
   @Output() gtEvent = new EventEmitter();
   public store: Array<any> = [];
   public loading: boolean = false;
+  public debounceTimer:void = null;
+  public debounceTime:number = 200;
+  public loadingProperty:string;
+  private refreshPipe:boolean = false;
 
-  constructor() { }
+  constructor(private sanitizer:DomSanitizer) {}
 
   /**
    * Sort table by object key.
@@ -62,8 +70,6 @@ export class GenericTableComponent implements OnInit {
         matchDesc = match === -1 ?  this.sortOrder.indexOf('-' + objectKey):match;
       }
     }
-
-    //console.log('outcome:',match);
 
     // if not sorted...
     if(sortProperties === 0){
@@ -118,16 +124,43 @@ export class GenericTableComponent implements OnInit {
    * @returns {number} number of pages to display.
    */
   public changeRowLength = function(rowLength:any,reset?:boolean){
-    let newPosition = 0;
-    if(reset !== true){
+    //console.log('change rows');
+    let newPosition = 1;
+
+    // if reset is not true and we're not lazy loading data...
+    if(reset !== true && this.gtLazy !== true){
+
+      // ...get current position in record set
       let currentRecord = this.gt.rowLength * (this.gt.currentPage-1);
       let currentPosition = this.gtData.indexOf(this.gtData[currentRecord])+1;
+
+      // ...get new position
       newPosition = Math.ceil(currentPosition/rowLength);
     }
 
+    // change row length
     this.gt.rowLength = parseInt(rowLength);
+
+    // update total pages
     this.updateTotalPages();
+
+    // go to new position
     this.gt.currentPage = newPosition;
+
+    // if lazy loading data...
+    if(this.gtLazy){
+
+      // ...replace data with place holders for new data
+      this.gtData[0] = this.loadingContent(rowLength);
+
+      // ...empty current store
+      this.store = [];
+    }
+
+    this.gtEvent.emit({
+      name:'gt-row-length-changed',
+      value:rowLength
+    });
   };
 
   /**
@@ -135,9 +168,9 @@ export class GenericTableComponent implements OnInit {
    * @returns {number} number of pages to display.
    */
   private updateTotalPages = function(){
-    //console.log('get total');
     let rows = this.gt.filtered ? this.gt.filtered : this.gtData.length;
     this.gt.pagesTotal = Math.ceil(rows/this.gt.rowLength);
+    //console.log('get total',this.gt.pagesTotal);
   };
 
   /**
@@ -158,6 +191,14 @@ export class GenericTableComponent implements OnInit {
     }
   };
 
+  /**
+   * Force a redraw of table rows.
+   * As the table uses pure pipes, we need to force a redraw if an object in the array is changed to see the changes.
+   */
+  private redraw = function(){
+    this.refreshPipe = !this.refreshPipe;
+  };
+
   /** Go to next page. */
   public nextPage = function(){
     let page = this.gt.currentPage === this.gt.pagesTotal ? this.gt.pagesTotal:this.gt.currentPage += 1;
@@ -170,6 +211,15 @@ export class GenericTableComponent implements OnInit {
     this.goToPage(page);
   };
 
+  /** Request more data (used when lazy loading) */
+  private getData = function(){
+    // ...emit event requesting for more data
+    this.gtEvent.emit({
+      name: 'gt-page-changed-lazy',
+      value: {page: this.gt.currentPage, pageLength: this.gt.rowLength}
+    });
+  };
+
   /**
    * Go to specific page.
    * @param {number} page - page number.
@@ -178,19 +228,30 @@ export class GenericTableComponent implements OnInit {
     this.gt.currentPage = page;
 
     // if lazy loading and if page contains no records...
-    if(this.gtLazy && this.gtData[this.gt.currentPage-1].length === 0){
+    if(this.gtLazy){
 
-      // ...emit event requesting for more data
-      console.log('load from server');
-      this.gtEvent.emit({
-        name:'gt-page-changed',
-        value:{page:this.gt.currentPage,pageLength:this.gt.rowLength}
-      });
+      // ...if data for current page contains no entries...
+      if(this.gtData[this.gt.currentPage-1].length === 0) {
+        // ...create temporary content while waiting for data
+        this.gtData[this.gt.currentPage - 1] = this.loadingContent(this.gt.rowLength);
+        this.loading = true; // loading true
+      }
+      // ...if first entry in current page equals our loading placeholder...
+      if(this.gtData[this.gt.currentPage-1][0][this.loadingProperty] === this.gtTexts.loading){
 
-      // ...create temporary content while waiting for data
-      this.gtData[this.gt.currentPage-1] = this.loadingContent(this.gt.rowLength);
-      this.loading = true; // loading true
+        // ...get data
+        clearTimeout(this.debounceTimer);
+        this.debounceTimer = setTimeout(() => {
+          this.getData();
+        },this.debounceTime);
+      }
     }
+
+    // ...emit page change event
+    this.gtEvent.emit({
+      name: 'gt-page-changed',
+      value: {page: this.gt.currentPage, pageLength: this.gt.rowLength}
+    });
   };
 
   /**
@@ -244,9 +305,11 @@ export class GenericTableComponent implements OnInit {
 
     // create row object
     let rowObject:Object = {};
+    let order = 0;
 
     // sort settings by column order
     this.gtSettings.sort(this.getColumnOrder);
+
 
     // loop through all settings objects...
     for (var i = 0;i < this.gtSettings.length; i++ ) {
@@ -254,10 +317,18 @@ export class GenericTableComponent implements OnInit {
 
       // ...if column is visible and enabled...
       if(setting.visible !== false && setting.enabled !== false) {
-        // ...if first column set value to loading text otherwise leave it empty
-        rowObject[setting.objectKey] = i === 0 ? this.gtTexts.loading:'';
+        // ...if first column, set value to loading text otherwise leave it empty
+        if(order === 0){
+          console.log(setting.objectKey);
+          rowObject[setting.objectKey] = this.gtTexts.loading;
+          this.loadingProperty = setting.objectKey;
+        } else {
+          rowObject[setting.objectKey] = '';
+        }
+        order++;
       }
     }
+    console.log(rowObject);
 
     // create content placeholder
     let contentPlaceholder:Array<any> = [];
@@ -270,6 +341,7 @@ export class GenericTableComponent implements OnInit {
     return contentPlaceholder;
   };
 
+  // TODO: move to helper functions
   /** Sort by sort order */
   private getSortOrder = function(a,b) {
     if (a.sortOrder < b.sortOrder)
@@ -279,6 +351,7 @@ export class GenericTableComponent implements OnInit {
     return 0;
   };
 
+  // TODO: move to helper functions
   /** Sort by column order */
   private getColumnOrder = function(a,b) {
     if (a.columnOrder < b.columnOrder)
@@ -346,6 +419,7 @@ export class GenericTableComponent implements OnInit {
     //console.log('view');
   }
   ngOnChanges() {
+    console.log('changed');
     if(this.gtPaging){
 
       this.gt.rowLength = this.gtPaging.per_page;
@@ -356,31 +430,55 @@ export class GenericTableComponent implements OnInit {
 
     }
 
-    // if lazy loading data and paging infromation is avaialble...
+    // if lazy loading data and paging information is available...
     if(this.gtLazy && this.gtPaging){
 
       // ...declare store position
       let storePosition = this.gtPaging.current_page-1;
 
-      // ...and if store is empty...
-      if(this.store.length === 0){
+
+
+      // ...and if store is empty or page length has changed...
+      if(this.store.length === 0 || this.store[0].length !== this.gtPaging.per_page){
         console.log('create store');
         // ...create store
         this.store = this.createStore(this.gtPaging.filtered_records,this.gtPaging.per_page);
+        this.gt.pagesTotal = Math.ceil(this.gtPaging.filtered_records/this.gt.rowLength)
       }
+
+
+      console.log(this.store[0].length === this.gtPaging.per_page,this.store[0].length, this.gtPaging.per_page);
+
+      //console.log('add to store',this.gtPaging.current_page,this.gtData,storePosition,this.store[storePosition].length,this.store);
 
       // ...and if store position is empty...
-      if(this.store[storePosition].length === 0 || this.loading){
-        console.log('fill store position:',storePosition);
+      //if(this.store[storePosition].length === 0 || this.loading){
+      console.log('fill store position:',storePosition);
 
-        // ...store retrieved data in store at store position
-        this.store[storePosition] = this.gtData;
-      }
+      // ...store retrieved data in store at store position
+      this.store[storePosition] = this.gtData;
+      //}
 
       // replace data with store
       this.gtData = this.store;
       this.loading = false;
     }
+  }
+  public refreshRender = false;
+  public doSomething = function(event){
+    console.log('something is happening',event,this.gtData,this.loadingContent(1));
+
+    this.refreshRender = !this.refreshRender;
+
+    //this.gtData =
+    //this.gtData[0].refresh = true;
+    //this.gtData.splice(event.id -1 ,1);
+    //this.gtData.push(event);
+    /*setTimeout(function(){
+      this.gtData.splice(event.id -1 ,0,event);
+    },10);*/
+    //this.gtData[0] = event;
+    //this.gtData[0] = event;
   }
 }
 

@@ -1,6 +1,6 @@
 import {Component, Output, EventEmitter} from '@angular/core';
 import {Response, Http, URLSearchParams, RequestOptions} from '@angular/http';
-import {GtConfig} from '../../generic-table/gt-config';
+import {GtConfig} from '../../generic-table/interfaces/gt-config';
 
 @Component({
   selector: 'app-lazy-loading',
