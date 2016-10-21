@@ -9,4 +9,5 @@ export interface GtConfigField {
     expand?: boolean;
     export?: any;
     search?: boolean;
+    sort?: any;
 }
