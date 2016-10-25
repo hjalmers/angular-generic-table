@@ -22,7 +22,7 @@ export class GtRenderPipe implements PipeTransform {
     return 0;
   };
 
-  transform(row:any, settings:[GtConfigSetting], fields:[GtConfigField], updated:boolean) : Array<Object> {
+  transform(row:any, settings:[GtConfigSetting], fields:[GtConfigField], updated:boolean, loading:boolean) : Array<Object> {
     //let arr = [{"temp":123,"name":"happy"},{"temp":456,"name":"dfgdfg"},{"temp":789,"name":"asdasd"}];
     //console.log(arr,arr.map(function(item){return item.temp}));
     //console.log(settings.map('objectKey'));
@@ -53,6 +53,7 @@ export class GtRenderPipe implements PipeTransform {
             //console.log(fieldSetting);
           }
         }
+
         let columnObject:GtRenderField = {
           objectKey: key,
           renderValue: fieldSetting.render && typeof fieldSetting.render === 'function' ? this.sanitizer.bypassSecurityTrustHtml(fieldSetting.render(row)):row[key],
@@ -65,6 +66,7 @@ export class GtRenderPipe implements PipeTransform {
         if(fieldSetting.expand){
           columnObject.expand = fieldSetting.expand;
         }
+        //console.log(loading,columnObject);
         keys.push(columnObject);
 
       }

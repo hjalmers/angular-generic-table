@@ -1,0 +1,4 @@
+{
+  "proxy":"http://gia.sebank.se:8080",
+  "rejectUnauthorized":false
+}

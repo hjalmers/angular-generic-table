@@ -1,13 +1,12 @@
 import {Component, Output, EventEmitter, ViewChild} from '@angular/core';
 import {Response, Http } from '@angular/http';
 import {GenericTableComponent} from '../../generic-table/generic-table.component';
-import {MyCustomRowComponent} from '../my-custom-row/my-custom-row.component';
+import {CustomRowComponent} from '../custom-row/custom-row.component';
 import {GtConfig} from '../../../lib/src/generic-table/interfaces/gt-config';
 
 @Component({
   selector: 'app-rest',
-  templateUrl: './rest.component.html',
-  styleUrls: ['./rest.component.scss']
+  templateUrl: './rest.component.html'
 })
 export class RestComponent {
 
@@ -17,7 +16,7 @@ export class RestComponent {
 
   @ViewChild(GenericTableComponent)
   private myTable: GenericTableComponent;
-  public expandendRow = MyCustomRowComponent;
+  public expandendRow = CustomRowComponent;
 
 
   constructor(private http: Http) {
@@ -57,13 +56,6 @@ export class RestComponent {
         sort:'enable',
         sortOrder:0,
         columnOrder:4
-      },{
-        objectKey:'checkbox',
-        visible:true,
-        enabled:true,
-        sort:'enable',
-        sortOrder:0,
-        columnOrder:5
       }],
       fields:[{
         name:'Id',
@@ -88,12 +80,6 @@ export class RestComponent {
         name:'Email',
         objectKey:'email',
         render: function(row){return '<a href="mailto:'+row.email+'">'+row.email+'</a>' },
-      },{
-        name:'Selected',
-        objectKey:'checkbox',
-        click:function(row){console.log(row)},
-        value: (row)=>{return !row.checkbox ? true:row.checkbox},
-        render: (row)=>{return '<input type="checkbox" checked="'+row.checkbox+'">' }
       }],
       data:[]
     };

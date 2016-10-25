@@ -7,7 +7,7 @@ export declare class GtRenderPipe implements PipeTransform {
     constructor(sanitizer: DomSanitizer);
     /** Sort by column order */
     private getColumnOrder;
-    transform(row: any, settings: [GtConfigSetting], fields: [GtConfigField], updated: boolean): Array<Object>;
+    transform(row: any, settings: [GtConfigSetting], fields: [GtConfigField], updated: boolean, loading: boolean): Array<Object>;
 }
 export interface GtRenderField {
     objectKey: string;

@@ -8,6 +8,6 @@ export interface GtConfigField {
     click?: any;
     expand?: boolean;
     export?: any;
-    search?: boolean;
     sort?: any;
+    search?: boolean;
 }

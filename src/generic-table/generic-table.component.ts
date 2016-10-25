@@ -12,7 +12,7 @@ import {GtPagingInfo} from './interfaces/gt-paging-info';
 import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-generic-table',
+  selector: 'generic-table',
   templateUrl: './generic-table.component.html',
   styleUrls: ['./generic-table.component.scss']
 })
@@ -304,7 +304,9 @@ export class GenericTableComponent implements OnInit {
   private loadingContent = function(perPage:number){
 
     // create row object
-    let rowObject:Object = {};
+    let rowObject:Object = {
+      $$loading:true
+    };
     let order = 0;
 
     // sort settings by column order
@@ -319,16 +321,17 @@ export class GenericTableComponent implements OnInit {
       if(setting.visible !== false && setting.enabled !== false) {
         // ...if first column, set value to loading text otherwise leave it empty
         if(order === 0){
-          console.log(setting.objectKey);
+          //console.log(setting.objectKey);
           rowObject[setting.objectKey] = this.gtTexts.loading;
           this.loadingProperty = setting.objectKey;
         } else {
           rowObject[setting.objectKey] = '';
         }
         order++;
+      } else {
+        rowObject[setting.objectKey] = '';
       }
     }
-    console.log(rowObject);
 
     // create content placeholder
     let contentPlaceholder:Array<any> = [];

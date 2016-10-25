@@ -1,11 +1,11 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async } from '@angular/core/testing';
-import { MyCustomRowComponent } from './my-custom-row.component';
+import { StaticComponent } from './static.component';
 
-describe('Component: MyCustomRow', () => {
+describe('Component: Static', () => {
   it('should create an instance', () => {
-    let component = new MyCustomRowComponent();
+    let component = new StaticComponent();
     expect(component).toBeTruthy();
   });
 });
