@@ -7,7 +7,6 @@ import {Response, Http } from '@angular/http';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
 
- 
+
 }

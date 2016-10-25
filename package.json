@@ -1,6 +1,6 @@
 {
   "name": "angular2-generic-table",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-rc.1",
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
@@ -14,8 +14,8 @@
   },
   "private": false,
   "main": "angular2-generic-table.js",
-  "publishConfig":{
-    "registry":"https://registry.npmjs.org/"
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   },
   "typings": "./angular2-generic-table.d.ts",
   "dependencies": {},
@@ -41,6 +41,7 @@
     "karma-cli": "^1.0.1",
     "karma-jasmine": "^1.0.2",
     "karma-remap-istanbul": "^0.2.1",
+    "prismjs": "^1.5.1",
     "process-nextick-args": "^1.0.7",
     "protractor": "4.0.5",
     "rxjs": "5.0.0-beta.12",

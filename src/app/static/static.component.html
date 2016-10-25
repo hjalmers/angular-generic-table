@@ -1,0 +1,23 @@
+<h3>Basic</h3>
+<p>Table with static data and simple pagination</p>
+
+<!--<pre>
+  <code>&lt;app-generic-table [gtSettings]=&quot;configObject.settings&quot; [gtFields]=&quot;configObject.fields&quot; [gtData]=&quot;configObject.data&quot;&gt;&lt;/app-generic-table&gt;</code>
+</pre>-->
+<div class="panel panel-default">
+  <div class="panel-heading">Example</div>
+  <div class="panel-body">
+      <generic-table #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"></generic-table>
+      <div class="text-center">
+        <a (click)="myTable.previousPage()">&laquo;Previous</a>
+        <!--Page:{{myTable.gt.currentPage}}/{{myTable.gt.pagesTotal}}-->
+        <a (click)="myTable.nextPage()">Next&raquo;</a>
+      </div>
+    </div>
+  <div class="panel-footer">
+    <strong>View source</strong><br/>
+    <a href="https://github.com/hjalmers/angular2-generic-table/blob/master/src/app/app.module.ts" target="_blank">App module</a><br>
+    <a href="https://github.com/hjalmers/angular2-generic-table/blob/master/src/app/static/static.component.ts" target="_blank">Component</a><br>
+    <a href="https://github.com/hjalmers/angular2-generic-table/blob/master/src/app/static/static.component.html" target="_blank">Markup</a><br>
+  </div>
+</div>
