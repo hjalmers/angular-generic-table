@@ -21,11 +21,13 @@ export class StaticComponent {
     this.configObject = {
       settings:[{
         objectKey:'id',
-        sort:'desc',
+        sort:'asc',
+        sortOrder:1,
         columnOrder:0
       },{
         objectKey:'name',
-        sort:'enable',
+        sort:'asc',
+        sortOrder:0,
         columnOrder:1
       },{
         objectKey:'lucky_number',

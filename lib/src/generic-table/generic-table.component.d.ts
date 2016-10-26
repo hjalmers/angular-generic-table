@@ -28,6 +28,7 @@ export declare class GenericTableComponent implements OnInit {
     debounceTime: number;
     loadingProperty: string;
     private refreshPipe;
+    private refreshSorting;
     constructor(sanitizer: DomSanitizer);
     /**
      * Sort table by object key.
@@ -99,5 +100,4 @@ export declare class GenericTableComponent implements OnInit {
     ngAfterViewInit(): void;
     ngOnChanges(): void;
     refreshRender: boolean;
-    doSomething: (event: any) => void;
 }

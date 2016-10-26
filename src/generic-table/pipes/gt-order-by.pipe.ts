@@ -2,8 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import {GtConfigField} from '../interfaces/gt-config-field';
 
 @Pipe({
-  name: 'gtOrderBy',
-  pure: false
+  name: 'gtOrderBy'
 })
 export class GtOrderByPipe implements PipeTransform {
 
@@ -37,8 +36,8 @@ export class GtOrderByPipe implements PipeTransform {
     return 0; //equal each other
   }
 
-  transform(input:any, [config = '+'],fields:Array<GtConfigField>): any{
-    //console.log(config);
+  transform(input:any, [config = '+'],fields:Array<GtConfigField>,refreshSorting:boolean, refreshData:number): any{
+    //console.log('order by');
     if(!Array.isArray(input) || input === null || config === '+') return input;
     if(!Array.isArray(config) || (Array.isArray(config) && config.length == 1)){
       //console.log('sort a'); //this.getProperty(fields,input).sort

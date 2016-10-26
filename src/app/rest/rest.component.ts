@@ -1,4 +1,4 @@
-import {Component, Output, EventEmitter, ViewChild} from '@angular/core';
+import {Component, Output, EventEmitter, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Response, Http } from '@angular/http';
 import {GenericTableComponent} from '../../generic-table/generic-table.component';
 import {CustomRowComponent} from '../custom-row/custom-row.component';
@@ -6,7 +6,9 @@ import {GtConfig} from '../../../lib/src/generic-table/interfaces/gt-config';
 
 @Component({
   selector: 'app-rest',
-  templateUrl: './rest.component.html'
+  templateUrl: './rest.component.html',
+  styleUrls: ['./rest.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class RestComponent {
 
@@ -53,17 +55,19 @@ export class RestComponent {
         objectKey:'favorite_color',
         visible:true,
         enabled:true,
-        sort:'enable',
+        sort:'disable',
         sortOrder:0,
         columnOrder:4
       }],
       fields:[{
         name:'Id',
         objectKey:'id',
+        classNames:'clickable sort-numeric',
         expand:true
       },{
         name:'Name',
         objectKey:'name',
+        classNames:'sort-string',
         value:function(row){return row.first_name + ' ' + row.last_name},
         render:function(row){return '<div>'+row.first_name + ' ' + row.last_name +'</div>'},
         sort:function(row){return row.first_name + ' ' + row.last_name}
@@ -75,9 +79,11 @@ export class RestComponent {
         click:(row)=>{return console.log(row.first_name + '\'s favorite color is: ' + row.favorite_color );}
       },{
         name:'Gender',
+        classNames:'sort-string',
         objectKey:'gender'
       },{
         name:'Email',
+        classNames:'sort-string',
         objectKey:'email',
         render: function(row){return '<a href="mailto:'+row.email+'">'+row.email+'</a>' },
       }],
