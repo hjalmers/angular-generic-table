@@ -7,7 +7,7 @@ import {GtChunkPipe} from "./pipes/gt-chunk.pipe";
 import {GtFilterPipe} from "./pipes/gt-filter.pipe";
 import {GtOrderByPipe} from "./pipes/gt-order-by.pipe";
 import {NgModule} from "@angular/core";
-import {BrowserModule} from '@angular/platform-browser';
+import {CommonModule} from "@angular/common";
 import {GtExpandingRowComponent} from './components/gt-expanding-row/gt-expanding-row.component';
 
 @NgModule({
@@ -22,7 +22,7 @@ import {GtExpandingRowComponent} from './components/gt-expanding-row/gt-expandin
     GtOrderByPipe,
     GtExpandingRowComponent
   ],
-  imports: [BrowserModule],
+  imports: [CommonModule],
   exports: [GenericTableComponent],
 
   providers: [],
