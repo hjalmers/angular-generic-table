@@ -36,9 +36,12 @@ export class GtOrderByPipe implements PipeTransform {
     return 0; //equal each other
   }
 
-  transform(input:any, [config = '+'],fields:Array<GtConfigField>,refreshSorting:boolean, refreshData:number): any{
+  transform(input:any, config:Array<string>,fields:Array<GtConfigField>,refreshSorting:boolean, refreshData:number): any{
     //console.log('order by');
-    if(!Array.isArray(input) || input === null || config === '+') return input;
+    //config = ['gender','email'];
+    //console.log(config);
+
+    if(!Array.isArray(input) || input === null) return input;
     if(!Array.isArray(config) || (Array.isArray(config) && config.length == 1)){
       //console.log('sort a'); //this.getProperty(fields,input).sort
       var propertyToCheck:string = !Array.isArray(config) ? config : config[0];
@@ -68,14 +71,23 @@ export class GtOrderByPipe implements PipeTransform {
     }
     else {
       //Loop over property of the array in order and sort
-      return input.sort(function(a:any,b:any){
+      return input.sort((a:any,b:any)=>{
+        //console.log('multiple');
         for(var i:number = 0; i < config.length; i++){
           var desc = config[i].substr(0, 1) == '-';
           var property = config[i].substr(0, 1) == '+' || config[i].substr(0, 1) == '-'
             ? config[i].substr(1)
             : config[i];
 
-          var comparison = !desc ? GtOrderByPipe._orderByComparator(a[property], b[property]) : -GtOrderByPipe._orderByComparator(a[property], b[property]);
+          //console.log(property);
+          // check if custom sort function is defined
+          let sortFunction: any = typeof this.getProperty(fields,property).sort === 'function' ? this.getProperty(fields,property).sort:false;
+
+          // use custom sort function if one is defined
+          let propertyA = sortFunction === false ? a[property]:sortFunction(a);
+          let propertyB = sortFunction === false ? b[property]:sortFunction(b);
+
+          var comparison = !desc ? GtOrderByPipe._orderByComparator(propertyA, propertyB) : -GtOrderByPipe._orderByComparator(propertyA, propertyB);
 
           //Don't return 0 yet in case of needing to sort by next property
           if(comparison != 0) return comparison;

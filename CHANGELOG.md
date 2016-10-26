@@ -1,5 +1,11 @@
 Release History
 ---------------
+## [Unreleased]
+
+### Fixed
+- Sorting multiple columns
+- Importing Common Module instead of Browser Module to support sub module linking
+
 # [1.0.0-rc.2] - 2016-10-26
 
 ### Fixed
