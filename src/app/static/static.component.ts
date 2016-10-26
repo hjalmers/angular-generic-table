@@ -282,7 +282,7 @@ export class StaticComponent {
         "lucky_number": 53
       }, {
         "id": 60,
-        "name": "Dennis",
+        "name": "Denise",
         "lucky_number": 65
       }, {
         "id": 61,
@@ -347,7 +347,7 @@ export class StaticComponent {
       }, {
         "id": 76,
         "name": "Denise",
-        "lucky_number": 49
+        "lucky_number": 30
       }, {
         "id": 77,
         "name": "Elizabeth",

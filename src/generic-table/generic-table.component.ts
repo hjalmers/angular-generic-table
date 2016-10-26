@@ -108,12 +108,12 @@ export class GenericTableComponent implements OnInit {
     }
 
     // check length
-    let sortProperties = this.sortOrder.length;
     let ctrlKey = event.metaKey || event.ctrlKey;
     let sort = this.sortOrder.slice(0);
 
     let match = -1;
     let matchDesc = -1;
+    let pos = -1;
 
     // check if property already exits
     for(let i = 0; i < sort.length; i++) {
@@ -123,45 +123,45 @@ export class GenericTableComponent implements OnInit {
         //console.log('MATCH',this.sortOrder,objectKey);
         match = this.sortOrder.indexOf(objectKey);
         matchDesc = match === -1 ?  this.sortOrder.indexOf('-' + objectKey):match;
+        pos = Math.max(match, matchDesc);
       }
     }
 
-    // if not sorted...
-    if(sortProperties === 0){
-      this.sortOrder.push(objectKey);
-    } else
-    // if sorted asc...
-    if((match !== -1 && this.sortOrder.length === 1) || (match !== -1 && ctrlKey)){
-      // ...change to desc
-      this.sortOrder[match] = '-'+ objectKey;
+    // if ctrl key or meta key is press together with sort...
+    if(ctrlKey){
+      switch(pos){
+          // ...and property is not sorted before...
+        case -1:
+          // ...add property to sorting
+          this.sortOrder.push(objectKey);
+          break;
+        default:
+          // ...and property is sorted before...
+          if(match !== -1){
+            // ...change from asc to desc if sorted asc
+            this.sortOrder[pos] = '-'+objectKey;
+          } else if (this.sortOrder.length > 1) {
+            // ...remove sorting if sorted desc
+            this.sortOrder.splice(pos,1);
+          } else if (this.sortOrder.length === 1){
+            // ...set sorting to asc if only sorted property
+            this.sortOrder[pos] = objectKey;
+          }
+          break;
+      }
     }
-    // ...else if sorted desc...
-    else if(match === 1){
-      // ...remove
-      this.sortOrder.splice(0,1);
-    }
-    // ...else if no match found and ctrl key not pressed...
-    else if(!ctrlKey){
-
-      // ...replace sorting
-      this.sortOrder = [objectKey];
-    }
-    // ...else if no match found and ctrl key is pressed...
-    else if(match === -1 && ctrlKey){
-
-      // ...if property is already sorted using desc
-      if(matchDesc !== -1){
-
-        // ...remove it if sorting is applied with more than one properties
-        if(this.sortOrder.length > 1){
-          this.sortOrder.splice(matchDesc,1);
-        } else {
-          this.sortOrder = [objectKey]
-        }
-      } else {
-
-        // ...if not add it
-        this.sortOrder.push(objectKey);
+    // if ctrl key or meta key is not press together with sort...
+    else {
+      switch(pos){
+          // ...and property is not sorted before...
+        case -1:
+          // ...sort by property
+          this.sortOrder = [objectKey];
+            break;
+        default:
+          // ...change from desc to asc and vise versa
+          this.sortOrder = match !== -1? ['-'+objectKey]:[objectKey];
+          break;
       }
     }
 
@@ -169,13 +169,19 @@ export class GenericTableComponent implements OnInit {
     for (let i = 0; i < this.gtSettings.length;i++){
       if(this.gtSettings[i].objectKey === objectKey){
         switch(this.gtSettings[i].sort) {
+            // if sorted asc...
           case 'asc':
+            // ...change to desc
             this.gtSettings[i].sort = 'desc';
             break;
+            // if sorted desc...
           case 'desc':
-            this.gtSettings[i].sort = this.sortOrder.length === 1 ? 'asc':'enable';
+            // ...change to asc if it's the only sorted property otherwise remove sorting
+            this.gtSettings[i].sort = this.sortOrder.length === 1  && sort.length < 2 ? 'asc':'enable';
             break;
+            // if sorting enabled...
           case 'enable':
+            // ...change to asc
             this.gtSettings[i].sort = 'asc';
             break;
         }
