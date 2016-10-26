@@ -76,7 +76,6 @@ export class LazyComponent {
         objectKey:'name',
         value:function(row){return row.first_name + ' ' + row.last_name},
         render:function(row){if(row.first_name && row.last_name){
-          console.log(row, 'hello');
           return '<div>'+row.first_name + ' ' + row.last_name +'</div>';
         } else {
           return '';

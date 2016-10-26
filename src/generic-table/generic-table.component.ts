@@ -13,8 +13,53 @@ import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'generic-table',
-  templateUrl: './generic-table.component.html',
-  styleUrls: ['./generic-table.component.scss']
+  //templateUrl: './generic-table.component.html',
+  styleUrls: ['./generic-table.component.scss'],
+  template:`
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th *ngFor="let column of gtFields | gtVisible:gtSettings" ngClass="{{column.objectKey +'-column' | dashCase}} {{column.classNames}} sort-{{gtSettings | getProperty:column.objectKey:'sort':refreshHeading}} sort-order-{{gtSettings | getProperty:column.objectKey:'sortOrder':refreshHeading}}" (click)="gtSort(column.objectKey,$event);refreshHeading = !refreshHeading">{{column.name}}</th>
+  </tr>
+  </thead>
+  <tbody *ngIf="gtLazy">
+  <template ngFor let-row [ngForOf]="gtData[gt.currentPage-1]">
+    <tr ngClass="{{row.isOpen ? 'row-open':''}}">
+      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></td>
+    </tr>
+    <tr class="expanded-row" *ngIf="row.isOpen">
+      <td [attr.colspan]="(gtFields | gtVisible:gtSettings).length">
+        <gt-expanding-row [row]="row" [type]="component"></gt-expanding-row>
+      </td>
+    </tr>
+  </template>
+  </tbody>
+  <tbody *ngIf="!gtAsync && !gtLazy">
+  <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gt.filter:gt:refreshFilter:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gt.rowLength:gt.currentPage:refreshPageArray:gtData.length">
+    <tr ngClass="{{row.isOpen ? 'row-open':''}}">
+      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></td>
+    </tr>
+    <tr class="expanded-row" *ngIf="row.isOpen">
+      <td [attr.colspan]="(gtFields | gtVisible:gtSettings).length">
+        <gt-expanding-row [row]="row" [type]="component" (redrawEvent)="redraw($event)"></gt-expanding-row>
+      </td>
+    </tr>
+  </template>
+  </tbody>
+  <tbody *ngIf="gtAsync && !gtLazy">
+  <template ngFor let-row [ngForOf]="gtData | async | gtFilter:gt.filter:gt:refreshFilter | gtOrderBy:sortOrder:refreshSorting | gtChunk:gt.rowLength:gt.currentPage:refreshPageArray">
+    <tr ngClass="{{row.isOpen ? 'row-open':''}}">
+      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></td>
+    </tr>
+    <tr class="expanded-row" *ngIf="row.isOpen">
+      <td [attr.colspan]="(gtFields | gtVisible:gtSettings).length">
+        <gt-expanding-row [row]="row" [type]="component"></gt-expanding-row>
+      </td>
+    </tr>
+  </template>
+  </tbody>
+</table>
+`
 })
 export class GenericTableComponent implements OnInit {
 
@@ -41,6 +86,7 @@ export class GenericTableComponent implements OnInit {
   public debounceTime:number = 200;
   public loadingProperty:string;
   private refreshPipe:boolean = false;
+  private refreshSorting:boolean = false;
 
   constructor(private sanitizer:DomSanitizer) {}
 
@@ -51,6 +97,15 @@ export class GenericTableComponent implements OnInit {
    */
   private gtSort = function(objectKey:string,event:any){
     //console.log('key pressed:',objectKey,event.metaKey);
+
+    // check if sorting is disabled
+    for (let i = 0; i < this.gtSettings.length;i++){
+      if(this.gtSettings[i].objectKey === objectKey){
+        if(this.gtSettings[i].sort === 'disable') {
+          return;
+        }
+      }
+    }
 
     // check length
     let sortProperties = this.sortOrder.length;
@@ -76,7 +131,7 @@ export class GenericTableComponent implements OnInit {
       this.sortOrder.push(objectKey);
     } else
     // if sorted asc...
-    if(match !== -1){
+    if((match !== -1 && this.sortOrder.length === 1) || (match !== -1 && ctrlKey)){
       // ...change to desc
       this.sortOrder[match] = '-'+ objectKey;
     }
@@ -86,7 +141,7 @@ export class GenericTableComponent implements OnInit {
       this.sortOrder.splice(0,1);
     }
     // ...else if no match found and ctrl key not pressed...
-    else if(match === -1 && !ctrlKey){
+    else if(!ctrlKey){
 
       // ...replace sorting
       this.sortOrder = [objectKey];
@@ -109,6 +164,31 @@ export class GenericTableComponent implements OnInit {
         this.sortOrder.push(objectKey);
       }
     }
+
+    // update settings object with new sorting information
+    for (let i = 0; i < this.gtSettings.length;i++){
+      if(this.gtSettings[i].objectKey === objectKey){
+        switch(this.gtSettings[i].sort) {
+          case 'asc':
+            this.gtSettings[i].sort = 'desc';
+            break;
+          case 'desc':
+            this.gtSettings[i].sort = this.sortOrder.length === 1 ? 'asc':'enable';
+            break;
+          case 'enable':
+            this.gtSettings[i].sort = 'asc';
+            break;
+        }
+        this.gtSettings[i].sortOrder = this.gtSettings[i].sort === 'enable' ? (this.gtSettings.length -1) :this.sortOrder.indexOf(objectKey) === -1 ? this.sortOrder.indexOf('-'+objectKey) : this.sortOrder.indexOf(objectKey);
+      } else if(this.gtSettings[i].sort !== 'disable' && this.sortOrder.indexOf(this.gtSettings[i].objectKey) === -1 && this.sortOrder.indexOf('-'+this.gtSettings[i].objectKey) === -1){
+        this.gtSettings[i].sort = 'enable';
+        this.gtSettings[i].sortOrder = (this.gtSettings.length -1);
+      }
+    }
+
+    // refresh sorting pipe
+    this.refreshSorting = !this.refreshSorting;
+    this.refreshPageArray = !this.refreshPageArray;
 
     // emit sort event
     this.gtEvent.emit({
@@ -388,7 +468,7 @@ export class GenericTableComponent implements OnInit {
           sorting.push(setting.objectKey);
         }
         // ...else if sorted descending...
-        else if (setting.sort === 'asc') {
+        else if (setting.sort === 'desc') {
           // ... add to sorting
           sorting.push("-" + setting.objectKey);
         }
@@ -422,7 +502,7 @@ export class GenericTableComponent implements OnInit {
     //console.log('view');
   }
   ngOnChanges() {
-    console.log('changed');
+    //console.log('changed');
     if(this.gtPaging){
 
       this.gt.rowLength = this.gtPaging.per_page;
@@ -443,20 +523,20 @@ export class GenericTableComponent implements OnInit {
 
       // ...and if store is empty or page length has changed...
       if(this.store.length === 0 || this.store[0].length !== this.gtPaging.per_page){
-        console.log('create store');
+        //console.log('create store');
         // ...create store
         this.store = this.createStore(this.gtPaging.filtered_records,this.gtPaging.per_page);
         this.gt.pagesTotal = Math.ceil(this.gtPaging.filtered_records/this.gt.rowLength)
       }
 
 
-      console.log(this.store[0].length === this.gtPaging.per_page,this.store[0].length, this.gtPaging.per_page);
+      //console.log(this.store[0].length === this.gtPaging.per_page,this.store[0].length, this.gtPaging.per_page);
 
       //console.log('add to store',this.gtPaging.current_page,this.gtData,storePosition,this.store[storePosition].length,this.store);
 
       // ...and if store position is empty...
       //if(this.store[storePosition].length === 0 || this.loading){
-      console.log('fill store position:',storePosition);
+      //console.log('fill store position:',storePosition);
 
       // ...store retrieved data in store at store position
       this.store[storePosition] = this.gtData;
@@ -468,20 +548,5 @@ export class GenericTableComponent implements OnInit {
     }
   }
   public refreshRender = false;
-  public doSomething = function(event){
-    console.log('something is happening',event,this.gtData,this.loadingContent(1));
-
-    this.refreshRender = !this.refreshRender;
-
-    //this.gtData =
-    //this.gtData[0].refresh = true;
-    //this.gtData.splice(event.id -1 ,1);
-    //this.gtData.push(event);
-    /*setTimeout(function(){
-      this.gtData.splice(event.id -1 ,0,event);
-    },10);*/
-    //this.gtData[0] = event;
-    //this.gtData[0] = event;
-  }
 }
 

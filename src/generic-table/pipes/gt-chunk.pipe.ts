@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'gtChunk',
-  pure:false
+  name: 'gtChunk'
 })
 export class GtChunkPipe implements PipeTransform {
 
-  transform(array: Array<any>, chunkSize: number, page:number): Array<any> {
+  transform(array: Array<any>, chunkSize: number, page:number, refreshPageArray:boolean, refreshData:number): Array<any> {
+    //console.log('chunk array');
     //console.log(array,chunkSize,page);
     if(!Array.isArray(array)) return array;
     var R = [];

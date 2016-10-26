@@ -37,7 +37,7 @@ import { GenericTableModule } from 'angular2-generic-table/lib/angular2-generic-
 export class AppModule { }
 ```
 
-Configure the table in your component, in this case we're adding a basic example with static data to an component called StaticComponent.
+Configure the table in your component, in this case we're adding a basic example with static data to a component called StaticComponent.
 
 **Static Component**
 ```
@@ -132,7 +132,7 @@ export class StaticComponent {
 
 **Markup**
 ```
-<generic-table #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"></generic-table>
+<generic-table [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"></generic-table>
 ```
 
 
@@ -150,13 +150,13 @@ config = {
 ### Settings array
 Each column must have it's own settings object that can have the following properties:
 
-- objectKey: string // unique identifier used for mapping settings and fields to data 
-- visible: boolean // should column be visible (OPTIONAL)
-- enabled: boolean // should column be enabled (OPTIONAL)
-- sort: string // default sorting: 'enabled', 'disabled', 'asc', 'desc' (OPTIONAL)
-- sortOrder: number // default sort order (OPTIONAL)
-- columnOrder: number // column order (OPTIONAL)
-- ~~export: boolean // should column be exported to CSV (OPTIONAL)~~ (not implemented)
+- **objectKey**: string // unique identifier used for mapping settings and fields to data 
+- **visible**: boolean // should column be visible (OPTIONAL)
+- **enabled**: boolean // should column be enabled (OPTIONAL)
+- **sort**: string // default sorting: 'enabled', 'disabled', 'asc', 'desc' (OPTIONAL)
+- **sortOrder**: number // default sort order (OPTIONAL)
+- **columnOrder**: number // column order (OPTIONAL)
+- ~~**export**: boolean // should column be exported to CSV (OPTIONAL)~~ (not implemented)
 
 Basic example:
 
@@ -173,16 +173,16 @@ Basic example:
 ### Fields array
 Each column must also have it's own field definition object that can have the following properties:
 
-- name: string // name or label of the field, will be displayed as heading for column
-- objectKey: string // unique identifier used for mapping settings and fields to data
-- classNames: string // custom class names appended to the column (OPTIONAL)
-- render: function // function(row,column){ return '<span>'+row[column]+'</span>';} // custom function for column presentation (OPTIONAL),
-- value: function // function(row,column){ return row[column]/2;} // custom function for column value if no data exists for column in data array (OPTIONAL),
-- click: function // function(){ return console.log('column clicked);} // click function for column (OPTIONAL),
-- expand: boolean // expand (open/close) row when clicked (OPTIONAL),
-- ~~export: function // function(row,column){ return parseFloat(row[column]);} // custom function for export presentation (OPTIONAL),~~ (not implemented)
-- sort: function // function(row,column){ return parseFloat(row[column]);} // custom function for sorting (OPTIONAL),
-- ~~search: boolean // should field be searchable, true or false, true by default (OPTIONAL)~~ (not implemented)
+- **name**: string // name or label of the field, will be displayed as heading for column
+- **objectKey**: string // unique identifier used for mapping settings and fields to data
+- **classNames**: string // custom class names appended to the column (OPTIONAL)
+- **render**: function // function(row,column){ return '<span>'+row[column]+'</span>';} // custom function for column presentation (OPTIONAL),
+- **value**: function // function(row,column){ return row[column]/2;} // custom function for column value if no data exists for column in data array (OPTIONAL),
+- **click**: function // function(){ return console.log('column clicked);} // click function for column (OPTIONAL),
+- **expand**: boolean // expand (open/close) row when clicked (OPTIONAL),
+- ~~**export**: function // function(row,column){ return parseFloat(row[column]);} // custom function for export presentation (OPTIONAL),~~ (not implemented)
+- **sort**: function // function(row,column){ return parseFloat(row[column]);} // custom function for sorting (OPTIONAL),
+- ~~**search**: boolean // should field be searchable, true or false, true by default (OPTIONAL)~~ (not implemented)
 
 Basic example:
 

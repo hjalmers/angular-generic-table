@@ -3,5 +3,5 @@ export declare class GtFilterPipe implements PipeTransform {
     transform(array: Array<any>, filterBy: Object, gt: {
         filtered: number | boolean;
         refresh: any;
-    }): Array<any>;
+    }, refreshFilter: boolean, refreshData: number): Array<any>;
 }

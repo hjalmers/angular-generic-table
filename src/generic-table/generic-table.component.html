@@ -1,7 +1,7 @@
 <table class="table table-hover">
   <thead>
   <tr>
-    <th *ngFor="let column of gtFields | gtVisible:gtSettings" ngClass="{{column.objectKey +'-column' | dashCase}} {{column.classNames}}" (click)="gtSort(column.objectKey,$event)">{{column.name}}</th>
+    <th *ngFor="let column of gtFields | gtVisible:gtSettings" ngClass="{{column.objectKey +'-column' | dashCase}} {{column.classNames}} sort-{{gtSettings | getProperty:column.objectKey:'sort':refreshHeading}} sort-order-{{gtSettings | getProperty:column.objectKey:'sortOrder':refreshHeading}}" (click)="gtSort(column.objectKey,$event);refreshHeading = !refreshHeading">{{column.name}}</th>
   </tr>
   </thead>
   <tbody *ngIf="gtLazy">
@@ -17,7 +17,7 @@
   </template>
   </tbody>
   <tbody *ngIf="!gtAsync && !gtLazy">
-  <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gt.filter:gt | gtOrderBy:sortOrder:gtFields | gtChunk:gt.rowLength:gt.currentPage">
+  <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gt.filter:gt:refreshFilter:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gt.rowLength:gt.currentPage:refreshPageArray:gtData.length">
     <tr ngClass="{{row.isOpen ? 'row-open':''}}">
       <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></td>
     </tr>
@@ -29,7 +29,7 @@
   </template>
   </tbody>
   <tbody *ngIf="gtAsync && !gtLazy">
-  <template ngFor let-row [ngForOf]="gtData | async | gtFilter:gt.filter:gt | gtOrderBy:sortOrder | gtChunk:gt.rowLength:gt.currentPage">
+  <template ngFor let-row [ngForOf]="gtData | async | gtFilter:gt.filter:gt:refreshFilter | gtOrderBy:sortOrder:refreshSorting | gtChunk:gt.rowLength:gt.currentPage:refreshPageArray">
     <tr ngClass="{{row.isOpen ? 'row-open':''}}">
       <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></td>
     </tr>

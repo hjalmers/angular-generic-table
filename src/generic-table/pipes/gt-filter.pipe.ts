@@ -1,14 +1,14 @@
 import {Pipe, PipeTransform, EventEmitter, Output} from '@angular/core';
 
 @Pipe({
-  name: 'gtFilter',
-  pure:false
+  name: 'gtFilter'
 })
 export class GtFilterPipe implements PipeTransform {
   //@Output() filterInfo = new EventEmitter();
 
-  transform(array: Array<any>, filterBy: Object,gt: {filtered:number | boolean, refresh:any}): Array<any> {
+  transform(array: Array<any>, filterBy: Object,gt: {filtered:number | boolean, refresh:any}, refreshFilter:boolean, refreshData:number): Array<any> {
     //console.log(array,filterBy);
+    //console.log('filter by');
 
     if(!Array.isArray(array) || !filterBy) {
       //gt.filtered = false;

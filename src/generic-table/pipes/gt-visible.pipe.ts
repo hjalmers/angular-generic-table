@@ -29,7 +29,7 @@ export class GtVisiblePipe implements PipeTransform {
     }).sort(function(a,b){
       return visibleColumns.indexOf(a.objectKey) < visibleColumns.indexOf(b.objectKey) ? -1 : 1;
     });
-    
+
     return columns;
   }
 

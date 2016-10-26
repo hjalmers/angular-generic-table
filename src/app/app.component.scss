@@ -1,0 +1,51 @@
+th {
+  &.sort-enable {
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  &.sort-asc {
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+    &::after {
+      content: "\f0d8";
+      display: inline-block;
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: inherit;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      margin-left: 4px;
+    }
+    &.sort-numeric::after {
+      content: "\f162";
+    }
+    &.sort-string::after {
+      content: "\f15d";
+    }
+  }
+  &.sort-desc {
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+    &::after {
+      content: "\f0d7";
+      display: inline-block;
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: inherit;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      margin-left: 4px;
+    }
+    &.sort-numeric::after {
+      content: "\f163";
+    }
+    &.sort-string::after {
+      content: "\f15e";
+    }
+  }
+}
+
