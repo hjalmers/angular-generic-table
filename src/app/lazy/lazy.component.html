@@ -3,9 +3,7 @@
 <div class="panel panel-default">
   <div class="panel-heading">Example</div>
   <div class="panel-body">
-    <form class="form form-inline" style="margin-bottom: 10px;">
-    </form>
-    <generic-table #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtPaging]="configObject.paging" [gtLazy]="true" (gtEvent)="trigger($event)"></generic-table>
+    <generic-table #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtPaging]="configObject.paging" [gtLazy]="true" [component]="expandedRow" (gtEvent)="trigger($event)"></generic-table>
     <div class="text-center">
       <a (click)="myTable.previousPage()">&laquo;Previous</a>
       <!--Page:{{myTable.gt.currentPage}}/{{myTable.gt.pagesTotal}}-->

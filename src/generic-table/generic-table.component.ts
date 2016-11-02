@@ -29,7 +29,7 @@ import {DomSanitizer} from '@angular/platform-browser';
     </tr>
     <tr class="expanded-row" *ngIf="row.isOpen">
       <td [attr.colspan]="(gtFields | gtVisible:gtSettings).length">
-        <gt-expanding-row [row]="row" [type]="component"></gt-expanding-row>
+        <gt-expanding-row [row]="row" [type]="component" (redrawEvent)="redraw($event)"></gt-expanding-row>
       </td>
     </tr>
   </template>
@@ -53,7 +53,7 @@ import {DomSanitizer} from '@angular/platform-browser';
     </tr>
     <tr class="expanded-row" *ngIf="row.isOpen">
       <td [attr.colspan]="(gtFields | gtVisible:gtSettings).length">
-        <gt-expanding-row [row]="row" [type]="component"></gt-expanding-row>
+        <gt-expanding-row [row]="row" [type]="component" (redrawEvent)="redraw($event)"></gt-expanding-row>
       </td>
     </tr>
   </template>

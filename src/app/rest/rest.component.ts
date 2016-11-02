@@ -2,7 +2,8 @@ import {Component, Output, EventEmitter, ViewChild, ViewEncapsulation} from '@an
 import {Response, Http } from '@angular/http';
 import {GenericTableComponent} from '../../generic-table/generic-table.component';
 import {CustomRowComponent} from '../custom-row/custom-row.component';
-import {GtConfig} from '../../../lib/src/generic-table/interfaces/gt-config';
+import {GtConfig} from '../../../src/generic-table/interfaces/gt-config';
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-rest',
@@ -18,7 +19,7 @@ export class RestComponent {
 
   @ViewChild(GenericTableComponent)
   private myTable: GenericTableComponent;
-  public expandendRow = CustomRowComponent;
+  public expandedRow = CustomRowComponent;
 
 
   constructor(private http: Http) {
