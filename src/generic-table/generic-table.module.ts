@@ -8,7 +8,7 @@ import {GtFilterPipe} from "./pipes/gt-filter.pipe";
 import {GtOrderByPipe} from "./pipes/gt-order-by.pipe";
 import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
-import {GtExpandingRowComponent} from './components/gt-expanding-row/gt-expanding-row.component';
+import {GtExpandingRowComponent, GtExpandedRow} from './components/gt-expanding-row/gt-expanding-row.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,7 @@ import {GtExpandingRowComponent} from './components/gt-expanding-row/gt-expandin
   ],
   imports: [CommonModule],
   exports: [GenericTableComponent],
-
+  entryComponents: [],
   providers: [],
   bootstrap: []
 })

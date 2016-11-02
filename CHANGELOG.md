@@ -2,9 +2,16 @@ Release History
 ---------------
 ## [Unreleased]
 
+# [1.0.0-rc.3] - 2016-11-02
+### Breaking changes
+- Changed path for lib type declarations 
+
 ### Fixed
-- Sorting multiple columns
+- Sorting of multiple columns
+- Sorting null values
+- Missing scss file
 - Importing Common Module instead of Browser Module to support sub module linking
+- Targeting es5
 
 # [1.0.0-rc.2] - 2016-10-26
 

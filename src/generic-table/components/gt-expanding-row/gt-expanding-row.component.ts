@@ -35,11 +35,14 @@ export class GtExpandingRowComponent {
   }
 }
 
+@Component({})
 export class GtExpandedRow {
 
   @Input() row;
   @Input() column;
   @Output() redrawEvent = new EventEmitter();
+
+  constructor() {}
 
   protected $hide(): void {
     this.row.isOpen = false;

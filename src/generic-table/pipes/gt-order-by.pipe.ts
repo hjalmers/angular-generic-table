@@ -17,15 +17,18 @@ export class GtOrderByPipe implements PipeTransform {
 
 
   static _orderByComparator(a:any, b:any):number{
-
     if((isNaN(parseFloat(a)) || !isFinite(a)) || (isNaN(parseFloat(b)) || !isFinite(b))){
 
       if (b === null || typeof b === 'undefined' && (a !== null && typeof a !== 'undefined' )) return 1;
       if (a === null || typeof a === 'undefined' && (b !== null && typeof b !== 'undefined' )) return -1;
 
       //Isn't a number so lowercase the string to properly compare
-      if(a.toLowerCase() < b.toLowerCase()) return -1;
-      if(a.toLowerCase() > b.toLowerCase()) return 1;
+      try {
+        if (a.toLowerCase() < b.toLowerCase()) return -1;
+        if (a.toLowerCase() > b.toLowerCase()) return 1;
+      } catch (error) {
+        return 0;
+      }
     }
     else{
       //Parse strings as numbers to compare properly
@@ -37,14 +40,11 @@ export class GtOrderByPipe implements PipeTransform {
   }
 
   transform(input:any, config:Array<string>,fields:Array<GtConfigField>,refreshSorting:boolean, refreshData:number): any{
-    //console.log('order by');
-    //config = ['gender','email'];
-    //console.log(config);
 
     if(!Array.isArray(input) || input === null) return input;
     if(!Array.isArray(config) || (Array.isArray(config) && config.length == 1)){
-      //console.log('sort a'); //this.getProperty(fields,input).sort
-      var propertyToCheck:string = !Array.isArray(config) ? config : config[0];
+
+      var propertyToCheck:string = config[0];
       var desc = propertyToCheck.substr(0, 1) == '-';
 
       //Basic array
@@ -64,6 +64,12 @@ export class GtOrderByPipe implements PipeTransform {
           // use custom sort function if one is defined
           let propertyA = sortFunction === false ? a[property]:sortFunction(a);
           let propertyB = sortFunction === false ? b[property]:sortFunction(b);
+
+          // if both values are undefined...
+          if (typeof propertyA === 'undefined' && typeof propertyB === 'undefined' ){
+            // ...skip comparison
+            return;
+          }
 
           return !desc ? GtOrderByPipe._orderByComparator(propertyA, propertyB) : -GtOrderByPipe._orderByComparator(propertyA, propertyB);
         });

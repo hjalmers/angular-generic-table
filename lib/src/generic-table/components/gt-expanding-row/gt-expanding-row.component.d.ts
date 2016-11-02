@@ -16,6 +16,7 @@ export declare class GtExpandedRow {
     row: any;
     column: any;
     redrawEvent: EventEmitter<{}>;
+    constructor();
     protected $hide(): void;
     protected $redraw(): void;
 }

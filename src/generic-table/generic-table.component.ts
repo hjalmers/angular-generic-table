@@ -14,7 +14,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 @Component({
   selector: 'generic-table',
   //templateUrl: './generic-table.component.html',
-  styleUrls: ['./generic-table.component.scss'],
+  //styleUrls: ['./generic-table.component.scss'],
   template:`
 <table class="table table-hover">
   <thead>

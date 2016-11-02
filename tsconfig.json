@@ -1,18 +1,19 @@
 {
   "compilerOptions": {
-    "noImplicitAny": false, //TODO change to true
+    "noImplicitAny": false,
     "module": "commonjs",
-    "target": "ES6", //TODO change to ES5
+    "target": "es5",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "sourceMap": true,
     "removeComments": false,
     "outDir": "./lib",
-    "declaration": true
+    "declaration": true,
+    "lib": ["dom","es6"]
   },
   "files": [
-    "angular2-generic-table.ts"
+    "index.ts"
   ],
   "exclude": [
     "node_modules"
