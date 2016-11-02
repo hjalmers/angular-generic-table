@@ -17,12 +17,12 @@ export class GtOrderByPipe implements PipeTransform {
 
 
   static _orderByComparator(a:any, b:any):number{
-    //console.log(a, b)
-    if(typeof a === 'undefined' || typeof b === 'undefined') {
-      return 0;
-    }
 
     if((isNaN(parseFloat(a)) || !isFinite(a)) || (isNaN(parseFloat(b)) || !isFinite(b))){
+
+      if (b === null || typeof b === 'undefined' && (a !== null && typeof a !== 'undefined' )) return 1;
+      if (a === null || typeof a === 'undefined' && (b !== null && typeof b !== 'undefined' )) return -1;
+
       //Isn't a number so lowercase the string to properly compare
       if(a.toLowerCase() < b.toLowerCase()) return -1;
       if(a.toLowerCase() > b.toLowerCase()) return 1;
