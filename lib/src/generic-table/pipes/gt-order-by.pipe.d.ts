@@ -4,5 +4,5 @@ export declare class GtOrderByPipe implements PipeTransform {
     /** Return property */
     private getProperty;
     static _orderByComparator(a: any, b: any): number;
-    transform(input: any, [config]: [string], fields: Array<GtConfigField>, refreshSorting: boolean, refreshData: number): any;
+    transform(input: any, config: Array<string>, fields: Array<GtConfigField>, refreshSorting: boolean, refreshData: number): any;
 }
