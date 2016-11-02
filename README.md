@@ -21,7 +21,7 @@ Include generic table module in your project, for example if you want to add it 
 ```
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from ./app.component';
-import { GenericTableModule } from 'angular2-generic-table/lib/angular2-generic-table';
+import { GenericTableModule } from 'angular2-generic-table';
 
 @NgModule({
   declarations: [
@@ -42,7 +42,7 @@ Configure the table in your component, in this case we're adding a basic example
 **Static Component**
 ```
 import { Component } from '@angular/core';
-import { GtConfig } from 'angular2-generic-table/lib/src/generic-table/interfaces/gt-config';
+import { GtConfig } from 'angular2-generic-table/lib';
 
 @Component({
   selector: 'app-static',

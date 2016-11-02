@@ -14,7 +14,10 @@
   },
   "private": false,
   "main": "angular2-generic-table.js",
-  "typings": "./angular2-generic-table.d.ts",
+  "typings": "./index.d.ts",
+  "publishConfig":{
+    "registry":"https://registry.npmjs.org/"
+  },
   "dependencies": {},
   "devDependencies": {
     "@angular/common": "2.1.2",
