@@ -1,23 +1,25 @@
 import {Component, Output, EventEmitter} from '@angular/core';
 import {Response, Http, URLSearchParams, RequestOptions} from '@angular/http';
 import {GtConfig} from '../../generic-table/interfaces/gt-config';
+import {CustomRowComponent} from '../custom-row/custom-row.component';
 
 @Component({
   selector: 'app-lazy',
-  templateUrl: 'lazy.component.html'
+  templateUrl: './lazy.component.html'
 })
 export class LazyComponent {
 
   public configObject:GtConfig;
+  public expandedRow = CustomRowComponent; // this is the component that will be displayed when expanding a row
 
   @Output() data = new EventEmitter();
   public url = 'https://private-730c61-generictable.apiary-mock.com/data'; // apiary end point
 
+  private req; // used for canceling previous requests
 
   public trigger = function($event){
-    console.log($event);
     switch($event.name){
-      case 'gt-page-changed':
+      case 'gt-page-changed-lazy':
         this.getData($event.value.page,$event.value.pageLength);
             break;
       case 'gt-sorting-applied':
@@ -70,7 +72,8 @@ export class LazyComponent {
       fields:[{
         name:'Id',
         objectKey:'id',
-        expand:true
+        expand:true,
+        classNames:'clickable'
       },{
         name:'Name',
         objectKey:'name',
@@ -84,7 +87,7 @@ export class LazyComponent {
       },{
         name:'Favorite color',
         objectKey:'favorite_color',
-        classNames:'text-right',
+        classNames:'text-xs-right',
         render:function(row){return '<div style="float:right;width:15px;height:15px;border-radius:50%;background: '+row.favorite_color+'"></div>'},
         click:(row)=>{return console.log(row.first_name + '\'s favorite color is: ' + row.favorite_color );}
       },{
@@ -104,7 +107,14 @@ export class LazyComponent {
     let params: URLSearchParams = new URLSearchParams();
     params.set('page', page);
     params.set('per_page', pageLength);
-    this.http.get(this.url, {
+
+    // if we have an ongoing request cancel it
+    if(typeof this.req !== 'undefined'){
+      this.req.unsubscribe();
+    }
+
+    // create a new request
+    this.req = this.http.get(this.url, {
       search:params
     })
       .map((res: Response) => res.json())

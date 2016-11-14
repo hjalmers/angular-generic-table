@@ -2,7 +2,8 @@ import {Component, Output, EventEmitter, ViewChild, ViewEncapsulation} from '@an
 import {Response, Http } from '@angular/http';
 import {GenericTableComponent} from '../../generic-table/generic-table.component';
 import {CustomRowComponent} from '../custom-row/custom-row.component';
-import {GtConfig} from '../../../lib/src/generic-table/interfaces/gt-config';
+import {GtConfig} from '../../../src/generic-table/interfaces/gt-config';
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-rest',
@@ -18,7 +19,7 @@ export class RestComponent {
 
   @ViewChild(GenericTableComponent)
   private myTable: GenericTableComponent;
-  public expandendRow = CustomRowComponent;
+  public expandedRow = CustomRowComponent;
 
 
   constructor(private http: Http) {
@@ -78,7 +79,7 @@ export class RestComponent {
       },{
         name:'Favorite color',
         objectKey:'favorite_color',
-        classNames:'text-right',
+        classNames:'text-xs-right',
         render:function(row){return '<div style="float:right;width:15px;height:15px;border-radius:50%;background: '+row.favorite_color+'"></div>'},
         click:(row)=>{return console.log(row.first_name + '\'s favorite color is: ' + row.favorite_color );},
         search: false

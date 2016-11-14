@@ -49,3 +49,10 @@ th {
   }
 }
 
+// Extra small devices (portrait phones, less than 544px)
+@media (max-width: 543px) {
+  .btn-block-xs {
+    display: block;
+    width: 100%;
+  }
+}

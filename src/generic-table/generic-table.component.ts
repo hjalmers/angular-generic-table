@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, NgModule, Output, Input, EventEmitter, ChangeDetectionStrategy
+  Component, OnInit, OnChanges, NgModule, Output, Input, EventEmitter, ChangeDetectionStrategy
 } from '@angular/core';
 import 'rxjs/Rx';
 import {GtConfig} from './interfaces/gt-config';
@@ -16,7 +16,7 @@ import {DomSanitizer} from '@angular/platform-browser';
   //templateUrl: './generic-table.component.html',
   //styleUrls: ['./generic-table.component.scss'],
   template:`
-<table class="table table-hover">
+<table class="table" ngClass="{{gtClasses}}">
   <thead>
   <tr>
     <th *ngFor="let column of gtFields | gtVisible:gtSettings" ngClass="{{column.objectKey +'-column' | dashCase}} {{column.classNames}} sort-{{gtSettings | getProperty:column.objectKey:'sort':refreshHeading}} sort-order-{{gtSettings | getProperty:column.objectKey:'sortOrder':refreshHeading}}" (click)="gtSort(column.objectKey,$event);refreshHeading = !refreshHeading">{{column.name}}</th>
@@ -29,12 +29,12 @@ import {DomSanitizer} from '@angular/platform-browser';
     </tr>
     <tr class="expanded-row" *ngIf="row.isOpen">
       <td [attr.colspan]="(gtFields | gtVisible:gtSettings).length">
-        <gt-expanding-row [row]="row" [type]="component"></gt-expanding-row>
+        <gt-expanding-row [row]="row" [type]="component" (redrawEvent)="redraw($event)"></gt-expanding-row>
       </td>
     </tr>
   </template>
   </tbody>
-  <tbody *ngIf="!gtAsync && !gtLazy">
+  <tbody *ngIf="!gtLazy && gtData">
   <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gt.filter:gt:refreshFilter:gtData.length | gtSearch:gt.searchTerms:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gt.rowLength:gt.currentPage:refreshPageArray:gtData.length">
     <tr ngClass="{{row.isOpen ? 'row-open':''}}">
       <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></td>
@@ -46,22 +46,10 @@ import {DomSanitizer} from '@angular/platform-browser';
     </tr>
   </template>
   </tbody>
-  <tbody *ngIf="gtAsync && !gtLazy">
-  <template ngFor let-row [ngForOf]="gtData | async | gtFilter:gt.filter:gt:refreshFilter | gtOrderBy:sortOrder:refreshSorting | gtChunk:gt.rowLength:gt.currentPage:refreshPageArray">
-    <tr ngClass="{{row.isOpen ? 'row-open':''}}">
-      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></td>
-    </tr>
-    <tr class="expanded-row" *ngIf="row.isOpen">
-      <td [attr.colspan]="(gtFields | gtVisible:gtSettings).length">
-        <gt-expanding-row [row]="row" [type]="component"></gt-expanding-row>
-      </td>
-    </tr>
-  </template>
-  </tbody>
 </table>
 `
 })
-export class GenericTableComponent implements OnInit {
+export class GenericTableComponent implements OnInit, OnChanges {
 
   //public safeInnerHtml = this.sanitizer.bypassSecurityTrustHtml('<gt-expanded-row></gt-expanded-row>');
   @Input() component:any;
@@ -72,12 +60,12 @@ export class GenericTableComponent implements OnInit {
   @Input() gtSettings: [GtConfigSetting];
   @Input() gtFields: [GtConfigField];
   @Input() gtPaging: GtPagingInfo;
-  @Input() gtData: Observable<any> | Array<any>;
-  @Input() gtAsync: boolean = false;
+  @Input() gtData: Array<any>;
   @Input() gtLazy: boolean = false;
   @Input() gtTexts:GtTexts = {
     'loading':'Loading...'
   };
+  @Input() gtClasses: string;
   @Output() lazyLoad = new EventEmitter();
   @Output() gtEvent = new EventEmitter();
   public store: Array<any> = [];
@@ -254,7 +242,8 @@ export class GenericTableComponent implements OnInit {
    * @returns {number} number of pages to display.
    */
   private updateTotalPages = function(){
-    let rows = this.gt.filtered ? this.gt.filtered : this.gtData.length;
+    const gtDataLength: number = this.gtData ? this.gtData.length : 0;
+    const rows: number = this.gt.filtered ? this.gt.filtered : gtDataLength;
     this.gt.pagesTotal = Math.ceil(rows/this.gt.rowLength);
     //console.log('get total',this.gt.pagesTotal);
   };
@@ -289,12 +278,18 @@ export class GenericTableComponent implements OnInit {
   public nextPage = function(){
     let page = this.gt.currentPage === this.gt.pagesTotal ? this.gt.pagesTotal:this.gt.currentPage += 1;
     this.goToPage(page);
+
+    // prevent browser reload
+    event.preventDefault();
   };
 
   /** Go to previous page. */
   public previousPage = function(){
     let page = this.gt.currentPage === 1 ? 1:this.gt.currentPage -= 1;
     this.goToPage(page);
+
+    // prevent browser reload
+    event.preventDefault();
   };
 
   /** Request more data (used when lazy loading) */
@@ -451,9 +446,12 @@ export class GenericTableComponent implements OnInit {
   // TODO: move to helper functions
   /** Sort by column order */
   private getColumnOrder = function(a,b) {
+    if (a.columnOrder === undefined) {
+      return -1;
+    }
     if (a.columnOrder < b.columnOrder)
       return -1;
-    if (a.columnOrder > b.columnOrder || typeof a.columnOrder === 'undefined')
+    if (a.columnOrder > b.columnOrder)
       return 1;
     return 0;
   };
