@@ -1,8 +1,11 @@
 Release History
 ---------------
 ## [Unreleased]
+
+# [1.0.0-rc.4] - 2016-11-14
 ### Added
 - Support for custom table classes
+- Support for global table search
 
 ### Fixed
 - Column order when no order is defined

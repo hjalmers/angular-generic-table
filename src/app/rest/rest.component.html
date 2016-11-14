@@ -12,7 +12,7 @@
           <option value=50>50</option>
           <option value=100>100</option>
         </select>
-        <input class="form-control" #search (keyup)="applySearch(search.value)" placeholder="Search"/>
+        <input class="form-control form-control-sm" #search (keyup)="applySearch(search.value)" placeholder="Search"/>
       </div>
       <button class="btn btn-secondary btn-sm" (click)="applyFilter();">Apply predefined filter</button>
       <button class="btn btn-secondary btn-sm" (click)="myTable.gtClearFilter()">Remove filter</button>
