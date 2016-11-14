@@ -83,7 +83,7 @@ export interface GtRenderField {
   objectKey:string, // key for mapping column with settings and totals,
   renderValue?: any,//function(row,column){ return '<span>'+row[column]+'</span>';} // custom function for column presentation (OPTIONAL),
   click?: any, //function(){ return console.log('column clicked);} // click function for column (OPTIONAL),
-  expand?: string,//"<my-directive></my-directive>" // expand (open/close) row when clicked and add this as content (could be a directive or plain html) (OPTIONAL),
+  expand?: boolean,//"<my-directive></my-directive>" // expand (open/close) row when clicked and add this as content (could be a directive or plain html) (OPTIONAL),
   exportValue: any,//function(row,column){ return parseFloat(row[column]);} // custom function for export presentation (OPTIONAL),
   sortValue: any // should field be searchable, true or false, true by default (OPTIONAL)
 
