@@ -75,7 +75,7 @@ export class RestComponent {
       },{
         name:'Favorite color',
         objectKey:'favorite_color',
-        classNames:'text-right',
+        classNames:'text-xs-right',
         render:function(row){return '<div style="float:right;width:15px;height:15px;border-radius:50%;background: '+row.favorite_color+'"></div>'},
         click:(row)=>{return console.log(row.first_name + '\'s favorite color is: ' + row.favorite_color );}
       },{

@@ -5,7 +5,7 @@ import {CustomRowComponent} from '../custom-row/custom-row.component';
 
 @Component({
   selector: 'app-lazy',
-  templateUrl: 'lazy.component.html'
+  templateUrl: './lazy.component.html'
 })
 export class LazyComponent {
 
@@ -72,7 +72,8 @@ export class LazyComponent {
       fields:[{
         name:'Id',
         objectKey:'id',
-        expand:true
+        expand:true,
+        classNames:'clickable'
       },{
         name:'Name',
         objectKey:'name',
@@ -86,7 +87,7 @@ export class LazyComponent {
       },{
         name:'Favorite color',
         objectKey:'favorite_color',
-        classNames:'text-right',
+        classNames:'text-xs-right',
         render:function(row){return '<div style="float:right;width:15px;height:15px;border-radius:50%;background: '+row.favorite_color+'"></div>'},
         click:(row)=>{return console.log(row.first_name + '\'s favorite color is: ' + row.favorite_color );}
       },{

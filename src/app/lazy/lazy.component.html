@@ -1,16 +1,16 @@
 <h3>Lazy loading</h3>
 <p>Use lazy loading to speed up things when working with large data sets.</p>
-<div class="panel panel-default">
-  <div class="panel-heading">Example</div>
-  <div class="panel-body">
-    <generic-table #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtPaging]="configObject.paging" [gtLazy]="true" [component]="expandedRow" (gtEvent)="trigger($event)"></generic-table>
-    <div class="text-center">
-      <a (click)="myTable.previousPage()">&laquo;Previous</a>
+<div class="card">
+  <div class="card-header">Example</div>
+  <div class="card-block">
+    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtPaging]="configObject.paging" [gtLazy]="true" [component]="expandedRow" (gtEvent)="trigger($event)"></generic-table>
+    <div class="text-xs-center">
+      <a href="#" (click)="myTable.previousPage()">&laquo;Previous</a>
       <!--Page:{{myTable.gt.currentPage}}/{{myTable.gt.pagesTotal}}-->
-      <a (click)="myTable.nextPage()">Next&raquo;</a>
+      <a href="#" (click)="myTable.nextPage()">Next&raquo;</a>
     </div>
   </div>
-  <div class="panel-footer">
+  <div class="card-footer">
     <strong>View source</strong><br/>
     <a href="https://github.com/hjalmers/angular2-generic-table/blob/master/src/app/app.module.ts" target="_blank">App module</a><br>
     <a href="https://github.com/hjalmers/angular2-generic-table/blob/master/src/app/lazy/lazy.component.ts" target="_blank">Component</a><br>
