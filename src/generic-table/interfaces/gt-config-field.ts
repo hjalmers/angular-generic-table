@@ -9,5 +9,5 @@ export interface GtConfigField {
     expand?: boolean,//"<my-directive></my-directive>" // expand (open/close) row when clicked and add this as content (could be a directive or plain html) (OPTIONAL),
     export?: any,//function(row,column){ return parseFloat(row[column]);} // custom function for export presentation (OPTIONAL),
     sort?: any,
-    search?: boolean // should field be searchable, true or false, true by default (OPTIONAL)
+    search?: any // custom function for searching field, if field shouldn't be searchable change function to false, true (search using data value) by default (OPTIONAL)
 }

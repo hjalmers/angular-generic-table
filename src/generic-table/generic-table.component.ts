@@ -35,7 +35,7 @@ import {DomSanitizer} from '@angular/platform-browser';
   </template>
   </tbody>
   <tbody *ngIf="!gtAsync && !gtLazy">
-  <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gt.filter:gt:refreshFilter:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gt.rowLength:gt.currentPage:refreshPageArray:gtData.length">
+  <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gt.filter:gt:refreshFilter:gtData.length | gtSearch:gt.searchTerms:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gt.rowLength:gt.currentPage:refreshPageArray:gtData.length">
     <tr ngClass="{{row.isOpen ? 'row-open':''}}">
       <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></td>
     </tr>
@@ -355,6 +355,14 @@ export class GenericTableComponent implements OnInit {
   public gtClearFilter = function() {
     this.gt.filter = false;
     //this.updateTotalPages();
+  };
+
+  /**
+   * Search
+   * @param (string) value - string containing one or more words
+   */
+  public gtSearch = function(value:string){
+    this.gt.searchTerms = value;
   };
 
 

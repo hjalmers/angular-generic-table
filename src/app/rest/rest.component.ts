@@ -27,7 +27,8 @@ export class RestComponent {
 
 
     this.configObject = {
-      settings:[{
+      settings:[
+          {
         objectKey:'id',
         visible:true,
         sort:'desc',
@@ -59,33 +60,40 @@ export class RestComponent {
         sortOrder:0,
         columnOrder:4
       }],
-      fields:[{
+      fields:[
+          {
         name:'Id',
         objectKey:'id',
         classNames:'clickable sort-numeric',
-        expand:true
+        expand:true,
+        search: true
       },{
         name:'Name',
         objectKey:'name',
         classNames:'sort-string',
         value:function(row){return row.first_name + ' ' + row.last_name},
         render:function(row){return '<div>'+row.first_name + ' ' + row.last_name +'</div>'},
-        sort:function(row){return row.first_name + ' ' + row.last_name}
+        sort:function(row){return row.first_name + ' ' + row.last_name},
+        search: function(row){return row.first_name + ' ' + row.last_name}
       },{
         name:'Favorite color',
         objectKey:'favorite_color',
         classNames:'text-right',
         render:function(row){return '<div style="float:right;width:15px;height:15px;border-radius:50%;background: '+row.favorite_color+'"></div>'},
-        click:(row)=>{return console.log(row.first_name + '\'s favorite color is: ' + row.favorite_color );}
+        click:(row)=>{return console.log(row.first_name + '\'s favorite color is: ' + row.favorite_color );},
+        search: false
       },{
         name:'Gender',
         classNames:'sort-string',
-        objectKey:'gender'
+        objectKey:'gender',
+        search: true
       },{
         name:'Email',
         classNames:'sort-string',
         objectKey:'email',
         render: function(row){return '<a href="mailto:'+row.email+'">'+row.email+'</a>' },
+        search: true
+
       }],
       data:[]
     };
@@ -125,6 +133,12 @@ export class RestComponent {
     this.myTable.gtApplyFilter({
       first_name:['Victor','Joe','Carol']
     })
+  };
+
+  /** Apply search
+   * */
+  public applySearch = function(value: string){
+    this.myTable.gtSearch(value);
   };
 
 }

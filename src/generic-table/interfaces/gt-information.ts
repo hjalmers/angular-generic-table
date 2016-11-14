@@ -4,4 +4,5 @@ export interface GtInformation {
   pagesTotal:number
   filter:boolean | Object
   refresh:any
+  searchTerms?:string
 }
