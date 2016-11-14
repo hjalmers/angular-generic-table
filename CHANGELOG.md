@@ -1,6 +1,9 @@
 Release History
 ---------------
 ## [Unreleased]
+### Fixed
+- Column order when no order is defined
+- Minor bug fixes
 
 # [1.0.0-rc.3] - 2016-11-02
 ### Breaking changes
