@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, NgModule, Output, Input, EventEmitter, ChangeDetectionStrategy
+  Component, OnInit, OnChanges, NgModule, Output, Input, EventEmitter, ChangeDetectionStrategy
 } from '@angular/core';
 import 'rxjs/Rx';
 import {GtConfig} from './interfaces/gt-config';
@@ -34,7 +34,7 @@ import {DomSanitizer} from '@angular/platform-browser';
     </tr>
   </template>
   </tbody>
-  <tbody *ngIf="!gtAsync && !gtLazy">
+  <tbody *ngIf="!gtAsync && !gtLazy && gtData">
   <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gt.filter:gt:refreshFilter:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gt.rowLength:gt.currentPage:refreshPageArray:gtData.length">
     <tr ngClass="{{row.isOpen ? 'row-open':''}}">
       <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></td>
@@ -61,7 +61,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 </table>
 `
 })
-export class GenericTableComponent implements OnInit {
+export class GenericTableComponent implements OnInit, OnChanges {
 
   //public safeInnerHtml = this.sanitizer.bypassSecurityTrustHtml('<gt-expanded-row></gt-expanded-row>');
   @Input() component:any;
@@ -254,7 +254,8 @@ export class GenericTableComponent implements OnInit {
    * @returns {number} number of pages to display.
    */
   private updateTotalPages = function(){
-    let rows = this.gt.filtered ? this.gt.filtered : this.gtData.length;
+    const gtDataLength: number = this.gtData && this.gtData.length !== undefined ? this.gtData.length : 0;
+    const rows: number = this.gt.filtered ? this.gt.filtered : gtDataLength;
     this.gt.pagesTotal = Math.ceil(rows/this.gt.rowLength);
     //console.log('get total',this.gt.pagesTotal);
   };
