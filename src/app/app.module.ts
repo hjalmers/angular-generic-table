@@ -2,8 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { routing,
-  appRoutingProviders }  from './app.routing';
 import { AppComponent } from './app.component';
 import {Input} from "@angular/core";
 
@@ -15,6 +13,7 @@ import {GenericTableModule} from '../generic-table/generic-table.module';
 import { CustomRowComponent } from './custom-row/custom-row.component';
 import { StaticComponent } from './static/static.component';
 import { ExamplesComponent } from './examples/examples.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -31,10 +30,9 @@ import { ExamplesComponent } from './examples/examples.component';
     FormsModule,
     HttpModule,
     GenericTableModule,
-    routing
+    AppRoutingModule
   ],
   entryComponents: [ CustomRowComponent ],
-  providers: [appRoutingProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
