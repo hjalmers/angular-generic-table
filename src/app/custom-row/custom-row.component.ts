@@ -4,8 +4,7 @@ import {GtExpandedRow} from '../../generic-table/components/gt-expanding-row/gt-
 
 @Component({
   selector: 'app-custom-row',
-  templateUrl: 'custom-row.component.html',
-  styleUrls: ['custom-row.component.scss']
+  templateUrl: 'custom-row.component.html'
 })
 export class CustomRowComponent extends GtExpandedRow implements OnInit {
 
