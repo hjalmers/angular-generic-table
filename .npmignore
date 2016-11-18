@@ -10,6 +10,7 @@ Thumbs.db
 e2e
 src
 lib
+dist
 angular-cli.json
 .idea
 .editorconfig
