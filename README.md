@@ -42,7 +42,7 @@ Configure the table in your component, in this case we're adding a basic example
 **Static Component**
 ```
 import { Component } from '@angular/core';
-import { GtConfig } from 'angular2-generic-table/lib';
+import { GtConfig } from 'angular2-generic-table';
 
 @Component({
   selector: 'app-static',
@@ -176,13 +176,13 @@ Each column must also have it's own field definition object that can have the fo
 - **name**: string // name or label of the field, will be displayed as heading for column
 - **objectKey**: string // unique identifier used for mapping settings and fields to data
 - **classNames**: string // custom class names appended to the column (OPTIONAL)
-- **render**: function // function(row,column){ return '<span>'+row[column]+'</span>';} // custom function for column presentation (OPTIONAL),
-- **value**: function // function(row,column){ return row[column]/2;} // custom function for column value if no data exists for column in data array (OPTIONAL),
+- **render**: function // function(row){ return '<span>'+row.objectKey+'</span>';} // custom function for column presentation (OPTIONAL),
+- **value**: function // function(row){ return row.objectKey/2;} // custom function for column value if no data exists for column in data array (OPTIONAL),
 - **click**: function // function(){ return console.log('column clicked);} // click function for column (OPTIONAL),
 - **expand**: boolean // expand (open/close) row when clicked (OPTIONAL),
-- ~~**export**: function // function(row,column){ return parseFloat(row[column]);} // custom function for export presentation (OPTIONAL),~~ (not implemented)
-- **sort**: function // function(row,column){ return parseFloat(row[column]);} // custom function for sorting (OPTIONAL),
-- ~~**search**: boolean // should field be searchable, true or false, true by default (OPTIONAL)~~ (not implemented)
+- ~~**export**: function // function(row){ return parseFloat(row.objectKey);} // custom function for export presentation (OPTIONAL),~~ (not implemented)
+- **sort**: function // function(row){ return parseFloat(row.objectKey);} // custom function for sorting (OPTIONAL),
+- **search**: function // function(row){ return row.objectKey;} // custom function for searching (OPTIONAL)
 
 Basic example:
 

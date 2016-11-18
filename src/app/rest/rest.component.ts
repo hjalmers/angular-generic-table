@@ -18,7 +18,7 @@ export class RestComponent {
   @Output() data = new EventEmitter();
 
   @ViewChild(GenericTableComponent)
-  private myTable: GenericTableComponent;
+  private myTable: GenericTableComponent<any, CustomRowComponent>;
   public expandedRow = CustomRowComponent;
 
 

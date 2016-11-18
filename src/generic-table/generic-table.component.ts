@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, OnChanges, NgModule, Output, Input, EventEmitter, ChangeDetectionStrategy
+  Component, OnInit, OnChanges, NgModule, Output, Input, EventEmitter, ChangeDetectionStrategy,Type
 } from '@angular/core';
 import 'rxjs/Rx';
 import {GtConfig} from './interfaces/gt-config';
@@ -10,6 +10,7 @@ import {GtTexts} from './interfaces/gt-texts';
 import {GtInformation} from './interfaces/gt-information';
 import {GtPagingInfo} from './interfaces/gt-paging-info';
 import {DomSanitizer} from '@angular/platform-browser';
+import {GtExpandedRow, Row} from './components/gt-expanding-row/gt-expanding-row.component';
 
 @Component({
   selector: 'generic-table',
@@ -29,7 +30,7 @@ import {DomSanitizer} from '@angular/platform-browser';
     </tr>
     <tr class="expanded-row" *ngIf="row.isOpen">
       <td [attr.colspan]="(gtFields | gtVisible:gtSettings).length">
-        <gt-expanding-row [row]="row" [type]="component" (redrawEvent)="redraw($event)"></gt-expanding-row>
+        <gt-expanding-row [row]="row" [type]="gtRowComponent" (redrawEvent)="redraw($event)"></gt-expanding-row>
       </td>
     </tr>
   </template>
@@ -41,7 +42,7 @@ import {DomSanitizer} from '@angular/platform-browser';
     </tr>
     <tr class="expanded-row" *ngIf="row.isOpen">
       <td [attr.colspan]="(gtFields | gtVisible:gtSettings).length">
-        <gt-expanding-row [row]="row" [type]="component" (redrawEvent)="redraw($event)"></gt-expanding-row>
+        <gt-expanding-row [row]="row" [type]="gtRowComponent" (redrawEvent)="redraw($event)"></gt-expanding-row>
       </td>
     </tr>
   </template>
@@ -49,10 +50,10 @@ import {DomSanitizer} from '@angular/platform-browser';
 </table>
 `
 })
-export class GenericTableComponent implements OnInit, OnChanges {
+export class GenericTableComponent<R extends Row, C extends GtExpandedRow<R>> implements OnInit, OnChanges {
 
   //public safeInnerHtml = this.sanitizer.bypassSecurityTrustHtml('<gt-expanded-row></gt-expanded-row>');
-  @Input() component:any;
+  @Input() gtRowComponent: Type<C>;
   public data: [Object];
   public configObject:GtConfig;
   public sortOrder:Array<any> = [];

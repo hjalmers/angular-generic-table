@@ -2,6 +2,11 @@ Release History
 ---------------
 ## [Unreleased]
 
+# [1.0.0-rc.5] - 2016-11-18
+### Breaking changes
+- Changed `component` to `gtRowComponent` and added typing for expanded row i.e. you must add type to your custom row component
+- Changed path for type declarations import using `import {GenericTableModule} from 'angular2-generic-table';`
+
 # [1.0.0-rc.4] - 2016-11-14
 ### Added
 - Support for custom table classes

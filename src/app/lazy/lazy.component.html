@@ -3,7 +3,7 @@
 <div class="card">
   <div class="card-header">Example</div>
   <div class="card-block">
-    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtPaging]="configObject.paging" [gtLazy]="true" [component]="expandedRow" (gtEvent)="trigger($event)"></generic-table>
+    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtPaging]="configObject.paging" [gtLazy]="true" [gtRowComponent]="expandedRow" (gtEvent)="trigger($event)"></generic-table>
     <div class="text-xs-center">
       <a href="#" (click)="myTable.previousPage()">&laquo;Previous</a>
       <!--Page:{{myTable.gt.currentPage}}/{{myTable.gt.pagesTotal}}-->
