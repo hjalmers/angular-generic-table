@@ -10,9 +10,11 @@ import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {GtExpandingRowComponent, GtExpandedRow} from './components/gt-expanding-row/gt-expanding-row.component';
 import {GtSearchPipe} from "./pipes/gt-search.pipe";
+import { ComponentAnchorDirective } from './directives/component-anchor.directive';
 
 @NgModule({
   declarations: [
+    ComponentAnchorDirective,
     GenericTableComponent,
     GtVisiblePipe,
     GtRenderPipe,

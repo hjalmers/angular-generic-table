@@ -1,55 +1,47 @@
-// Helper component to add dynamic components
 import {
-  ViewContainerRef, ViewChild, Component, ComponentFactoryResolver, Input, ComponentRef,
-  Output,EventEmitter
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  Type
 } from '@angular/core';
-@Component({
-  selector: 'gt-expanding-row',
-  template: `<div #expandingRow></div>`
-})
-export class GtExpandingRowComponent {
-  @ViewChild('expandingRow', {read: ViewContainerRef}) target: ViewContainerRef;
-  @Input() type: any;
-  @Input() row: {
-    isOpen:boolean
-  };
-  @Output() redrawEvent = new EventEmitter();
 
-  private cmpRef: ComponentRef<Component>;
-
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
-
-  ngAfterContentInit() {
-    let factory = this.componentFactoryResolver.resolveComponentFactory(this.type);
-    this.cmpRef = this.target.createComponent(factory);
-    const instance = <GtExpandedRow>this.cmpRef.instance;
-    instance.row = this.row;
-    instance.redrawEvent = this.redrawEvent;
-  }
-
-
-  ngOnDestroy() {
-    if(this.cmpRef) {
-      this.cmpRef.destroy();
-    }
-  }
+export interface Row {
+  isOpen?: boolean;
 }
 
-@Component({})
-export class GtExpandedRow {
+export class GtExpandedRow<R extends Row> {
 
-  @Input() row;
-  @Input() column;
-  @Output() redrawEvent = new EventEmitter();
-
-  constructor() {}
+  row: R;
+  redrawEvent = new EventEmitter<R>();
 
   protected $hide(): void {
     this.row.isOpen = false;
   }
 
-  protected $redraw():void {
-    this.redrawEvent.emit(this.row)
+  protected $redraw(): void {
+    this.redrawEvent.emit(this.row);
   }
 
 }
+
+@Component({
+  selector: 'gt-expanding-row',
+  template: `
+    <div appComponentAnchor
+         [ctor]="type" (instance)="newInstance($event)"></div>`
+})
+export class GtExpandingRowComponent<R extends Row, C extends GtExpandedRow<R>> {
+
+  @Input() type: Type<C>;
+  @Input() row: R;
+
+  @Output() redrawEvent = new EventEmitter<R>();
+
+  newInstance(instance: C): void {
+    instance.row = this.row;
+    instance.redrawEvent.subscribe(this.redrawEvent);
+  }
+
+}
+

@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {GtExpandedRow} from '../../generic-table/components/gt-expanding-row/gt-expanding-row.component';
 
-
 @Component({
   selector: 'app-custom-row',
   templateUrl: 'custom-row.component.html'
 })
-export class CustomRowComponent extends GtExpandedRow implements OnInit {
+export class CustomRowComponent extends GtExpandedRow<any> implements OnInit {
 
   constructor() { super() }
 
