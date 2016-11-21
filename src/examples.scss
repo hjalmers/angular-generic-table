@@ -49,6 +49,29 @@ th {
   }
 }
 
+tr {
+  td.clickable {
+    cursor: pointer;
+    font-weight: bold;
+    color: #337ab7;
+    text-decoration: none;
+    &::before {
+      content: "\f0da";
+      font: normal normal normal 14px/1 FontAwesome;
+      display: inline-block;
+      width: 14px;
+      color: #000;
+    }
+  }
+  &.row-open {
+    td.clickable::before {
+      content:"\f0d7"
+    }
+  }
+}
+
+
+
 // Extra small devices (portrait phones, less than 544px)
 @media (max-width: 543px) {
   .btn-block-xs {

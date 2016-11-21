@@ -7,9 +7,7 @@ import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-rest',
-  templateUrl: './rest.component.html',
-  styleUrls: ['./rest.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  templateUrl: require('./rest.component.html')
 })
 export class RestComponent {
 
