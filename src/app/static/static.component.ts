@@ -3,7 +3,7 @@ import {GtConfig} from '../../generic-table/interfaces/gt-config';
 
 @Component({
   selector: 'app-static',
-  templateUrl: require('./static.component.html')
+  template: require('./static.component.html')
 })
 export class StaticComponent {
 

@@ -5,7 +5,7 @@ import {CustomRowComponent} from '../custom-row/custom-row.component';
 
 @Component({
   selector: 'app-lazy',
-  templateUrl: require('./lazy.component.html')
+  template: require('./lazy.component.html')
 })
 export class LazyComponent {
 
