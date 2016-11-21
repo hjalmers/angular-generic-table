@@ -5,12 +5,9 @@ import {
   Output,
   Type
 } from '@angular/core';
+import { GtRow } from '../../interfaces/gt-row';
 
-export interface Row {
-  isOpen?: boolean;
-}
-
-export class GtExpandedRow<R extends Row> {
+export class GtExpandedRow<R extends GtRow> {
 
   row: R;
   redrawEvent = new EventEmitter<R>();
@@ -31,7 +28,7 @@ export class GtExpandedRow<R extends Row> {
     <div appComponentAnchor
          [ctor]="type" (instance)="newInstance($event)"></div>`
 })
-export class GtExpandingRowComponent<R extends Row, C extends GtExpandedRow<R>> {
+export class GtExpandingRowComponent<R extends GtRow, C extends GtExpandedRow<R>> {
 
   @Input() type: Type<C>;
   @Input() row: R;
@@ -44,4 +41,3 @@ export class GtExpandingRowComponent<R extends Row, C extends GtExpandedRow<R>> 
   }
 
 }
-

@@ -10,12 +10,11 @@ import {GtTexts} from './interfaces/gt-texts';
 import {GtInformation} from './interfaces/gt-information';
 import {GtPagingInfo} from './interfaces/gt-paging-info';
 import {DomSanitizer} from '@angular/platform-browser';
-import {GtExpandedRow, Row} from './components/gt-expanding-row/gt-expanding-row.component';
+import {GtExpandedRow} from './components/gt-expanding-row/gt-expanding-row.component';
+import { GtRow } from './interfaces/gt-row';
 
 @Component({
   selector: 'generic-table',
-  //templateUrl: './generic-table.component.html',
-  //styleUrls: ['./generic-table.component.scss'],
   template:`
 <table class="table" ngClass="{{gtClasses}}">
   <thead>
@@ -50,7 +49,7 @@ import {GtExpandedRow, Row} from './components/gt-expanding-row/gt-expanding-row
 </table>
 `
 })
-export class GenericTableComponent<R extends Row, C extends GtExpandedRow<R>> implements OnInit, OnChanges {
+export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> implements OnInit, OnChanges {
 
   //public safeInnerHtml = this.sanitizer.bypassSecurityTrustHtml('<gt-expanded-row></gt-expanded-row>');
   @Input() gtRowComponent: Type<C>;
