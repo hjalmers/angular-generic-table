@@ -1,6 +1,6 @@
 # angular2-generic-table
 
-A generic table for Angular 2. This project is a re-write of [this](https://github.com/hjalmers/angular-generic-table) project for angular 2, the idea is to have support for the same features and that the configuration should be the same. Generic table uses standard markup for tables ie. table, tr and td elements etc. and has support for expanding rows, search (coming soon), filters, sorting, pagination, export to CSV (coming soon), column clicks, custom column rendering, custom export values. [View demo](https://hjalmers.github.io/angular2-generic-table/examples)
+A generic table for Angular 2. This project is a re-write of [this](https://github.com/hjalmers/angular-generic-table) project for angular 2, the idea is to have support for the same features and that the configuration should be the same. Generic table uses standard markup for tables ie. table, tr and td elements etc. and has support for expanding rows, search, filters, sorting, pagination, export to CSV (coming soon), column clicks, custom column rendering, custom export values. [View demo](https://hjalmers.github.io/angular2-generic-table/examples)
 
 ## Features
 - Uses standard HTML tables (no divs etc.)
@@ -156,6 +156,7 @@ Each column must have it's own settings object that can have the following prope
 - **sort**: string // default sorting: 'enabled', 'disabled', 'asc', 'desc' (OPTIONAL)
 - **sortOrder**: number // default sort order (OPTIONAL)
 - **columnOrder**: number // column order (OPTIONAL)
+- **search**: boolean // should we include this column when using global search (OPTIONAL)
 - ~~**export**: boolean // should column be exported to CSV (OPTIONAL)~~ (not implemented)
 
 Basic example:

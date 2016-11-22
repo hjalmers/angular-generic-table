@@ -15,6 +15,17 @@ export class GtOrderByPipe implements PipeTransform {
     }
   };
 
+  /** Return sort function */
+  private getSortFunction(field){
+    if(typeof field.sort === 'function'){
+      return field.sort;
+    } else if(typeof field.value === 'function'){
+      return field.value;
+    } else {
+      return false;
+    }
+  }
+
 
   static _orderByComparator(a:any, b:any):number{
     if((isNaN(parseFloat(a)) || !isFinite(a)) || (isNaN(parseFloat(b)) || !isFinite(b))){
@@ -57,7 +68,7 @@ export class GtOrderByPipe implements PipeTransform {
           : propertyToCheck;
 
         // check if custom sort function is defined
-        let sortFunction: any = typeof this.getProperty(fields,property).sort === 'function' ? this.getProperty(fields,property).sort:false;
+        let sortFunction: any = this.getSortFunction(this.getProperty(fields,property));
 
         return input.sort(function(a:any,b:any){
 
@@ -87,7 +98,7 @@ export class GtOrderByPipe implements PipeTransform {
 
           //console.log(property);
           // check if custom sort function is defined
-          let sortFunction: any = typeof this.getProperty(fields,property).sort === 'function' ? this.getProperty(fields,property).sort:false;
+          let sortFunction: any = this.getSortFunction(this.getProperty(fields,property));
 
           // use custom sort function if one is defined
           let propertyA = sortFunction === false ? a[property]:sortFunction(a);

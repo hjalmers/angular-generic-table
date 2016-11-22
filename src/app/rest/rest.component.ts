@@ -50,49 +50,44 @@ export class RestComponent {
         enabled:true,
         sort:'enable',
         sortOrder:0,
-        columnOrder:3
+        columnOrder:3,
+        search:false
       },{
         objectKey:'favorite_color',
         visible:true,
         enabled:true,
         sort:'disable',
         sortOrder:0,
-        columnOrder:4
+        columnOrder:4,
+        search:false
       }],
       fields:[
           {
         name:'Id',
         objectKey:'id',
         classNames:'clickable sort-numeric',
-        expand:true,
-        search: true
+        expand:true
       },{
         name:'Name',
         objectKey:'name',
         classNames:'sort-string',
         value:function(row){return row.first_name + ' ' + row.last_name},
-        render:function(row){return '<div>'+row.first_name + ' ' + row.last_name +'</div>'},
-        sort:function(row){return row.first_name + ' ' + row.last_name},
-        search: function(row){return row.first_name + ' ' + row.last_name}
+        render:function(row){return '<div>'+row.first_name + ' ' + row.last_name +'</div>'}
       },{
         name:'Favorite color',
         objectKey:'favorite_color',
         classNames:'text-xs-right',
         render:function(row){return '<div style="float:right;width:15px;height:15px;border-radius:50%;background: '+row.favorite_color+'"></div>'},
-        click:(row)=>{return console.log(row.first_name + '\'s favorite color is: ' + row.favorite_color );},
-        search: false
+        click:(row)=>{return console.log(row.first_name + '\'s favorite color is: ' + row.favorite_color );}
       },{
         name:'Gender',
         classNames:'sort-string',
-        objectKey:'gender',
-        search: true
+        objectKey:'gender'
       },{
         name:'Email',
         classNames:'sort-string',
         objectKey:'email',
-        render: function(row){return '<a href="mailto:'+row.email+'">'+row.email+'</a>' },
-        search: true
-
+        render: function(row){return '<a href="mailto:'+row.email+'">'+row.email+'</a>' }
       }],
       data:[]
     };

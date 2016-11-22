@@ -22,7 +22,74 @@ export class GtRenderPipe implements PipeTransform {
     return 0;
   };
 
-  transform(row:any, settings:[GtConfigSetting], fields:[GtConfigField], updated:boolean, loading:boolean) : Array<Object> {
+  /** Sort by length */
+  private getOrderByLength = function(a,b) {
+    return b.length - a.length;
+  };
+
+  /** Return property */
+  private getProperty = function(array, key){
+    for (let i = 0; i < array.length;i++){
+      if (array[i].objectKey === key) {
+        return array[i];
+      }
+    }
+  };
+
+  private highlight = function(string:string,searchString:string){
+
+    // split search term and sort by longest word
+    const searchTermsArray = searchString.toLowerCase().match(/"[^"]+"|[\w]+/g).sort(this.getOrderByLength);
+
+    // make sure value is string
+    string = string + '';
+
+    let newString = highlightSearchTerm(string, 0);
+
+    function highlightSearchTerm(partialString: string, currentSearchIndex: number) {
+
+      // if search index equals number of search terms...
+      if (currentSearchIndex === searchTermsArray.length) {
+
+        // ...return partial string
+        return partialString;
+      }
+
+      // remove double quotes
+      let unescapedSearchString = searchTermsArray[currentSearchIndex].replace(/"/g,'');
+
+      // find unescaped search term
+      let searchTermRegExp = new RegExp(`(.*)(${unescapedSearchString})(.*)`, 'ig');
+
+      // remove one tag i.e. skip first element when searching for string
+      let tagPattern = new RegExp("(<[^>]*>)([^<]*)(<[^>]*>)","ig");
+
+      // check if string contains tags/elements
+      let containsElement = tagPattern.exec(partialString);
+
+      if (containsElement){
+        let searchTermMatches = searchTermRegExp.exec(containsElement[2]);
+        if (searchTermMatches) {
+          return containsElement[1] + highlightSearchTerm(searchTermMatches[1], currentSearchIndex + 1) + '<span class="gt-highlight-search">' + searchTermMatches[2] + '</span>' + highlightSearchTerm(searchTermMatches[3], currentSearchIndex + 1) + containsElement[3];
+        } else {
+          return containsElement[1] +  highlightSearchTerm(containsElement[2], currentSearchIndex + 1) + containsElement[3] ;
+        }
+      }
+
+      else {
+        let searchTermMatches = searchTermRegExp.exec(partialString);
+        if (searchTermMatches) {
+          return highlightSearchTerm(searchTermMatches[1], currentSearchIndex + 1) + '<span class="gt-highlight-search">' + searchTermMatches[2] + '</span>' + highlightSearchTerm(searchTermMatches[3], currentSearchIndex + 1);
+        } else {
+          return highlightSearchTerm(partialString, currentSearchIndex + 1);
+        }
+      }
+    }
+
+    return this.sanitizer.bypassSecurityTrustHtml(newString);
+  };
+
+  transform(row:any, settings:[GtConfigSetting], fields:[GtConfigField], updated:boolean, loading:boolean, highlight:boolean = false, searchString?:string) : Array<Object> {
     //let arr = [{"temp":123,"name":"happy"},{"temp":456,"name":"dfgdfg"},{"temp":789,"name":"asdasd"}];
     //console.log(arr,arr.map(function(item){return item.temp}));
     //console.log(settings.map('objectKey'));
@@ -56,17 +123,23 @@ export class GtRenderPipe implements PipeTransform {
 
         let columnObject:GtRenderField = {
           objectKey: key,
-          renderValue: fieldSetting.render && typeof fieldSetting.render === 'function' ? this.sanitizer.bypassSecurityTrustHtml(fieldSetting.render(row)):row[key],
           exportValue: fieldSetting.export && typeof fieldSetting.export === 'function' ? fieldSetting.export(row):row[key],
           sortValue: row[key]
         };
+
+        if (highlight && searchString && this.getProperty(settings,key).search !== false){
+          columnObject.renderValue = fieldSetting.render && typeof fieldSetting.render === 'function' ? this.highlight(fieldSetting.render(row),searchString):this.highlight(row[key],searchString);
+        } else {
+          columnObject.renderValue = fieldSetting.render && typeof fieldSetting.render === 'function' ? this.sanitizer.bypassSecurityTrustHtml(fieldSetting.render(row)):row[key];
+        }
+
         if(fieldSetting.click && typeof fieldSetting.click === 'function'){
           columnObject.click = fieldSetting.click;
         }
         if(fieldSetting.expand){
           columnObject.expand = fieldSetting.expand;
         }
-        //console.log(loading,columnObject);
+
         keys.push(columnObject);
 
       }

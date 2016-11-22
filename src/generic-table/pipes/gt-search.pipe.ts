@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import {GtConfigField} from "../interfaces/gt-config-field";
+import {GtConfigSetting} from '../interfaces/gt-config-setting';
 
 
 @Pipe({
@@ -7,40 +8,63 @@ import {GtConfigField} from "../interfaces/gt-config-field";
 })
 export class GtSearchPipe implements PipeTransform {
 
-  transform(allRows: any, searchTerms: string, fieldsSettings: Array<GtConfigField>, refreshData: number): any {
-
-    let search: any = {};
-    let fields: Array<any> = [];
-
-    for(let k=0; k<fieldsSettings.length; k++){
-      let fieldSettings = fieldsSettings[k];
-      if(fieldSettings.search && typeof fieldSettings.search ==='function'){
-        let objectKey = fieldSettings.objectKey;
-        search[objectKey] = fieldSettings.search;
-        fields.push(fieldSettings);
+  /** Return property */
+  private getProperty = function(array, key){
+    for (let i = 0; i < array.length;i++){
+      if (array[i].objectKey === key) {
+        return array[i];
       }
-      else if(fieldSettings.search === false){
-      }
-      else {
-        fields.push(fieldSettings);
+    }
+  };
+
+  transform(allRows: any, searchTerms: string,settings: Array<GtConfigSetting>, fields: Array<GtConfigField>, refreshData: number): any {
+
+    let searchFunction: any = {};
+    let fieldsTemp: Array<any> = [];
+
+    for(let k=0; k<fields.length; k++){
+      let field = fields[k];
+
+      // check if field should be included in global search
+      const include = this.getProperty(settings,field.objectKey).search === false ? false:true;
+
+      // if include...
+      if(include){
+
+        // ...and if search function is defined...
+        if(typeof field.search === 'function' ) {
+          // ...add it as search function for field
+          searchFunction[field.objectKey] = field.search;
+        }
+        // ...if no search function is defined but value function is defined...
+        else if(typeof field.value === 'function') {
+          // ...add it as search function for field
+          searchFunction[field.objectKey] = field.value;
+        }
+
+        // ...push it to our fields array
+        fieldsTemp.push(field);
       }
     }
 
+    //  if no search terms are defined...
     if(!searchTerms || searchTerms.replace(/"/g,"").length === 0){
+
+      // ...return all rows
       return allRows;
     }
 
     let filteredRows: Array<any> = [];
     searchTerms = typeof searchTerms === 'undefined' ? '':searchTerms;
-    var searchTermsArray = searchTerms.toLowerCase().match(/"[^"]+"|[\w]+/g);
+    const searchTermsArray = searchTerms.toLowerCase().match(/"[^"]+"|[\w]+/g);
 
     for(let i=0; i<allRows.length; i++){
       let row = allRows[i];
       let string = '';
 
-      for(let ii=0; ii<fields.length; ii++){
-        var separator = ii === 0 ? '':' & ';
-        string += search[fields[ii].objectKey] ? separator + search[fields[ii].objectKey](row, ii) : separator + row[fields[ii].objectKey];
+      for(let j=0; j<fieldsTemp.length; j++){
+        let separator = j === 0 ? '':' & ';
+        string += searchFunction[fieldsTemp[j].objectKey] ? separator + searchFunction[fieldsTemp[j].objectKey](row, j) : separator + row[fieldsTemp[j].objectKey];
       }
       string = string.toLowerCase();
       let match: Boolean = true;

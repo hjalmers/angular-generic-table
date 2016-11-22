@@ -1,6 +1,14 @@
 Release History
 ---------------
 ## [Unreleased]
+### Breaking changes
+- Moved search (true/false) to `GtConfigSetting` i.e. to disable global search for a field use `GtConfigSetting` and to defined a search function use `GtConfigField`.
+
+### Added
+- Option to highlight matched search terms in table, to enable use `[gtHighlightSearch}="true"`, highlighted strings have the class `gt-highlight-search`.
+
+### Fixed
+- Column content (i.e td content) is now wrapped within a span, click etc. is now triggered by the span and not the td element.
 
 # [1.0.0-rc.5] - 2016-11-18
 ### Breaking changes

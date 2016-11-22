@@ -50,7 +50,7 @@ th {
 }
 
 tr {
-  td.clickable {
+  td.clickable > span {
     cursor: pointer;
     font-weight: bold;
     color: #337ab7;
@@ -64,12 +64,14 @@ tr {
     }
   }
   &.row-open {
-    td.clickable::before {
+    td.clickable > span::before {
       content:"\f0d7"
     }
   }
 }
-
+span.gt-highlight-search {
+  background:yellow;
+}
 
 
 // Extra small devices (portrait phones, less than 544px)
