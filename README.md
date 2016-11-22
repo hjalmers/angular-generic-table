@@ -50,7 +50,7 @@ import { GtConfig } from 'angular2-generic-table';
 })
 export class StaticComponent {
 
-  public configObject:GtConfig;
+  public configObject: GtConfig<any>;
   
   public data:Array<{
     id:number,

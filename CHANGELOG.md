@@ -1,7 +1,10 @@
 Release History
 ---------------
 ## [Unreleased]
-- Added strong typing for all interfaces
+
+# [1.0.0-rc.6] - 2016-11-22
+### Breaking changes
+- Added strong typing for all interfaces (you can always use `<any>` where type is required)
 
 # [1.0.0-rc.5] - 2016-11-18
 ### Breaking changes
