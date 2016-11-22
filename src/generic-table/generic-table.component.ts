@@ -10,7 +10,7 @@ import {GtTexts} from './interfaces/gt-texts';
 import {GtInformation} from './interfaces/gt-information';
 import {GtPagingInfo} from './interfaces/gt-paging-info';
 import {DomSanitizer} from '@angular/platform-browser';
-import {GtExpandedRow} from './components/gt-expanding-row/gt-expanding-row.component';
+import {GtExpandedRow} from './components/gt-expanding-row.component';
 import { GtRow } from './interfaces/gt-row';
 
 @Component({
@@ -54,11 +54,11 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   //public safeInnerHtml = this.sanitizer.bypassSecurityTrustHtml('<gt-expanded-row></gt-expanded-row>');
   @Input() gtRowComponent: Type<C>;
   public data: [Object];
-  public configObject:GtConfig;
+  public configObject: GtConfig<R>;
   public sortOrder:Array<any> = [];
 
-  @Input() gtSettings: [GtConfigSetting];
-  @Input() gtFields: [GtConfigField];
+  @Input() gtSettings: GtConfigSetting[];
+  @Input() gtFields: GtConfigField<R>[];
   @Input() gtPaging: GtPagingInfo;
   @Input() gtData: Array<any>;
   @Input() gtLazy: boolean = false;

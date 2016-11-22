@@ -7,7 +7,7 @@ import {GtConfig} from '../../generic-table/interfaces/gt-config';
 })
 export class StaticComponent {
 
-  public configObject:GtConfig;
+  public configObject: GtConfig<any>;
 
   public data:Array<{
     id:number,

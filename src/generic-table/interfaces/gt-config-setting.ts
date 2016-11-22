@@ -5,5 +5,6 @@ export interface GtConfigSetting {
   sort?: string;
   sortOrder?: number;
   columnOrder?: number;
-  export?: boolean; // should column be exported to CSV (OPTIONAL)
+  // should column be exported to csv
+  export?: boolean;
 }

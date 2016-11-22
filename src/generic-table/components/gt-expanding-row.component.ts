@@ -5,7 +5,7 @@ import {
   Output,
   Type
 } from '@angular/core';
-import { GtRow } from '../../interfaces/gt-row';
+import { GtRow } from '../interfaces/gt-row';
 
 export class GtExpandedRow<R extends GtRow> {
 

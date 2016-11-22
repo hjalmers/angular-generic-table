@@ -1,13 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import {GtConfigField} from "../interfaces/gt-config-field";
+import { GtRow } from '../interfaces/gt-row';
 
 
 @Pipe({
   name: 'gtSearch'
 })
-export class GtSearchPipe implements PipeTransform {
+export class GtSearchPipe<R extends GtRow> implements PipeTransform {
 
-  transform(allRows: any, searchTerms: string, fieldsSettings: Array<GtConfigField>, refreshData: number): any {
+  transform(allRows: any, searchTerms: string, fieldsSettings: GtConfigField<R>[], refreshData: number): any {
 
     let search: any = {};
     let fields: Array<any> = [];

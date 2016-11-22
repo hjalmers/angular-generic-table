@@ -1,6 +1,7 @@
 Release History
 ---------------
 ## [Unreleased]
+- Added strong typing for all interfaces
 
 # [1.0.0-rc.5] - 2016-11-18
 ### Breaking changes
