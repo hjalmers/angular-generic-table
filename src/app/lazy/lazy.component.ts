@@ -9,7 +9,7 @@ import {CustomRowComponent} from '../custom-row/custom-row.component';
 })
 export class LazyComponent {
 
-  public configObject:GtConfig;
+  public configObject: GtConfig<any>;
   public expandedRow = CustomRowComponent; // this is the component that will be displayed when expanding a row
 
   @Output() data = new EventEmitter();

@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class GtChunkPipe implements PipeTransform {
 
-  transform(array: Array<any>, chunkSize: number, page:number, refreshPageArray:boolean, refreshData:number): Array<any> {
+  transform(array: any[], chunkSize: number, page: number, refreshPageArray: boolean, refreshData: number): any[] {
     //console.log('chunk array');
     //console.log(array,chunkSize,page);
     if(!Array.isArray(array)) return array;

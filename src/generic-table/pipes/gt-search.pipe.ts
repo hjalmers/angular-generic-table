@@ -1,12 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import {GtConfigField} from "../interfaces/gt-config-field";
+import { GtRow } from '../interfaces/gt-row';
 import {GtConfigSetting} from '../interfaces/gt-config-setting';
 
 
 @Pipe({
   name: 'gtSearch'
 })
-export class GtSearchPipe implements PipeTransform {
+export class GtSearchPipe<R extends GtRow> implements PipeTransform {
 
   /** Return property */
   private getProperty = function(array, key){
@@ -17,7 +18,7 @@ export class GtSearchPipe implements PipeTransform {
     }
   };
 
-  transform(allRows: any, searchTerms: string,settings: Array<GtConfigSetting>, fields: Array<GtConfigField>, refreshData: number): any {
+  transform(allRows: any, searchTerms: string,settings: Array<GtConfigSetting>, fields: Array<GtConfigField<R>>, refreshData: number): any {
 
     let searchFunction: any = {};
     let fieldsTemp: Array<any> = [];

@@ -1,12 +1,28 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import {GtConfigSetting} from "../interfaces/gt-config-setting";
-import {GtConfigField} from "../interfaces/gt-config-field";
-import {DomSanitizer} from '@angular/platform-browser';
+import {
+  Pipe,
+  PipeTransform
+} from '@angular/core';
+import { GtConfigSetting } from '../interfaces/gt-config-setting';
+import {
+  GtClickFunc,
+  GtConfigField
+} from '../interfaces/gt-config-field';
+import { DomSanitizer } from '@angular/platform-browser';
+import { GtRow } from '../interfaces/gt-row';
+
+export interface GtRenderField<R extends GtRow> {
+  objectKey: string;
+  renderValue?: any;
+  click?: GtClickFunc<R>;
+  expand?: boolean;
+  exportValue: any;
+  sortValue: any;
+}
 
 @Pipe({
   name: 'gtRender'
 })
-export class GtRenderPipe implements PipeTransform {
+export class GtRenderPipe<R extends GtRow> implements PipeTransform {
 
   constructor(private sanitizer:DomSanitizer){
     this.sanitizer = sanitizer;
@@ -87,9 +103,8 @@ export class GtRenderPipe implements PipeTransform {
     }
 
     return this.sanitizer.bypassSecurityTrustHtml(newString);
-  };
-
-  transform(row:any, settings:[GtConfigSetting], fields:[GtConfigField], updated:boolean, loading:boolean, highlight:boolean = false, searchString?:string) : Array<Object> {
+  };  
+  transform(row:any, settings:Array<GtConfigSetting>, fields:Array<GtConfigField<R>>, updated:boolean, loading:boolean, highlight:boolean = false, searchString?:string) : Array<Object> {
     //let arr = [{"temp":123,"name":"happy"},{"temp":456,"name":"dfgdfg"},{"temp":789,"name":"asdasd"}];
     //console.log(arr,arr.map(function(item){return item.temp}));
     //console.log(settings.map('objectKey'));
@@ -121,7 +136,7 @@ export class GtRenderPipe implements PipeTransform {
           }
         }
 
-        let columnObject:GtRenderField = {
+        let columnObject: GtRenderField<R> = {
           objectKey: key,
           exportValue: fieldSetting.export && typeof fieldSetting.export === 'function' ? fieldSetting.export(row):row[key],
           sortValue: row[key]
@@ -150,14 +165,5 @@ export class GtRenderPipe implements PipeTransform {
     });
     return keys;
   }
-
-}
-export interface GtRenderField {
-  objectKey:string, // key for mapping column with settings and totals,
-  renderValue?: any,//function(row,column){ return '<span>'+row[column]+'</span>';} // custom function for column presentation (OPTIONAL),
-  click?: any, //function(){ return console.log('column clicked);} // click function for column (OPTIONAL),
-  expand?: boolean,//"<my-directive></my-directive>" // expand (open/close) row when clicked and add this as content (could be a directive or plain html) (OPTIONAL),
-  exportValue: any,//function(row,column){ return parseFloat(row[column]);} // custom function for export presentation (OPTIONAL),
-  sortValue: any // should field be searchable, true or false, true by default (OPTIONAL)
 
 }

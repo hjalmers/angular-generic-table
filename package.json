@@ -1,6 +1,6 @@
 {
   "name": "angular2-generic-table",
-  "version": "1.0.0-rc.5",
+  "version": "1.0.0-rc.6",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -11,10 +11,10 @@
     "start": "ng serve",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "ng test",
-    "copy:lib":"copyfiles -u 2 dist/out-tsc/**/* ./",
-    "remove:lib":"rmdir /s /q generic-table && del index.d.ts && del index.js && del index.js.map && rmdir /s /q dist",
+    "copy:lib": "copyfiles -u 2 dist/out-tsc/**/* ./",
+    "remove:lib": "rmdir /s /q generic-table && del index.d.ts && del index.js && del index.js.map && rmdir /s /q dist",
     "prepublish": "cd src && tsc && npm run copy:lib",
-    "postpublish":"npm run remove:lib",
+    "postpublish": "npm run remove:lib",
     "pree2e": "webdriver-manager update",
     "e2e": "protractor"
   },

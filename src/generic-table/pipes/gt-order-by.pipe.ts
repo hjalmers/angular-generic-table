@@ -1,10 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import {GtConfigField} from '../interfaces/gt-config-field';
+import { GtRow } from '../interfaces/gt-row';
 
 @Pipe({
   name: 'gtOrderBy'
 })
-export class GtOrderByPipe implements PipeTransform {
+export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
 
   /** Return property */
   private getProperty = function(array, key){
@@ -50,7 +51,7 @@ export class GtOrderByPipe implements PipeTransform {
     return 0; //equal each other
   }
 
-  transform(input:any, config:Array<string>,fields:Array<GtConfigField>,refreshSorting:boolean, refreshData:number): any{
+  transform(input: any, config: string[], fields: GtConfigField<R>[], refreshSorting: boolean, refreshData: number): any {
 
     if(!Array.isArray(input) || input === null) return input;
     if(!Array.isArray(config) || (Array.isArray(config) && config.length == 1)){

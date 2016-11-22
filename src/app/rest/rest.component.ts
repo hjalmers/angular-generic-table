@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 })
 export class RestComponent {
 
-  public configObject:GtConfig;
+  public configObject: GtConfig<any>;
 
   @Output() data = new EventEmitter();
 
