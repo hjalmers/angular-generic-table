@@ -52,59 +52,63 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
     }
   };
 
-  private highlight = function(string:string,searchString:string){
+  private highlight(haystack: any, needles: string) {
 
-    // split search term and sort by longest word
-    const searchTermsArray = searchString.toLowerCase().match(/"[^"]+"|[\w]+/g).sort(this.getOrderByLength);
+    const haystackAlwaysString = haystack + '';
+    let highlightedText = haystackAlwaysString; // fallback
 
-    // make sure value is string
-    string = string + '';
+    let searchPattern;
+    try {
 
-    let newString = highlightSearchTerm(string, 0);
+      searchPattern = new RegExp(
+        '(' +
+        needles.toLowerCase()
+          .match(/".*?"|[^ ]+/g) // extract words
+          .map(
+            needle => needle.replace(/"(.*?)"/, '$1') // strip away '"'
+          )
+          .join('|') + // combine words
+        ')', 'ig'
+      );
 
-    function highlightSearchTerm(partialString: string, currentSearchIndex: number) {
+    } catch (error) {
 
-      // if search index equals number of search terms...
-      if (currentSearchIndex === searchTermsArray.length) {
+      return this.sanitizer
+        .bypassSecurityTrustHtml(highlightedText);
 
-        // ...return partial string
-        return partialString;
-      }
-
-      // remove double quotes
-      let unescapedSearchString = searchTermsArray[currentSearchIndex].replace(/"/g,'');
-
-      // find unescaped search term
-      let searchTermRegExp = new RegExp(`(.*)(${unescapedSearchString})(.*)`, 'ig');
-
-      // remove one tag i.e. skip first element when searching for string
-      let tagPattern = new RegExp("(<[^>]*>)([^<]*)(<[^>]*>)","ig");
-
-      // check if string contains tags/elements
-      let containsElement = tagPattern.exec(partialString);
-
-      if (containsElement){
-        let searchTermMatches = searchTermRegExp.exec(containsElement[2]);
-        if (searchTermMatches) {
-          return containsElement[1] + highlightSearchTerm(searchTermMatches[1], currentSearchIndex + 1) + '<span class="gt-highlight-search">' + searchTermMatches[2] + '</span>' + highlightSearchTerm(searchTermMatches[3], currentSearchIndex + 1) + containsElement[3];
-        } else {
-          return containsElement[1] +  highlightSearchTerm(containsElement[2], currentSearchIndex + 1) + containsElement[3] ;
-        }
-      }
-
-      else {
-        let searchTermMatches = searchTermRegExp.exec(partialString);
-        if (searchTermMatches) {
-          return highlightSearchTerm(searchTermMatches[1], currentSearchIndex + 1) + '<span class="gt-highlight-search">' + searchTermMatches[2] + '</span>' + highlightSearchTerm(searchTermMatches[3], currentSearchIndex + 1);
-        } else {
-          return highlightSearchTerm(partialString, currentSearchIndex + 1);
-        }
-      }
     }
 
-    return this.sanitizer.bypassSecurityTrustHtml(newString);
-  };  
-  transform(row:any, settings:Array<GtConfigSetting>, fields:Array<GtConfigField<R>>, updated:boolean, loading:boolean, highlight:boolean = false, searchString?:string) : Array<Object> {
+    const containsTagPattern = /(<.*?>)(.*)(<\/.*?>)/ig;
+    const containsTagMatches = containsTagPattern.exec(haystackAlwaysString);
+
+    if (containsTagMatches) { // tag exists in haystack
+
+      highlightedText =
+        containsTagMatches[1] +
+        containsTagMatches[2]
+          .replace(
+            searchPattern,
+            '<span class="gt-highlight-search">$1</span>'
+          ) +
+        containsTagMatches[3];
+
+    } else {
+
+      highlightedText =
+        haystackAlwaysString
+          .replace(
+            searchPattern,
+            '<span class="gt-highlight-search">$1</span>'
+          );
+
+    }
+
+    return this.sanitizer
+      .bypassSecurityTrustHtml(highlightedText);
+
+  };
+
+  transform(row: any, settings: Array<GtConfigSetting>, fields: Array<GtConfigField<R>>, updated: boolean, loading: boolean, highlight: boolean = false, searchString?: string): Array<Object> {
     //let arr = [{"temp":123,"name":"happy"},{"temp":456,"name":"dfgdfg"},{"temp":789,"name":"asdasd"}];
     //console.log(arr,arr.map(function(item){return item.temp}));
     //console.log(settings.map('objectKey'));

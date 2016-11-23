@@ -1,6 +1,8 @@
 Release History
 ---------------
 ## [Unreleased]
+### Fixed
+- Highlight doesn't find all matches
 
 # [1.0.0-rc.7] - 2016-11-22
 ### Breaking changes
