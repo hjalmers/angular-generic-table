@@ -359,6 +359,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    */
   public gtSearch = function(value:string){
     this.gt.searchTerms = value;
+    //always go to first page when searching
+    this.goToPage(1);
   };
 
 

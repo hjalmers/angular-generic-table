@@ -4,6 +4,7 @@ Release History
 ### Fixed
 - Source maps not generated correctly
 - Highlight doesn't find all matches
+- Go to first page when using global search 
 
 # [1.0.0-rc.7] - 2016-11-22
 ### Breaking changes
