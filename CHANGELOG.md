@@ -2,6 +2,7 @@ Release History
 ---------------
 ## [Unreleased]
 ### Fixed
+- Source maps not generated correctly
 - Highlight doesn't find all matches
 
 # [1.0.0-rc.7] - 2016-11-22
