@@ -3,6 +3,9 @@
 # compiled output
 /dist
 /tmp
+/generic-table/
+/index.*
+/angular2-generic-table-*.tgz
 
 # dependencies
 /node_modules
