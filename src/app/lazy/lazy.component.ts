@@ -1,7 +1,8 @@
-import {Component, Output, EventEmitter} from '@angular/core';
+import {Component, Output, EventEmitter, ViewChild} from '@angular/core';
 import {Response, Http, URLSearchParams, RequestOptions} from '@angular/http';
 import {GtConfig} from '../../generic-table/interfaces/gt-config';
 import {CustomRowComponent} from '../custom-row/custom-row.component';
+import {GenericTableComponent} from '../../generic-table/generic-table.component';
 
 @Component({
   selector: 'app-lazy',
@@ -11,6 +12,9 @@ export class LazyComponent {
 
   public configObject: GtConfig<any>;
   public expandedRow = CustomRowComponent; // this is the component that will be displayed when expanding a row
+
+  @ViewChild(GenericTableComponent)
+  private myTable: GenericTableComponent<any, CustomRowComponent>;
 
   @Output() data = new EventEmitter();
   public url = 'https://private-730c61-generictable.apiary-mock.com/data'; // apiary end point
@@ -122,6 +126,13 @@ export class LazyComponent {
         this.configObject.data = res.data;
         this.configObject.paging = res.paging;
       });
+  };
+
+  /**
+   * Apply highlight
+   **/
+  public applyHighlight = function(value: string){
+    this.myTable.gtSearch(value);
   };
 
 

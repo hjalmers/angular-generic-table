@@ -3,11 +3,20 @@
 <div class="card">
   <div class="card-header">Example</div>
   <div class="card-block">
-    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtPaging]="configObject.paging" [gtLazy]="true" [gtRowComponent]="expandedRow" (gtEvent)="trigger($event)"></generic-table>
+    <form class="form form-inline" style="margin-bottom: 10px;">
+      <div class="form-group">
+        <label for="highlight_input" class="form-control-label">Search</label>
+        <input id="highlight_input" class="form-control form-control-sm" #highlight (keyup)="applyHighlight(highlight.value)" placeholder="Search"/>
+        <small class="form-text text-muted">
+          Please note that the mock service currently doesn't support search, this is why this example only highlights matching strings, ideally you would do the search server-side too and only display matching results. Separate multiple search terms with a space [ ] or match whole phrase by putting them within quotes ["].
+        </small>
+      </div>
+    </form>
+    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtPaging]="configObject.paging" [gtLazy]="true" [gtRowComponent]="expandedRow" (gtEvent)="trigger($event)" [gtHighlightSearch]="true"></generic-table>
     <div class="text-xs-center">
-      <a href="#" (click)="myTable.previousPage()">&laquo;Previous</a>
+      <span class="link" (click)="myTable.previousPage()">&laquo;Previous</span>
       <!--Page:{{myTable.gt.currentPage}}/{{myTable.gt.pagesTotal}}-->
-      <a href="#" (click)="myTable.nextPage()">Next&raquo;</a>
+      <span class="link" (click)="myTable.nextPage()">Next&raquo;</span>
     </div>
   </div>
   <div class="card-footer">

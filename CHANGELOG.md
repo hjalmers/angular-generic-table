@@ -1,6 +1,8 @@
 Release History
 ---------------
 ## [Unreleased]
+
+# [1.0.0-rc.8] - 2016-11-30
 ### Fixed
 - Source maps not generated correctly
 - Highlight doesn't find all matches

@@ -74,6 +74,17 @@ span.gt-highlight-search {
 }
 
 
+span.link {
+  color: #0275d8;
+  text-decoration: none;
+  cursor: pointer;
+  &:focus,&:hover {
+    color: #014c8c;
+    text-decoration: underline;
+  }
+}
+
+
 // Extra small devices (portrait phones, less than 544px)
 @media (max-width: 543px) {
   .btn-block-xs {

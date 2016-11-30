@@ -20,9 +20,9 @@
     </form>
     <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtLazy]="false" [gtRowComponent]="expandedRow" [gtHighlightSearch]="true"></generic-table>
     <div class="text-xs-center">
-      <a href="#" (click)="myTable.previousPage()">&laquo;Previous</a>
+      <span class="link"  (click)="myTable.previousPage()">&laquo;Previous</span>
       <!--Page:{{myTable.gt.currentPage}}/{{myTable.gt.pagesTotal}}-->
-      <a href="#" (click)="myTable.nextPage()">Next&raquo;</a>
+      <span class="link" (click)="myTable.nextPage()">Next&raquo;</span>
     </div>
   </div>
   <div class="card-footer">

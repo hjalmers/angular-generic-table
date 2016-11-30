@@ -281,7 +281,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     this.goToPage(page);
 
     // prevent browser reload
-    event.preventDefault();
+    //event.preventDefault();
   };
 
   /** Go to previous page. */
@@ -290,7 +290,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     this.goToPage(page);
 
     // prevent browser reload
-    event.preventDefault();
+    //event.preventDefault();
   };
 
   /** Request more data (used when lazy loading) */
