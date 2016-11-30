@@ -20,6 +20,6 @@ export declare class GtRenderPipe<R extends GtRow> implements PipeTransform {
     private getOrderByLength;
     /** Return property */
     private getProperty;
-    private highlight;
+    private highlight(haystack, needles);
     transform(row: any, settings: Array<GtConfigSetting>, fields: Array<GtConfigField<R>>, updated: boolean, loading: boolean, highlight?: boolean, searchString?: string): Array<Object>;
 }

@@ -6,10 +6,15 @@ export declare class LazyComponent {
     private http;
     configObject: GtConfig<any>;
     expandedRow: typeof CustomRowComponent;
+    private myTable;
     data: EventEmitter<{}>;
     url: string;
     private req;
     trigger: ($event: any) => void;
     constructor(http: Http);
     getData: (page: any, pageLength: any) => void;
+    /**
+     * Apply highlight
+     **/
+    applyHighlight: (value: string) => void;
 }
