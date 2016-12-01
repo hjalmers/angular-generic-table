@@ -33,9 +33,18 @@ import { GtRow } from './interfaces/gt-row';
       </td>
     </tr>
   </template>
+  <tr *ngIf="gt.pagesTotal === 0 && (gt.searchTerms || gt.filter) && !loading">
+   <td class="gt-no-matching-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.no_matching_data}}</td>
+  </tr>
+  <tr *ngIf="gt.pagesTotal === 0 && !(gt.searchTerms || gt.filter) && !loading">
+   <td class="gt-no-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.no_data}}</td>
+  </tr>
+  <tr *ngIf="gt.pagesTotal === 0 && loading">
+   <td class="gt-loading-data" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.loading}}</td>
+  </tr>
   </tbody>
   <tbody *ngIf="!gtLazy && gtData">
-  <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gt.filter:gt:refreshFilter:gtData.length | gtSearch:gt.searchTerms:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gt.rowLength:gt.currentPage:refreshPageArray:gtData.length">
+  <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gt.filter:gt:refreshFilter:gtData.length | gtSearch:gt.searchTerms:gt:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gt.rowLength:gt.currentPage:refreshPageArray:gtData.length">
     <tr ngClass="{{row.isOpen ? 'row-open':''}}">
       <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtHighlightSearch:gt.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}"><span [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
     </tr>
@@ -45,6 +54,15 @@ import { GtRow } from './interfaces/gt-row';
       </td>
     </tr>
   </template>
+  <tr *ngIf="gt.pagesTotal === 0 && (gt.searchTerms || gt.filter) && !loading">
+   <td class="gt-no-matching-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.no_matching_data}}</td>
+  </tr>
+  <tr *ngIf="gt.pagesTotal === 0 && !(gt.searchTerms || gt.filter) && !loading">
+   <td class="gt-no-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.no_data}}</td>
+  </tr>
+  <tr *ngIf="gt.pagesTotal === 0 && loading">
+   <td class="gt-loading-data" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.loading}}</td>
+  </tr>
   </tbody>
 </table>
 `
@@ -63,14 +81,16 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   @Input() gtData: Array<any>;
   @Input() gtLazy: boolean = false;
   @Input() gtTexts:GtTexts = {
-    'loading':'Loading...'
+    'loading':'Loading...',
+    'no_data':'No data',
+    'no_matching_data':'No data matching results found',
   };
   @Input() gtClasses: string;
   @Input() gtHighlightSearch: boolean = false;
   @Output() lazyLoad = new EventEmitter();
   @Output() gtEvent = new EventEmitter();
   public store: Array<any> = [];
-  public loading: boolean = false;
+  public loading: boolean = true;
   public debounceTimer:void = null;
   public debounceTime:number = 200;
   public loadingProperty:string;
@@ -119,7 +139,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     // if ctrl key or meta key is press together with sort...
     if(ctrlKey){
       switch(pos){
-          // ...and property is not sorted before...
+        // ...and property is not sorted before...
         case -1:
           // ...add property to sorting
           this.sortOrder.push(objectKey);
@@ -142,11 +162,11 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     // if ctrl key or meta key is not press together with sort...
     else {
       switch(pos){
-          // ...and property is not sorted before...
+        // ...and property is not sorted before...
         case -1:
           // ...sort by property
           this.sortOrder = [objectKey];
-            break;
+          break;
         default:
           // ...change from desc to asc and vise versa
           this.sortOrder = match !== -1? ['-'+objectKey]:[objectKey];
@@ -158,17 +178,17 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     for (let i = 0; i < this.gtSettings.length;i++){
       if(this.gtSettings[i].objectKey === objectKey){
         switch(this.gtSettings[i].sort) {
-            // if sorted asc...
+          // if sorted asc...
           case 'asc':
             // ...change to desc
             this.gtSettings[i].sort = 'desc';
             break;
-            // if sorted desc...
+          // if sorted desc...
           case 'desc':
             // ...change to asc if it's the only sorted property otherwise remove sorting
             this.gtSettings[i].sort = this.sortOrder.length === 1  && sort.length < 2 ? 'asc':'enable';
             break;
-            // if sorting enabled...
+          // if sorting enabled...
           case 'enable':
             // ...change to asc
             this.gtSettings[i].sort = 'asc';
@@ -559,6 +579,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
       // replace data with store
       this.gtData = this.store;
+      this.loading = false;
+    } else if(this.gtData.length > 0){
       this.loading = false;
     }
   }

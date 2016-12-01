@@ -6,22 +6,22 @@ import {Pipe, PipeTransform, EventEmitter, Output} from '@angular/core';
 export class GtFilterPipe implements PipeTransform {
   //@Output() filterInfo = new EventEmitter();
 
-  transform(array: any[], filterBy: Object, gt: { filtered: number | boolean, refresh: any }, refreshFilter: boolean, refreshData: number): any[] {
-    //console.log(array,filterBy);
+  transform(allRows: any[], filterBy: Object, gt: { filtered: number | boolean, refresh: any }, refreshFilter: boolean, refreshData: number): any[] {
+    //console.log(allRows,filterBy);
     //console.log('filter by');
 
-    if(!Array.isArray(array) || !filterBy) {
+    if(!Array.isArray(allRows) || !filterBy) {
       //gt.filtered = false;
 
-      let length = array === null ? 0:array.length;
+      let length = allRows === null ? 0:allRows.length;
       gt.refresh(length,gt);
-      return array;
+      return allRows;
     }
 
     let output = [];
-    for(let i = 0; i < array.length; i++) {
+    for(let i = 0; i < allRows.length; i++) {
 
-      let rowObject = array[i];
+      let rowObject = allRows[i];
       let match = true;
 
       for (let property in filterBy) {

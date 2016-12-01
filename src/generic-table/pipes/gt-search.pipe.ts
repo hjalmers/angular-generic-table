@@ -18,7 +18,16 @@ export class GtSearchPipe<R extends GtRow> implements PipeTransform {
     }
   };
 
-  transform(allRows: any, searchTerms: string,settings: Array<GtConfigSetting>, fields: Array<GtConfigField<R>>, refreshData: number): any {
+  transform(allRows: any, searchTerms: string,gt: { filtered_after_search: number | boolean, refresh: any },settings: Array<GtConfigSetting>, fields: Array<GtConfigField<R>>, refreshData: number): any {
+
+    //  if no search terms are defined...
+    if(!searchTerms || searchTerms.replace(/"/g,"").length === 0){
+
+      // ...return all rows
+      let length = allRows === null ? 0:allRows.length;
+      gt.refresh(length,gt);
+      return allRows;
+    }
 
     let searchFunction: any = {};
     let fieldsTemp: Array<any> = [];
@@ -48,13 +57,6 @@ export class GtSearchPipe<R extends GtRow> implements PipeTransform {
       }
     }
 
-    //  if no search terms are defined...
-    if(!searchTerms || searchTerms.replace(/"/g,"").length === 0){
-
-      // ...return all rows
-      return allRows;
-    }
-
     let filteredRows: Array<any> = [];
     searchTerms = typeof searchTerms === 'undefined' ? '':searchTerms;
     const searchTermsArray = searchTerms.toLowerCase().match(/"[^"]+"|[\w]+/g);
@@ -82,6 +84,7 @@ export class GtSearchPipe<R extends GtRow> implements PipeTransform {
         filteredRows.push(row);
       }
     }
+    gt.refresh(filteredRows.length,gt);
     return filteredRows;
   }
 }

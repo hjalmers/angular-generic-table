@@ -1,6 +1,11 @@
 Release History
 ---------------
 ## [Unreleased]
+### Added
+- Ability to show text when no data is return or when filter and/or search has no matching results, see issue #24
+
+### Fixed
+- Searching table now updates total number of pages correctly
 
 # [1.0.0-rc.8] - 2016-11-30
 ### Fixed

@@ -150,14 +150,16 @@ config = {
 ### Settings array
 Each column must have it's own settings object that can have the following properties:
 
-- **objectKey**: string // unique identifier used for mapping settings and fields to data 
-- **visible**: boolean // should column be visible (OPTIONAL)
-- **enabled**: boolean // should column be enabled (OPTIONAL)
-- **sort**: string // default sorting: 'enabled', 'disabled', 'asc', 'desc' (OPTIONAL)
-- **sortOrder**: number // default sort order (OPTIONAL)
-- **columnOrder**: number // column order (OPTIONAL)
-- **search**: boolean // should we include this column when using global search (OPTIONAL)
-- ~~**export**: boolean // should column be exported to CSV (OPTIONAL)~~ (not implemented)
+| Key         | Type    | Usage                                                                                             | Default        |            |
+|-------------|---------|---------------------------------------------------------------------------------------------------|----------------|------------|
+| objectKey   | string  | unique identifier for column, used for data mapping                                               |                |            |
+| visible     | boolean | should column be visible                                                                          | true           | (OPTIONAL) |
+| enabled     | boolean | should column be enabled, if not enabled a user shouldn't be able to toggle visibility for column | true           | (OPTIONAL) |
+| sort        | string  | "enable", "asc" or "desc" use "disable" to disable sorting                                        | 'enable'       | (OPTIONAL) |
+| sortOrder   | number  | initial sort order                                                                                | order in array | (OPTIONAL) |
+| columnOrder | number  | initial column order                                                                              | order in array | (OPTIONAL) |
+| export      | boolean | feature not available yet...                                                                      | true           | (OPTIONAL) |
+| search      | boolean | should column be included when using global search                                                | true           | (OPTIONAL) |
 
 Basic example:
 
@@ -174,16 +176,20 @@ Basic example:
 ### Fields array
 Each column must also have it's own field definition object that can have the following properties:
 
-- **name**: string // name or label of the field, will be displayed as heading for column
-- **objectKey**: string // unique identifier used for mapping settings and fields to data
-- **classNames**: string // custom class names appended to the column (OPTIONAL)
-- **render**: function // function(row){ return '<span>'+row.objectKey+'</span>';} // custom function for column presentation (OPTIONAL),
-- **value**: function // function(row){ return row.objectKey/2;} // custom function for column value if no data exists for column in data array (OPTIONAL),
-- **click**: function // function(){ return console.log('column clicked);} // click function for column (OPTIONAL),
-- **expand**: boolean // expand (open/close) row when clicked (OPTIONAL),
-- ~~**export**: function // function(row){ return parseFloat(row.objectKey);} // custom function for export presentation (OPTIONAL),~~ (not implemented)
-- **sort**: function // function(row){ return parseFloat(row.objectKey);} // custom function for sorting (OPTIONAL),
-- **search**: function // function(row){ return row.objectKey;} // custom function for searching (OPTIONAL)
+
+| Key        | Type          | Usage                                                                                                                                                                                                                                                                             |            |
+|:-----------|:--------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----------|
+| name       | string        | heading for column                                                                                                                                                                                                                                                                |            |
+| objectKey  | string        | unique identifier for column, used for data mapping                                                                                                                                                                                                                               |            |
+| classNames | string        | class names to be applied to column                                                                                                                                                                                                                                               | (OPTIONAL) |
+| render     | function(row) | custom function for data presentation, ex. display 1480579417501 as 2016-12-01 09:03:37                                                                                                                                                                                           | (OPTIONAL) |
+| value      | function(row) | custom function for data manipulation/creation ex. combine first name and last name into a new column                                                                                                                                                                             | (OPTIONAL) |
+| sort       | function(row) | custom function used when sorting column, i.e. you might want to sort a value as a number but display (render) it as a string                                                                                                                                                     | (OPTIONAL) |
+| search     | function(row) | custom function used when searching column, i.e similar to render, you might want to match on something else than the raw data. If no search function is defined, generic table will look for a value function and if no value function is defined table will use raw data value. | (OPTIONAL) |
+| export     | function(row) | feature not available yet...                                                                                                                                                                                                                                                      | (OPTIONAL) |
+| click      | function(row) | execute function when column cell is clicked                                                                                                                                                                                                                                      | (OPTIONAL) |
+| expand     | boolean       | if true row will expand and show a custom component passed using `gtRowComponent` (false by default)                                                                                                                                                                                | (OPTIONAL) |
+
 
 Basic example:
 
@@ -214,6 +220,61 @@ The data for each row needs to be stored in an object where each key in the obje
   third_column:"third column"
 }]
 ```
+
+## Table attributes/inputs
+To pass data, settings and configuration to the table using the following inputs:
+
+| Attribute         | Type      | Usage                                                                                  | Default |            |
+|:------------------|:----------|:---------------------------------------------------------------------------------------|:--------|:-----------|
+| gtSettings        | array     | used for passing settings                                                              |         |            |
+| gtFields          | array     | used for passing field definitions                                                     |         |            |
+| gtData            | array     | used for passing data                                                                  |         |            |
+| gtClasses         | string    | used for adding classes to table element                                               |         | (OPTIONAL) |
+| gtTexts           | object    | use to override default texts                                                          |         | (OPTIONAL) |
+| gtHighlightSearch | boolean   | should table highlight matched search terms, style using .gt-highlight-search selector | false   | (OPTIONAL) |
+| gtLazy            | boolean   | set to true if data is loaded using lazy loading                                       | false   | (OPTIONAL) |
+| gtRowComponent    | component | used for passing expanding row component to table                                      |         | (OPTIONAL) |
+
+Basic example:
+```
+<generic-table [gtClasses]="'table-hover'" [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtRowComponent]="expandedRow" [gtHighlightSearch]="true"></generic-table>
+```
+
+
+## Table events
+The table emits events using `gtEvent`, the events are passed in an object which looks like this:
+```
+{
+  name:'gt-sorting-applied',
+  value: passed data...
+}
+```
+Currently the table emits the following events:
+
+| Name                  | Trigger                                     | Data passed with event                                                  |
+|-----------------------|---------------------------------------------|-------------------------------------------------------------------------|
+| gt-sorting-applied    | sorting changed                             | new sort order in array ex. ["-firstColumn", "secondColumn"]                     |
+| gt-row-length-changed | row length changed                          | new row length ex. 10                                                   |
+| gt-page-changed       | page changed                                | current state ex. {page: current page, pageLength: current page length} |
+| gt-page-changed-lazy  | page changed and no data exits for new page | current state ex. {page: current page, pageLength: current page length} |
+
+
+Usage:
+
+```
+<generic-table ... (gtEvent)="trigger($event)"></generic-table>
+```
+
+```
+public trigger = function($event){
+    switch($event.name){
+      case 'gt-sorting-applied':
+            console.log($event.value);
+            break;
+    }
+  };
+```
+
 
 ## Please note
 As this component is still under development, please expect breaking changes.
