@@ -151,7 +151,7 @@ config = {
 Each column must have it's own settings object that can have the following properties:
 
 | Key         | Type    | Usage                                                                                             | Default        |            |
-|-------------|---------|---------------------------------------------------------------------------------------------------|----------------|------------|
+|:------------|:--------|:--------------------------------------------------------------------------------------------------|:---------------|:-----------|
 | objectKey   | string  | unique identifier for column, used for data mapping                                               |                |            |
 | visible     | boolean | should column be visible                                                                          | true           | (OPTIONAL) |
 | enabled     | boolean | should column be enabled, if not enabled a user shouldn't be able to toggle visibility for column | true           | (OPTIONAL) |
@@ -252,8 +252,8 @@ The table emits events using `gtEvent`, the events are passed in an object which
 Currently the table emits the following events:
 
 | Name                  | Trigger                                     | Data passed with event                                                  |
-|-----------------------|---------------------------------------------|-------------------------------------------------------------------------|
-| gt-sorting-applied    | sorting changed                             | new sort order in array ex. ["-firstColumn", "secondColumn"]                     |
+|:----------------------|:--------------------------------------------|:------------------------------------------------------------------------|
+| gt-sorting-applied    | sorting changed                             | new sort order in array ex. ["-firstColumn", "secondColumn"]            |
 | gt-row-length-changed | row length changed                          | new row length ex. 10                                                   |
 | gt-page-changed       | page changed                                | current state ex. {page: current page, pageLength: current page length} |
 | gt-page-changed-lazy  | page changed and no data exits for new page | current state ex. {page: current page, pageLength: current page length} |
