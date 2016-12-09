@@ -3,9 +3,19 @@ Release History
 ## [Unreleased]
 ### Added
 - Ability to show text when no data is return or when filter and/or search has no matching results, see issue #24
+- Pagination component, see issue #2
+- Ability to pass default options to table, see docs
+- Loading state for table rows waiting for data (only when lazy loading), use `tr.row-loading` to style loading rows
+- Table info component, see examples
 
 ### Fixed
 - Searching table now updates total number of pages correctly
+- Searching function now supports åäö and other strange characters
+- Handling of null values, see issues #32 and #35
+
+### Breaking changes
+- Lazy loading will by default not cache data, override using `gt-options` and set `cache` to `true`
+- GtTexts now uses camel case instead of dash case so in case you've changed the default texts you need to change from `no_match` to `noMatch` etc.
 
 # [1.0.0-rc.8] - 2016-11-30
 ### Fixed

@@ -1,5 +1,7 @@
 export interface GtTexts {
   loading: string;
-  no_data: string;
-  no_matching_data: string;
+  noData: string;
+  noMatchingData: string;
+  tableInfo: string;
+  tableInfoAfterSearch: string;
 }

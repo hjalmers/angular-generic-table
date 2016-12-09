@@ -146,10 +146,12 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
           sortValue: row[key]
         };
 
-        if (highlight && searchString && this.getProperty(settings,key).search !== false){
-          columnObject.renderValue = fieldSetting.render && typeof fieldSetting.render === 'function' ? this.highlight(fieldSetting.render(row),searchString):this.highlight(row[key],searchString);
+        if(loading && row[key].indexOf('undefined') != -1){
+          columnObject.renderValue = "";
+        } else if (highlight && searchString && this.getProperty(settings,key).search !== false){
+          columnObject.renderValue = fieldSetting.render && typeof fieldSetting.render === 'function' ? this.highlight(fieldSetting.render(row),searchString):this.highlight(row[key] !== null ? row[key]:"",searchString);
         } else {
-          columnObject.renderValue = fieldSetting.render && typeof fieldSetting.render === 'function' ? this.sanitizer.bypassSecurityTrustHtml(fieldSetting.render(row)):row[key];
+          columnObject.renderValue = fieldSetting.render && typeof fieldSetting.render === 'function' ? this.sanitizer.bypassSecurityTrustHtml(fieldSetting.render(row)):row[key] !== null ? row[key]:"";
         }
 
         if(fieldSetting.click && typeof fieldSetting.click === 'function'){

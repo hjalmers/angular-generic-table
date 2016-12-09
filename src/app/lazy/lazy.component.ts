@@ -2,7 +2,8 @@ import {Component, Output, EventEmitter, ViewChild} from '@angular/core';
 import {Response, Http, URLSearchParams, RequestOptions} from '@angular/http';
 import {GtConfig} from '../../generic-table/interfaces/gt-config';
 import {CustomRowComponent} from '../custom-row/custom-row.component';
-import {GenericTableComponent} from '../../generic-table/generic-table.component';
+import {GenericTableComponent} from '../../generic-table/components/generic-table.component';
+import {GtInformation} from '../../generic-table/interfaces/gt-information';
 
 @Component({
   selector: 'app-lazy',
@@ -82,11 +83,12 @@ export class LazyComponent {
         name:'Name',
         objectKey:'name',
         value:function(row){return row.first_name + ' ' + row.last_name},
-        render:function(row){if(row.first_name && row.last_name){
+        render:function(row){//if(row.first_name && row.last_name){
           return '<div>'+row.first_name + ' ' + row.last_name +'</div>';
-        } else {
-          return '';
-        }},
+        //} else {
+          //return '';
+        //}
+        },
         sort:function(row){return row.first_name + ' ' + row.last_name}
       },{
         name:'Favorite color',
@@ -124,7 +126,8 @@ export class LazyComponent {
       .map((res: Response) => res.json())
       .subscribe(res => {
         this.configObject.data = res.data;
-        this.configObject.paging = res.paging;
+        console.log(res.paging);
+        this.configObject.info = <GtInformation>res.paging;
       });
   };
 

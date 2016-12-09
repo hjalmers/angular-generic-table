@@ -1,8 +1,14 @@
 export interface GtInformation {
-  rowLength: number;
-  currentPage: number;
-  pagesTotal: number;
-  filter: boolean | Object;
-  refresh: any;
+  filter?: Object;
+  pageCurrent: number;
+  pageNext?: number;
+  pagePrevious?: number;
+  pageTotal?: number;
+  recordFrom?:number;
+  recordTo?:number;
+  recordLength: number;
+  recordsAll: number;
+  recordsAfterFilter: number;
+  recordsAfterSearch: number;
   searchTerms?: string;
 }

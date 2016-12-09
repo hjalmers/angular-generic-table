@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import {GtConfigField} from "../interfaces/gt-config-field";
 import { GtRow } from '../interfaces/gt-row';
 import {GtConfigSetting} from '../interfaces/gt-config-setting';
+import {GtInformation} from '../interfaces/gt-information';
 
 
 @Pipe({
@@ -18,14 +19,14 @@ export class GtSearchPipe<R extends GtRow> implements PipeTransform {
     }
   };
 
-  transform(allRows: any, searchTerms: string,gt: { filtered_after_search: number | boolean, refresh: any },settings: Array<GtConfigSetting>, fields: Array<GtConfigField<R>>, refreshData: number): any {
+  transform(allRows: any, searchTerms: string,gtInfo:GtInformation,settings: Array<GtConfigSetting>, fields: Array<GtConfigField<R>>, refreshData: number): any {
 
     //  if no search terms are defined...
     if(!searchTerms || searchTerms.replace(/"/g,"").length === 0){
 
       // ...return all rows
       let length = allRows === null ? 0:allRows.length;
-      gt.refresh(length,gt);
+      gtInfo.recordsAfterSearch = length;
       return allRows;
     }
 
@@ -59,7 +60,7 @@ export class GtSearchPipe<R extends GtRow> implements PipeTransform {
 
     let filteredRows: Array<any> = [];
     searchTerms = typeof searchTerms === 'undefined' ? '':searchTerms;
-    const searchTermsArray = searchTerms.toLowerCase().match(/"[^"]+"|[\w]+/g);
+    const searchTermsArray = searchTerms.toLowerCase().match(/(".*"|[^\s]+)/g);
 
     for(let i=0; i<allRows.length; i++){
       let row = allRows[i];
@@ -84,7 +85,8 @@ export class GtSearchPipe<R extends GtRow> implements PipeTransform {
         filteredRows.push(row);
       }
     }
-    gt.refresh(filteredRows.length,gt);
+    gtInfo.recordsAfterSearch = filteredRows.length;
+    //gtInfo.refresh(filteredRows.length,gt);
     return filteredRows;
   }
 }

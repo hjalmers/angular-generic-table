@@ -1,4 +1,4 @@
-import { GenericTableComponent } from './generic-table.component';
+import { GenericTableComponent } from './components/generic-table.component';
 import {GtRenderPipe} from './pipes/gt-render.pipe';
 import {GtVisiblePipe} from "./pipes/gt-visible.pipe";
 import {DashCasePipe} from "./pipes/dash-case.pipe";
@@ -11,11 +11,15 @@ import {CommonModule} from "@angular/common";
 import {GtExpandingRowComponent, GtExpandedRow} from './components/gt-expanding-row.component';
 import {GtSearchPipe} from "./pipes/gt-search.pipe";
 import { ComponentAnchorDirective } from './directives/component-anchor.directive';
+import {GtPaginationComponent, PaginationPipe} from './components/gt-pagination.component';
+import {GtTableInfoComponent, TableInfoPipe} from './components/gt-table-info.component';
+
 
 @NgModule({
   declarations: [
     ComponentAnchorDirective,
     GenericTableComponent,
+    GtPaginationComponent,
     GtVisiblePipe,
     GtRenderPipe,
     DashCasePipe,
@@ -24,10 +28,13 @@ import { ComponentAnchorDirective } from './directives/component-anchor.directiv
     GtFilterPipe,
     GtOrderByPipe,
     GtExpandingRowComponent,
-    GtSearchPipe
+    GtSearchPipe,
+    PaginationPipe,
+    GtTableInfoComponent,
+    TableInfoPipe
   ],
   imports: [CommonModule],
-  exports: [GenericTableComponent],
+  exports: [GenericTableComponent,GtPaginationComponent,GtTableInfoComponent],
   entryComponents: [],
   providers: [],
   bootstrap: []

@@ -1,4 +1,5 @@
 import {Pipe, PipeTransform, EventEmitter, Output} from '@angular/core';
+import {GtInformation} from '../interfaces/gt-information';
 
 @Pipe({
   name: 'gtFilter'
@@ -6,15 +7,16 @@ import {Pipe, PipeTransform, EventEmitter, Output} from '@angular/core';
 export class GtFilterPipe implements PipeTransform {
   //@Output() filterInfo = new EventEmitter();
 
-  transform(allRows: any[], filterBy: Object, gt: { filtered: number | boolean, refresh: any }, refreshFilter: boolean, refreshData: number): any[] {
+  transform(allRows: any[], filterBy: Object, gtInfo:GtInformation, refreshFilter: boolean, refreshData: number): any[] {
     //console.log(allRows,filterBy);
     //console.log('filter by');
+    gtInfo.recordsAll = allRows.length;
 
     if(!Array.isArray(allRows) || !filterBy) {
-      //gt.filtered = false;
+      //gtInfo.filtered = false;
 
       let length = allRows === null ? 0:allRows.length;
-      gt.refresh(length,gt);
+      gtInfo.recordsAfterFilter = length;
       return allRows;
     }
 
@@ -32,7 +34,6 @@ export class GtFilterPipe implements PipeTransform {
             match = false;
 
           }
-          // do stuff
         }
       }
       if(match){
@@ -40,8 +41,7 @@ export class GtFilterPipe implements PipeTransform {
       }
 
     }
-    //gt.filtered = output.length; //.emit(output.length);
-    gt.refresh(output.length,gt);
+    gtInfo.recordsAfterFilter = output.length; //.emit(output.length);
     return output;
   }
 

@@ -1,17 +1,16 @@
 import {
-  Component, OnInit, OnChanges, NgModule, Output, Input, EventEmitter, ChangeDetectionStrategy,Type
+  Component, OnInit, OnChanges, Output, Input, EventEmitter, Type
 } from '@angular/core';
 import 'rxjs/Rx';
-import {GtConfig} from './interfaces/gt-config';
-import {GtConfigField} from "./interfaces/gt-config-field";
-import {GtConfigSetting} from "./interfaces/gt-config-setting";
-import {Observable} from 'rxjs/Observable';
-import {GtTexts} from './interfaces/gt-texts';
-import {GtInformation} from './interfaces/gt-information';
-import {GtPagingInfo} from './interfaces/gt-paging-info';
-import {DomSanitizer} from '@angular/platform-browser';
-import {GtExpandedRow} from './components/gt-expanding-row.component';
-import { GtRow } from './interfaces/gt-row';
+import {GtConfig} from '../interfaces/gt-config';
+import {GtConfigField} from "../interfaces/gt-config-field";
+import {GtConfigSetting} from "../interfaces/gt-config-setting";
+import {GtTexts} from '../interfaces/gt-texts';
+import {GtInformation} from '../interfaces/gt-information';
+import {GtPagingInfo} from '../interfaces/gt-paging-info';
+import {GtExpandedRow} from './gt-expanding-row.component';
+import {GtRow} from '../interfaces/gt-row';
+import {GtOptions} from '../interfaces/gt-options';
 
 @Component({
   selector: 'generic-table',
@@ -22,10 +21,10 @@ import { GtRow } from './interfaces/gt-row';
     <th *ngFor="let column of gtFields | gtVisible:gtSettings" ngClass="{{column.objectKey +'-column' | dashCase}} {{column.classNames}} sort-{{gtSettings | getProperty:column.objectKey:'sort':refreshHeading}} sort-order-{{gtSettings | getProperty:column.objectKey:'sortOrder':refreshHeading}}" (click)="gtSort(column.objectKey,$event);refreshHeading = !refreshHeading">{{column.name}}</th>
   </tr>
   </thead>
-  <tbody *ngIf="gtLazy">
-  <template ngFor let-row [ngForOf]="gtData[gt.currentPage-1]">
-    <tr ngClass="{{row.isOpen ? 'row-open':''}}">
-      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtHighlightSearch:gt.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}"><span [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
+  <tbody *ngIf="gtLazy && gtInfo">
+  <template ngFor let-row [ngForOf]="gtData[gtInfo.pageCurrent-1]">
+    <tr ngClass="{{row.isOpen ? 'row-open':''}}{{loading ? 'row-loading':''}}">
+      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtHighlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}"><span [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
     </tr>
     <tr class="expanded-row" *ngIf="row.isOpen">
       <td [attr.colspan]="(gtFields | gtVisible:gtSettings).length">
@@ -33,20 +32,20 @@ import { GtRow } from './interfaces/gt-row';
       </td>
     </tr>
   </template>
-  <tr *ngIf="gt.pagesTotal === 0 && (gt.searchTerms || gt.filter) && !loading">
-   <td class="gt-no-matching-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.no_matching_data}}</td>
+  <tr *ngIf="gtInfo.pageTotal === 0 && (gtInfo.searchTerms || gtInfo.filter) && !loading">
+   <td class="gt-no-matching-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.noMatchingData}}</td>
   </tr>
-  <tr *ngIf="gt.pagesTotal === 0 && !(gt.searchTerms || gt.filter) && !loading">
-   <td class="gt-no-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.no_data}}</td>
+  <tr *ngIf="gtInfo.pageTotal === 0 && !(gtInfo.searchTerms || gtInfo.filter) && !loading">
+   <td class="gt-no-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.noData}}</td>
   </tr>
-  <tr *ngIf="gt.pagesTotal === 0 && loading">
+  <tr *ngIf="gtInfo.pageTotal === 0 && loading">
    <td class="gt-loading-data" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.loading}}</td>
   </tr>
   </tbody>
   <tbody *ngIf="!gtLazy && gtData">
-  <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gt.filter:gt:refreshFilter:gtData.length | gtSearch:gt.searchTerms:gt:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gt.rowLength:gt.currentPage:refreshPageArray:gtData.length">
+  <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent">
     <tr ngClass="{{row.isOpen ? 'row-open':''}}">
-      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtHighlightSearch:gt.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}"><span [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
+      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtHighlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}"><span [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
     </tr>
     <tr class="expanded-row" *ngIf="row.isOpen">
       <td [attr.colspan]="(gtFields | gtVisible:gtSettings).length">
@@ -54,26 +53,25 @@ import { GtRow } from './interfaces/gt-row';
       </td>
     </tr>
   </template>
-  <tr *ngIf="gt.pagesTotal === 0 && (gt.searchTerms || gt.filter) && !loading">
-   <td class="gt-no-matching-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.no_matching_data}}</td>
+  <tr *ngIf="gtInfo.pageTotal === 0 && (gtInfo.searchTerms || gtInfo.filter) && !loading">
+   <td class="gt-no-matching-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.noMatchingData}}</td>
   </tr>
-  <tr *ngIf="gt.pagesTotal === 0 && !(gt.searchTerms || gt.filter) && !loading">
-   <td class="gt-no-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.no_data}}</td>
+  <tr *ngIf="gtInfo.pageTotal === 0 && !(gtInfo.searchTerms || gtInfo.filter) && !loading">
+   <td class="gt-no-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.noData}}</td>
   </tr>
-  <tr *ngIf="gt.pagesTotal === 0 && loading">
+  <tr *ngIf="gtInfo.pageTotal === 0 && loading">
    <td class="gt-loading-data" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.loading}}</td>
   </tr>
   </tbody>
 </table>
-`
+`,
 })
 export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> implements OnInit, OnChanges {
 
-  //public safeInnerHtml = this.sanitizer.bypassSecurityTrustHtml('<gt-expanded-row></gt-expanded-row>');
   @Input() gtRowComponent: Type<C>;
   public data: [Object];
   public configObject: GtConfig<R>;
-  public sortOrder:Array<any> = [];
+  public sortOrder: Array<any> = [];
 
   @Input() gtSettings: GtConfigSetting[];
   @Input() gtFields: GtConfigField<R>[];
@@ -82,22 +80,40 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   @Input() gtLazy: boolean = false;
   @Input() gtTexts:GtTexts = {
     'loading':'Loading...',
-    'no_data':'No data',
-    'no_matching_data':'No data matching results found',
+    'noData':'No data',
+    'noMatchingData':'No data matching results found',
+    'tableInfo':'Showing  #recordFrom to #recordTo of #recordsAfterSearch entries.',
+    'tableInfoAfterSearch':'Showing  #recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries).'
   };
   @Input() gtClasses: string;
   @Input() gtHighlightSearch: boolean = false;
   @Output() lazyLoad = new EventEmitter();
   @Output() gtEvent = new EventEmitter();
+  @Input() gtOptions:GtOptions = {
+    cache:false,
+    debounceTime:200
+  };
   public store: Array<any> = [];
   public loading: boolean = true;
-  public debounceTimer:void = null;
-  public debounceTime:number = 200;
+  private debounceTimer:void = null;
   public loadingProperty:string;
+
+  @Input() gtInfo:GtInformation = {
+    pageCurrent:1,
+    pageTotal:0,
+    recordFrom:0,
+    recordTo:0,
+    recordLength:10,
+    recordsAll:0,
+    recordsAfterFilter:0,
+    recordsAfterSearch:0
+  };
+
   private refreshPipe:boolean = false;
   private refreshSorting:boolean = false;
 
-  constructor(private sanitizer:DomSanitizer) {}
+  constructor() {}
+
 
   /**
    * Sort table by object key.
@@ -226,7 +242,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     if(reset !== true && this.gtLazy !== true){
 
       // ...get current position in record set
-      let currentRecord = this.gt.rowLength * (this.gt.currentPage-1);
+      let currentRecord = this.gtInfo.recordLength * (this.gtInfo.pageCurrent-1);
       let currentPosition = this.gtData.indexOf(this.gtData[currentRecord])+1;
 
       // ...get new position
@@ -234,13 +250,10 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     }
 
     // change row length
-    this.gt.rowLength = parseInt(rowLength);
-
-    // update total pages
-    this.updateTotalPages();
+    this.gtInfo.recordLength = parseInt(rowLength);
 
     // go to new position
-    this.gt.currentPage = newPosition;
+    this.gtInfo.pageCurrent = newPosition;
 
     // if lazy loading data...
     if(this.gtLazy){
@@ -252,40 +265,14 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
       this.store = [];
     }
 
+    this.updateRecordRange();
+
     this.gtEvent.emit({
       name:'gt-row-length-changed',
       value:rowLength
     });
   };
 
-  /**
-   * Get total number of pages.
-   * @returns {number} number of pages to display.
-   */
-  private updateTotalPages = function(){
-    const gtDataLength: number = this.gtData ? this.gtData.length : 0;
-    const rows: number = this.gt.filtered ? this.gt.filtered : gtDataLength;
-    this.gt.pagesTotal = Math.ceil(rows/this.gt.rowLength);
-    //console.log('get total',this.gt.pagesTotal);
-  };
-
-  /**
-   * Refresh total number of pages, this function is used by pipes to update total number of pages.
-   * @param {number} rows - total number of rows.
-   * @param {Object} gt - how many records to show per page.
-   * @returns {Array} a nested array to hold records per page.
-   */
-  private refresh = function(rows:number,gt:GtInformation){
-    //console.log('refresh',this.gtPaging);
-
-    if(this.gtPaging){
-      gt.pagesTotal = Math.ceil(this.gtPaging.total_records/gt.rowLength);
-      //console.log('refresh with paging',gt.pagesTotal,this.gtPaging.total_records);
-
-    } else {
-      gt.pagesTotal = Math.ceil(rows/gt.rowLength);
-    }
-  };
 
   /**
    * Force a redraw of table rows.
@@ -295,9 +282,16 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     this.refreshPipe = !this.refreshPipe;
   };
 
+  /** Update record range. */
+  private updateRecordRange = function(){
+    this.gtInfo.recordFrom = (this.gtInfo.pageCurrent-1) * this.gtInfo.recordLength + 1;
+    setTimeout(()=>this.gtInfo.recordTo = this.gtInfo.recordsAfterSearch < this.gtInfo.pageCurrent * this.gtInfo.recordLength ? this.gtInfo.recordsAfterSearch:this.gtInfo.pageCurrent * this.gtInfo.recordLength,0);
+    //this._changeDetectionRef.detectChanges();
+  };
+
   /** Go to next page. */
   public nextPage = function(){
-    let page = this.gt.currentPage === this.gt.pagesTotal ? this.gt.pagesTotal:this.gt.currentPage += 1;
+    let page = this.gtInfo.pageCurrent === this.gtInfo.pageTotal ? this.gtInfo.pageTotal:this.gtInfo.pageCurrent += 1;
     this.goToPage(page);
 
     // prevent browser reload
@@ -306,7 +300,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
   /** Go to previous page. */
   public previousPage = function(){
-    let page = this.gt.currentPage === 1 ? 1:this.gt.currentPage -= 1;
+    let page = this.gtInfo.pageCurrent === 1 ? 1:this.gtInfo.pageCurrent -= 1;
     this.goToPage(page);
 
     // prevent browser reload
@@ -318,7 +312,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     // ...emit event requesting for more data
     this.gtEvent.emit({
       name: 'gt-page-changed-lazy',
-      value: {page: this.gt.currentPage, pageLength: this.gt.rowLength}
+      value: {page: this.gtInfo.pageCurrent, pageLength: this.gtInfo.recordLength}
     });
   };
 
@@ -327,32 +321,34 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    * @param {number} page - page number.
    */
   public goToPage = function(page:number){
-    this.gt.currentPage = page;
+    this.gtInfo.pageCurrent = page;
 
     // if lazy loading and if page contains no records...
     if(this.gtLazy){
 
       // ...if data for current page contains no entries...
-      if(this.gtData[this.gt.currentPage-1].length === 0) {
+      if(this.gtOptions.cache === false || this.gtData[this.gtInfo.pageCurrent-1].length === 0) {
         // ...create temporary content while waiting for data
-        this.gtData[this.gt.currentPage - 1] = this.loadingContent(this.gt.rowLength);
+        this.gtData[this.gtInfo.pageCurrent - 1] = this.loadingContent(this.gtInfo.recordLength);
         this.loading = true; // loading true
       }
       // ...if first entry in current page equals our loading placeholder...
-      if(this.gtData[this.gt.currentPage-1][0][this.loadingProperty] === this.gtTexts.loading){
+      if(this.gtData[this.gtInfo.pageCurrent-1][0][this.loadingProperty] === this.gtTexts.loading){
 
         // ...get data
         clearTimeout(this.debounceTimer);
         this.debounceTimer = setTimeout(() => {
           this.getData();
-        },this.debounceTime);
+        },this.gtOptions.debounceTime);
       }
     }
+
+    this.updateRecordRange();
 
     // ...emit page change event
     this.gtEvent.emit({
       name: 'gt-page-changed',
-      value: {page: this.gt.currentPage, pageLength: this.gt.rowLength}
+      value: {page: this.gtInfo.pageCurrent, pageLength: this.gtInfo.recordLength}
     });
   };
 
@@ -361,16 +357,15 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    * @param {Object} filter - object containing key value pairs, where value should be array of values.
    */
   public gtApplyFilter = function(filter:Object) {
-    this.gt.filter = filter;
+    this.gtInfo.filter = filter;
     // go to first page
-    this.gt.currentPage = 1;
-    //this.updateTotalPages();
+    this.goToPage(1);
   };
 
   /** Clear/remove applied filter(s). */
   public gtClearFilter = function() {
-    this.gt.filter = false;
-    //this.updateTotalPages();
+    this.gtInfo.filter = false;
+    this.updateRecordRange();
   };
 
   /**
@@ -378,18 +373,9 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    * @param (string) value - string containing one or more words
    */
   public gtSearch = function(value:string){
-    this.gt.searchTerms = value;
+    this.gtInfo.searchTerms = value;
     //always go to first page when searching
     this.goToPage(1);
-  };
-
-
-  private gt:GtInformation = {
-    rowLength:10,
-    currentPage:1,
-    pagesTotal:null,
-    filter:false,
-    refresh:this.refresh
   };
 
   /**
@@ -533,41 +519,34 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
   }
 
-  ngAfterViewInit() {
-    //console.log('view');
-  }
   ngOnChanges() {
-    //console.log('changed');
+    console.log('changed');
     if(this.gtPaging){
-
-      this.gt.rowLength = this.gtPaging.per_page;
-      this.gt.pagesTotal = this.gtPaging.total_records;
-      this.refresh(this.gtPaging.total_records,this.gt);
-    } else {
-      this.updateTotalPages();
-
+      //this.gtInfo.recordLength = this.gtInfo.recordLength;
+      //this.gtInfo.recordsAll = this.gtInfo.recordsAll;
+      //this.gtInfo.pageTotal = Math.ceil(this.gtInfo.recordsAll/this.gtInfo.recordLength);
     }
 
     // if lazy loading data and paging information is available...
-    if(this.gtLazy && this.gtPaging){
+    if(this.gtLazy && this.gtInfo){
 
       // ...declare store position
-      let storePosition = this.gtPaging.current_page-1;
+      let storePosition = this.gtInfo.pageCurrent-1;
 
 
 
       // ...and if store is empty or page length has changed...
-      if(this.store.length === 0 || this.store[0].length !== this.gtPaging.per_page){
+      if(this.store.length === 0 || this.store[0].length !== this.gtInfo.recordLength){
         //console.log('create store');
         // ...create store
-        this.store = this.createStore(this.gtPaging.filtered_records,this.gtPaging.per_page);
-        this.gt.pagesTotal = Math.ceil(this.gtPaging.filtered_records/this.gt.rowLength)
+        this.store = this.createStore(this.gtInfo.recordsAfterSearch,this.gtInfo.recordLength);
+        this.gtInfo.pageTotal = Math.ceil(this.gtInfo.recordsAfterSearch/this.gtInfo.recordLength)
       }
 
 
-      //console.log(this.store[0].length === this.gtPaging.per_page,this.store[0].length, this.gtPaging.per_page);
+      //console.log(this.store[0].length === this.gtInfo.recordLength,this.store[0].length, this.gtInfo.recordLength);
 
-      //console.log('add to store',this.gtPaging.current_page,this.gtData,storePosition,this.store[storePosition].length,this.store);
+      //console.log('add to store',this.gtInfo.pageCurrent,this.gtData,storePosition,this.store[storePosition].length,this.store);
 
       // ...and if store position is empty...
       //if(this.store[storePosition].length === 0 || this.loading){
@@ -583,7 +562,6 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     } else if(this.gtData.length > 0){
       this.loading = false;
     }
+    //this.updateRecordRange();
   }
-  public refreshRender = false;
 }
-
