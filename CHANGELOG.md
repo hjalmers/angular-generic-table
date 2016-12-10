@@ -1,6 +1,7 @@
 Release History
 ---------------
 ## [Unreleased]
+# [1.0.0-rc.9] - 2016-12-10
 ### Added
 - Ability to show text when no data is return or when filter and/or search has no matching results, see issue #24
 - Pagination component, see issue #2
