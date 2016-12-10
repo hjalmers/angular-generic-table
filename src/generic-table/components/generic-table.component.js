@@ -267,7 +267,6 @@ var GenericTableComponent = (function () {
          */
         this.gtSearch = function (value) {
             this.gtInfo.searchTerms = value;
-            console.log(value);
             //always go to first page when searching
             this.goToPage(1);
         };
