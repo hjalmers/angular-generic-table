@@ -1,10 +1,9 @@
-import {Component, Output, EventEmitter, ViewChild, ViewEncapsulation, ChangeDetectorRef} from '@angular/core';
+import {Component, Output, EventEmitter, ViewChild} from '@angular/core';
 import {Response, Http } from '@angular/http';
 import {GenericTableComponent} from '../../generic-table/components/generic-table.component';
 import {CustomRowComponent} from '../custom-row/custom-row.component';
 import {GtConfig} from '../../generic-table/interfaces/gt-config';
 import 'rxjs/add/operator/map';
-import {GtInformation} from '../../generic-table/interfaces/gt-information';
 
 @Component({
   selector: 'app-rest',
@@ -23,23 +22,8 @@ export class RestComponent {
   private myTable: GenericTableComponent<any, CustomRowComponent>;
   public expandedRow = CustomRowComponent;
 
-  public trigger = function($event){
-    switch($event.name){
-      case 'gt-info':
-        console.log($event.value);
-        this.tableInfo = {
-          recordsAfterSearch:$event.value.recordsAfterSearch
-        };
-        //this._changeDetectionRef.detectChanges();
 
-        //this.refresh = !this.refresh;
-        //this.hello = Math.random();//$event.value.recordsAfterSearch;
-        break;
-    }
-  };
-
-
-  constructor(private http: Http,private _changeDetectionRef : ChangeDetectorRef) {
+  constructor(private http: Http) {
 
     let url = 'https://private-730c61-generictable.apiary-mock.com/data'; // apiary end point
 

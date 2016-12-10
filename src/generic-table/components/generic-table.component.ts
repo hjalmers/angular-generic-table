@@ -7,7 +7,6 @@ import {GtConfigField} from "../interfaces/gt-config-field";
 import {GtConfigSetting} from "../interfaces/gt-config-setting";
 import {GtTexts} from '../interfaces/gt-texts';
 import {GtInformation} from '../interfaces/gt-information';
-import {GtPagingInfo} from '../interfaces/gt-paging-info';
 import {GtExpandedRow} from './gt-expanding-row.component';
 import {GtRow} from '../interfaces/gt-row';
 import {GtOptions} from '../interfaces/gt-options';
@@ -75,14 +74,13 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
   @Input() gtSettings: GtConfigSetting[];
   @Input() gtFields: GtConfigField<R>[];
-  @Input() gtPaging: GtPagingInfo;
   @Input() gtData: Array<any>;
   @Input() gtLazy: boolean = false;
   @Input() gtTexts:GtTexts = {
     'loading':'Loading...',
     'noData':'No data',
     'noMatchingData':'No data matching results found',
-    'tableInfo':'Showing  #recordFrom to #recordTo of #recordsAfterSearch entries.',
+    'tableInfo':'Showing #recordFrom to #recordTo of #recordsAfterSearch entries.',
     'tableInfoAfterSearch':'Showing  #recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries).'
   };
   @Input() gtClasses: string;
@@ -112,7 +110,13 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   private refreshPipe:boolean = false;
   private refreshSorting:boolean = false;
 
-  constructor() {}
+  constructor() {
+    this.gtEvent.subscribe($event => {
+      if ($event.name === 'gt-info') {
+        this.updateRecordRange();
+      }
+    });
+  }
 
 
   /**
@@ -265,13 +269,14 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
       this.store = [];
     }
 
-    this.updateRecordRange();
+    //this.updateRecordRange();
 
     this.gtEvent.emit({
       name:'gt-row-length-changed',
       value:rowLength
     });
   };
+
 
 
   /**
@@ -284,8 +289,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
   /** Update record range. */
   private updateRecordRange = function(){
-    this.gtInfo.recordFrom = (this.gtInfo.pageCurrent-1) * this.gtInfo.recordLength + 1;
-    setTimeout(()=>this.gtInfo.recordTo = this.gtInfo.recordsAfterSearch < this.gtInfo.pageCurrent * this.gtInfo.recordLength ? this.gtInfo.recordsAfterSearch:this.gtInfo.pageCurrent * this.gtInfo.recordLength,0);
+    this.gtInfo.recordFrom = this.gtInfo.recordsAfterSearch === 0 ? 0 :(this.gtInfo.pageCurrent-1) * this.gtInfo.recordLength + 1;
+    this.gtInfo.recordTo = this.gtInfo.recordsAfterSearch < this.gtInfo.pageCurrent * this.gtInfo.recordLength ? this.gtInfo.recordsAfterSearch:this.gtInfo.pageCurrent * this.gtInfo.recordLength
     //this._changeDetectionRef.detectChanges();
   };
 
@@ -312,7 +317,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     // ...emit event requesting for more data
     this.gtEvent.emit({
       name: 'gt-page-changed-lazy',
-      value: {page: this.gtInfo.pageCurrent, pageLength: this.gtInfo.recordLength}
+      value: {pageCurrent: this.gtInfo.pageCurrent, recordLength: this.gtInfo.recordLength}
     });
   };
 
@@ -343,12 +348,12 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
       }
     }
 
-    this.updateRecordRange();
+    //this.updateRecordRange();
 
     // ...emit page change event
     this.gtEvent.emit({
       name: 'gt-page-changed',
-      value: {page: this.gtInfo.pageCurrent, pageLength: this.gtInfo.recordLength}
+      value: {pageCurrent: this.gtInfo.pageCurrent, recordLength: this.gtInfo.recordLength}
     });
   };
 
@@ -365,7 +370,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   /** Clear/remove applied filter(s). */
   public gtClearFilter = function() {
     this.gtInfo.filter = false;
-    this.updateRecordRange();
+    //this.updateRecordRange();
   };
 
   /**
@@ -520,19 +525,15 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   }
 
   ngOnChanges() {
-    console.log('changed');
-    if(this.gtPaging){
-      //this.gtInfo.recordLength = this.gtInfo.recordLength;
-      //this.gtInfo.recordsAll = this.gtInfo.recordsAll;
-      //this.gtInfo.pageTotal = Math.ceil(this.gtInfo.recordsAll/this.gtInfo.recordLength);
-    }
-
     // if lazy loading data and paging information is available...
     if(this.gtLazy && this.gtInfo){
 
+      // ...calculate total number of pages
+      this.gtInfo.pageTotal = Math.ceil(this.gtInfo.recordsAfterSearch/this.gtInfo.recordLength);
+
+
       // ...declare store position
       let storePosition = this.gtInfo.pageCurrent-1;
-
 
 
       // ...and if store is empty or page length has changed...
@@ -540,28 +541,17 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         //console.log('create store');
         // ...create store
         this.store = this.createStore(this.gtInfo.recordsAfterSearch,this.gtInfo.recordLength);
-        this.gtInfo.pageTotal = Math.ceil(this.gtInfo.recordsAfterSearch/this.gtInfo.recordLength)
       }
-
-
-      //console.log(this.store[0].length === this.gtInfo.recordLength,this.store[0].length, this.gtInfo.recordLength);
-
-      //console.log('add to store',this.gtInfo.pageCurrent,this.gtData,storePosition,this.store[storePosition].length,this.store);
-
-      // ...and if store position is empty...
-      //if(this.store[storePosition].length === 0 || this.loading){
-      //console.log('fill store position:',storePosition);
 
       // ...store retrieved data in store at store position
       this.store[storePosition] = this.gtData;
-      //}
 
       // replace data with store
       this.gtData = this.store;
       this.loading = false;
+      this.updateRecordRange();
     } else if(this.gtData.length > 0){
       this.loading = false;
     }
-    //this.updateRecordRange();
   }
 }

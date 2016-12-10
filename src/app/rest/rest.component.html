@@ -18,9 +18,8 @@
       <button class="btn btn-secondary btn-sm" (click)="myTable.gtClearFilter()">Remove filter</button>
       <button class="btn btn-secondary btn-sm" (click)="addData()">Add data</button>
       <small class="form-text text-muted"><gt-table-info [genericTable]="myTable"></gt-table-info></small>
-      <!--<gt-table-info [genericTable]="myTable" [customText]="'Total records: #recordsAll, Filtered records: #recordsAfterFilter'"></gt-table-info>-->
     </form>
-    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtLazy]="false" [gtRowComponent]="expandedRow" [gtHighlightSearch]="true" (gtEvent)="trigger($event)" ></generic-table>
+    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtLazy]="false" [gtRowComponent]="expandedRow" [gtHighlightSearch]="true"></generic-table>
     <div class="text-xs-center">
       <gt-pagination [genericTable]="myTable"></gt-pagination>
     </div>

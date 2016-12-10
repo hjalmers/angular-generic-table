@@ -25,7 +25,7 @@ export class LazyComponent {
   public trigger = function($event){
     switch($event.name){
       case 'gt-page-changed-lazy':
-        this.getData($event.value.page,$event.value.pageLength);
+        this.getData($event.value.pageCurrent,$event.value.recordLength);
             break;
       case 'gt-sorting-applied':
             console.log($event.value);
@@ -109,10 +109,10 @@ export class LazyComponent {
     this.getData(1,10);
   }
 
-  public getData = function(page, pageLength){
+  public getData = function(pageCurrent, recordLength){
     let params: URLSearchParams = new URLSearchParams();
-    params.set('page', page);
-    params.set('per_page', pageLength);
+    params.set('page', pageCurrent);
+    params.set('per_page', recordLength);
 
     // if we have an ongoing request cancel it
     if(typeof this.req !== 'undefined'){
@@ -126,18 +126,8 @@ export class LazyComponent {
       .map((res: Response) => res.json())
       .subscribe(res => {
         this.configObject.data = res.data;
-        console.log(res.paging);
+        res.paging.searchTerms = 'al';
         this.configObject.info = <GtInformation>res.paging;
       });
   };
-
-  /**
-   * Apply highlight
-   **/
-  public applyHighlight = function(value: string){
-    this.myTable.gtSearch(value);
-  };
-
-
-
 }

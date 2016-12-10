@@ -1,13 +1,12 @@
 <h3>Basic</h3>
-<p>Table with static data and simple pagination</p>
+<p>Table with static data and simple pagination.</p>
 <div class="card">
   <div class="card-header">Example</div>
   <div class="card-block">
       <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"></generic-table>
       <div class="text-xs-center">
-        <span class="link" (click)="myTable.previousPage()">&laquo;Previous</span>
-        <!--Page:{{myTable.gt.currentPage}}/{{myTable.gt.pagesTotal}}-->
-        <span class="link" (click)="myTable.nextPage()">Next&raquo;</span>
+        <small><gt-table-info class="form-text text-muted" [genericTable]="myTable"></gt-table-info></small>
+        <gt-pagination [gtClasses]="'pagination-sm'" [genericTable]="myTable"></gt-pagination>
       </div>
     </div>
   <div class="card-footer">

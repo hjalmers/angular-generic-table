@@ -1,6 +1,6 @@
 # angular2-generic-table
 
-A generic table for Angular 2. This project is a re-write of [this](https://github.com/hjalmers/angular-generic-table) project for angular 2, the idea is to have support for the same features and that the configuration should be the same. Generic table uses standard markup for tables ie. table, tr and td elements etc. and has support for expanding rows, search, filters, sorting, pagination, export to CSV (coming soon), column clicks, custom column rendering, custom export values. [View demo](https://hjalmers.github.io/angular2-generic-table/examples)
+A generic table for Angular 2. This project is a re-write of [this](https://github.com/hjalmers/angular-generic-table) project for angular 1, the idea is to have support for the same features and that the configuration should be the same. Generic table uses standard markup for tables ie. table, tr and td elements etc. and has support for expanding rows, search, filters, sorting, pagination, export to CSV (coming soon), column clicks, custom column rendering, custom export values. [View demo](https://hjalmers.github.io/angular2-generic-table/examples)
 
 ## Features
 - Uses standard HTML tables (no divs etc.)
@@ -130,7 +130,7 @@ export class StaticComponent {
 }
 ```
 
-**Markup**
+**Usage**
 ```
 <generic-table [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"></generic-table>
 ```
@@ -161,7 +161,7 @@ Each column must have it's own settings object that can have the following prope
 | export      | boolean | feature not available yet...                                                                      | true           | (OPTIONAL) |
 | search      | boolean | should column be included when using global search                                                | true           | (OPTIONAL) |
 
-Basic example:
+**Usage:**
 
 ```
 [{
@@ -191,7 +191,7 @@ Each column must also have it's own field definition object that can have the fo
 | expand     | boolean       | if true row will expand and show a custom component passed using `gtRowComponent` (false by default)                                                                                                                                                                                | (OPTIONAL) |
 
 
-Basic example:
+**Usage:**
 
 ```
 [{
@@ -232,10 +232,11 @@ To pass data, settings and configuration to the table using the following inputs
 | gtClasses         | string    | used for adding classes to table element                                               |         | (OPTIONAL) |
 | gtTexts           | object    | use to override default texts                                                          |         | (OPTIONAL) |
 | gtHighlightSearch | boolean   | should table highlight matched search terms, style using .gt-highlight-search selector | false   | (OPTIONAL) |
-| gtLazy            | boolean   | set to true if data is loaded using lazy loading                                       | false   | (OPTIONAL) |
+| gtLazy            | boolean   | set to true if data is loaded using lazy loading, don't forget to pass gtInfo          | false   | (OPTIONAL) |
+| gtInfo            | object    | used for passing record info to table (lazy loading only)                              |         | (OPTIONAL) |
 | gtRowComponent    | component | used for passing expanding row component to table                                      |         | (OPTIONAL) |
 
-Basic example:
+**Usage:**
 ```
 <generic-table [gtClasses]="'table-hover'" [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtRowComponent]="expandedRow" [gtHighlightSearch]="true"></generic-table>
 ```
@@ -251,15 +252,16 @@ The table emits events using `gtEvent`, the events are passed in an object which
 ```
 Currently the table emits the following events:
 
-| Name                  | Trigger                                     | Data passed with event                                                  |
-|:----------------------|:--------------------------------------------|:------------------------------------------------------------------------|
-| gt-sorting-applied    | sorting changed                             | new sort order in array ex. ["-firstColumn", "secondColumn"]            |
-| gt-row-length-changed | row length changed                          | new row length ex. 10                                                   |
-| gt-page-changed       | page changed                                | current state ex. {page: current page, pageLength: current page length} |
-| gt-page-changed-lazy  | page changed and no data exits for new page | current state ex. {page: current page, pageLength: current page length} |
+| Name                  | Trigger                                                | Data passed with event                                                             |
+|:----------------------|:-------------------------------------------------------|:-----------------------------------------------------------------------------------|
+| gt-sorting-applied    | sorting changed                                        | new sort order in array ex. ["-firstColumn", "secondColumn"]                       |
+| gt-row-length-changed | record length changed                                  | new record length ex. 10                                                           |
+| gt-page-changed       | page changed                                           | current state ex. {pageCurrent: current page, recordLength: current record length} |
+| gt-page-changed-lazy  | page changed and no data exits for new page            | current state ex. {pageCurrent: current page, recordLength: current record length} |
+| gt-info               | table info has changed (not emitted when lazy loading) | current state ex. {pageCurrent: current page, recordLength: current record length} |
 
 
-Usage:
+**Usage:**
 
 ```
 <generic-table ... (gtEvent)="trigger($event)"></generic-table>
@@ -274,6 +276,104 @@ public trigger = function($event){
     }
   };
 ```
+
+## Texts
+
+Override texts by passing a new object using `gtTexts` attribute.
+
+**Available texts:**
+
+| Key                  | Description                                                                            | Default                                                                                                         |
+|:---------------------|:---------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------|
+| loading              | Text displayed when table rows are loading data (lazy loading only)                    | Loading...                                                                                                      |
+| noData               | Text displayed when table contains no data                                             | No data                                                                                                         |
+| noMatchingData       | Text displayed when table search/filter has no matches                                 | No data matching results found                                                                                  |
+| tableInfo            | Text displayed in table info component when neither search nor filter has been applied | Showing #recordFrom to #recordTo of #recordsAfterSearch entries.                                                |
+| tableInfoAfterSearch | Text displayed in table info component when search or filter has been applied          | Showing,#recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries). |
+
+## Global table search and highlight
+
+Search and filter table using global search. Separate multiple search terms with a space [ ] or match whole phrase by putting them within quotes ["].
+Turn of search for individual columns by setting column setting property `search` to `false`.
+
+**Usage:** 
+
+Call generic tables search function and pass your search term(s)
+
+```
+myTable.gtSearch(searchString);
+```
+
+**Usage (when lazy loading):**
+
+Return search terms in your server response.
+ 
+```
+this.configObject.info:GtInformation = {
+  pageCurrent: 1,
+  pageNext: 2,
+  pagePrevious: null,
+  pageTotal: 10,
+  recordLength: 10,
+  recordsAll: 100,
+  recordsAfterFilter: 100,
+  recordsAfterSearch: 13,
+  searchTerms: "foo bar"
+}
+```
+
+[see demo](https://hjalmers.github.io/angular2-generic-table/examples) for full implementation and examples
+
+## Pagination
+
+Display pagination for your table, uses bootstrap default markup.
+
+**Usage:**
+
+```
+<gt-pagination [genericTable]="myTable"></gt-pagination>
+```
+
+**Options:**
+
+| Attribute         | Type           | Usage                                                               |            |
+|:------------------|:---------------|:--------------------------------------------------------------------|:-----------|
+| genericTable      | table instance | used for linking pagination component to table                      |            |
+| gtClasses         | string         | used for adding classes to pagination element, ex. pagination-sm    | (OPTIONAL) |
+
+## Table information
+
+Display information about your table, ie. number of records, filtered records, record length etc. 
+
+**Usage:**
+
+```
+<gt-table-info [genericTable]="myTable"></gt-table-info>
+```
+
+**Options:**
+
+| Attribute         | Type           | Usage                                                                                                    |            |
+|:------------------|:---------------|:---------------------------------------------------------------------------------------------------------|:-----------|
+| genericTable      | table instance | used for linking table info component to table                                                           |            |
+| customText        | string         | override default text provided by generic table component, useful when you want to split up the display  | (OPTIONAL) |
+
+Available information:
+Use the key in the text passed, either to the table component using `gtTexts` attribute or to the individual table info component using `customText` attribute.
+Ex. `Showing #recordFrom to #recordTo.` will be rendered as `Showing 1 to 10.`
+
+| Name               | Key                 | Description                                                                 |
+|:-------------------|:--------------------|:----------------------------------------------------------------------------|
+| pageCurrent        | #pageCurrent        | Displays current page number                                                |
+| pageNext           | #pageNext           | Displays next page number                                                   |
+| pagePrevious       | #pagePrevious       | Displays previous page number                                               |
+| pageTotal          | #pageTotal          | Displays total number of pages                                              |
+| recordFrom         | #recordFrom         | Displays visible record number from                                         |
+| recordTo           | #recordTo           | Displays visible record number to                                           |
+| recordLength       | #recordLength       | Displays number of records shown                                            |
+| recordsAll         | #recordsAll         | Displays total number of records                                            |
+| recordsAfterFilter | #recordsAfterFilter | Displays total number of records after filters have been applied            |
+| recordsAfterSearch | #recordsAfterSearch | Displays total number of records after filters and search have been applied |
 
 
 ## Please note

@@ -8,6 +8,5 @@ export interface GtConfig<R extends GtRow> {
   settings: GtConfigSetting[];
   fields: GtConfigField<R>[];
   data?: R[];
-  paging?: GtPagingInfo;
   info?: GtInformation;
 }

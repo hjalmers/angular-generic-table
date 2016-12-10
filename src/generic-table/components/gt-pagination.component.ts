@@ -4,7 +4,7 @@ import {GenericTableComponent} from './generic-table.component';
 
 @Component({
   selector: 'gt-pagination',
-  template: `<nav aria-label="Table navigation">
+  template: `<nav aria-label="Table navigation" *ngIf="genericTable.gtInfo">
   <ul class="pagination" ngClass="{{gtClasses}}">
     <li class="page-item" ngClass="{{genericTable.gtInfo.pageCurrent > 1 ? '':'disabled'}}"><a class="page-link" href="javascript:void(0);" (click)="genericTable.gtInfo.pageCurrent > 1 && genericTable.previousPage()" tabindex="-1" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>
     <li class="page-item" *ngIf="genericTable.gtInfo.pageCurrent > 4"><a class="page-link" href="javascript:void(0);" (click)="genericTable.goToPage(1)">1</a><span class="page-link" *ngIf="genericTable.gtInfo.pageTotal > 5">&hellip;</span></li>
