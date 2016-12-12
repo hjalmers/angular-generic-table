@@ -21,6 +21,7 @@ export class RestComponent {
   @ViewChild(GenericTableComponent)
   private myTable: GenericTableComponent<any, CustomRowComponent>;
   public expandedRow = CustomRowComponent;
+  public showColumnControls = false;
 
 
   constructor(private http: Http) {

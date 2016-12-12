@@ -4,9 +4,9 @@ import {GtConfigSetting} from '../interfaces/gt-config-setting';
 import { GtRow } from '../interfaces/gt-row';
 
 @Pipe({
-  name: 'getProperty'
+  name: 'gtProperty'
 })
-export class GetPropertyPipe<R extends GtRow> implements PipeTransform {
+export class GtPropertyPipe<R extends GtRow> implements PipeTransform {
 
   transform(config: GtConfigField<R>[] | GtConfigSetting[], objectKey: string, property: string, refresh?: boolean): any {
     try {

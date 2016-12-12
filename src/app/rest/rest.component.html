@@ -17,7 +17,18 @@
       <button class="btn btn-secondary btn-sm" (click)="applyFilter();">Apply predefined filter</button>
       <button class="btn btn-secondary btn-sm" (click)="myTable.gtClearFilter()">Remove filter</button>
       <button class="btn btn-secondary btn-sm" (click)="addData()">Add data</button>
+      <button class="btn btn-secondary btn-sm" (click)="showColumnControls = !showColumnControls">Toggle columns</button>
+      <div class="form-group" *ngIf="showColumnControls">
+        <label class="form-control-label">Visible columns</label>
+        <div class="form-check" *ngFor="let column of configObject.settings">
+          <label class="form-check-inline">
+            <input type="checkbox" name="{{column.objectKey}}" class="form-check-input" [(ngModel)]="column.visible" (change)="myTable.redraw()">
+            {{configObject.fields | gtProperty:column.objectKey:'name'}}
+          </label>
+        </div>
+      </div>
       <small class="form-text text-muted"><gt-table-info [genericTable]="myTable"></gt-table-info></small>
+
     </form>
     <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtLazy]="false" [gtRowComponent]="expandedRow" [gtHighlightSearch]="true"></generic-table>
     <div class="text-xs-center">

@@ -126,8 +126,8 @@ export class LazyComponent {
       .map((res: Response) => res.json())
       .subscribe(res => {
         this.configObject.data = res.data;
-        res.paging.searchTerms = 'al';
         this.configObject.info = <GtInformation>res.paging;
+        this.configObject.info.searchTerms = 'al';
       });
   };
 }

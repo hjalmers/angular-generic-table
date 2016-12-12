@@ -7,6 +7,15 @@
       <div class="form-group">
         <label for="highlight_input" class="form-control-label">Search</label>
         <input id="highlight_input" class="form-control form-control-sm" value="al" disabled placeholder="Search"/>
+        <div class="form-group">
+          <label class="form-control-label">Visible columns</label>
+          <div class="form-check" *ngFor="let column of configObject.settings">
+            <label class="form-check-inline">
+              <input type="checkbox" name="{{column.objectKey}}" class="form-check-input" [(ngModel)]="column.visible" (change)="myTable.redraw()">
+              {{configObject.fields | gtProperty:column.objectKey:'name'}}
+            </label>
+          </div>
+        </div>
         <small class="form-text text-muted"><gt-table-info [genericTable]="myTable"></gt-table-info></small>
         <small class="form-text text-muted">
           Please note that the mock service currently doesn't support search, this is why this example has a fixed search string (just to show the highlight feature together with lazy load). Do the search server-side and return search terms in your response. Separate multiple search terms with a space [ ] or match whole phrase by putting them within quotes ["].

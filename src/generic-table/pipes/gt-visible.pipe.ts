@@ -18,7 +18,7 @@ export class GtVisiblePipe<R extends GtRow> implements PipeTransform {
     return 0;
   };
 
-  transform(array: GtConfigField<R>[], settings: GtConfigSetting[]): GtConfigField<R>[] {
+  transform(array: Array<GtConfigField<R>>, settings: Array<GtConfigSetting>): Array<GtConfigField<R>> {
     let visibleColumns = settings.sort(this.getColumnOrder).map((setting:GtConfigSetting) => {
       if(setting.visible !== false && setting.enabled !== false) {
         return setting.objectKey;

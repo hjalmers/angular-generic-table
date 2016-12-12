@@ -283,13 +283,15 @@ Override texts by passing a new object using `gtTexts` attribute.
 
 **Available texts:**
 
-| Key                  | Description                                                                            | Default                                                                                                         |
-|:---------------------|:---------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------|
-| loading              | Text displayed when table rows are loading data (lazy loading only)                    | Loading...                                                                                                      |
-| noData               | Text displayed when table contains no data                                             | No data                                                                                                         |
-| noMatchingData       | Text displayed when table search/filter has no matches                                 | No data matching results found                                                                                  |
-| tableInfo            | Text displayed in table info component when neither search nor filter has been applied | Showing #recordFrom to #recordTo of #recordsAfterSearch entries.                                                |
-| tableInfoAfterSearch | Text displayed in table info component when search or filter has been applied          | Showing,#recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries). |
+| Key                     | Description                                                                            | Default                                                                                                         |
+|:------------------------|:---------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------|
+| loading                 | Text displayed when table rows are loading data (lazy loading only)                    | Loading...                                                                                                      |
+| noData                  | Text displayed when table contains no data                                             | No data                                                                                                         |
+| noMatchingData          | Text displayed when table search/filter has no matches                                 | No data matching results found                                                                                  |
+| noVisibleColumnsHeading | Table heading displayed when no columns are visible                                    | No visible columns                                                                                              |
+| noVisibleColumns        | Table content displayed when no columns are visible                                    | Please select at least one column to be visible.                                                                |
+| tableInfo               | Text displayed in table info component when neither search nor filter has been applied | Showing #recordFrom to #recordTo of #recordsAfterSearch entries.                                                |
+| tableInfoAfterSearch    | Text displayed in table info component when search or filter has been applied          | Showing,#recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries). |
 
 ## Global table search and highlight
 
@@ -323,6 +325,10 @@ this.configObject.info:GtInformation = {
 ```
 
 [see demo](https://hjalmers.github.io/angular2-generic-table/examples) for full implementation and examples
+
+## Column visibility
+
+You can implement your own control for toggling column visibility, either bind directly to the settings array and alter the visibility property directly or create an object to hold the values until your ready to update. Don't forget to call 'redraw()' when you want the table to update ie. `(click)="myTable.redraw()"`
 
 ## Pagination
 

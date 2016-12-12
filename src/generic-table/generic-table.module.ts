@@ -2,7 +2,7 @@ import { GenericTableComponent } from './components/generic-table.component';
 import {GtRenderPipe} from './pipes/gt-render.pipe';
 import {GtVisiblePipe} from "./pipes/gt-visible.pipe";
 import {DashCasePipe} from "./pipes/dash-case.pipe";
-import {GetPropertyPipe} from "./pipes/get-property.pipe";
+import {GtPropertyPipe} from "./pipes/gt-property.pipe";
 import {GtChunkPipe} from "./pipes/gt-chunk.pipe";
 import {GtFilterPipe} from "./pipes/gt-filter.pipe";
 import {GtOrderByPipe} from "./pipes/gt-order-by.pipe";
@@ -23,7 +23,7 @@ import {GtTableInfoComponent, TableInfoPipe} from './components/gt-table-info.co
     GtVisiblePipe,
     GtRenderPipe,
     DashCasePipe,
-    GetPropertyPipe,
+    GtPropertyPipe,
     GtChunkPipe,
     GtFilterPipe,
     GtOrderByPipe,
@@ -34,7 +34,7 @@ import {GtTableInfoComponent, TableInfoPipe} from './components/gt-table-info.co
     TableInfoPipe
   ],
   imports: [CommonModule],
-  exports: [GenericTableComponent,GtPaginationComponent,GtTableInfoComponent],
+  exports: [GenericTableComponent,GtPaginationComponent,GtTableInfoComponent,GtPropertyPipe],
   entryComponents: [],
   providers: [],
   bootstrap: []

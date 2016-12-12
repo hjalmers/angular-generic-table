@@ -14,19 +14,19 @@ import {GtOptions} from '../interfaces/gt-options';
 @Component({
   selector: 'generic-table',
   template:`
-<table class="table" ngClass="{{gtClasses}}">
+<table class="table" ngClass="{{gtClasses}}" *ngIf="(gtFields | gtVisible:gtSettings:refreshPipe).length > 0">
   <thead>
   <tr>
-    <th *ngFor="let column of gtFields | gtVisible:gtSettings" ngClass="{{column.objectKey +'-column' | dashCase}} {{column.classNames}} sort-{{gtSettings | getProperty:column.objectKey:'sort':refreshHeading}} sort-order-{{gtSettings | getProperty:column.objectKey:'sortOrder':refreshHeading}}" (click)="gtSort(column.objectKey,$event);refreshHeading = !refreshHeading">{{column.name}}</th>
+    <th *ngFor="let column of gtFields | gtVisible:gtSettings:refreshPipe" ngClass="{{column.objectKey +'-column' | dashCase}} {{column.classNames}} sort-{{gtSettings | gtProperty:column.objectKey:'sort':refreshHeading}} sort-order-{{gtSettings | gtProperty:column.objectKey:'sortOrder':refreshHeading}}" (click)="gtSort(column.objectKey,$event);refreshHeading = !refreshHeading">{{column.name}}</th>
   </tr>
   </thead>
   <tbody *ngIf="gtLazy && gtInfo">
   <template ngFor let-row [ngForOf]="gtData[gtInfo.pageCurrent-1]">
     <tr ngClass="{{row.isOpen ? 'row-open':''}}{{loading ? 'row-loading':''}}">
-      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtHighlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}"><span [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
+      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtHighlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
     </tr>
     <tr class="expanded-row" *ngIf="row.isOpen">
-      <td [attr.colspan]="(gtFields | gtVisible:gtSettings).length">
+      <td [attr.colspan]="(gtFields | gtVisible:gtSettings:refreshPipe).length">
         <gt-expanding-row [row]="row" [type]="gtRowComponent" (redrawEvent)="redraw($event)"></gt-expanding-row>
       </td>
     </tr>
@@ -44,10 +44,10 @@ import {GtOptions} from '../interfaces/gt-options';
   <tbody *ngIf="!gtLazy && gtData">
   <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent">
     <tr ngClass="{{row.isOpen ? 'row-open':''}}">
-      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtHighlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | getProperty:column.objectKey:'classNames'}}"><span [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
+      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtHighlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
     </tr>
     <tr class="expanded-row" *ngIf="row.isOpen">
-      <td [attr.colspan]="(gtFields | gtVisible:gtSettings).length">
+      <td [attr.colspan]="(gtFields | gtVisible:gtSettings:refreshPipe).length">
         <gt-expanding-row [row]="row" [type]="gtRowComponent" (redrawEvent)="redraw($event)"></gt-expanding-row>
       </td>
     </tr>
@@ -61,6 +61,18 @@ import {GtOptions} from '../interfaces/gt-options';
   <tr *ngIf="gtInfo.pageTotal === 0 && loading">
    <td class="gt-loading-data" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.loading}}</td>
   </tr>
+  </tbody>
+</table>
+<table class="table" *ngIf="(gtFields | gtVisible:gtSettings:refreshPipe).length === 0">
+  <thead>
+    <tr>
+      <th class="gt-no-visible-columns">{{gtTexts.noVisibleColumnsHeading}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="gt-no-visible-columns">{{gtTexts.noVisibleColumns}}</td>
+    </tr>
   </tbody>
 </table>
 `,
@@ -80,6 +92,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     'loading':'Loading...',
     'noData':'No data',
     'noMatchingData':'No data matching results found',
+    'noVisibleColumnsHeading': 'No visible columns',
+    'noVisibleColumns': 'Please select at least one column to be visible.',
     'tableInfo':'Showing #recordFrom to #recordTo of #recordsAfterSearch entries.',
     'tableInfoAfterSearch':'Showing  #recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries).'
   };
@@ -283,7 +297,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    * Force a redraw of table rows.
    * As the table uses pure pipes, we need to force a redraw if an object in the array is changed to see the changes.
    */
-  private redraw = function(){
+  public redraw = function(){
     this.refreshPipe = !this.refreshPipe;
   };
 
