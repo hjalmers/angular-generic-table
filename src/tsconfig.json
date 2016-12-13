@@ -4,10 +4,7 @@
     "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "lib": [
-      "es6",
-      "dom"
-    ],
+    "lib": ["dom", "es6"],
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "../",

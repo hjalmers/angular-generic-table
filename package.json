@@ -13,8 +13,9 @@
     "test": "ng test",
     "pree2e": "webdriver-manager update",
     "e2e": "protractor",
-    "build": "tsc --declaration -p src",
-    "clean": "rimraf index* generic-table",
+    "clean": "rimraf generic-table index.js index.js.map index.d.ts",
+    "prebuild": "npm run clean",
+    "build": "tsc -d -p src",
     "prepublish": "npm run build",
     "postpublish": "npm run clean"
   },

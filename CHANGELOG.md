@@ -5,6 +5,10 @@ Release History
 - Ability to toggle column visibility, see issue #33
 - Ability to export to CSV, see issue #3
 
+### Fixed
+- Clean goal doesn't run before the build goal (see issue #36)
+- Removed compiled javascript files
+
 # [1.0.0-rc.9] - 2016-12-10
 ### Added
 - Ability to show text when no data is return or when filter and/or search has no matching results, see issue #24
