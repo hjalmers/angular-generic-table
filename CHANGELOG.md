@@ -5,7 +5,7 @@ Release History
 - Ability to toggle column visibility, see issue #33
 
 ### Fixed
-- Clean goal doesn't run before the build goal (see issue #36
+- Clean goal doesn't run before the build goal (see issue #36)
 - Removed compiled javascript files
 
 # [1.0.0-rc.9] - 2016-12-10
