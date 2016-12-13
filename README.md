@@ -1,6 +1,6 @@
 # angular2-generic-table
 
-A generic table for Angular 2. This project is a re-write of [this](https://github.com/hjalmers/angular-generic-table) project for angular 2, the idea is to have support for the same features and that the configuration should be the same. Generic table uses standard markup for tables ie. table, tr and td elements etc. and has support for expanding rows, search, filters, sorting, pagination, export to CSV (coming soon), column clicks, custom column rendering, custom export values. [View demo](https://hjalmers.github.io/angular2-generic-table/examples)
+A generic table for Angular 2. This project is a re-write of [this](https://github.com/hjalmers/angular-generic-table) project for angular 1, the idea is to have support for the same features and that the configuration should be the same. Generic table uses standard markup for tables ie. table, tr and td elements etc. and has support for expanding rows, search, filters, sorting, pagination, export to CSV, column clicks, custom column rendering, custom export values. [View demo](https://hjalmers.github.io/angular2-generic-table/examples)
 
 ## Features
 - Uses standard HTML tables (no divs etc.)
@@ -10,6 +10,8 @@ A generic table for Angular 2. This project is a re-write of [this](https://gith
 - Expanding rows with custom component
 - Use custom functions for sorting, exporting and rendering of data
 - Configure table using json object (add columns etc.)
+- Toggle column visibility
+- Export to CSV
 
 ## Installation and usage
 
@@ -130,7 +132,7 @@ export class StaticComponent {
 }
 ```
 
-**Markup**
+**Usage**
 ```
 <generic-table [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"></generic-table>
 ```
@@ -150,16 +152,18 @@ config = {
 ### Settings array
 Each column must have it's own settings object that can have the following properties:
 
-- **objectKey**: string // unique identifier used for mapping settings and fields to data 
-- **visible**: boolean // should column be visible (OPTIONAL)
-- **enabled**: boolean // should column be enabled (OPTIONAL)
-- **sort**: string // default sorting: 'enabled', 'disabled', 'asc', 'desc' (OPTIONAL)
-- **sortOrder**: number // default sort order (OPTIONAL)
-- **columnOrder**: number // column order (OPTIONAL)
-- **search**: boolean // should we include this column when using global search (OPTIONAL)
-- ~~**export**: boolean // should column be exported to CSV (OPTIONAL)~~ (not implemented)
+| Key         | Type    | Usage                                                                                             | Default        |            |
+|:------------|:--------|:--------------------------------------------------------------------------------------------------|:---------------|:-----------|
+| objectKey   | string  | unique identifier for column, used for data mapping                                               |                |            |
+| visible     | boolean | should column be visible                                                                          | true           | (OPTIONAL) |
+| enabled     | boolean | should column be enabled, if not enabled a user shouldn't be able to toggle visibility for column | true           | (OPTIONAL) |
+| sort        | string  | "enable", "asc" or "desc" use "disable" to disable sorting                                        | 'enable'       | (OPTIONAL) |
+| sortOrder   | number  | initial sort order                                                                                | order in array | (OPTIONAL) |
+| columnOrder | number  | initial column order                                                                              | order in array | (OPTIONAL) |
+| export      | boolean | should column be included when exporting to CSV                                                   | true           | (OPTIONAL) |
+| search      | boolean | should column be included when using global search                                                | true           | (OPTIONAL) |
 
-Basic example:
+**Usage:**
 
 ```
 [{
@@ -174,18 +178,22 @@ Basic example:
 ### Fields array
 Each column must also have it's own field definition object that can have the following properties:
 
-- **name**: string // name or label of the field, will be displayed as heading for column
-- **objectKey**: string // unique identifier used for mapping settings and fields to data
-- **classNames**: string // custom class names appended to the column (OPTIONAL)
-- **render**: function // function(row){ return '<span>'+row.objectKey+'</span>';} // custom function for column presentation (OPTIONAL),
-- **value**: function // function(row){ return row.objectKey/2;} // custom function for column value if no data exists for column in data array (OPTIONAL),
-- **click**: function // function(){ return console.log('column clicked);} // click function for column (OPTIONAL),
-- **expand**: boolean // expand (open/close) row when clicked (OPTIONAL),
-- ~~**export**: function // function(row){ return parseFloat(row.objectKey);} // custom function for export presentation (OPTIONAL),~~ (not implemented)
-- **sort**: function // function(row){ return parseFloat(row.objectKey);} // custom function for sorting (OPTIONAL),
-- **search**: function // function(row){ return row.objectKey;} // custom function for searching (OPTIONAL)
 
-Basic example:
+| Key        | Type          | Usage                                                                                                                                                                                                                                                                             |            |
+|:-----------|:--------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-----------|
+| name       | string        | heading for column                                                                                                                                                                                                                                                                |            |
+| objectKey  | string        | unique identifier for column, used for data mapping                                                                                                                                                                                                                               |            |
+| classNames | string        | class names to be applied to column                                                                                                                                                                                                                                               | (OPTIONAL) |
+| render     | function(row) | custom function for data presentation, ex. display 1480579417501 as 2016-12-01 09:03:37                                                                                                                                                                                           | (OPTIONAL) |
+| value      | function(row) | custom function for data manipulation/creation ex. combine first name and last name into a new column                                                                                                                                                                             | (OPTIONAL) |
+| sort       | function(row) | custom function used when sorting column, i.e. you might want to sort a value as a number but display (render) it as a string                                                                                                                                                     | (OPTIONAL) |
+| search     | function(row) | custom function used when searching column, i.e similar to render, you might want to match on something else than the raw data. If no search function is defined, generic table will look for a value function and if no value function is defined table will use raw data value. | (OPTIONAL) |
+| export     | function(row) | feature not available yet...                                                                                                                                                                                                                                                      | (OPTIONAL) |
+| click      | function(row) | execute function when column cell is clicked                                                                                                                                                                                                                                      | (OPTIONAL) |
+| expand     | boolean       | if true row will expand and show a custom component passed using `gtRowComponent` (false by default)                                                                                                                                                                                | (OPTIONAL) |
+
+
+**Usage:**
 
 ```
 [{
@@ -214,6 +222,183 @@ The data for each row needs to be stored in an object where each key in the obje
   third_column:"third column"
 }]
 ```
+
+## Table attributes/inputs
+To pass data, settings and configuration to the table using the following inputs:
+
+| Attribute         | Type      | Usage                                                                                  | Default |            |
+|:------------------|:----------|:---------------------------------------------------------------------------------------|:--------|:-----------|
+| gtSettings        | array     | used for passing settings                                                              |         |            |
+| gtFields          | array     | used for passing field definitions                                                     |         |            |
+| gtData            | array     | used for passing data                                                                  |         |            |
+| gtClasses         | string    | used for adding classes to table element                                               |         | (OPTIONAL) |
+| gtTexts           | object    | use to override default texts                                                          |         | (OPTIONAL) |
+| gtHighlightSearch | boolean   | should table highlight matched search terms, style using .gt-highlight-search selector | false   | (OPTIONAL) |
+| gtLazy            | boolean   | set to true if data is loaded using lazy loading, don't forget to pass gtInfo          | false   | (OPTIONAL) |
+| gtInfo            | object    | used for passing record info to table (lazy loading only)                              |         | (OPTIONAL) |
+| gtRowComponent    | component | used for passing expanding row component to table                                      |         | (OPTIONAL) |
+
+**Usage:**
+```
+<generic-table [gtClasses]="'table-hover'" [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtRowComponent]="expandedRow" [gtHighlightSearch]="true"></generic-table>
+```
+
+
+## Table events
+The table emits events using `gtEvent`, the events are passed in an object which looks like this:
+```
+{
+  name:'gt-sorting-applied',
+  value: passed data...
+}
+```
+Currently the table emits the following events:
+
+| Name                  | Trigger                                                | Data passed with event                                                             |
+|:----------------------|:-------------------------------------------------------|:-----------------------------------------------------------------------------------|
+| gt-sorting-applied    | sorting changed                                        | new sort order in array ex. ["-firstColumn", "secondColumn"]                       |
+| gt-row-length-changed | record length changed                                  | new record length ex. 10                                                           |
+| gt-page-changed       | page changed                                           | current state ex. {pageCurrent: current page, recordLength: current record length} |
+| gt-page-changed-lazy  | page changed and no data exits for new page            | current state ex. {pageCurrent: current page, recordLength: current record length} |
+| gt-info               | table info has changed (not emitted when lazy loading) | current state ex. {pageCurrent: current page, recordLength: current record length} |
+| gt-exported-csv       | table has exported data to csv file                    | file name                                                                          |
+
+
+**Usage:**
+
+```
+<generic-table ... (gtEvent)="trigger($event)"></generic-table>
+```
+
+```
+public trigger = function($event){
+    switch($event.name){
+      case 'gt-sorting-applied':
+            console.log($event.value);
+            break;
+    }
+  };
+```
+
+## Texts
+
+Override texts by passing a new object using `gtTexts` attribute.
+
+**Available texts:**
+
+| Key                     | Description                                                                            | Default                                                                                                         |
+|:------------------------|:---------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------|
+| loading                 | Text displayed when table rows are loading data (lazy loading only)                    | Loading...                                                                                                      |
+| noData                  | Text displayed when table contains no data                                             | No data                                                                                                         |
+| noMatchingData          | Text displayed when table search/filter has no matches                                 | No data matching results found                                                                                  |
+| noVisibleColumnsHeading | Table heading displayed when no columns are visible                                    | No visible columns                                                                                              |
+| noVisibleColumns        | Table content displayed when no columns are visible                                    | Please select at least one column to be visible.                                                                |
+| tableInfo               | Text displayed in table info component when neither search nor filter has been applied | Showing #recordFrom to #recordTo of #recordsAfterSearch entries.                                                |
+| tableInfoAfterSearch    | Text displayed in table info component when search or filter has been applied          | Showing,#recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries). |
+| csvDownload             | File name for CSV export (.csv is added by default)                                    | download                                                                                                        |
+
+## Global table search and highlight
+
+Search and filter table using global search. Separate multiple search terms with a space [ ] or match whole phrase by putting them within quotes ["].
+
+Define custom search value for individual columns by declaring a custom search function in the fields array, ie. you might want the search to match one value but display/render another in the table ex. search for 100000 and display 1 000 000,00 in the table.
+
+Turn of search for individual columns by setting column setting property `search` to `false`.
+
+**Usage:** 
+
+Call generic tables search function and pass your search term(s)
+
+```
+myTable.gtSearch(searchString);
+```
+
+**Usage (when lazy loading):**
+
+Return search terms in your server response.
+ 
+```
+this.configObject.info:GtInformation = {
+  pageCurrent: 1,
+  pageNext: 2,
+  pagePrevious: null,
+  pageTotal: 10,
+  recordLength: 10,
+  recordsAll: 100,
+  recordsAfterFilter: 100,
+  recordsAfterSearch: 13,
+  searchTerms: "foo bar"
+}
+```
+
+[see demo](https://hjalmers.github.io/angular2-generic-table/examples) for full implementation and examples
+
+## Column visibility
+
+You can implement your own control for toggling column visibility, either bind directly to the settings array and alter the visibility property directly or create an object to hold the values until your ready to update. Don't forget to call 'redraw()' when you want the table to update ie. `(click)="myTable.redraw()"`
+
+## Export to CSV
+
+Export table data to CSV and optionally pass a file name. Please note that the table exports data after sort order, filters and global search have been applied. In case you use the lazy load feature you'll have to implement the export server-side.
+
+Define custom export value for individual columns by declaring a custom export function in the fields array, ie. you might want the export one value but display/render another in the table ex. export 100000 as a number but display it as a string 1 000 000,00 in the table.
+
+Turn of export for individual columns by setting column setting property `export` to `false`.
+
+**Usage:**
+`(click)="myTable.exportCSV('custom-file-name')"`
+
+## Pagination
+
+Display pagination for your table, uses bootstrap default markup.
+
+**Usage:**
+
+```
+<gt-pagination [genericTable]="myTable"></gt-pagination>
+```
+
+**Options:**
+
+| Attribute         | Type           | Usage                                                               |            |
+|:------------------|:---------------|:--------------------------------------------------------------------|:-----------|
+| genericTable      | table instance | used for linking pagination component to table                      |            |
+| gtClasses         | string         | used for adding classes to pagination element, ex. pagination-sm    | (OPTIONAL) |
+
+## Table information
+
+Display information about your table, ie. number of records, filtered records, record length etc. 
+
+**Usage:**
+
+```
+<gt-table-info [genericTable]="myTable"></gt-table-info>
+```
+
+**Options:**
+
+| Attribute         | Type           | Usage                                                                                                    |            |
+|:------------------|:---------------|:---------------------------------------------------------------------------------------------------------|:-----------|
+| genericTable      | table instance | used for linking table info component to table                                                           |            |
+| customText        | string         | override default text provided by generic table component, useful when you want to split up the display  | (OPTIONAL) |
+
+Available information:
+Use the key in the text passed, either to the table component using `gtTexts` attribute or to the individual table info component using `customText` attribute.
+Ex. `Showing #recordFrom to #recordTo.` will be rendered as `Showing 1 to 10.`
+
+| Name               | Key                 | Description                                                                 |
+|:-------------------|:--------------------|:----------------------------------------------------------------------------|
+| pageCurrent        | #pageCurrent        | Displays current page number                                                |
+| pageNext           | #pageNext           | Displays next page number                                                   |
+| pagePrevious       | #pagePrevious       | Displays previous page number                                               |
+| pageTotal          | #pageTotal          | Displays total number of pages                                              |
+| recordFrom         | #recordFrom         | Displays visible record number from                                         |
+| recordTo           | #recordTo           | Displays visible record number to                                           |
+| recordLength       | #recordLength       | Displays number of records shown                                            |
+| recordsAll         | #recordsAll         | Displays total number of records                                            |
+| recordsAfterFilter | #recordsAfterFilter | Displays total number of records after filters have been applied            |
+| recordsAfterSearch | #recordsAfterSearch | Displays total number of records after filters and search have been applied |
+
 
 ## Please note
 As this component is still under development, please expect breaking changes.

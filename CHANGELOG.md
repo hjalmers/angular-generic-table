@@ -1,6 +1,40 @@
 Release History
 ---------------
 ## [Unreleased]
+# [1.0.0-rc.10] - 2016-12-13
+### Added
+- Ability to toggle column visibility, see issue #33
+- Ability to export to CSV, see issue #3
+
+### Fixed
+- Clean goal doesn't run before the build goal (see issue #36)
+- Removed compiled javascript files
+
+# [1.0.0-rc.9] - 2016-12-10
+### Added
+- Ability to show text when no data is return or when filter and/or search has no matching results, see issue #24
+- Pagination component, see issue #2
+- Ability to pass default options to table, [see docs](https://github.com/hjalmers/angular2-generic-table)
+- Loading state for table rows waiting for data (only when lazy loading), use `tr.row-loading` to style loading rows
+- Table info component, [see examples](https://hjalmers.github.io/angular2-generic-table/examples)
+
+### Fixed
+- Searching table now updates total number of pages correctly
+- Searching function now supports åäö and other strange characters
+- Handling of null values, see issues #32 and #35
+
+### Breaking changes
+- Lazy loading will by default not cache data, override using `gt-options` and set `cache` to `true`
+- `GtPagination` has been replaced with `GtInfo` and properties have changed names, [see docs](https://github.com/hjalmers/angular2-generic-table)
+- Highlighting of search terms when using `[gtLazy]=true` has changed, set search terms in your server response, [see docs](https://github.com/hjalmers/angular2-generic-table)
+- `GtTexts` now uses camel case instead of dash case so in case you've changed the default texts you need to change from `no_match` to `noMatch` etc.
+- Event property names have changed from `page` to `currentPage` and from `pageLength` to `recordLength` to match names used by `GtInformation`
+
+# [1.0.0-rc.8] - 2016-11-30
+### Fixed
+- Source maps not generated correctly
+- Highlight doesn't find all matches
+- Go to first page when using global search 
 
 # [1.0.0-rc.7] - 2016-11-22
 ### Breaking changes
