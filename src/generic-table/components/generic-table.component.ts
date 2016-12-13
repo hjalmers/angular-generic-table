@@ -42,7 +42,7 @@ import {GtOptions} from '../interfaces/gt-options';
   </tr>
   </tbody>
   <tbody *ngIf="!gtLazy && gtData">
-  <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent">
+  <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data">
     <tr ngClass="{{row.isOpen ? 'row-open':''}}">
       <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtHighlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
     </tr>
@@ -80,7 +80,6 @@ import {GtOptions} from '../interfaces/gt-options';
 export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> implements OnInit, OnChanges {
 
   @Input() gtRowComponent: Type<C>;
-  public data: [Object];
   public configObject: GtConfig<R>;
   public sortOrder: Array<any> = [];
 
@@ -95,7 +94,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     'noVisibleColumnsHeading': 'No visible columns',
     'noVisibleColumns': 'Please select at least one column to be visible.',
     'tableInfo':'Showing #recordFrom to #recordTo of #recordsAfterSearch entries.',
-    'tableInfoAfterSearch':'Showing  #recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries).'
+    'tableInfoAfterSearch':'Showing  #recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries).',
+    'csvDownload':'download'
   };
   @Input() gtClasses: string;
   @Input() gtHighlightSearch: boolean = false;
@@ -103,7 +103,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   @Output() gtEvent = new EventEmitter();
   @Input() gtOptions:GtOptions = {
     cache:false,
-    debounceTime:200
+    debounceTime:200,
+    csvDelimiter:';'
   };
   public store: Array<any> = [];
   public loading: boolean = true;
@@ -249,7 +250,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   /**
    * Change number of rows to be displayed.
    * @param {string} rowLength - total number of rows.
-   * @param {boolean} reset - how many records to show per page.
+   * @param {boolean} reset - should page be reset to first page.
    * @returns {number} number of pages to display.
    */
   public changeRowLength = function(rowLength:any,reset?:boolean){
@@ -389,7 +390,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
   /**
    * Search
-   * @param (string) value - string containing one or more words
+   * @param {string} value - string containing one or more words
    */
   public gtSearch = function(value:string){
     this.gtInfo.searchTerms = value;
@@ -482,6 +483,89 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     if (a.columnOrder > b.columnOrder)
       return 1;
     return 0;
+  };
+
+  /** Store filtered data for export */
+  private data:{
+    exportData:Array<any>
+  } = {};
+
+  /** Export data as CSV
+   * @param {string} fileName - optional file name (overrides default file name).
+   */
+  public exportCSV(fileName?:string) {
+    let data = this.data.exportData;
+    let csv = '';
+
+    //csv export headers
+    for(let i = 0; i < this.gtSettings.length; i++) {
+      if(this.gtSettings[i].export !== false) {
+        csv += this.getProperty(this.gtFields,this.gtSettings[i].objectKey).name;
+
+        if(i < (this.gtSettings.length - 1)) {
+          csv += this.gtOptions.csvDelimiter;//this.csvSeparator;
+        }
+      }
+    }
+
+    // csv export body
+    data.forEach((row, i) => {
+      csv += '\n';
+      for(let i = 0; i < this.gtSettings.length; i++) {
+        if(this.gtSettings[i].export !== false) {
+          // get field settings
+          let fieldSetting = this.getProperty(this.gtFields,this.gtSettings[i].objectKey);
+
+          // get export value, if export function is defined use it otherwise check for value function and as a last resort export raw data
+          csv += fieldSetting.export && typeof fieldSetting.export === 'function' ?
+            fieldSetting.export(row):fieldSetting.value && typeof fieldSetting.value === 'function' ?
+            fieldSetting.value(row):row[this.gtSettings[i].objectKey];
+
+          if(i < (this.gtSettings.length - 1)) {
+            csv += this.gtOptions.csvDelimiter;//this.csvSeparator;
+          }
+        }
+      }
+    });
+
+    let blob = new Blob([csv],{
+      type: 'text/csv;charset=utf-8;'
+    });
+
+    if(window.navigator.msSaveOrOpenBlob) {
+      navigator.msSaveOrOpenBlob(blob, fileName ? fileName:this.gtTexts.csvDownload + '.csv');
+    }
+    else {
+      let link = document.createElement("a");
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      if(link.download !== undefined) {
+        link.setAttribute('href', URL.createObjectURL(blob));
+        link.setAttribute('download', fileName ? fileName:this.gtTexts.csvDownload + '.csv');
+        document.body.appendChild(link);
+        link.click();
+      }
+      else {
+        csv = 'data:text/csv;charset=utf-8,' + csv;
+        window.open(encodeURI(csv));
+      }
+      document.body.removeChild(link);
+    }
+
+    // emit export event
+    this.gtEvent.emit({
+      name:'gt-exported-csv',
+      value:fileName ? fileName:this.gtTexts.csvDownload + '.csv'
+    });
+  }
+
+  /** Return property */
+  private getProperty = function(array, key){
+    for (let i = 0; i < array.length;i++){
+      if (array[i].objectKey === key) {
+        return array[i];
+      }
+    }
   };
 
   ngOnInit() {

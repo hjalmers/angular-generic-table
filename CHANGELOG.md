@@ -3,6 +3,7 @@ Release History
 ## [Unreleased]
 ### Added
 - Ability to toggle column visibility, see issue #33
+- Ability to export to CSV, see issue #3
 
 # [1.0.0-rc.9] - 2016-12-10
 ### Added

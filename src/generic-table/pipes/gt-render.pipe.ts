@@ -15,7 +15,6 @@ export interface GtRenderField<R extends GtRow> {
   renderValue?: any;
   click?: GtClickFunc<R>;
   expand?: boolean;
-  exportValue: any;
   sortValue: any;
 }
 
@@ -142,7 +141,6 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
 
         let columnObject: GtRenderField<R> = {
           objectKey: key,
-          exportValue: fieldSetting.export && typeof fieldSetting.export === 'function' ? fieldSetting.export(row):row[key],
           sortValue: row[key]
         };
 

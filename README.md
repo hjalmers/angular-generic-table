@@ -1,6 +1,6 @@
 # angular2-generic-table
 
-A generic table for Angular 2. This project is a re-write of [this](https://github.com/hjalmers/angular-generic-table) project for angular 1, the idea is to have support for the same features and that the configuration should be the same. Generic table uses standard markup for tables ie. table, tr and td elements etc. and has support for expanding rows, search, filters, sorting, pagination, export to CSV (coming soon), column clicks, custom column rendering, custom export values. [View demo](https://hjalmers.github.io/angular2-generic-table/examples)
+A generic table for Angular 2. This project is a re-write of [this](https://github.com/hjalmers/angular-generic-table) project for angular 1, the idea is to have support for the same features and that the configuration should be the same. Generic table uses standard markup for tables ie. table, tr and td elements etc. and has support for expanding rows, search, filters, sorting, pagination, export to CSV, column clicks, custom column rendering, custom export values. [View demo](https://hjalmers.github.io/angular2-generic-table/examples)
 
 ## Features
 - Uses standard HTML tables (no divs etc.)
@@ -10,6 +10,8 @@ A generic table for Angular 2. This project is a re-write of [this](https://gith
 - Expanding rows with custom component
 - Use custom functions for sorting, exporting and rendering of data
 - Configure table using json object (add columns etc.)
+- Toggle column visibility
+- Export to CSV
 
 ## Installation and usage
 
@@ -158,7 +160,7 @@ Each column must have it's own settings object that can have the following prope
 | sort        | string  | "enable", "asc" or "desc" use "disable" to disable sorting                                        | 'enable'       | (OPTIONAL) |
 | sortOrder   | number  | initial sort order                                                                                | order in array | (OPTIONAL) |
 | columnOrder | number  | initial column order                                                                              | order in array | (OPTIONAL) |
-| export      | boolean | feature not available yet...                                                                      | true           | (OPTIONAL) |
+| export      | boolean | should column be included when exporting to CSV                                                   | true           | (OPTIONAL) |
 | search      | boolean | should column be included when using global search                                                | true           | (OPTIONAL) |
 
 **Usage:**
@@ -259,6 +261,7 @@ Currently the table emits the following events:
 | gt-page-changed       | page changed                                           | current state ex. {pageCurrent: current page, recordLength: current record length} |
 | gt-page-changed-lazy  | page changed and no data exits for new page            | current state ex. {pageCurrent: current page, recordLength: current record length} |
 | gt-info               | table info has changed (not emitted when lazy loading) | current state ex. {pageCurrent: current page, recordLength: current record length} |
+| gt-exported-csv       | table has exported data to csv file                    | file name                                                                          |
 
 
 **Usage:**
@@ -292,10 +295,14 @@ Override texts by passing a new object using `gtTexts` attribute.
 | noVisibleColumns        | Table content displayed when no columns are visible                                    | Please select at least one column to be visible.                                                                |
 | tableInfo               | Text displayed in table info component when neither search nor filter has been applied | Showing #recordFrom to #recordTo of #recordsAfterSearch entries.                                                |
 | tableInfoAfterSearch    | Text displayed in table info component when search or filter has been applied          | Showing,#recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries). |
+| csvDownload             | File name for CSV export (.csv is added by default)                                    | download                                                                                                        |
 
 ## Global table search and highlight
 
 Search and filter table using global search. Separate multiple search terms with a space [ ] or match whole phrase by putting them within quotes ["].
+
+Define custom search value for individual columns by declaring a custom search function in the fields array, ie. you might want the search to match one value but display/render another in the table ex. search for 100000 and display 1 000 000,00 in the table.
+
 Turn of search for individual columns by setting column setting property `search` to `false`.
 
 **Usage:** 
@@ -329,6 +336,17 @@ this.configObject.info:GtInformation = {
 ## Column visibility
 
 You can implement your own control for toggling column visibility, either bind directly to the settings array and alter the visibility property directly or create an object to hold the values until your ready to update. Don't forget to call 'redraw()' when you want the table to update ie. `(click)="myTable.redraw()"`
+
+## Export to CSV
+
+Export table data to CSV and optionally pass a file name. Please note that the table exports data after sort order, filters and global search have been applied. In case you use the lazy load feature you'll have to implement the export server-side.
+
+Define custom export value for individual columns by declaring a custom export function in the fields array, ie. you might want the export one value but display/render another in the table ex. export 100000 as a number but display it as a string 1 000 000,00 in the table.
+
+Turn of export for individual columns by setting column setting property `export` to `false`.
+
+**Usage:**
+`(click)="myTable.exportCSV('custom-file-name')"`
 
 ## Pagination
 

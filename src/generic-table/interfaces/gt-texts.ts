@@ -6,4 +6,5 @@ export interface GtTexts {
   noVisibleColumns: string;
   tableInfo: string;
   tableInfoAfterSearch: string;
+  csvDownload: string;
 }

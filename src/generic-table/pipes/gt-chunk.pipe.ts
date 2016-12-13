@@ -6,10 +6,11 @@ import {GtInformation} from '../interfaces/gt-information';
 })
 export class GtChunkPipe implements PipeTransform {
 
-  transform(array: any[],gtInfo:GtInformation, chunkSize: number, page: number, refreshPageArray: boolean, refreshData: number, gtEvent: EventEmitter<any>): any[] {
-    //console.log('chunk array');
-    //console.log(array,chunkSize,page);
+  transform(array: any[],gtInfo:GtInformation, chunkSize: number, page: number, refreshPageArray: boolean, refreshData: number, gtEvent: EventEmitter<any>, data:{exportData:Array<any>}): any[] {
+
     if(!Array.isArray(array)) return array;
+    data.exportData = array; // store data for export
+
     let pages = [];
     for (let i=0,len=array.length; i<len; i+=chunkSize)
       pages.push(array.slice(i,i+chunkSize));
