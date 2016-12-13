@@ -488,7 +488,9 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   /** Store filtered data for export */
   private data:{
     exportData:Array<any>
-  } = {};
+  } = {
+    exportData:[]
+  };
 
   /** Export data as CSV
    * @param {string} fileName - optional file name (overrides default file name).
