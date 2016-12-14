@@ -123,7 +123,7 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
     for (let i = 0; i < fields.length;i++){
       //console.log(!row[fields[i].objectKey]);
       if(fields[i].value && typeof fields[i].value === 'function' && !row[fields[i].objectKey]){
-        row[fields[i].objectKey] = fields[i].value(row);
+        row[fields[i].objectKey] = loading ? "":fields[i].value(row);
       }
     }
     //console.log(row);
@@ -144,8 +144,8 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
           sortValue: row[key]
         };
 
-        if(loading && row[key].indexOf('undefined') != -1){
-          columnObject.renderValue = "";
+        if(loading){
+          columnObject.renderValue = row[key] !== null ? row[key]:"";
         } else if (highlight && searchString && this.getProperty(settings,key).search !== false){
           columnObject.renderValue = fieldSetting.render && typeof fieldSetting.render === 'function' ? this.highlight(fieldSetting.render(row),searchString):this.highlight(row[key] !== null ? row[key]:"",searchString);
         } else {
