@@ -42,7 +42,8 @@ export class StaticComponent {
         objectKey:'name'
       },{
         name:'Lucky number',
-        objectKey:'lucky_number'
+        objectKey:'lucky_number',
+        stackedHeading:'Custom heading'
       }],
       data:[{
         "id": 1,

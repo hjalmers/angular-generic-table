@@ -12,13 +12,22 @@
           <option value=50>50</option>
           <option value=100>100</option>
         </select>
+      </div>
+      <div class="form-group">
         <input class="form-control form-control-sm" #search (keyup)="applySearch(search.value)" placeholder="Search"/>
       </div>
-      <button class="btn btn-secondary btn-sm" (click)="applyFilter();">Apply predefined filter</button>
-      <button class="btn btn-secondary btn-sm" (click)="myTable.gtClearFilter()">Remove filter</button>
-      <button class="btn btn-secondary btn-sm" (click)="addData()">Add data</button>
-      <button class="btn btn-secondary btn-sm" (click)="showColumnControls = !showColumnControls">Toggle columns</button>
-      <button class="btn btn-secondary btn-sm" (click)="myTable.exportCSV()">Export to CSV</button>
+      <div class="form-group">
+        <button class="btn btn-secondary btn-sm btn-block" (click)="applyFilter();">Apply predefined filter</button>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-secondary btn-sm btn-block" (click)="myTable.gtClearFilter()">Remove filter</button></div>
+      <div class="form-group">
+        <button class="btn btn-secondary btn-sm btn-block" (click)="addData()">Add data</button></div>
+      <div class="form-group">
+        <button class="btn btn-secondary btn-sm btn-block" (click)="showColumnControls = !showColumnControls">Toggle columns</button></div>
+      <div class="form-group">
+        <button class="btn btn-secondary btn-sm btn-block" (click)="myTable.exportCSV()">Export to CSV</button>
+      </div>
       <div class="form-group" *ngIf="showColumnControls">
         <label class="form-control-label">Visible columns</label>
         <div class="form-check" *ngFor="let column of configObject.settings">
@@ -31,7 +40,7 @@
       <small class="form-text text-muted"><gt-table-info [genericTable]="myTable"></gt-table-info></small>
 
     </form>
-    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtLazy]="false" [gtRowComponent]="expandedRow" [gtHighlightSearch]="true"></generic-table>
+    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtLazy]="false" [gtRowComponent]="expandedRow" [gtHighlightSearch]="true" [gtOptions]="{stack:true}"></generic-table>
     <div class="text-xs-center">
       <gt-pagination [genericTable]="myTable"></gt-pagination>
     </div>

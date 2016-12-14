@@ -16,6 +16,8 @@ export interface GtConfigField<R extends GtRow> {
   // name or label of field
   // (will be displayed as heading for column)
   name: string;
+  // heading used when columns are stacked (overrides name)
+  stackedHeading?: string;
   // key for mapping column to settings and data
   objectKey: string;
   // custom class names for column

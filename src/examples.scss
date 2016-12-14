@@ -50,7 +50,7 @@ th {
 }
 
 tr {
-  td.clickable > span {
+  td.clickable > span.gt-row-content {
     cursor: pointer;
     font-weight: bold;
     color: #337ab7;
@@ -64,7 +64,7 @@ tr {
     }
   }
   &.row-open {
-    td.clickable > span::before {
+    td.clickable > span.gt-row-content::before {
       content:"\f0d7"
     }
   }

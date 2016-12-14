@@ -7,4 +7,5 @@ export interface GtTexts {
   tableInfo: string;
   tableInfoAfterSearch: string;
   csvDownload: string;
+  sortLabel: string;
 }

@@ -70,7 +70,7 @@ export class LazyComponent {
         objectKey:'favorite_color',
         visible:true,
         enabled:true,
-        sort:'enable',
+        sort:'disable',
         sortOrder:0,
         columnOrder:4
       }],

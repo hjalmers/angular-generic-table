@@ -4,6 +4,9 @@ Release History
 ### Fixed
 - Render or value function won't be called until table has data, see issue #32
 
+### Added
+- Support for stacked columns (responsive layout for mobiles and tablets), see issue #37
+
 # [1.0.0-rc.10] - 2016-12-13
 ### Added
 - Ability to toggle column visibility, see issue #33
