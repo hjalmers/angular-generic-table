@@ -1,3 +1,6 @@
+// import font awesome
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+
 th {
   &.sort-enable {
     cursor: pointer;
@@ -11,7 +14,7 @@ th {
       text-decoration: underline;
     }
     &::after {
-      content: "\f0d8";
+      content: "";
       display: inline-block;
       font: normal normal normal 14px/1 FontAwesome;
       font-size: inherit;
@@ -21,9 +24,13 @@ th {
     }
     &.sort-numeric::after {
       content: "\f162";
+      border: none !important;
+      vertical-align: baseline !important;
     }
     &.sort-string::after {
       content: "\f15d";
+      border: none !important;
+      vertical-align: baseline !important;
     }
   }
   &.sort-desc {
@@ -32,7 +39,7 @@ th {
       text-decoration: underline;
     }
     &::after {
-      content: "\f0d7";
+      content: "";
       display: inline-block;
       font: normal normal normal 14px/1 FontAwesome;
       font-size: inherit;
@@ -42,9 +49,13 @@ th {
     }
     &.sort-numeric::after {
       content: "\f163";
+      border: none !important;
+      vertical-align: baseline !important;
     }
     &.sort-string::after {
       content: "\f15e";
+      border: none !important;
+      vertical-align: baseline !important;
     }
   }
 }
@@ -81,14 +92,5 @@ span.link {
   &:focus,&:hover {
     color: #014c8c;
     text-decoration: underline;
-  }
-}
-
-
-// Extra small devices (portrait phones, less than 544px)
-@media (max-width: 543px) {
-  .btn-block-xs {
-    display: block;
-    width: 100%;
   }
 }

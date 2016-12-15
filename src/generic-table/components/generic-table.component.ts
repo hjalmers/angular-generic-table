@@ -86,17 +86,18 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   @Input() gtSettings: GtConfigSetting[];
   @Input() gtFields: GtConfigField<R>[];
   @Input() gtData: Array<any>;
-  @Input() gtTexts:GtTexts = {
-    'loading':'Loading...',
-    'noData':'No data',
-    'noMatchingData':'No data matching results found',
-    'noVisibleColumnsHeading': 'No visible columns',
-    'noVisibleColumns': 'Please select at least one column to be visible.',
-    'tableInfo':'Showing #recordFrom to #recordTo of #recordsAfterSearch entries.',
-    'tableInfoAfterSearch':'Showing  #recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries).',
-    'csvDownload':'download',
-    'sortLabel':'Sort:'
+  public gtDefaultTexts:GtTexts = {
+    loading:"Loading...",
+    noData:"No data",
+    noMatchingData:"No data matching results found",
+    noVisibleColumnsHeading: "No visible columns",
+    noVisibleColumns:"Please select at least one column to be visible.",
+    tableInfo:"Showing #recordFrom to #recordTo of #recordsAfterSearch entries.",
+    tableInfoAfterSearch:"Showing  #recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries).",
+    csvDownload:"download",
+    sortLabel:"Sort:"
   };
+  @Input() gtTexts:GtTexts = this.gtDefaultTexts;
   @Input() gtClasses: string;
   @Output() gtEvent = new EventEmitter();
   public gtDefaultOptions:GtOptions = {
@@ -133,19 +134,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         this.updateRecordRange();
       }
     });
-
-
-    //console.log(this.gtOptions);
-
-    //console.log(this.gtOptions);
-    /*this.gtOptions.cache = typeof this.gtOptions.cache === 'undefined' ? false:this.gtOptions.cache;
-    this.gtOptions.debounceTime = typeof this.gtOptions.debounceTime === 'undefined' ? 200:this.gtOptions.debounceTime;
-    this.gtOptions.csvDelimiter = typeof this.gtOptions.csvDelimiter === 'undefined' ? ';':this.gtOptions.csvDelimiter;
-    this.gtOptions.stack = typeof this.gtOptions.stack === 'undefined' ? false:this.gtOptions.stack;
-    this.gtOptions.cache = typeof this.gtOptions.cache === 'undefined' ? false:this.gtOptions.cache;*/
   }
-
-
 
   /**
    * Sort table by object key.
@@ -649,11 +638,18 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
   ngOnChanges(changes:SimpleChanges) {
 
-    // if gt options has changed...
+    // if gt options have changed...
     if(changes['gtOptions']){
 
       // ...extend gtOptions default values with values passed into component
       this.gtOptions = <GtOptions>this.extend(this.gtDefaultOptions,this.gtOptions);
+    }
+
+    // if gt texts have changed...
+    if(changes['gtTexts']){
+
+      // ...extend gtOptions default values with values passed into component
+      this.gtTexts = <GtTexts>this.extend(this.gtDefaultTexts,this.gtTexts);
     }
 
     // if lazy loading data and paging information is available...

@@ -6,6 +6,7 @@ Release History
 
 ### Added
 - Support for stacked columns (responsive layout for mobiles and tablets) use `[gtOptions]="{stack:true}"` to enable feature, see issue #37
+- Basic styles for sorting and stacked columns (included in dist folder for sass and as a pre-compiled css)
 
 ### Breaking changes
 - `GtLazy` and `GtHighlightSearch` input/attributes have been moved into `GtOptions` ie. change from `[GtLazy]="true"` and `[GtHighlightSearch]="true"` to `[gtOptions]="{lazyLoad:true, highlightSearch:true}"`

@@ -226,23 +226,40 @@ The data for each row needs to be stored in an object where each key in the obje
 ## Table attributes/inputs
 To pass data, settings and configuration to the table using the following inputs:
 
-| Attribute         | Type      | Usage                                                                                  | Default |            |
-|:------------------|:----------|:---------------------------------------------------------------------------------------|:--------|:-----------|
-| gtSettings        | array     | used for passing settings                                                              |         |            |
-| gtFields          | array     | used for passing field definitions                                                     |         |            |
-| gtData            | array     | used for passing data                                                                  |         |            |
-| gtClasses         | string    | used for adding classes to table element                                               |         | (OPTIONAL) |
-| gtTexts           | object    | use to override default texts                                                          |         | (OPTIONAL) |
-| gtHighlightSearch | boolean   | should table highlight matched search terms, style using .gt-highlight-search selector | false   | (OPTIONAL) |
-| gtLazy            | boolean   | set to true if data is loaded using lazy loading, don't forget to pass gtInfo          | false   | (OPTIONAL) |
-| gtInfo            | object    | used for passing record info to table (lazy loading only)                              |         | (OPTIONAL) |
-| gtRowComponent    | component | used for passing expanding row component to table                                      |         | (OPTIONAL) |
+| Attribute         | Type      | Usage                                                                                  |            |
+|:------------------|:----------|:---------------------------------------------------------------------------------------|:-----------|
+| gtSettings        | array     | used for passing settings                                                              |            |
+| gtFields          | array     | used for passing field definitions                                                     |            |
+| gtData            | array     | used for passing data                                                                  |            |
+| gtClasses         | string    | used for adding classes to table element                                               | (OPTIONAL) |
+| gtTexts           | object    | use to override default texts                                                          | (OPTIONAL) |
+| gtOptions         | object    | use to override default table options (see available options below)                    | (OPTIONAL) |
+| gtInfo            | object    | used for passing record info to table (lazy loading only)                              | (OPTIONAL) |
+| gtRowComponent    | component | used for passing expanding row component to table                                      | (OPTIONAL) |
 
 **Usage:**
 ```
-<generic-table [gtClasses]="'table-hover'" [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtRowComponent]="expandedRow" [gtHighlightSearch]="true"></generic-table>
+<generic-table [gtClasses]="'table-hover'" [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtRowComponent]="expandedRow" [gtOptions]="{lazyLoad:true}"></generic-table>
 ```
 
+## Table options
+Available options:
+
+| Name            | Type        | Usage                                                                                  | Default |            |
+|:----------------|:------------|:---------------------------------------------------------------------------------------|:--------|:-----------|
+| csvDelimiter    | string      | csv delimiter when exporting to CSV file                                               | ";"     | (OPTIONAL) |
+| stack           | boolean     | stack columns on mobile devices and tablets, requires css (included)                   | false   | (OPTIONAL) |
+| lazyLoad        | boolean     | should table lazy load data                                                            | false   | (OPTIONAL) |
+| cache           | boolean     | should table cache data when lazy loading                                              | false   | (OPTIONAL) |
+| debounceTime    | number (ms) | prevent multiple server requests for data when lazy loading by setting a debounce time | 200     | (OPTIONAL) |
+| highlightSearch | boolean     | should table highlight matched search terms, style using .gt-highlight-search selector | false   | (OPTIONAL) |
+
+
+
+**Usage:**
+```
+<generic-table ... [gtOptions]="{lazy:true, cache: true}"></generic-table>
+```
 
 ## Table events
 The table emits events using `gtEvent`, the events are passed in an object which looks like this:
@@ -296,6 +313,14 @@ Override texts by passing a new object using `gtTexts` attribute.
 | tableInfo               | Text displayed in table info component when neither search nor filter has been applied | Showing #recordFrom to #recordTo of #recordsAfterSearch entries.                                                |
 | tableInfoAfterSearch    | Text displayed in table info component when search or filter has been applied          | Showing,#recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries). |
 | csvDownload             | File name for CSV export (.csv is added by default)                                    | download                                                                                                        |
+| sortLabel               | Text for sort label shown when tables columns are stacked                              | Sort:                                                                                                           |
+
+
+**Usage:**
+
+```
+<generic-table ... [gtTexts]="{loading:'Loading data...'}"></generic-table>
+```
 
 ## Global table search and highlight
 
