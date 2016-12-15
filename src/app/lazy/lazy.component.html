@@ -22,7 +22,7 @@
           Please note that the mock service currently doesn't support search, this is why this example has a fixed search string (just to show the highlight feature together with lazy load). Do the search server-side and return search terms in your response. Separate multiple search terms with a space [ ] or match whole phrase by putting them within quotes ["].
         </small>
     </form>
-    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtInfo]="configObject.info" [gtLazy]="true" [gtRowComponent]="expandedRow" (gtEvent)="trigger($event)" [gtHighlightSearch]="true" [gtOptions]="{stack:true, cache:false}"></generic-table>
+    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtInfo]="configObject.info" [gtRowComponent]="expandedRow" (gtEvent)="trigger($event)" [gtOptions]="{stack:true, highlightSearch:true, lazyLoad:true}"></generic-table>
     <div class="text-xs-center">
       <gt-pagination [genericTable]="myTable"></gt-pagination>
     </div>

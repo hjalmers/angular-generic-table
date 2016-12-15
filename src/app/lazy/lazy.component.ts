@@ -126,7 +126,7 @@ export class LazyComponent {
       .map((res: Response) => res.json())
       .subscribe(res => {
         this.configObject.data = res.data;
-        this.configObject.info = <GtInformation>res.paging;
+        this.configObject.info = <GtInformation>res['paging'];
         this.configObject.info.searchTerms = 'al';
       });
   };

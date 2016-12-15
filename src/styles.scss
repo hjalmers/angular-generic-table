@@ -6,7 +6,8 @@
 span.gt-row-label, th.gt-sort-label {
   display: none;
 }
-@media (max-width: 576px) {
+//@media (max-width: 576px) {
+@media (max-width: 768px) {
   //div.generic-table {
   table.table-stacked {
     thead tr {

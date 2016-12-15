@@ -5,7 +5,10 @@ Release History
 - Render or value function won't be called until table has data, see issue #32
 
 ### Added
-- Support for stacked columns (responsive layout for mobiles and tablets), see issue #37
+- Support for stacked columns (responsive layout for mobiles and tablets) use `[gtOptions]="{stack:true}"` to enable feature, see issue #37
+
+### Breaking changes
+- `GtLazy` and `GtHighlightSearch` input/attributes have been moved into `GtOptions` ie. change from `[GtLazy]="true"` and `[GtHighlightSearch]="true"` to `[gtOptions]="{lazyLoad:true, highlightSearch:true}"`
 
 # [1.0.0-rc.10] - 2016-12-13
 ### Added

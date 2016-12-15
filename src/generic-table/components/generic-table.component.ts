@@ -1,5 +1,5 @@
 import {
-  Component, OnInit, OnChanges, Output, Input, EventEmitter, Type
+  Component, OnInit, OnChanges, Output, Input, EventEmitter, Type, SimpleChanges
 } from '@angular/core';
 import 'rxjs/Rx';
 import {GtConfig} from '../interfaces/gt-config';
@@ -20,10 +20,10 @@ import {GtOptions} from '../interfaces/gt-options';
     <th class="gt-sort-label" *ngIf="gtOptions.stack">{{gtTexts.sortLabel}}</th><th *ngFor="let column of gtFields | gtVisible:gtSettings:refreshPipe" ngClass="{{column.objectKey +'-column' | dashCase}} {{column.classNames}} sort-{{gtSettings | gtProperty:column.objectKey:'sort':refreshHeading}} sort-order-{{gtSettings | gtProperty:column.objectKey:'sortOrder':refreshHeading}}" (click)="gtSort(column.objectKey,$event);refreshHeading = !refreshHeading">{{column.name}}</th>
   </tr>
   </thead>
-  <tbody *ngIf="gtLazy && gtInfo">
+  <tbody *ngIf="gtOptions.lazyLoad && gtInfo">
   <template class="table-rows" ngFor let-row [ngForOf]="gtData[gtInfo.pageCurrent-1]">
     <tr ngClass="{{row.isOpen ? 'row-open':''}}{{loading ? 'row-loading':''}}">
-      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtHighlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span class="gt-row-label" *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading')? (gtFields | gtProperty:column.objectKey:'stackedHeading'):(gtFields | gtProperty:column.objectKey:'name')}}</span><span class="gt-row-content" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
+      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span class="gt-row-label" *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading')? (gtFields | gtProperty:column.objectKey:'stackedHeading'):(gtFields | gtProperty:column.objectKey:'name')}}</span><span class="gt-row-content" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
     </tr>
     <tr class="expanded-row" *ngIf="row.isOpen">
       <td [attr.colspan]="(gtFields | gtVisible:gtSettings:refreshPipe).length">
@@ -41,10 +41,10 @@ import {GtOptions} from '../interfaces/gt-options';
    <td class="gt-loading-data" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.loading}}</td>
   </tr>
   </tbody>
-  <tbody *ngIf="!gtLazy && gtData">
+  <tbody *ngIf="!gtOptions.lazyLoad && gtData">
   <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data">
     <tr ngClass="{{row.isOpen ? 'row-open':''}}">
-      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtHighlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span class="gt-row-label" *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading')? (gtFields | gtProperty:column.objectKey:'stackedHeading'):(gtFields | gtProperty:column.objectKey:'name')}}</span><span class="gt-row-content" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
+      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span class="gt-row-label" *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading')? (gtFields | gtProperty:column.objectKey:'stackedHeading'):(gtFields | gtProperty:column.objectKey:'name')}}</span><span class="gt-row-content" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
     </tr>
     <tr class="expanded-row" *ngIf="row.isOpen">
       <td [attr.colspan]="(gtFields | gtVisible:gtSettings:refreshPipe).length">
@@ -86,7 +86,6 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   @Input() gtSettings: GtConfigSetting[];
   @Input() gtFields: GtConfigField<R>[];
   @Input() gtData: Array<any>;
-  @Input() gtLazy: boolean = false;
   @Input() gtTexts:GtTexts = {
     'loading':'Loading...',
     'noData':'No data',
@@ -99,15 +98,16 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     'sortLabel':'Sort:'
   };
   @Input() gtClasses: string;
-  @Input() gtHighlightSearch: boolean = false;
-  @Output() lazyLoad = new EventEmitter();
   @Output() gtEvent = new EventEmitter();
-  @Input() gtOptions:GtOptions = {
+  public gtDefaultOptions:GtOptions = {
+    csvDelimiter:';',
+    stack:false,
+    lazyLoad:false,
     cache:false,
     debounceTime:200,
-    csvDelimiter:';',
-    stack:false
+    highlightSearch:false
   };
+  @Input() gtOptions:GtOptions = this.gtDefaultOptions;
   public store: Array<any> = [];
   public loading: boolean = true;
   private debounceTimer:void = null;
@@ -133,7 +133,18 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         this.updateRecordRange();
       }
     });
+
+
+    //console.log(this.gtOptions);
+
+    //console.log(this.gtOptions);
+    /*this.gtOptions.cache = typeof this.gtOptions.cache === 'undefined' ? false:this.gtOptions.cache;
+    this.gtOptions.debounceTime = typeof this.gtOptions.debounceTime === 'undefined' ? 200:this.gtOptions.debounceTime;
+    this.gtOptions.csvDelimiter = typeof this.gtOptions.csvDelimiter === 'undefined' ? ';':this.gtOptions.csvDelimiter;
+    this.gtOptions.stack = typeof this.gtOptions.stack === 'undefined' ? false:this.gtOptions.stack;
+    this.gtOptions.cache = typeof this.gtOptions.cache === 'undefined' ? false:this.gtOptions.cache;*/
   }
+
 
 
   /**
@@ -260,7 +271,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     let newPosition = 1;
 
     // if reset is not true and we're not lazy loading data...
-    if(reset !== true && this.gtLazy !== true){
+    if(reset !== true && this.gtOptions.lazyLoad !== true){
 
       // ...get current position in record set
       let currentRecord = this.gtInfo.recordLength * (this.gtInfo.pageCurrent-1);
@@ -277,7 +288,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     this.gtInfo.pageCurrent = newPosition;
 
     // if lazy loading data...
-    if(this.gtLazy){
+    if(this.gtOptions.lazyLoad){
 
       // ...replace data with place holders for new data
       this.gtData[0] = this.loadingContent(rowLength);
@@ -346,7 +357,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     this.gtInfo.pageCurrent = page;
 
     // if lazy loading and if page contains no records...
-    if(this.gtLazy){
+    if(this.gtOptions.lazyLoad){
 
       // ...if data for current page contains no entries...
       if(this.gtOptions.cache === false || this.gtData[this.gtInfo.pageCurrent-1].length === 0) {
@@ -578,7 +589,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
      *  This is done by checking sort properties in the settings array of the table, if no sorting is defined
      *  we'll sort the data by the first visible and enabled column in the table(ascending). */
     // if not using lazy loading...
-    if(!this.gtLazy) {
+    if(!this.gtOptions.lazyLoad) {
 
       // ...create sorting array
       let sorting = [];
@@ -626,9 +637,27 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
   }
 
-  ngOnChanges() {
+  /**
+   *  Extend object function.
+   */
+  private extend =function(a:Object, b:Object){
+    for(let key in b)
+      if(b.hasOwnProperty(key))
+        a[key] = b[key];
+    return a;
+  };
+
+  ngOnChanges(changes:SimpleChanges) {
+
+    // if gt options has changed...
+    if(changes['gtOptions']){
+
+      // ...extend gtOptions default values with values passed into component
+      this.gtOptions = <GtOptions>this.extend(this.gtDefaultOptions,this.gtOptions);
+    }
+
     // if lazy loading data and paging information is available...
-    if(this.gtLazy && this.gtInfo){
+    if(this.gtOptions.lazyLoad && this.gtInfo){
 
       // ...calculate total number of pages
       this.gtInfo.pageTotal = Math.ceil(this.gtInfo.recordsAfterSearch/this.gtInfo.recordLength);

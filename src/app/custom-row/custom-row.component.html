@@ -1,8 +1,8 @@
 <div class="row">
-<div class="col-xs-12">
+<div class="col-sm-12">
   <div class="row">
-    <h4 class="col-xs-10">My custom row component</h4>
-    <div class="col-xs-2 text-xs-right">
+    <h4 class="col-sm-10">My custom row component</h4>
+    <div class="col-sm-2 text-sm-right">
       <i class="fa fa-close fa-lg" (click)="$hide()" aria-hidden="true"></i>
     </div>
   </div>
@@ -23,9 +23,9 @@
       <div style="border-radius: 50%;width: 55px;height: 55px;display: inline-block;vertical-align: middle;" [style.background]="row.favorite_color"></div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-xs-12 col-sm-3 col-lg-2">
-      <button class="btn btn-primary btn-block-xs" (click)="newRandomColor();$redraw();">New random color</button>
+  <div class="form-inline text-xs-right">
+    <div class="form-group">
+      <button class="btn btn-primary btn-block" (click)="newRandomColor();$redraw();">New random color</button>
     </div>
   </div>
 </div>

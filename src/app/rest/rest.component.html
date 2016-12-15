@@ -40,7 +40,7 @@
       <small class="form-text text-muted"><gt-table-info [genericTable]="myTable"></gt-table-info></small>
 
     </form>
-    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtLazy]="false" [gtRowComponent]="expandedRow" [gtHighlightSearch]="true" [gtOptions]="{stack:true}"></generic-table>
+    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtRowComponent]="expandedRow" [gtOptions]="{stack:true, highlightSearch:true}"></generic-table>
     <div class="text-xs-center">
       <gt-pagination [genericTable]="myTable"></gt-pagination>
     </div>
