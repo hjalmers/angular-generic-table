@@ -1,15 +1,13 @@
 Release History
 ---------------
 ## [Unreleased]
-# [1.0.0] - 2016-12-16
 ### Fixed
-- Render or value function won't be called until table has data (issue #32)
+- Render or value function won't be called until table has data, see issue #32
 - Include *.metadata.json files in build (issue #38)
-- Include sass and css in build for styling
 
 ### Added
 - Support for stacked columns (responsive layout for mobiles and tablets) use `[gtOptions]="{stack:true}"` to enable feature, see issue #37
-- Basic styles for sorting and stacked columns (included in npm package for sass and as a pre-compiled css)
+- Basic styles for sorting and stacked columns (included in dist folder for sass and as a pre-compiled css)
 
 ### Breaking changes
 - `GtLazy` and `GtHighlightSearch` input/attributes have been moved into `GtOptions` ie. change from `[GtLazy]="true"` and `[GtHighlightSearch]="true"` to `[gtOptions]="{lazyLoad:true, highlightSearch:true}"`
