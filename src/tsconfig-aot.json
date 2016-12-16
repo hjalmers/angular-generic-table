@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "",
-    "declaration": false,
+    "declaration": true,
     "emitBOM": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -22,5 +22,12 @@
   },
   "files": [
     "index.ts"
-  ]
+  ],
+  "angularCompilerOptions": {
+    "debug": true,
+    "genDir": "../",
+    "generateCodeForLibraries": false,
+    "strictMetadataEmit": true,
+    "trace": true
+  }
 }

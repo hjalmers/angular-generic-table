@@ -3,6 +3,7 @@ Release History
 ## [Unreleased]
 ### Fixed
 - Render or value function won't be called until table has data, see issue #32
+- Include *.metadata.json files in build (issue #38)
 
 ### Added
 - Support for stacked columns (responsive layout for mobiles and tablets) use `[gtOptions]="{stack:true}"` to enable feature, see issue #37

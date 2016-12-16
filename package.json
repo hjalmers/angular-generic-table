@@ -13,11 +13,13 @@
     "test": "ng test",
     "pree2e": "webdriver-manager update",
     "e2e": "protractor",
-    "clean": "rimraf generic-table index.js index.js.map index.d.ts",
-    "prebuild": "npm run clean",
-    "build": "tsc -d -p src",
-    "prepublish": "npm run build",
-    "postpublish": "npm run clean"
+    "clean": "rimraf generic-table \"index.@(js|js.map|d.ts|metadata.json)\"",
+    "clean:factory": "rimraf \"generic-table/**/*.ngfactory.ts\"",
+    "prebuild": "npm run -s clean",
+    "build": "ngc -p src/tsconfig-aot.json",
+    "postbuild": "npm run -s clean:factory",
+    "prepublish": "npm run -s build",
+    "postpublish": "npm run -s clean"
   },
   "private": false,
   "publishConfig": {
