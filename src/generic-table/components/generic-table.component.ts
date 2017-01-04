@@ -25,7 +25,7 @@ import {GtOptions} from '../interfaces/gt-options';
     <tr ngClass="{{row.isOpen ? 'row-open':''}}{{loading ? 'row-loading':''}}">
       <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span class="gt-row-label" *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading')? (gtFields | gtProperty:column.objectKey:'stackedHeading'):(gtFields | gtProperty:column.objectKey:'name')}}</span><span class="gt-row-content" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
     </tr>
-    <tr class="expanded-row" *ngIf="row.isOpen">
+    <tr class="row-expanded" *ngIf="row.isOpen">
       <td [attr.colspan]="(gtFields | gtVisible:gtSettings:refreshPipe).length">
         <gt-expanding-row [row]="row" [type]="gtRowComponent" (redrawEvent)="redraw($event)"></gt-expanding-row>
       </td>
@@ -46,7 +46,7 @@ import {GtOptions} from '../interfaces/gt-options';
     <tr ngClass="{{row.isOpen ? 'row-open':''}}">
       <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span class="gt-row-label" *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading')? (gtFields | gtProperty:column.objectKey:'stackedHeading'):(gtFields | gtProperty:column.objectKey:'name')}}</span><span class="gt-row-content" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
     </tr>
-    <tr class="expanded-row" *ngIf="row.isOpen">
+    <tr class="row-expanded" *ngIf="row.isOpen">
       <td [attr.colspan]="(gtFields | gtVisible:gtSettings:refreshPipe).length">
         <gt-expanding-row [row]="row" [type]="gtRowComponent" (redrawEvent)="redraw($event)"></gt-expanding-row>
       </td>

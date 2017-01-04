@@ -1,6 +1,10 @@
 Release History
 ---------------
 ## [Unreleased]
+### Fixed
+- Changed class name for expanded row from `expanded-row` to `row-expanded` to be more consistent (issue #39)
+
+
 # [1.0.0] - 2016-12-16
 ### Fixed
 - Render or value function won't be called until table has data (issue #32)
