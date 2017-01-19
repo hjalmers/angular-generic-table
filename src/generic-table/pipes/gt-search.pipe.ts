@@ -19,7 +19,7 @@ export class GtSearchPipe<R extends GtRow> implements PipeTransform {
     }
   };
 
-  transform(allRows: any, searchTerms: string,gtInfo:GtInformation,settings: Array<GtConfigSetting>, fields: Array<GtConfigField<R>>, refreshData: number): any {
+  transform(allRows: any, searchTerms: string,gtInfo:GtInformation,settings: Array<GtConfigSetting>, fields: Array<GtConfigField<R,any>>, refreshData: number): any {
 
     //  if no search terms are defined...
     if(!searchTerms || searchTerms.replace(/"/g,"").length === 0){

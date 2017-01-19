@@ -1,4 +1,9 @@
 import { GtRow } from './gt-row';
+import {
+  Type,
+  Injector
+} from '@angular/core';
+import { GtCustomComponent } from '../components/gt-custom-component-factory';
 
 export interface GtRenderFunc<R extends GtRow> {
   (row: R): string;
@@ -12,7 +17,7 @@ export interface GtClickFunc<R extends GtRow> {
   (row: R, col: any): void;
 }
 
-export interface GtConfigField<R extends GtRow> {
+export interface GtConfigField<R extends GtRow, C extends GtCustomComponent<any>> {
   // name or label of field
   // (will be displayed as heading for column)
   name: string;
@@ -22,6 +27,8 @@ export interface GtConfigField<R extends GtRow> {
   objectKey: string;
   // custom class names for column
   classNames?: string;
+  // custom column component and associated injector
+  columnComponent?: { type: Type<C>, injector?: Injector },
   // custom function for column presentation
   render?: GtRenderFunc<R>;
   // should the field be compiled (false by default)

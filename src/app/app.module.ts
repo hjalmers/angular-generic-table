@@ -10,6 +10,11 @@ import { CustomRowComponent } from './custom-row/custom-row.component';
 import { StaticComponent } from './static/static.component';
 import { ExamplesComponent } from './examples/examples.component';
 import { AppRoutingModule } from './app-routing.module';
+import {
+  CustomColumnComponent,
+  NameComponent,
+  AgeComponent
+} from './custom-column/custom-column.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +22,9 @@ import { AppRoutingModule } from './app-routing.module';
     LazyComponent,
     RestComponent,
     CustomRowComponent,
+    CustomColumnComponent,
+    NameComponent,
+    AgeComponent,
     StaticComponent,
     ExamplesComponent
   ],
@@ -27,7 +35,12 @@ import { AppRoutingModule } from './app-routing.module';
     GenericTableModule,
     AppRoutingModule
   ],
-  entryComponents: [ CustomRowComponent ],
+  entryComponents: [
+    CustomRowComponent,
+    NameComponent,
+    AgeComponent
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

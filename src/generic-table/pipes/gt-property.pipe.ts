@@ -8,7 +8,7 @@ import { GtRow } from '../interfaces/gt-row';
 })
 export class GtPropertyPipe<R extends GtRow> implements PipeTransform {
 
-  transform(config: GtConfigField<R>[] | GtConfigSetting[], objectKey: string, property: string, refresh?: boolean): any {
+  transform(config: GtConfigField<R,any>[] | GtConfigSetting[], objectKey: string, property: string, refresh?: boolean): any {
     try {
       var output = null;
       for (var i = 0; i < config.length;i++){

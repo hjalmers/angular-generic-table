@@ -18,14 +18,14 @@ export class GtVisiblePipe<R extends GtRow> implements PipeTransform {
     return 0;
   };
 
-  transform(array: Array<GtConfigField<R>>, settings: Array<GtConfigSetting>): Array<GtConfigField<R>> {
+  transform(array: Array<GtConfigField<R,any>>, settings: Array<GtConfigSetting>): Array<GtConfigField<R,any>> {
     let visibleColumns = settings.sort(this.getColumnOrder).map((setting:GtConfigSetting) => {
       if(setting.visible !== false && setting.enabled !== false) {
         return setting.objectKey;
       }
     });
 
-    let columns = array.filter((column: GtConfigField<R>) => {
+    let columns = array.filter((column: GtConfigField<R,any>) => {
         return visibleColumns.indexOf(column.objectKey) !== -1;
     }).sort(function(a,b){
       return visibleColumns.indexOf(a.objectKey) < visibleColumns.indexOf(b.objectKey) ? -1 : 1;

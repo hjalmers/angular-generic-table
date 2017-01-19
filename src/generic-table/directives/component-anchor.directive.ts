@@ -4,6 +4,7 @@ import {
   ComponentRef,
   Directive,
   EventEmitter,
+  Injector,
   Input,
   OnInit,
   Output,
@@ -15,8 +16,8 @@ import {
   selector: '[appComponentAnchor]'
 })
 export class ComponentAnchorDirective<C> implements OnInit {
-
   @Input() ctor: Type<C>;
+  @Input() injector: Injector;
   @Output() instance: EventEmitter<C> = new EventEmitter<C>();
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver,
@@ -27,8 +28,7 @@ export class ComponentAnchorDirective<C> implements OnInit {
     const factory: ComponentFactory<C> = this.componentFactoryResolver
       .resolveComponentFactory(this.ctor);
     const component: ComponentRef<C> = this.viewContainer
-      .createComponent(factory);
+      .createComponent(factory, 0, this.injector);
     this.instance.emit(component.instance);
   }
-
 }

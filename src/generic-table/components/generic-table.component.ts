@@ -1,19 +1,26 @@
 import {
-  Component, OnInit, OnChanges, Output, Input, EventEmitter, Type, SimpleChanges
+  Component,
+  OnInit,
+  OnChanges,
+  Output,
+  Input,
+  EventEmitter,
+  Type,
+  SimpleChanges
 } from '@angular/core';
 import 'rxjs/Rx';
-import {GtConfig} from '../interfaces/gt-config';
-import {GtConfigField} from "../interfaces/gt-config-field";
-import {GtConfigSetting} from "../interfaces/gt-config-setting";
-import {GtTexts} from '../interfaces/gt-texts';
-import {GtInformation} from '../interfaces/gt-information';
-import {GtExpandedRow} from './gt-expanding-row.component';
-import {GtRow} from '../interfaces/gt-row';
-import {GtOptions} from '../interfaces/gt-options';
+import { GtConfig } from '../interfaces/gt-config';
+import { GtConfigField } from '../interfaces/gt-config-field';
+import { GtConfigSetting } from '../interfaces/gt-config-setting';
+import { GtTexts } from '../interfaces/gt-texts';
+import { GtInformation } from '../interfaces/gt-information';
+import { GtExpandedRow } from './gt-expanding-row.component';
+import { GtRow } from '../interfaces/gt-row';
+import { GtOptions } from '../interfaces/gt-options';
 
 @Component({
   selector: 'generic-table',
-  template:`
+  template: `
 <table class="table" ngClass="{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}" *ngIf="(gtFields | gtVisible:gtSettings:refreshPipe).length > 0">
   <thead>
   <tr>
@@ -44,7 +51,7 @@ import {GtOptions} from '../interfaces/gt-options';
   <tbody *ngIf="!gtOptions.lazyLoad && gtData">
   <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data">
     <tr ngClass="{{row.isOpen ? 'row-open':''}}">
-      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span class="gt-row-label" *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading')? (gtFields | gtProperty:column.objectKey:'stackedHeading'):(gtFields | gtProperty:column.objectKey:'name')}}</span><span class="gt-row-content" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
+      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span class="gt-row-label" *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading')? (gtFields | gtProperty:column.objectKey:'stackedHeading'):(gtFields | gtProperty:column.objectKey:'name')}}</span><gt-custom-component-factory *ngIf="column.columnComponent" class="gt-row-content" [type]="column.columnComponent.type" [injector]="column.columnComponent.injector" [row]="row" [column]="column" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></gt-custom-component-factory><span *ngIf="!column.columnComponent" class="gt-row-content" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
     </tr>
     <tr class="row-expanded" *ngIf="row.isOpen">
       <td [attr.colspan]="(gtFields | gtVisible:gtSettings:refreshPipe).length">
@@ -84,49 +91,49 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   public sortOrder: Array<any> = [];
 
   @Input() gtSettings: GtConfigSetting[];
-  @Input() gtFields: GtConfigField<R>[];
+  @Input() gtFields: GtConfigField<R,any>[];
   @Input() gtData: Array<any>;
-  public gtDefaultTexts:GtTexts = {
-    loading:"Loading...",
-    noData:"No data",
-    noMatchingData:"No data matching results found",
+  public gtDefaultTexts: GtTexts = {
+    loading: "Loading...",
+    noData: "No data",
+    noMatchingData: "No data matching results found",
     noVisibleColumnsHeading: "No visible columns",
-    noVisibleColumns:"Please select at least one column to be visible.",
-    tableInfo:"Showing #recordFrom to #recordTo of #recordsAfterSearch entries.",
-    tableInfoAfterSearch:"Showing  #recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries).",
-    csvDownload:"download",
-    sortLabel:"Sort:"
+    noVisibleColumns: "Please select at least one column to be visible.",
+    tableInfo: "Showing #recordFrom to #recordTo of #recordsAfterSearch entries.",
+    tableInfoAfterSearch: "Showing  #recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries).",
+    csvDownload: "download",
+    sortLabel: "Sort:"
   };
-  @Input() gtTexts:GtTexts = this.gtDefaultTexts;
+  @Input() gtTexts: GtTexts = this.gtDefaultTexts;
   @Input() gtClasses: string;
   @Output() gtEvent = new EventEmitter();
-  public gtDefaultOptions:GtOptions = {
-    csvDelimiter:';',
-    stack:false,
-    lazyLoad:false,
-    cache:false,
-    debounceTime:200,
-    highlightSearch:false
+  public gtDefaultOptions: GtOptions = {
+    csvDelimiter: ';',
+    stack: false,
+    lazyLoad: false,
+    cache: false,
+    debounceTime: 200,
+    highlightSearch: false
   };
-  @Input() gtOptions:GtOptions = this.gtDefaultOptions;
+  @Input() gtOptions: GtOptions = this.gtDefaultOptions;
   public store: Array<any> = [];
   public loading: boolean = true;
-  private debounceTimer:void = null;
-  public loadingProperty:string;
+  private debounceTimer: void = null;
+  public loadingProperty: string;
 
-  @Input() gtInfo:GtInformation = {
-    pageCurrent:1,
-    pageTotal:0,
-    recordFrom:0,
-    recordTo:0,
-    recordLength:10,
-    recordsAll:0,
-    recordsAfterFilter:0,
-    recordsAfterSearch:0
+  @Input() gtInfo: GtInformation = {
+    pageCurrent: 1,
+    pageTotal: 0,
+    recordFrom: 0,
+    recordTo: 0,
+    recordLength: 10,
+    recordsAll: 0,
+    recordsAfterFilter: 0,
+    recordsAfterSearch: 0
   };
 
-  private refreshPipe:boolean = false;
-  private refreshSorting:boolean = false;
+  private refreshPipe: boolean = false;
+  private refreshSorting: boolean = false;
 
   constructor() {
     this.gtEvent.subscribe($event => {
@@ -141,13 +148,13 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    * @param {string} objectKey - name of key to sort on.
    * @param {any} event - such as key press during sorting.
    */
-  private gtSort = function(objectKey:string,event:any){
+  private gtSort = function (objectKey: string, event: any) {
     //console.log('key pressed:',objectKey,event.metaKey);
 
     // check if sorting is disabled
-    for (let i = 0; i < this.gtSettings.length;i++){
-      if(this.gtSettings[i].objectKey === objectKey){
-        if(this.gtSettings[i].sort === 'disable') {
+    for (let i = 0; i < this.gtSettings.length; i++) {
+      if (this.gtSettings[i].objectKey === objectKey) {
+        if (this.gtSettings[i].sort === 'disable') {
           return;
         }
       }
@@ -162,20 +169,20 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     let pos = -1;
 
     // check if property already exits
-    for(let i = 0; i < sort.length; i++) {
+    for (let i = 0; i < sort.length; i++) {
       let hit = sort[i].indexOf(objectKey);
       //console.log('match:',sort[i],objectKey,match,hit);
-      if(hit !== -1){
+      if (hit !== -1) {
         //console.log('MATCH',this.sortOrder,objectKey);
         match = this.sortOrder.indexOf(objectKey);
-        matchDesc = match === -1 ?  this.sortOrder.indexOf('-' + objectKey):match;
+        matchDesc = match === -1 ? this.sortOrder.indexOf('-' + objectKey) : match;
         pos = Math.max(match, matchDesc);
       }
     }
 
     // if ctrl key or meta key is press together with sort...
-    if(ctrlKey){
-      switch(pos){
+    if (ctrlKey) {
+      switch (pos) {
         // ...and property is not sorted before...
         case -1:
           // ...add property to sorting
@@ -183,13 +190,13 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
           break;
         default:
           // ...and property is sorted before...
-          if(match !== -1){
+          if (match !== -1) {
             // ...change from asc to desc if sorted asc
-            this.sortOrder[pos] = '-'+objectKey;
+            this.sortOrder[pos] = '-' + objectKey;
           } else if (this.sortOrder.length > 1) {
             // ...remove sorting if sorted desc
-            this.sortOrder.splice(pos,1);
-          } else if (this.sortOrder.length === 1){
+            this.sortOrder.splice(pos, 1);
+          } else if (this.sortOrder.length === 1) {
             // ...set sorting to asc if only sorted property
             this.sortOrder[pos] = objectKey;
           }
@@ -198,7 +205,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     }
     // if ctrl key or meta key is not press together with sort...
     else {
-      switch(pos){
+      switch (pos) {
         // ...and property is not sorted before...
         case -1:
           // ...sort by property
@@ -206,15 +213,15 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
           break;
         default:
           // ...change from desc to asc and vise versa
-          this.sortOrder = match !== -1? ['-'+objectKey]:[objectKey];
+          this.sortOrder = match !== -1 ? ['-' + objectKey] : [objectKey];
           break;
       }
     }
 
     // update settings object with new sorting information
-    for (let i = 0; i < this.gtSettings.length;i++){
-      if(this.gtSettings[i].objectKey === objectKey){
-        switch(this.gtSettings[i].sort) {
+    for (let i = 0; i < this.gtSettings.length; i++) {
+      if (this.gtSettings[i].objectKey === objectKey) {
+        switch (this.gtSettings[i].sort) {
           // if sorted asc...
           case 'asc':
             // ...change to desc
@@ -223,7 +230,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
           // if sorted desc...
           case 'desc':
             // ...change to asc if it's the only sorted property otherwise remove sorting
-            this.gtSettings[i].sort = this.sortOrder.length === 1  && sort.length < 2 ? 'asc':'enable';
+            this.gtSettings[i].sort = this.sortOrder.length === 1 && sort.length < 2 ? 'asc' : 'enable';
             break;
           // if sorting enabled...
           case 'enable':
@@ -231,10 +238,10 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
             this.gtSettings[i].sort = 'asc';
             break;
         }
-        this.gtSettings[i].sortOrder = this.gtSettings[i].sort === 'enable' ? (this.gtSettings.length -1) :this.sortOrder.indexOf(objectKey) === -1 ? this.sortOrder.indexOf('-'+objectKey) : this.sortOrder.indexOf(objectKey);
-      } else if(this.gtSettings[i].sort !== 'disable' && this.sortOrder.indexOf(this.gtSettings[i].objectKey) === -1 && this.sortOrder.indexOf('-'+this.gtSettings[i].objectKey) === -1){
+        this.gtSettings[i].sortOrder = this.gtSettings[i].sort === 'enable' ? (this.gtSettings.length - 1) : this.sortOrder.indexOf(objectKey) === -1 ? this.sortOrder.indexOf('-' + objectKey) : this.sortOrder.indexOf(objectKey);
+      } else if (this.gtSettings[i].sort !== 'disable' && this.sortOrder.indexOf(this.gtSettings[i].objectKey) === -1 && this.sortOrder.indexOf('-' + this.gtSettings[i].objectKey) === -1) {
         this.gtSettings[i].sort = 'enable';
-        this.gtSettings[i].sortOrder = (this.gtSettings.length -1);
+        this.gtSettings[i].sortOrder = (this.gtSettings.length - 1);
       }
     }
 
@@ -244,8 +251,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     // emit sort event
     this.gtEvent.emit({
-      name:'gt-sorting-applied',
-      value:this.sortOrder
+      name: 'gt-sorting-applied',
+      value: this.sortOrder
     });
   };
 
@@ -255,19 +262,19 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    * @param {boolean} reset - should page be reset to first page.
    * @returns {number} number of pages to display.
    */
-  public changeRowLength = function(rowLength:any,reset?:boolean){
+  public changeRowLength = function (rowLength: any, reset?: boolean) {
     //console.log('change rows');
     let newPosition = 1;
 
     // if reset is not true and we're not lazy loading data...
-    if(reset !== true && this.gtOptions.lazyLoad !== true){
+    if (reset !== true && this.gtOptions.lazyLoad !== true) {
 
       // ...get current position in record set
-      let currentRecord = this.gtInfo.recordLength * (this.gtInfo.pageCurrent-1);
-      let currentPosition = this.gtData.indexOf(this.gtData[currentRecord])+1;
+      let currentRecord = this.gtInfo.recordLength * (this.gtInfo.pageCurrent - 1);
+      let currentPosition = this.gtData.indexOf(this.gtData[currentRecord]) + 1;
 
       // ...get new position
-      newPosition = Math.ceil(currentPosition/rowLength);
+      newPosition = Math.ceil(currentPosition / rowLength);
     }
 
     // change row length
@@ -277,7 +284,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     this.gtInfo.pageCurrent = newPosition;
 
     // if lazy loading data...
-    if(this.gtOptions.lazyLoad){
+    if (this.gtOptions.lazyLoad) {
 
       // ...replace data with place holders for new data
       this.gtData[0] = this.loadingContent(rowLength);
@@ -289,31 +296,30 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     //this.updateRecordRange();
 
     this.gtEvent.emit({
-      name:'gt-row-length-changed',
-      value:rowLength
+      name: 'gt-row-length-changed',
+      value: rowLength
     });
   };
-
 
 
   /**
    * Force a redraw of table rows.
    * As the table uses pure pipes, we need to force a redraw if an object in the array is changed to see the changes.
    */
-  public redraw = function(){
+  public redraw = function () {
     this.refreshPipe = !this.refreshPipe;
   };
 
   /** Update record range. */
-  private updateRecordRange = function(){
-    this.gtInfo.recordFrom = this.gtInfo.recordsAfterSearch === 0 ? 0 :(this.gtInfo.pageCurrent-1) * this.gtInfo.recordLength + 1;
-    this.gtInfo.recordTo = this.gtInfo.recordsAfterSearch < this.gtInfo.pageCurrent * this.gtInfo.recordLength ? this.gtInfo.recordsAfterSearch:this.gtInfo.pageCurrent * this.gtInfo.recordLength
+  private updateRecordRange = function () {
+    this.gtInfo.recordFrom = this.gtInfo.recordsAfterSearch === 0 ? 0 : (this.gtInfo.pageCurrent - 1) * this.gtInfo.recordLength + 1;
+    this.gtInfo.recordTo = this.gtInfo.recordsAfterSearch < this.gtInfo.pageCurrent * this.gtInfo.recordLength ? this.gtInfo.recordsAfterSearch : this.gtInfo.pageCurrent * this.gtInfo.recordLength
     //this._changeDetectionRef.detectChanges();
   };
 
   /** Go to next page. */
-  public nextPage = function(){
-    let page = this.gtInfo.pageCurrent === this.gtInfo.pageTotal ? this.gtInfo.pageTotal:this.gtInfo.pageCurrent += 1;
+  public nextPage = function () {
+    let page = this.gtInfo.pageCurrent === this.gtInfo.pageTotal ? this.gtInfo.pageTotal : this.gtInfo.pageCurrent += 1;
     this.goToPage(page);
 
     // prevent browser reload
@@ -321,8 +327,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   };
 
   /** Go to previous page. */
-  public previousPage = function(){
-    let page = this.gtInfo.pageCurrent === 1 ? 1:this.gtInfo.pageCurrent -= 1;
+  public previousPage = function () {
+    let page = this.gtInfo.pageCurrent === 1 ? 1 : this.gtInfo.pageCurrent -= 1;
     this.goToPage(page);
 
     // prevent browser reload
@@ -330,11 +336,11 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   };
 
   /** Request more data (used when lazy loading) */
-  private getData = function(){
+  private getData = function () {
     // ...emit event requesting for more data
     this.gtEvent.emit({
       name: 'gt-page-changed-lazy',
-      value: {pageCurrent: this.gtInfo.pageCurrent, recordLength: this.gtInfo.recordLength}
+      value: { pageCurrent: this.gtInfo.pageCurrent, recordLength: this.gtInfo.recordLength }
     });
   };
 
@@ -342,26 +348,26 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    * Go to specific page.
    * @param {number} page - page number.
    */
-  public goToPage = function(page:number){
+  public goToPage = function (page: number) {
     this.gtInfo.pageCurrent = page;
 
     // if lazy loading and if page contains no records...
-    if(this.gtOptions.lazyLoad){
+    if (this.gtOptions.lazyLoad) {
 
       // ...if data for current page contains no entries...
-      if(this.gtOptions.cache === false || this.gtData[this.gtInfo.pageCurrent-1].length === 0) {
+      if (this.gtOptions.cache === false || this.gtData[this.gtInfo.pageCurrent - 1].length === 0) {
         // ...create temporary content while waiting for data
         this.gtData[this.gtInfo.pageCurrent - 1] = this.loadingContent(this.gtInfo.recordLength);
         this.loading = true; // loading true
       }
       // ...if first entry in current page equals our loading placeholder...
-      if(this.gtData[this.gtInfo.pageCurrent-1][0][this.loadingProperty] === this.gtTexts.loading){
+      if (this.gtData[this.gtInfo.pageCurrent - 1][0][this.loadingProperty] === this.gtTexts.loading) {
 
         // ...get data
         clearTimeout(this.debounceTimer);
         this.debounceTimer = setTimeout(() => {
           this.getData();
-        },this.gtOptions.debounceTime);
+        }, this.gtOptions.debounceTime);
       }
     }
 
@@ -370,7 +376,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     // ...emit page change event
     this.gtEvent.emit({
       name: 'gt-page-changed',
-      value: {pageCurrent: this.gtInfo.pageCurrent, recordLength: this.gtInfo.recordLength}
+      value: { pageCurrent: this.gtInfo.pageCurrent, recordLength: this.gtInfo.recordLength }
     });
   };
 
@@ -378,14 +384,14 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    * Apply filter(s).
    * @param {Object} filter - object containing key value pairs, where value should be array of values.
    */
-  public gtApplyFilter = function(filter:Object) {
+  public gtApplyFilter = function (filter: Object) {
     this.gtInfo.filter = filter;
     // go to first page
     this.goToPage(1);
   };
 
   /** Clear/remove applied filter(s). */
-  public gtClearFilter = function() {
+  public gtClearFilter = function () {
     this.gtInfo.filter = false;
     //this.updateRecordRange();
   };
@@ -394,7 +400,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    * Search
    * @param {string} value - string containing one or more words
    */
-  public gtSearch = function(value:string){
+  public gtSearch = function (value: string) {
     this.gtInfo.searchTerms = value;
     //always go to first page when searching
     this.goToPage(1);
@@ -406,11 +412,11 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    * @param {number} perPage - how many records to show per page.
    * @returns {Array} a nested array to hold records per page.
    */
-  private createStore = function(records:number,perPage:number){
-    let stores = Math.ceil(records/perPage);
-    let store:Array<Array<any>> = [];
-    for(var i = 0;i < stores;i++){
-      store[i]=[];
+  private createStore = function (records: number, perPage: number) {
+    let stores = Math.ceil(records / perPage);
+    let store: Array<Array<any>> = [];
+    for (var i = 0; i < stores; i++) {
+      store[i] = [];
     }
     return store;
   };
@@ -421,11 +427,11 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    * @param {number} perPage - how many records to show per page.
    * @returns {Array} an array containing empty records to be presented while fetching real data.
    */
-  private loadingContent = function(perPage:number){
+  private loadingContent = function (perPage: number) {
 
     // create row object
-    let rowObject:Object = {
-      $$loading:true
+    let rowObject: Object = {
+      $$loading: true
     };
     let order = 0;
 
@@ -434,13 +440,13 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
 
     // loop through all settings objects...
-    for (var i = 0;i < this.gtSettings.length; i++ ) {
+    for (var i = 0; i < this.gtSettings.length; i++) {
       let setting = this.gtSettings[i];
 
       // ...if column is visible and enabled...
-      if(setting.visible !== false && setting.enabled !== false) {
+      if (setting.visible !== false && setting.enabled !== false) {
         // ...if first column, set value to loading text otherwise leave it empty
-        if(order === 0){
+        if (order === 0) {
           //console.log(setting.objectKey);
           rowObject[setting.objectKey] = this.gtTexts.loading;
           this.loadingProperty = setting.objectKey;
@@ -454,10 +460,10 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     }
 
     // create content placeholder
-    let contentPlaceholder:Array<any> = [];
+    let contentPlaceholder: Array<any> = [];
 
     // create equal number of rows as rows per page
-    for(var i = 0;i < perPage;i++){
+    for (var i = 0; i < perPage; i++) {
       // ...add temporary row object
       contentPlaceholder.push(rowObject);
     }
@@ -466,7 +472,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
   // TODO: move to helper functions
   /** Sort by sort order */
-  private getSortOrder = function(a,b) {
+  private getSortOrder = function (a, b) {
     if (a.sortOrder < b.sortOrder)
       return -1;
     if (a.sortOrder > b.sortOrder || typeof a.sortOrder === 'undefined')
@@ -476,7 +482,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
   // TODO: move to helper functions
   /** Sort by column order */
-  private getColumnOrder = function(a,b) {
+  private getColumnOrder = function (a, b) {
     if (a.columnOrder === undefined) {
       return -1;
     }
@@ -488,25 +494,25 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   };
 
   /** Store filtered data for export */
-  private data:{
-    exportData:Array<any>
+  private data: {
+    exportData: Array<any>
   } = {
-    exportData:[]
+    exportData: []
   };
 
   /** Export data as CSV
    * @param {string} fileName - optional file name (overrides default file name).
    */
-  public exportCSV(fileName?:string) {
+  public exportCSV(fileName?: string) {
     let data = this.data.exportData;
     let csv = '';
 
     //csv export headers
-    for(let i = 0; i < this.gtSettings.length; i++) {
-      if(this.gtSettings[i].export !== false) {
-        csv += this.getProperty(this.gtFields,this.gtSettings[i].objectKey).name;
+    for (let i = 0; i < this.gtSettings.length; i++) {
+      if (this.gtSettings[i].export !== false) {
+        csv += this.getProperty(this.gtFields, this.gtSettings[i].objectKey).name;
 
-        if(i < (this.gtSettings.length - 1)) {
+        if (i < (this.gtSettings.length - 1)) {
           csv += this.gtOptions.csvDelimiter;//this.csvSeparator;
         }
       }
@@ -515,37 +521,37 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     // csv export body
     data.forEach((row, i) => {
       csv += '\n';
-      for(let i = 0; i < this.gtSettings.length; i++) {
-        if(this.gtSettings[i].export !== false) {
+      for (let i = 0; i < this.gtSettings.length; i++) {
+        if (this.gtSettings[i].export !== false) {
           // get field settings
-          let fieldSetting = this.getProperty(this.gtFields,this.gtSettings[i].objectKey);
+          let fieldSetting = this.getProperty(this.gtFields, this.gtSettings[i].objectKey);
 
           // get export value, if export function is defined use it otherwise check for value function and as a last resort export raw data
           csv += fieldSetting.export && typeof fieldSetting.export === 'function' ?
-            fieldSetting.export(row):fieldSetting.value && typeof fieldSetting.value === 'function' ?
-            fieldSetting.value(row):row[this.gtSettings[i].objectKey];
+            fieldSetting.export(row) : fieldSetting.value && typeof fieldSetting.value === 'function' ?
+              fieldSetting.value(row) : row[this.gtSettings[i].objectKey];
 
-          if(i < (this.gtSettings.length - 1)) {
+          if (i < (this.gtSettings.length - 1)) {
             csv += this.gtOptions.csvDelimiter;//this.csvSeparator;
           }
         }
       }
     });
 
-    let blob = new Blob([csv],{
+    let blob = new Blob([csv], {
       type: 'text/csv;charset=utf-8;'
     });
 
-    if(window.navigator.msSaveOrOpenBlob) {
-      navigator.msSaveOrOpenBlob(blob, fileName ? fileName:this.gtTexts.csvDownload + '.csv');
+    if (window.navigator.msSaveOrOpenBlob) {
+      navigator.msSaveOrOpenBlob(blob, fileName ? fileName : this.gtTexts.csvDownload + '.csv');
     }
     else {
       let link = document.createElement("a");
       link.style.display = 'none';
       document.body.appendChild(link);
-      if(link.download !== undefined) {
+      if (link.download !== undefined) {
         link.setAttribute('href', URL.createObjectURL(blob));
-        link.setAttribute('download', fileName ? fileName:this.gtTexts.csvDownload + '.csv');
+        link.setAttribute('download', fileName ? fileName : this.gtTexts.csvDownload + '.csv');
         document.body.appendChild(link);
         link.click();
       }
@@ -558,14 +564,14 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     // emit export event
     this.gtEvent.emit({
-      name:'gt-exported-csv',
-      value:fileName ? fileName:this.gtTexts.csvDownload + '.csv'
+      name: 'gt-exported-csv',
+      value: fileName ? fileName : this.gtTexts.csvDownload + '.csv'
     });
   }
 
   /** Return property */
-  private getProperty = function(array, key){
-    for (let i = 0; i < array.length;i++){
+  private getProperty = function (array, key) {
+    for (let i = 0; i < array.length; i++) {
       if (array[i].objectKey === key) {
         return array[i];
       }
@@ -578,7 +584,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
      *  This is done by checking sort properties in the settings array of the table, if no sorting is defined
      *  we'll sort the data by the first visible and enabled column in the table(ascending). */
     // if not using lazy loading...
-    if(!this.gtOptions.lazyLoad) {
+    if (!this.gtOptions.lazyLoad) {
 
       // ...create sorting array
       let sorting = [];
@@ -629,45 +635,45 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   /**
    *  Extend object function.
    */
-  private extend =function(a:Object, b:Object){
-    for(let key in b)
-      if(b.hasOwnProperty(key))
+  private extend = function (a: Object, b: Object) {
+    for (let key in b)
+      if (b.hasOwnProperty(key))
         a[key] = b[key];
     return a;
   };
 
-  ngOnChanges(changes:SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges) {
 
     // if gt options have changed...
-    if(changes['gtOptions']){
+    if (changes['gtOptions']) {
 
       // ...extend gtOptions default values with values passed into component
-      this.gtOptions = <GtOptions>this.extend(this.gtDefaultOptions,this.gtOptions);
+      this.gtOptions = <GtOptions>this.extend(this.gtDefaultOptions, this.gtOptions);
     }
 
     // if gt texts have changed...
-    if(changes['gtTexts']){
+    if (changes['gtTexts']) {
 
       // ...extend gtOptions default values with values passed into component
-      this.gtTexts = <GtTexts>this.extend(this.gtDefaultTexts,this.gtTexts);
+      this.gtTexts = <GtTexts>this.extend(this.gtDefaultTexts, this.gtTexts);
     }
 
     // if lazy loading data and paging information is available...
-    if(this.gtOptions.lazyLoad && this.gtInfo){
+    if (this.gtOptions.lazyLoad && this.gtInfo) {
 
       // ...calculate total number of pages
-      this.gtInfo.pageTotal = Math.ceil(this.gtInfo.recordsAfterSearch/this.gtInfo.recordLength);
+      this.gtInfo.pageTotal = Math.ceil(this.gtInfo.recordsAfterSearch / this.gtInfo.recordLength);
 
 
       // ...declare store position
-      let storePosition = this.gtInfo.pageCurrent-1;
+      let storePosition = this.gtInfo.pageCurrent - 1;
 
 
       // ...and if store is empty or page length has changed...
-      if(this.store.length === 0 || this.store[0].length !== this.gtInfo.recordLength){
+      if (this.store.length === 0 || this.store[0].length !== this.gtInfo.recordLength) {
         //console.log('create store');
         // ...create store
-        this.store = this.createStore(this.gtInfo.recordsAfterSearch,this.gtInfo.recordLength);
+        this.store = this.createStore(this.gtInfo.recordsAfterSearch, this.gtInfo.recordLength);
       }
 
       // ...store retrieved data in store at store position
@@ -677,7 +683,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
       this.gtData = this.store;
       this.loading = false;
       this.updateRecordRange();
-    } else if(this.gtData.length > 0){
+    } else if (this.gtData.length > 0) {
       this.loading = false;
     }
   }

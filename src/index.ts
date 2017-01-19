@@ -10,3 +10,4 @@ export * from './generic-table/interfaces/gt-information';
 export * from './generic-table/interfaces/gt-row';
 export * from './generic-table/interfaces/gt-texts';
 export * from './generic-table/interfaces/gt-options';
+export * from './generic-table/components/gt-custom-component-factory';

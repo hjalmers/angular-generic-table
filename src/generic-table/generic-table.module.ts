@@ -13,6 +13,7 @@ import {GtSearchPipe} from "./pipes/gt-search.pipe";
 import { ComponentAnchorDirective } from './directives/component-anchor.directive';
 import {GtPaginationComponent, PaginationPipe} from './components/gt-pagination.component';
 import {GtTableInfoComponent, TableInfoPipe} from './components/gt-table-info.component';
+import { GtCustomComponentFactory } from "./components/gt-custom-component-factory";
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import {GtTableInfoComponent, TableInfoPipe} from './components/gt-table-info.co
     GtFilterPipe,
     GtOrderByPipe,
     GtExpandingRowComponent,
+    GtCustomComponentFactory,
     GtSearchPipe,
     PaginationPipe,
     GtTableInfoComponent,
