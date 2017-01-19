@@ -6,7 +6,7 @@ import {
 import { ExamplesComponent } from './examples/examples.component';
 import { LazyComponent } from './lazy/lazy.component';
 import { RestComponent } from './rest/rest.component';
-import { StaticComponent } from './static/static.component';
+import { StaticComponent } from './basic/basic.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'examples', pathMatch: 'full' },

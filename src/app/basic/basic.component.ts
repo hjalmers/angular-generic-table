@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {GtConfig} from '../../generic-table/interfaces/gt-config';
 
 @Component({
-  selector: 'app-static',
-  template: require('./static.component.html')
+  selector: 'app-basic',
+  template: require('./basic.component.html')
 })
 export class StaticComponent {
 

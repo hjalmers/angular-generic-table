@@ -7,9 +7,10 @@ import { LazyComponent } from './lazy/lazy.component';
 import { RestComponent } from './rest/rest.component';
 import { GenericTableModule } from '../generic-table/generic-table.module';
 import { CustomRowComponent } from './custom-row/custom-row.component';
-import { StaticComponent } from './static/static.component';
+import { StaticComponent } from './basic/basic.component';
 import { ExamplesComponent } from './examples/examples.component';
 import { AppRoutingModule } from './app-routing.module';
+import { ExemplifyModule } from "angular-exemplify";
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { AppRoutingModule } from './app-routing.module';
     FormsModule,
     HttpModule,
     GenericTableModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ExemplifyModule
   ],
   entryComponents: [ CustomRowComponent ],
   bootstrap: [AppComponent]
