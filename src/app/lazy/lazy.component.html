@@ -23,8 +23,8 @@
         </small>
     </form>
     <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtInfo]="configObject.info" [gtRowComponent]="expandedRow" (gtEvent)="trigger($event)" [gtOptions]="{stack:true, highlightSearch:true, lazyLoad:true}"></generic-table>
-    <div class="text-xs-center">
-      <gt-pagination [genericTable]="myTable"></gt-pagination>
+    <div class="text-center">
+      <gt-pagination [gtClasses]="'justify-content-center'" [genericTable]="myTable"></gt-pagination>
     </div>
   </div>
   <div class="card-footer">

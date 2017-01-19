@@ -4,9 +4,9 @@
   <div class="card-header">Example</div>
   <div class="card-block">
       <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"></generic-table>
-      <div class="text-xs-center">
+      <div class="text-center">
         <small><gt-table-info class="form-text text-muted" [genericTable]="myTable"></gt-table-info></small>
-        <gt-pagination [gtClasses]="'pagination-sm'" [genericTable]="myTable"></gt-pagination>
+        <gt-pagination [gtClasses]="'pagination-sm justify-content-center'" [genericTable]="myTable"></gt-pagination>
       </div>
     </div>
   <div class="card-footer">
