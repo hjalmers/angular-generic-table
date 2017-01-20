@@ -7,6 +7,8 @@ Release History
 - Pagination layout (issue #42)
 - Examples now use new classes and markup added in bootstrap 4 alpha 6
 
+### Added
+- Allow custom components for each column (issue #44)
 
 # [1.0.0] - 2016-12-16
 ### Fixed
