@@ -1,6 +1,8 @@
 Release History
 ---------------
 ## [Unreleased]
+
+# [1.1.0] - 2017-01-20
 ### Fixed
 - Upgrade angular-cli and build with metadata version 3 (issue #43)
 - Changed class name for expanded row from `expanded-row` to `row-expanded` to be more consistent (issue #39)
