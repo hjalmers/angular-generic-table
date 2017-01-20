@@ -1,6 +1,8 @@
 Release History
 ---------------
 ## [Unreleased]
+### Fixed
+- Enable custom column components for the async case (issue #45)
 
 # [1.1.0] - 2017-01-20
 ### Fixed
