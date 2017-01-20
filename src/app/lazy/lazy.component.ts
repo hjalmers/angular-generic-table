@@ -7,7 +7,7 @@ import {GtInformation} from '../../generic-table/interfaces/gt-information';
 
 @Component({
   selector: 'app-lazy',
-  template: require('./lazy.component.html')
+  templateUrl: './lazy.component.html'
 })
 export class LazyComponent {
 

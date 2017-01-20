@@ -6,6 +6,7 @@
 !/index.js.map
 !/index.d.ts
 !/index.metadata.json
+!/index.ngsummary.json
 !/CHANGELOG.md
 !/README.md
 !/package.json

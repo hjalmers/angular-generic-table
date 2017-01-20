@@ -7,9 +7,15 @@ import {GenericTableComponent} from './generic-table.component';
   template: `<nav aria-label="Table navigation" *ngIf="genericTable.gtInfo">
   <ul class="pagination" ngClass="{{gtClasses}}">
     <li class="page-item" ngClass="{{genericTable.gtInfo.pageCurrent > 1 ? '':'disabled'}}"><a class="page-link" href="javascript:void(0);" (click)="genericTable.gtInfo.pageCurrent > 1 && genericTable.previousPage()" tabindex="-1" aria-label="Previous"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>
-    <li class="page-item" *ngIf="genericTable.gtInfo.pageCurrent > 4"><a class="page-link" href="javascript:void(0);" (click)="genericTable.goToPage(1)">1</a><span class="page-link" *ngIf="genericTable.gtInfo.pageTotal > 5">&hellip;</span></li>
+    <template [ngIf]="genericTable.gtInfo.pageCurrent > 4">
+      <li class="page-item"><a class="page-link" href="javascript:void(0);" (click)="genericTable.goToPage(1)">1</a></li>
+      <li class="page-item" *ngIf="genericTable.gtInfo.pageTotal > 5"><span class="page-link">&hellip;</span></li>
+    </template>
     <li class="page-item" ngClass="{{genericTable.gtInfo.pageCurrent === page ? 'active':''}}" *ngFor="let page of genericTable.gtInfo.pageTotal | gtPaginationPipe:genericTable.gtInfo.pageCurrent"><a class="page-link" href="javascript:void(0);" (click)="genericTable.goToPage(page)">{{page}}</a></li>
-    <li class="page-item" ngClass="{{genericTable.gtInfo.pageCurrent === genericTable.gtInfo.pageTotal ? 'active':''}}" *ngIf="genericTable.gtInfo.pageCurrent < genericTable.gtInfo.pageTotal && genericTable.gtInfo.pageTotal > 5"><span class="page-link" *ngIf="genericTable.gtInfo.pageCurrent + 3 < genericTable.gtInfo.pageTotal && genericTable.gtInfo.pageTotal > 6">&hellip;</span><a href="javascript:void(0);" class="page-link" (click)="genericTable.goToPage(genericTable.gtInfo.pageTotal)">{{genericTable.gtInfo.pageTotal}}</a></li>
+    <template [ngIf]="genericTable.gtInfo.pageCurrent < genericTable.gtInfo.pageTotal && genericTable.gtInfo.pageTotal > 5" >
+      <li class="page-item" *ngIf="genericTable.gtInfo.pageCurrent + 3 < genericTable.gtInfo.pageTotal && genericTable.gtInfo.pageTotal > 6"><span class="page-link">&hellip;</span></li>
+      <li class="page-item" ngClass="{{genericTable.gtInfo.pageCurrent === genericTable.gtInfo.pageTotal ? 'active':''}}" ><a href="javascript:void(0);" class="page-link" (click)="genericTable.goToPage(genericTable.gtInfo.pageTotal)">{{genericTable.gtInfo.pageTotal}}</a></li>
+    </template>
     <li class="page-item" ngClass="{{genericTable.gtInfo.pageCurrent !== genericTable.gtInfo.pageTotal ? '':'disabled'}}"><a class="page-link gt-link" href="javascript:void(0);" (click)="genericTable.gtInfo.pageCurrent !== genericTable.gtInfo.pageTotal && genericTable.nextPage()" aria-label="Next"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
   </ul>
   </nav>

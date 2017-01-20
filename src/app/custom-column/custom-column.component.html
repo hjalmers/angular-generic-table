@@ -1,5 +1,23 @@
 <h3>Custom columns</h3>
-<generic-table [gtSettings]="gtConfig.settings"
-               [gtFields]="gtConfig.fields"
-               [gtData]="gtConfig.data"></generic-table>
-<button (click)="saveAll()">Save All</button>
+<p>Table using two custom column widgets, as well as external state tracking.</p>
+<div class="card mb-4">
+  <div class="card-header">Example</div>
+  <div class="card-block" exemplify="customColumnsExample"
+       [angularInputs]="['gtSettings','gtFields','gtData','gtClasses']"
+       [source]="'child'" [target]="customColumnsExample" [navStyle]="'tabs'" [externalSources]="[{
+    name: 'app.module.ts',
+    src: 'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
+  },
+  {
+    name: 'custom-column.component.ts',
+    src: 'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/custom-column/custom-column.component.ts'
+  }]">
+    <generic-table [gtSettings]="gtConfig.settings"
+                   [gtFields]="gtConfig.fields"
+                   [gtData]="gtConfig.data"
+                   [gtClasses]="'table-sm'"></generic-table>
+    <hr>
+    <button type="button" class="btn btn-danger btn-sm" (click)="saveAll()">Save All</button>
+  </div>
+  <div class="card-footer" #customColumnsExample></div>
+</div>

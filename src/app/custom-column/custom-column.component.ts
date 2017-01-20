@@ -3,11 +3,11 @@ import {
   Injectable,
   OnInit
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { GtConfig } from '../../generic-table/interfaces/gt-config';
-import { GtCustomComponent } from '../../generic-table/components/gt-custom-component-factory';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
+import {GtConfig} from '../../generic-table/interfaces/gt-config';
+import {GtCustomComponent} from '../../generic-table/components/gt-custom-component-factory';
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
@@ -16,7 +16,7 @@ import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/take';
 
 export interface StateDictionary {
-  [index: number]: { name?: string, age?: number };
+  [index: number]: {name?: string, age?: number};
 }
 
 export function deepCopy(dictionary: StateDictionary) {
@@ -47,7 +47,7 @@ export class StateService {
     this.updates = new Subject<UpdateFunction>();
     this._states = new BehaviorSubject<StateDictionary>({});
     this.updates
-      .scan((previousState, updateFunction) => updateFunction(previousState), {})
+      .scan((previousState, apply: UpdateFunction) => apply(previousState), {})
       // .do(dictionary => console.log(`State = ${JSON.stringify(dictionary, null, 2)}`))
       .subscribe(this._states);
   }
@@ -96,7 +96,7 @@ export interface Row {
 
 @Component({
   template: `
-    <input *ngIf="edit | async" name="name" type="text" [(ngModel)]="name">
+    <input *ngIf="edit | async" type="text" class="form-control form-control-sm" name="name" [(ngModel)]="name">
     <span *ngIf="view | async">{{row.name}}</span>
   `
 })
@@ -131,7 +131,7 @@ export class NameComponent extends GtCustomComponent<Row> implements OnInit {
 
 @Component({
   template: `
-    <select *ngIf="edit | async" name="age" [(ngModel)]="age">
+    <select *ngIf="edit | async" class="form-control form-control-sm" name="age" [(ngModel)]="age">
       <option *ngFor="let AGE of AGES" [value]="AGE" [selected]="AGE === age">{{AGE}}</option>
     </select>
     <span *ngIf="view | async">{{row.age}}</span>
@@ -196,30 +196,30 @@ export class CustomColumnComponent {
 
   gtConfig: GtConfig<Row> = {
     settings: [
-      { objectKey: 'edit' },
-      { objectKey: 'id' },
-      { objectKey: 'name' },
-      { objectKey: 'age' },
-      { objectKey: 'save' }
+      {objectKey: 'edit', columnOrder: 0, sort: 'disabled'},
+      {objectKey: 'id', columnOrder: 1, sort: 'asc', sortOrder: 0},
+      {objectKey: 'name', columnOrder: 2},
+      {objectKey: 'age', columnOrder: 3},
+      {objectKey: 'save', columnOrder: 4, sort: 'disabled'}
     ],
     fields: [
       {
         objectKey: 'edit', name: '',
-        value: () => '', render: () => '<button>Edit</button>',
+        value: () => '', render: () => '<button type="button" class="btn btn-primary btn-sm">Edit</button>',
         click: (row) => this.editService.click(row.id)
       },
-      { objectKey: 'id', name: 'Id' },
+      {objectKey: 'id', name: 'Id'},
       {
         objectKey: 'name', name: 'Name',
-        columnComponent: { type: NameComponent }
+        columnComponent: {type: NameComponent}
       },
       {
         objectKey: 'age', name: 'Age',
-        columnComponent: { type: AgeComponent }
+        columnComponent: {type: AgeComponent}
       },
       {
         objectKey: 'save', name: '',
-        value: () => '', render: () => '<button>Save</button>',
+        value: () => '', render: () => '<button type="button" class="btn btn-warning btn-sm">Save</button>',
         click: (row) => this.stateService.states
           .take(1)
           .delay(Math.floor(Math.random() * 2000) + 1000)
@@ -233,9 +233,9 @@ export class CustomColumnComponent {
       }
     ],
     data: [
-      { id: 1, name: 'Alice Rogers', age: 23 },
-      { id: 2, name: 'Nicole Harris', age: 25 },
-      { id: 3, name: 'Catherine Fox', age: 20 },
+      {id: 1, name: 'Alice Rogers', age: 23},
+      {id: 2, name: 'Nicole Harris', age: 25},
+      {id: 3, name: 'Catherine Fox', age: 20},
     ]
   };
 }

@@ -7,11 +7,12 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": ["dom", "es6"],
+    "mapRoot": "./",
     "listEmittedFiles": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "newLine": "lf",
-    "outDir": "../",
+    "outDir": "../dist/out-tsc",
     "pretty": true,
     "rootDir": "./",
     "sourceMap": true,
@@ -19,8 +20,5 @@
     "typeRoots": [
       "../node_modules/@types"
     ]
-  },
-  "files": [
-    "index.ts"
-  ]
+  }
 }

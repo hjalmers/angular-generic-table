@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-rest',
-  template: require('./rest.component.html')
+  templateUrl: './rest.component.html'
 })
 export class RestComponent {
 

@@ -2,7 +2,10 @@ Release History
 ---------------
 ## [Unreleased]
 ### Fixed
+- Upgrade angular-cli and build with metadata version 3 (issue #43)
 - Changed class name for expanded row from `expanded-row` to `row-expanded` to be more consistent (issue #39)
+- Pagination layout (issue #42)
+- Examples now use new classes and markup added in bootstrap 4 alpha 6
 
 
 # [1.0.0] - 2016-12-16
