@@ -5,7 +5,7 @@ import {GtConfig} from '../../generic-table/interfaces/gt-config';
   selector: 'app-basic',
   templateUrl: './basic.component.html'
 })
-export class StaticComponent {
+export class BasicComponent {
 
   public configObject: GtConfig<any>;
 

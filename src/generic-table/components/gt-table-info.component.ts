@@ -4,7 +4,7 @@ import {GenericTableComponent} from './generic-table.component';
 
 @Component({
   selector: 'gt-table-info',
-  template: `<span *ngIf="genericTable.gtInfo" >{{(customText? customText:genericTable.gtTexts) | gtTableInfo:genericTable.gtInfo:genericTable.gtInfo.recordsAfterSearch:genericTable.gtInfo.recordFrom:genericTable.gtInfo.recordTo:genericTable.gtInfo.recordsAll}}</span>`
+  template: `<span *ngIf="genericTable.gtInfo">{{(customText? customText:genericTable.gtTexts) | gtTableInfo:genericTable.gtInfo:genericTable.gtInfo.recordsAfterSearch:genericTable.gtInfo.recordFrom:genericTable.gtInfo.recordTo:genericTable.gtInfo.recordsAll:genericTable.gtTexts.loading:genericTable.gtTexts.tableInfoAfterSearch}}</span>`
 })
 export class GtTableInfoComponent implements AfterViewChecked {
 
@@ -17,7 +17,6 @@ export class GtTableInfoComponent implements AfterViewChecked {
   ngAfterViewChecked(){
     this._changeDetectionRef.detectChanges();
   }
-
 }
 import { Pipe, PipeTransform } from '@angular/core';
 import { GtInformation } from '../interfaces/gt-information';

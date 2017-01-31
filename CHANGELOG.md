@@ -3,6 +3,10 @@ Release History
 ## [Unreleased]
 ### Fixed
 - Enable custom column components for the async case (issue #45)
+- Refresh `gtInfo` component if `gtTexts` are changed
+
+### Added
+- Example using [ng2-translate](https://github.com/ocombe/ng2-translate) for localization 
 
 # [1.1.0] - 2017-01-20
 ### Fixed
