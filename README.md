@@ -314,6 +314,8 @@ Override texts by passing a new object using `gtTexts` attribute.
 | tableInfoAfterSearch    | Text displayed in table info component when search or filter has been applied          | Showing,#recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries). |
 | csvDownload             | File name for CSV export (.csv is added by default)                                    | download                                                                                                        |
 | sortLabel               | Text for sort label shown when tables columns are stacked                              | Sort:                                                                                                           |
+| paginateNext            | Text used by screen readers for going to next page                                     | Next page                                                                                                       |
+| paginatePrevious        | Text used by screen readers for going to previous page                                 | Previous page                                                                                                   |
 
 
 **Usage:**
