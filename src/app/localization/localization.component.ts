@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {GtConfig} from '../../generic-table/interfaces/gt-config';
-import {TranslateService, LangChangeEvent} from 'ng2-translate';
+import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 import {GtTexts} from '../../generic-table/interfaces/gt-texts';
 
 @Component({

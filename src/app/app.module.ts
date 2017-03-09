@@ -20,11 +20,11 @@ import {
 } from './custom-column/custom-column.component';
 
 // Only needed when using ng2-translate
-import { TranslateModule } from 'ng2-translate';
-import { TranslateLoader, TranslateStaticLoader} from 'ng2-translate/ng2-translate';
+import { TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 export function createTranslateLoader(http: Http) {
-  return new TranslateStaticLoader(http, './assets/i18n', '.json');
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
 // Import generic table module
@@ -51,9 +51,11 @@ import { GenericTableModule } from '../generic-table/generic-table.module';
     AppRoutingModule,
     ExemplifyModule,
     TranslateModule.forRoot({
-      provide: TranslateLoader,
-      useFactory: (createTranslateLoader),
-      deps: [Http]
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [Http]
+      }
     })
   ],
   entryComponents: [

@@ -1,7 +1,7 @@
 {
   "TRANSLATIONS": {
     "TITLE":"Localization",
-    "DESCRIPTION": "Angular Generic Table with <a href='https://github.com/ocombe/ng2-translate' target='_blank'>ng2-translate</a>!",
+    "DESCRIPTION": "Angular Generic Table with <a href='https://github.com/ngx-translate/core' target='_blank'>ngx-translate</a>!",
     "SELECT": "Change language",
     "EXAMPLE":"Example",
     "NAME_DATA": "Hi, my name is {{name}}",
