@@ -2,7 +2,7 @@
 <p [innerHTML]="'TRANSLATIONS.DESCRIPTION' | translate"></p>
 <div class="card mb-5">
   <div class="card-header">{{'TRANSLATIONS.EXAMPLE' | translate}}</div>
-  <div class="card-block" exemplify="localizationExample" [angularInputs]="['gtClasses','gtSettings','gtFields','(gtData)','gtRowComponent','gtOptions','genericTable','ngIf','gtTexts']" [source]="'child'" [target]="translationsExample" [navStyle]="'tabs'" [externalSources]="[{
+  <div class="card-block" exemplify="localizationExample" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','[gtTexts]','#langSelect','#myTable']" [source]="'child'" [target]="translationsExample" [navStyle]="'tabs'" [externalSources]="[{
     name:'app.module.ts',
     src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
   },{

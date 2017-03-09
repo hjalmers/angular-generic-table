@@ -14,6 +14,9 @@ export class LazyComponent {
   public configObject: GtConfig<any>;
   public expandedRow = CustomRowComponent; // this is the component that will be displayed when expanding a row
 
+  // only used by example
+  escape = ['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','[gtInfo]', 'gtEvent', 'gtData','#myTable','ngModel'];
+
   @ViewChild(GenericTableComponent)
   private myTable: GenericTableComponent<any, CustomRowComponent>;
 

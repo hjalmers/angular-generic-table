@@ -49,7 +49,7 @@
     "@ngx-translate/http-loader": "0.0.3",
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.60",
-    "angular-exemplify": "^1.1.0",
+    "angular-exemplify": "^1.2.0",
     "autoprefixer": "^6.6.1",
     "bootstrap": "^4.0.0-alpha.6",
     "clean-css": "^3.4.24",
