@@ -3,6 +3,12 @@ Release History
 ## [Unreleased]
 ### Fixed
 - Enable custom column components for the async case (issue #45)
+- Refresh `gtInfo` component if `gtTexts` are changed
+- The keys declared by `gtTexts` interface are now optional (useful when you want to change a single text key) 
+
+### Added
+- Example using [ng2-translate](https://github.com/ocombe/ng2-translate) for localization
+- Support for passing translations to pagination component 
 
 # [1.1.0] - 2017-01-20
 ### Fixed

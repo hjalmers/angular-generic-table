@@ -102,7 +102,9 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     tableInfo: "Showing #recordFrom to #recordTo of #recordsAfterSearch entries.",
     tableInfoAfterSearch: "Showing  #recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries).",
     csvDownload: "download",
-    sortLabel: "Sort:"
+    sortLabel: "Sort:",
+    paginateNext: "Next page",
+    paginatePrevious: "Previous page"
   };
   @Input() gtTexts: GtTexts = this.gtDefaultTexts;
   @Input() gtClasses: string;
