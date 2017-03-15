@@ -28,9 +28,9 @@ import { GtOptions } from '../interfaces/gt-options';
   </tr>
   </thead>
   <tbody *ngIf="gtOptions.lazyLoad && gtInfo">
-  <template class="table-rows" ngFor let-row [ngForOf]="gtData[gtInfo.pageCurrent-1]">
-    <tr ngClass="{{row.isOpen ? 'row-open':''}}{{loading ? 'row-loading':''}}">
-      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span class="gt-row-label" *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading')? (gtFields | gtProperty:column.objectKey:'stackedHeading'):(gtFields | gtProperty:column.objectKey:'name')}}</span><gt-custom-component-factory *ngIf="column.columnComponent" class="gt-row-content" [type]="column.columnComponent.type" [injector]="column.columnComponent.injector" [row]="row" [column]="column" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></gt-custom-component-factory><span *ngIf="!column.columnComponent" class="gt-row-content" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
+  <template class="table-rows" ngFor let-row [ngForOf]="gtData[gtInfo.pageCurrent-1]"  let-i="index">
+    <tr ngClass="{{row.isOpen ? 'row-open':''}}{{loading ? 'row-loading':''}}"  (click)="hightlightRow=[]; hightlightRow[i]=!hightlightRow[i];" [class.gt__row-selected]="hightlightRow[i]"  >
+      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span class="gt-row-label" *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading')? (gtFields | gtProperty:column.objectKey:'stackedHeading'):(gtFields | gtProperty:column.objectKey:'name')}}</span><span class="gt-row-content" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
     </tr>
     <tr class="row-expanded" *ngIf="row.isOpen">
       <td [attr.colspan]="(gtFields | gtVisible:gtSettings:refreshPipe).length">
@@ -49,8 +49,8 @@ import { GtOptions } from '../interfaces/gt-options';
   </tr>
   </tbody>
   <tbody *ngIf="!gtOptions.lazyLoad && gtData">
-  <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data">
-    <tr ngClass="{{row.isOpen ? 'row-open':''}}">
+  <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data"  let-i="index">
+    <tr ngClass="{{row.isOpen ? 'row-open':''}}"(click)="hightlightRow=[]; hightlightRow[i]=!hightlightRow[i];" [class.gt__row-selected]="hightlightRow[i]"  >
       <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span class="gt-row-label" *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading')? (gtFields | gtProperty:column.objectKey:'stackedHeading'):(gtFields | gtProperty:column.objectKey:'name')}}</span><gt-custom-component-factory *ngIf="column.columnComponent" class="gt-row-content" [type]="column.columnComponent.type" [injector]="column.columnComponent.injector" [row]="row" [column]="column" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></gt-custom-component-factory><span *ngIf="!column.columnComponent" class="gt-row-content" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
     </tr>
     <tr class="row-expanded" *ngIf="row.isOpen">
@@ -102,9 +102,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     tableInfo: "Showing #recordFrom to #recordTo of #recordsAfterSearch entries.",
     tableInfoAfterSearch: "Showing  #recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries).",
     csvDownload: "download",
-    sortLabel: "Sort:",
-    paginateNext: "Next page",
-    paginatePrevious: "Previous page"
+    sortLabel: "Sort:"
   };
   @Input() gtTexts: GtTexts = this.gtDefaultTexts;
   @Input() gtClasses: string;
@@ -133,6 +131,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     recordsAfterFilter: 0,
     recordsAfterSearch: 0
   };
+
+  private hightlightRow: Array<boolean> = [];
 
   private refreshPipe: boolean = false;
   private refreshSorting: boolean = false;
