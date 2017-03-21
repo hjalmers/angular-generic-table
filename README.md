@@ -1,6 +1,6 @@
-# angular2-generic-table
+# angular-generic-table
 
-A generic table for Angular 2. This project is a re-write of [this](https://github.com/hjalmers/angular-generic-table) project for angular 1, the idea is to have support for the same features and that the configuration should be the same. Generic table uses standard markup for tables ie. table, tr and td elements etc. and has support for expanding rows, search, filters, sorting, pagination, export to CSV, column clicks, custom column rendering, custom export values. [View demo](https://hjalmers.github.io/angular2-generic-table/examples)
+A generic table for Angular 2+. This project is a re-write of [this](https://github.com/hjalmers/angularjs-generic-table) project for AngularJS, the idea is to have support for the same features and that the configuration should be the same. Generic table uses standard markup for tables ie. table, tr and td elements etc. and has support for expanding rows, search, filters, sorting, pagination, export to CSV, column clicks, custom column rendering, custom export values. [View demo](https://hjalmers.github.io/angular-generic-table/examples)
 
 ## Features
 - Uses standard HTML tables (no divs etc.)
@@ -15,15 +15,15 @@ A generic table for Angular 2. This project is a re-write of [this](https://gith
 
 ## Installation and usage
 
-Run `npm install --save angular2-generic-table`
+Run `npm install --save angular-generic-table`
 
 Include generic table module in your project, for example if you want to add it to your app module:
 
 **App Module**
-```
+```TypeScript
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from ./app.component';
-import { GenericTableModule } from 'angular2-generic-table';
+import { GenericTableModule } from 'angular-generic-table';
 
 @NgModule({
   declarations: [
@@ -42,9 +42,9 @@ export class AppModule { }
 Configure the table in your component, in this case we're adding a basic example with static data to a component called StaticComponent.
 
 **Static Component**
-```
+```TypeScript
 import { Component } from '@angular/core';
-import { GtConfig } from 'angular2-generic-table';
+import { GtConfig } from 'angular-generic-table';
 
 @Component({
   selector: 'app-static',
@@ -133,7 +133,7 @@ export class StaticComponent {
 ```
 
 **Usage**
-```
+```Html
 <generic-table [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"></generic-table>
 ```
 
@@ -141,7 +141,7 @@ export class StaticComponent {
 ## Configuration
 
 In order for generic tables to render the data in a table, we need to create a configuration object like this:
-```
+```TypeScript
 config = {
   settings:[],
   fields:[],
@@ -165,7 +165,7 @@ Each column must have it's own settings object that can have the following prope
 
 **Usage:**
 
-```
+```TypeScript
 [{
     objectKey:"first_column"
   }, {
@@ -195,7 +195,7 @@ Each column must also have it's own field definition object that can have the fo
 
 **Usage:**
 
-```
+```TypeScript
 [{
     objectKey:"first_column",
     name:"First column"
@@ -211,7 +211,7 @@ Each column must also have it's own field definition object that can have the fo
 ### Data array
 The data for each row needs to be stored in an object where each key in the object should map against object keys specified in the settings and field arrays ex.
 
-```
+```TypeScript
 [{
   first_column:"first row",
   second_column:1,
@@ -238,7 +238,7 @@ To pass data, settings and configuration to the table using the following inputs
 | gtRowComponent    | component | used for passing expanding row component to table                                      | (OPTIONAL) |
 
 **Usage:**
-```
+```Html
 <generic-table [gtClasses]="'table-hover'" [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtRowComponent]="expandedRow" [gtOptions]="{lazyLoad:true}"></generic-table>
 ```
 
@@ -257,16 +257,16 @@ Available options:
 
 
 **Usage:**
-```
+```Html
 <generic-table ... [gtOptions]="{lazy:true, cache: true}"></generic-table>
 ```
 
 ## Table events
 The table emits events using `gtEvent`, the events are passed in an object which looks like this:
-```
+```TypeScript
 {
   name:'gt-sorting-applied',
-  value: passed data...
+  value: 'passed data...'
 }
 ```
 Currently the table emits the following events:
@@ -283,11 +283,11 @@ Currently the table emits the following events:
 
 **Usage:**
 
-```
+```Html
 <generic-table ... (gtEvent)="trigger($event)"></generic-table>
 ```
 
-```
+```TypeScript
 public trigger = function($event){
     switch($event.name){
       case 'gt-sorting-applied':
@@ -320,7 +320,7 @@ Override texts by passing a new object using `gtTexts` attribute.
 
 **Usage:**
 
-```
+```Html
 <generic-table ... [gtTexts]="{loading:'Loading data...'}"></generic-table>
 ```
 
@@ -336,7 +336,7 @@ Turn of search for individual columns by setting column setting property `search
 
 Call generic tables search function and pass your search term(s)
 
-```
+```TypeScript
 myTable.gtSearch(searchString);
 ```
 
@@ -344,7 +344,7 @@ myTable.gtSearch(searchString);
 
 Return search terms in your server response.
  
-```
+```TypeScript
 this.configObject.info:GtInformation = {
   pageCurrent: 1,
   pageNext: 2,
@@ -358,7 +358,7 @@ this.configObject.info:GtInformation = {
 }
 ```
 
-[see demo](https://hjalmers.github.io/angular2-generic-table/examples) for full implementation and examples
+[see demo](https://hjalmers.github.io/angular-generic-table/examples) for full implementation and examples
 
 ## Column visibility
 
@@ -373,7 +373,9 @@ Define custom export value for individual columns by declaring a custom export f
 Turn of export for individual columns by setting column setting property `export` to `false`.
 
 **Usage:**
-`(click)="myTable.exportCSV('custom-file-name')"`
+```TypeScript
+(click)="myTable.exportCSV('custom-file-name')"
+```
 
 ## Pagination
 
@@ -381,7 +383,7 @@ Display pagination for your table, uses bootstrap default markup.
 
 **Usage:**
 
-```
+```Html
 <gt-pagination [genericTable]="myTable"></gt-pagination>
 ```
 
@@ -398,7 +400,7 @@ Display information about your table, ie. number of records, filtered records, r
 
 **Usage:**
 
-```
+```Html
 <gt-table-info [genericTable]="myTable"></gt-table-info>
 ```
 
