@@ -12,9 +12,6 @@ import 'rxjs/add/operator/map';
 export class RestComponent {
 
   public configObject: GtConfig<any>;
-  public tableInfo = {};
-  public hello = 'yes';
-  public refresh = true;
 
   @Output() data = new EventEmitter();
 
@@ -137,6 +134,12 @@ export class RestComponent {
    * */
   public applySearch = function(value: string){
     this.myTable.gtSearch(value);
+  };
+
+  /** Listen for events
+   * */
+  public trigger = function($event){
+    console.log($event)
   };
 
 }

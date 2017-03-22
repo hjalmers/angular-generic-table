@@ -1,6 +1,17 @@
 Release History
 ---------------
 ## [Unreleased]
+### Added
+- Support for selecting rows (issue #53)
+- Support for selecting/deselecting and expanding/collapsing all rows (issue #58)
+
+### Improvement
+- Lazy loading now uses default template (easier to keep code changes in sync)
+
+### Breaking changes
+- project has changed name from `angular2-generic-table` to `angular-generic-table` to comply with angular best practices 
+- `isOpen` property has been removed from row object, instead access isOpen state on row using `metaInfo[row.$$gtRowId]?.isOpen` it's now also possible to see if a row is selected using `metaInfo[row.$$gtRowId]?.isSelected`
+
 # [1.1.1] - 2017-03-22
 ### Fixed
 - Enable custom column components for the async case (issue #45)

@@ -9,7 +9,6 @@ export class GtFilterPipe implements PipeTransform {
 
   transform(allRows: any[], filterBy: Object, gtInfo:GtInformation, refreshFilter: boolean, refreshData: number): any[] {
     //console.log(allRows,filterBy);
-    //console.log('filter by');
     gtInfo.recordsAll = allRows.length;
 
     if(!Array.isArray(allRows) || !filterBy) {

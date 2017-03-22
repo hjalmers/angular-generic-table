@@ -23,6 +23,10 @@
       <small class="form-text text-muted">
         Please note that the mock service currently doesn't support search, this is why this example has a fixed search string (just to show the highlight feature together with lazy load). Do the search server-side and return search terms in your response. Separate multiple search terms with a space [ ] or match whole phrase by putting them within quotes ["].
       </small>
+      <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.selectAllRows()">Select all</button>
+      <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.deselectAllRows()">Deselect all</button>
+      <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.expandAllRows()">Open all</button>
+      <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.collapseAllRows()">Close all</button>
     </form>
     <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtInfo]="configObject.info" [gtRowComponent]="expandedRow" (gtEvent)="trigger($event)" [gtOptions]="{stack:true, highlightSearch:true, lazyLoad:true}"></generic-table>
     <div class="text-center">

@@ -14,6 +14,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/take';
+import {GtRow} from "../../generic-table/interfaces/gt-row";
 
 export interface StateDictionary {
   [index: number]: {name?: string, age?: number};
@@ -88,7 +89,7 @@ export class EditService {
   }
 }
 
-export interface Row {
+export interface Row extends GtRow {
   id: number;
   name: string;
   age: number;

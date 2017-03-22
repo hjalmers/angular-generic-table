@@ -17,78 +17,62 @@ import { GtInformation } from '../interfaces/gt-information';
 import { GtExpandedRow } from './gt-expanding-row.component';
 import { GtRow } from '../interfaces/gt-row';
 import { GtOptions } from '../interfaces/gt-options';
+import {GtRowMeta} from "../interfaces/gt-row-meta";
 
 @Component({
   selector: 'generic-table',
   template: `
-<table class="table" ngClass="{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}" *ngIf="(gtFields | gtVisible:gtSettings:refreshPipe).length > 0">
-  <thead>
-  <tr>
-    <th class="gt-sort-label" *ngIf="gtOptions.stack">{{gtTexts.sortLabel}}</th><th *ngFor="let column of gtFields | gtVisible:gtSettings:refreshPipe" ngClass="{{column.objectKey +'-column' | dashCase}} {{column.classNames}} sort-{{gtSettings | gtProperty:column.objectKey:'sort':refreshHeading}} sort-order-{{gtSettings | gtProperty:column.objectKey:'sortOrder':refreshHeading}}" (click)="gtSort(column.objectKey,$event);refreshHeading = !refreshHeading">{{column.name}}</th>
-  </tr>
-  </thead>
-  <tbody *ngIf="gtOptions.lazyLoad && gtInfo">
-  <template class="table-rows" ngFor let-row [ngForOf]="gtData[gtInfo.pageCurrent-1]">
-    <tr ngClass="{{row.isOpen ? 'row-open':''}}{{loading ? 'row-loading':''}}">
-      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span class="gt-row-label" *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading')? (gtFields | gtProperty:column.objectKey:'stackedHeading'):(gtFields | gtProperty:column.objectKey:'name')}}</span><gt-custom-component-factory *ngIf="column.columnComponent" class="gt-row-content" [type]="column.columnComponent.type" [injector]="column.columnComponent.injector" [row]="row" [column]="column" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></gt-custom-component-factory><span *ngIf="!column.columnComponent" class="gt-row-content" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
-    </tr>
-    <tr class="row-expanded" *ngIf="row.isOpen">
-      <td [attr.colspan]="(gtFields | gtVisible:gtSettings:refreshPipe).length">
-        <gt-expanding-row [row]="row" [type]="gtRowComponent" (redrawEvent)="redraw($event)"></gt-expanding-row>
-      </td>
-    </tr>
-  </template>
-  <tr *ngIf="gtInfo.pageTotal === 0 && (gtInfo.searchTerms || gtInfo.filter) && !loading">
-   <td class="gt-no-matching-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.noMatchingData}}</td>
-  </tr>
-  <tr *ngIf="gtInfo.pageTotal === 0 && !(gtInfo.searchTerms || gtInfo.filter) && !loading">
-   <td class="gt-no-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.noData}}</td>
-  </tr>
-  <tr *ngIf="gtInfo.pageTotal === 0 && loading">
-   <td class="gt-loading-data" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.loading}}</td>
-  </tr>
-  </tbody>
-  <tbody *ngIf="!gtOptions.lazyLoad && gtData">
-  <template class="table-rows" ngFor let-row [ngForOf]="gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data">
-    <tr ngClass="{{row.isOpen ? 'row-open':''}}">
-      <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span class="gt-row-label" *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading')? (gtFields | gtProperty:column.objectKey:'stackedHeading'):(gtFields | gtProperty:column.objectKey:'name')}}</span><gt-custom-component-factory *ngIf="column.columnComponent" class="gt-row-content" [type]="column.columnComponent.type" [injector]="column.columnComponent.injector" [row]="row" [column]="column" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></gt-custom-component-factory><span *ngIf="!column.columnComponent" class="gt-row-content" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? row.isOpen = !row.isOpen:''"></span></td>
-    </tr>
-    <tr class="row-expanded" *ngIf="row.isOpen">
-      <td [attr.colspan]="(gtFields | gtVisible:gtSettings:refreshPipe).length">
-        <gt-expanding-row [row]="row" [type]="gtRowComponent" (redrawEvent)="redraw($event)"></gt-expanding-row>
-      </td>
-    </tr>
-  </template>
-  <tr *ngIf="gtInfo.pageTotal === 0 && (gtInfo.searchTerms || gtInfo.filter) && !loading">
-   <td class="gt-no-matching-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.noMatchingData}}</td>
-  </tr>
-  <tr *ngIf="gtInfo.pageTotal === 0 && !(gtInfo.searchTerms || gtInfo.filter) && !loading">
-   <td class="gt-no-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.noData}}</td>
-  </tr>
-  <tr *ngIf="gtInfo.pageTotal === 0 && loading">
-   <td class="gt-loading-data" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.loading}}</td>
-  </tr>
-  </tbody>
-</table>
-<table class="table" *ngIf="(gtFields | gtVisible:gtSettings:refreshPipe).length === 0">
-  <thead>
-    <tr>
-      <th class="gt-no-visible-columns">{{gtTexts.noVisibleColumnsHeading}}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="gt-no-visible-columns">{{gtTexts.noVisibleColumns}}</td>
-    </tr>
-  </tbody>
-</table>
-`,
+    <table class="table" ngClass="{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}" *ngIf="(gtFields | gtVisible:gtSettings:refreshPipe).length > 0">
+      <thead>
+      <tr>
+        <th class="gt-sort-label" *ngIf="gtOptions.stack">{{gtTexts.sortLabel}}</th><th *ngFor="let column of gtFields | gtVisible:gtSettings:refreshPipe" ngClass="{{column.objectKey +'-column' | dashCase}} {{column.classNames}} sort-{{gtSettings | gtProperty:column.objectKey:'sort':refreshHeading}} sort-order-{{gtSettings | gtProperty:column.objectKey:'sortOrder':refreshHeading}}" (click)="gtSort(column.objectKey,$event);refreshHeading = !refreshHeading">{{column.name}}</th>
+      </tr>
+      </thead>
+      <tbody *ngIf="gtData && gtInfo">
+      <template class="table-rows" ngFor let-row [ngForOf]="gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1] | gtMeta:(gtInfo.pageCurrent-1):gtInfo.recordLength) : (gtData | gtMeta:null:null:gtData.length | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data)">
+        <tr [ngClass]="{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading}" (click)="toggleSelect(row)">
+          <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span class="gt-row-label" *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading')? (gtFields | gtProperty:column.objectKey:'stackedHeading'):(gtFields | gtProperty:column.objectKey:'name')}}</span><gt-custom-component-factory *ngIf="column.columnComponent" class="gt-row-content" [type]="column.columnComponent.type" [injector]="column.columnComponent.injector" [row]="row" [column]="column" (click)="column.click ? column.click(row,column):'';column.expand ? toggleCollapse(row):''"></gt-custom-component-factory><span *ngIf="!column.columnComponent" class="gt-row-content" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? toggleCollapse(row):''"></span></td>
+        </tr>
+        <tr class="row-expanded" *ngIf="metaInfo[row.$$gtRowId]?.isOpen">
+          <td [attr.colspan]="(gtFields | gtVisible:gtSettings:refreshPipe).length">
+            <gt-expanding-row [row]="row" [type]="gtRowComponent" (redrawEvent)="redraw($event)"></gt-expanding-row>
+          </td>
+        </tr>
+      </template>
+      <tr *ngIf="gtInfo.pageTotal === 0 && (gtInfo.searchTerms || gtInfo.filter) && !loading">
+        <td class="gt-no-matching-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.noMatchingData}}</td>
+      </tr>
+      <tr *ngIf="gtInfo.pageTotal === 0 && !(gtInfo.searchTerms || gtInfo.filter) && !loading">
+        <td class="gt-no-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.noData}}</td>
+      </tr>
+      <tr *ngIf="gtInfo.pageTotal === 0 && loading">
+        <td class="gt-loading-data" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.loading}}</td>
+      </tr>
+      </tbody>
+    </table>
+    <table class="table" *ngIf="(gtFields | gtVisible:gtSettings:refreshPipe).length === 0">
+      <thead>
+      <tr>
+        <th class="gt-no-visible-columns">{{gtTexts.noVisibleColumnsHeading}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="gt-no-visible-columns">{{gtTexts.noVisibleColumns}}</td>
+      </tr>
+      </tbody>
+    </table>
+  `,
 })
 export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> implements OnInit, OnChanges {
 
   @Input() gtRowComponent: Type<C>;
   public configObject: GtConfig<R>;
   public sortOrder: Array<any> = [];
+  public metaInfo: {[gtRowId:string]:GtRowMeta} = {};
+  public selectedRows: Array<GtRow> = [];
+  public openRows: Array<GtRow> = [];
+
 
   @Input() gtSettings: GtConfigSetting[];
   @Input() gtFields: GtConfigField<R,any>[];
@@ -383,6 +367,217 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   };
 
   /**
+   * Expand all rows.
+   */
+  public expandAllRows(): void {
+    this._toggleAllRowProperty('isOpen', true);
+  }
+
+  /**
+   * Collapse all rows.
+   */
+  public collapseAllRows(): void {
+    this._toggleAllRowProperty('isOpen', false);
+  }
+
+  /**
+   * Select all rows.
+   */
+  public selectAllRows(): void {
+    this._toggleAllRowProperty('isSelected', true);
+  }
+
+  /**
+   * Deselect all rows.
+   */
+  public deselectAllRows(): void {
+    this._toggleAllRowProperty('isSelected', false);
+  }
+
+  /**
+   * Toggle row collapsed state ie. expanded/open or collapsed/closed.
+   * @param {GtRow} row - row object that should be expanded/collapsed.
+   */
+  public toggleCollapse(row:GtRow) {
+    this._toggleRowProperty(row,'isOpen');
+  }
+
+  /**
+   * Toggle row selected state ie. selected or not.
+   * @param {GtRow} row - row object that should be selected/deselected.
+   */
+  public toggleSelect(row:GtRow) {
+    this._toggleRowProperty(row,'isSelected');
+  }
+
+  /**
+   * Update meta info for all rows, ie. isSelected, isOpen.
+   * @param {Array} array - array that holds rows that need to be updated.
+   * @param {string} property - name of property that should be changed/toggled.
+   * @param {boolean} active - should rows be expanded/open, selected.
+   */
+  private _updateMetaInfo(array:Array<GtRow>,property:string, active:boolean) {
+    for (let i = 0; i < array.length; i++) {
+      if(!this.metaInfo[array[i].$$gtRowId]) {
+        this.metaInfo[array[i].$$gtRowId] = {};
+      }
+      this.metaInfo[array[i].$$gtRowId][property] = active;
+    }
+  }
+
+  /**
+   * Push selected/expanded lazy loaded rows to array with meta data.
+   * @param {Array} target - array to which rows should be added.
+   * @param {Array} source - array that holds rows that should be added.
+   * @returns {Array} array with added rows.
+   */
+  private _pushLazyRows(target:Array<GtRow>,source:Array<GtRow>):Array<GtRow> {
+    for (var i = 0; i < source.length; i ++) {
+      target.push(source[i]);
+    }
+    return target;
+  }
+
+  /**
+   * Toggle meta info for all rows, ie. isSelected, isOpen.
+   * @param {string} property - name of property that should be changed/toggled.
+   * @param {boolean} active - should rows be expanded/open, selected.
+   */
+  private _toggleAllRowProperty(property:string, active:boolean) {
+    let eventName: string;
+    let eventValue: any;
+    switch (property) {
+      case 'isOpen':
+        if(active) {
+          eventName = 'expand-all';
+          this.openRows = this.gtOptions.lazyLoad ? this._pushLazyRows(this.openRows,this.gtData[this.gtInfo.pageCurrent - 1].slice()): this.gtData.slice();
+          this._updateMetaInfo(this.openRows, property,active);
+        } else {
+          eventName = 'collapse-all';
+          this._updateMetaInfo(this.openRows, property,active);
+          this.openRows = [];
+        }
+        eventValue = {
+          expandedRows: this.openRows,
+          changedRow:'all'
+        };
+        //array = this.openRows;
+        break;
+      case 'isSelected':
+        if(active) {
+          eventName = 'select-all';
+          this.selectedRows = this.gtOptions.lazyLoad ? this._pushLazyRows(this.selectedRows,this.gtData[this.gtInfo.pageCurrent - 1].slice()): this.gtData.slice();
+          this._updateMetaInfo(this.selectedRows, property,active);
+        } else {
+          eventName = 'deselect-all';
+          this._updateMetaInfo(this.selectedRows, property,active);
+          this.selectedRows = [];
+        }
+        eventValue = {
+          selectedRows: this.selectedRows,
+          changedRow:'all'
+        };
+
+        break;
+    }
+    this.gtEvent.emit({
+      name: 'gt-row-'+eventName,
+      value: eventValue
+    });
+
+  }
+
+  /**
+   * Toggle meta info for row, ie. isSelected, isOpen.
+   * @param {Object} row - row object.
+   * @param {string} property - name of property that should be changed/toggled.
+   */
+  private _toggleRowProperty(row:GtRow, property:string) {
+
+    let eventName: string;
+    let eventValue: any;
+    // make sure gtRowId exists on row object
+    if(typeof row.$$gtRowId !== 'undefined') {
+
+      // check if meta info exists for row
+      if (!this.metaInfo[row.$$gtRowId]) {
+
+        // if not, add object to store meta info
+        this.metaInfo[row.$$gtRowId] = {};
+      }
+
+      switch (property) {
+        case 'isOpen':
+          const opened = this.metaInfo[row.$$gtRowId][property];
+
+          // check if row is selected
+          if (!opened) {
+            eventName = 'expand';
+            // add row to selected rows
+            this.openRows.push(row);
+
+          } else {
+            eventName = 'collapse';
+            // loop through selected rows...
+            for (let i = 0; i < this.openRows.length; i++) {
+
+              // if selected row equals passed row...
+              if (this.openRows[i].$$gtRowId === row.$$gtRowId) {
+
+                // ...remove row from selected rows...
+                this.openRows.splice(i, 1);
+
+                // ...and exit loop
+                break;
+              }
+            }
+          }
+          eventValue = {
+            expandedRows: this.openRows,
+            changedRow:row
+          };
+          break;
+        case 'isSelected':
+          const selected = this.metaInfo[row.$$gtRowId][property];
+
+          // check if row is selected
+          if (!selected) {
+            eventName = 'select';
+            // add row to selected rows
+            this.selectedRows.push(row);
+
+          } else {
+            eventName = 'deselect';
+            // loop through selected rows...
+            for (let i = 0; i < this.selectedRows.length; i++) {
+
+              // if selected row equals passed row...
+              if (this.selectedRows[i].$$gtRowId === row.$$gtRowId) {
+
+                // ...remove row from selected rows...
+                this.selectedRows.splice(i, 1);
+
+                // ...and exit loop
+                break;
+              }
+            }
+          }
+          eventValue = {
+            selectedRows: this.selectedRows,
+            changedRow:row
+          };
+          break;
+      }
+      this.gtEvent.emit({
+        name: 'gt-row-'+eventName,
+        value: eventValue
+      });
+      this.metaInfo[row.$$gtRowId][property] = !this.metaInfo[row.$$gtRowId][property];
+    }
+
+  }
+
+  /**
    * Apply filter(s).
    * @param {Object} filter - object containing key value pairs, where value should be array of values.
    */
@@ -647,7 +842,6 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   };
 
   ngOnChanges(changes: SimpleChanges) {
-
     // if gt options have changed...
     if (changes['gtOptions']) {
 

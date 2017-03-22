@@ -14,6 +14,7 @@ import { ComponentAnchorDirective } from './directives/component-anchor.directiv
 import {GtPaginationComponent, PaginationPipe} from './components/gt-pagination.component';
 import {GtTableInfoComponent, TableInfoPipe} from './components/gt-table-info.component';
 import { GtCustomComponentFactory } from "./components/gt-custom-component-factory";
+import {GtMetaPipe} from "./pipes/gt-meta.pipe";
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { GtCustomComponentFactory } from "./components/gt-custom-component-facto
     GtSearchPipe,
     PaginationPipe,
     GtTableInfoComponent,
-    TableInfoPipe
+    TableInfoPipe,
+    GtMetaPipe
   ],
   imports: [CommonModule],
   exports: [GenericTableComponent,GtPaginationComponent,GtTableInfoComponent,GtPropertyPipe],

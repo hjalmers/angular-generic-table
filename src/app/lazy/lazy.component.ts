@@ -29,10 +29,13 @@ export class LazyComponent {
     switch($event.name){
       case 'gt-page-changed-lazy':
         this.getData($event.value.pageCurrent,$event.value.recordLength);
-            break;
+        break;
       case 'gt-sorting-applied':
-            console.log($event.value);
-            break;
+        console.log($event.value);
+        break;
+      default:
+        console.log($event);
+        break;
     }
   };
 
@@ -88,9 +91,9 @@ export class LazyComponent {
         value:function(row){return row.first_name + ' ' + row.last_name},
         render:function(row){//if(row.first_name && row.last_name){
           return '<div>'+row.first_name + ' ' + row.last_name +'</div>';
-        //} else {
+          //} else {
           //return '';
-        //}
+          //}
         },
         sort:function(row){return row.first_name + ' ' + row.last_name}
       },{

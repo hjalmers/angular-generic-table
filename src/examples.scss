@@ -79,6 +79,13 @@ tr {
       content:"\f0d7"
     }
   }
+  &.row-selected {
+    background: #eff6fd;
+
+  }
+  &:active {
+    background: #eff6fd !important;
+  }
 }
 span.gt-highlight-search {
   background:yellow;
