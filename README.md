@@ -22,7 +22,7 @@ Include generic table module in your project, for example if you want to add it 
 **App Module**
 ```TypeScript
 import { BrowserModule } from '@angular/platform-browser';
-import { AppComponent } from ./app.component';
+import { AppComponent } from './app.component';
 import { GenericTableModule } from 'angular-generic-table';
 
 @NgModule({

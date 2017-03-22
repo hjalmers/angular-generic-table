@@ -195,47 +195,74 @@ export class CustomColumnComponent {
   }
 
   gtConfig: GtConfig<Row> = {
-    settings: [
-      {objectKey: 'edit', columnOrder: 0, sort: 'disabled'},
-      {objectKey: 'id', columnOrder: 1, sort: 'asc', sortOrder: 0},
-      {objectKey: 'name', columnOrder: 2},
-      {objectKey: 'age', columnOrder: 3},
-      {objectKey: 'save', columnOrder: 4, sort: 'disabled'}
-    ],
-    fields: [
-      {
-        objectKey: 'edit', name: '',
-        value: () => '', render: () => '<button type="button" class="btn btn-primary btn-sm">Edit</button>',
-        click: (row) => this.editService.click(row.id)
-      },
-      {objectKey: 'id', name: 'Id'},
-      {
-        objectKey: 'name', name: 'Name',
-        columnComponent: {type: NameComponent}
-      },
-      {
-        objectKey: 'age', name: 'Age',
-        columnComponent: {type: AgeComponent}
-      },
-      {
-        objectKey: 'save', name: '',
-        value: () => '', render: () => '<button type="button" class="btn btn-warning btn-sm">Save</button>',
-        click: (row) => this.stateService.states
-          .take(1)
-          .delay(Math.floor(Math.random() * 2000) + 1000)
-          .subscribe(dictionary => {
-            const name = dictionary[row.id].name;
-            const age = dictionary[row.id].age;
-            console.log(`Saving name = "${name}" and age = ${age} for id = ${row.id}`);
-            row.name = name;
-            row.age = age;
-          })
+    settings: [{
+      objectKey: 'edit',
+      columnOrder: 0,
+      sort: 'disabled'
+    }, {
+      objectKey: 'id',
+      columnOrder: 1,
+      sort: 'asc', sortOrder: 0
+    }, {
+      objectKey: 'name',
+      columnOrder: 2
+    }, {
+      objectKey: 'age',
+      columnOrder: 3
+    }, {
+      objectKey: 'save',
+      columnOrder: 4,
+      sort: 'disabled'
+    }],
+    fields: [{
+      objectKey: 'edit', name: '',
+      value: () => '',
+      render: () => '<button type="button" class="btn btn-secondary btn-sm">Edit</button>',
+      click: (row) => this.editService.click(row.id)
+    }, {
+      objectKey: 'id',
+      name: 'Id'
+    }, {
+      objectKey: 'name',
+      name: 'Name',
+      columnComponent: {
+        type: NameComponent
       }
-    ],
-    data: [
-      {id: 1, name: 'Alice Rogers', age: 23},
-      {id: 2, name: 'Nicole Harris', age: 25},
-      {id: 3, name: 'Catherine Fox', age: 20},
-    ]
+    }, {
+      objectKey: 'age',
+      name: 'Age',
+      columnComponent: {
+        type: AgeComponent
+      }
+    }, {
+      objectKey: 'save',
+      name: '',
+      value: () => '',
+      classNames:'text-right',
+      render: () => '<button type="button" class="btn btn-primary btn-sm">Save</button>',
+      click: (row) => this.stateService.states
+        .take(1)
+        .delay(Math.floor(Math.random() * 2000) + 1000)
+        .subscribe(dictionary => {
+          const name = dictionary[row.id].name;
+          const age = dictionary[row.id].age;
+          console.log(`Saving name = "${name}" and age = ${age} for id = ${row.id}`);
+          row.name = name;
+          row.age = age;
+        })
+    }],
+    data: [{
+      id: 1,
+      name: 'Alice Rogers',
+      age: 23
+    }, {
+      id: 2,
+      name: 'Nicole Harris',
+      age: 25
+    }, {
+      id: 3,
+      name: 'Catherine Fox',
+      age: 20
+    }]
   };
 }

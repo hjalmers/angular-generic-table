@@ -1,6 +1,6 @@
 import { Angular2GenericTablePage } from './app.po';
 
-describe('angular2-generic-table App', function() {
+describe('angular-generic-table App', function() {
   let page: Angular2GenericTablePage;
 
   beforeEach(() => {

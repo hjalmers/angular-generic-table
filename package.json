@@ -1,10 +1,10 @@
 {
-  "name": "angular2-generic-table",
-  "version": "1.1.0",
+  "name": "angular-generic-table",
+  "version": "2.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hjalmers/angular2-generic-table.git"
+    "url": "https://github.com/hjalmers/angular-generic-table.git"
   },
   "angular-cli": {},
   "scripts": {
@@ -35,7 +35,7 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
-    "@angular/cli": "^1.0.0-rc.1",
+    "@angular/cli": "^1.0.0-rc.4",
     "@angular/common": "^2.3.1",
     "@angular/compiler": "^2.3.1",
     "@angular/compiler-cli": "^2.4.0",
