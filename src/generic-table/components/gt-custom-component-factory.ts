@@ -1,13 +1,20 @@
 import {
   Component,
+  EventEmitter,
   Injector,
   Input,
+  Output,
   Type
 } from '@angular/core';
 
 export abstract class GtCustomComponent<R> {
   row: R;
   column: any;
+  redrawEvent = new EventEmitter<{row: R, column: any}>();
+
+  protected $redraw() {
+    this.redrawEvent.emit({row: this.row, column: this.column});
+  }
 }
 
 @Component({
@@ -21,9 +28,11 @@ export class GtCustomComponentFactory<R, C extends GtCustomComponent<R>> {
   @Input() injector: Injector;
   @Input() row: R;
   @Input() column: any;
+  @Output() redrawEvent = new EventEmitter<{row: R, column: any}>();
 
   instance(instance: C) {
     instance.row = this.row;
     instance.column = this.column;
+    instance.redrawEvent.subscribe(this.redrawEvent);
   }
 }
