@@ -1,6 +1,7 @@
 Release History
 ---------------
 ## [Unreleased]
+# [1.1.1] - 2017-03-22
 ### Fixed
 - Enable custom column components for the async case (issue #45)
 - Refresh `gtInfo` component if `gtTexts` are changed

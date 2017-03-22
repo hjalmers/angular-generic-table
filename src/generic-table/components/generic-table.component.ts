@@ -582,6 +582,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
   ngOnInit() {
 
+    console.info('Angular2-generic-table is deprecated! Version 1.1.1 is the final version published as angular2-generic-table, new name is angular-generic-table. Please check: https://github.com/hjalmers/angular-generic-table');
+
     /** If we're not lazy loading data and handling sorting server side, we want to apply some default sorting.
      *  This is done by checking sort properties in the settings array of the table, if no sorting is defined
      *  we'll sort the data by the first visible and enabled column in the table(ascending). */
