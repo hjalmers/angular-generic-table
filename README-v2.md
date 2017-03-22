@@ -15,7 +15,7 @@ A generic table for Angular 2+. This project is a re-write of [this](https://git
 
 ## Installation and usage
 
-Run `npm install --save angular2-generic-table`
+Run `npm install --save angular-generic-table`
 
 Include generic table module in your project, for example if you want to add it to your app module:
 
