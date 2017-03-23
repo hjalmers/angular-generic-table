@@ -20,15 +20,15 @@
         </label>
       </div>
       <small class="form-text text-muted"><gt-table-info [genericTable]="myTable"></gt-table-info></small>
-      <small class="form-text text-muted">
+      <small class="form-text text-muted mb-2">
         Please note that the mock service currently doesn't support search, this is why this example has a fixed search string (just to show the highlight feature together with lazy load). Do the search server-side and return search terms in your response. Separate multiple search terms with a space [ ] or match whole phrase by putting them within quotes ["].
       </small>
       <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.selectAllRows()">Select all</button>
       <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.deselectAllRows()">Deselect all</button>
-      <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.expandAllRows()">Open all</button>
-      <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.collapseAllRows()">Close all</button>
+      <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.expandAllRows()">Expand all</button>
+      <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.collapseAllRows()">Collapse all</button>
     </form>
-    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtInfo]="configObject.info" [gtRowComponent]="expandedRow" (gtEvent)="trigger($event)" [gtOptions]="{stack:true, highlightSearch:true, lazyLoad:true}"></generic-table>
+    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtInfo]="configObject.info" [gtRowComponent]="expandedRow" (gtEvent)="trigger($event)" [gtOptions]="{stack:true, highlightSearch:true, lazyLoad:true, rowSelection:true}"></generic-table>
     <div class="text-center">
       <gt-pagination [gtClasses]="'justify-content-center'" [genericTable]="myTable"></gt-pagination>
     </div>

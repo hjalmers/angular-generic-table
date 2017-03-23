@@ -15,7 +15,7 @@ A generic table for Angular 2+. This project is a re-write of [this](https://git
 
 ## Installation and usage
 
-Run `npm install --save angular2-generic-table`
+Run `npm install --save angular-generic-table`
 
 Include generic table module in your project, for example if you want to add it to your app module:
 
@@ -245,14 +245,15 @@ To pass data, settings and configuration to the table using the following inputs
 ## Table options
 Available options:
 
-| Name            | Type        | Usage                                                                                  | Default |            |
-|:----------------|:------------|:---------------------------------------------------------------------------------------|:--------|:-----------|
-| csvDelimiter    | string      | csv delimiter when exporting to CSV file                                               | ";"     | (OPTIONAL) |
-| stack           | boolean     | stack columns on mobile devices and tablets, requires css (included)                   | false   | (OPTIONAL) |
-| lazyLoad        | boolean     | should table lazy load data                                                            | false   | (OPTIONAL) |
-| cache           | boolean     | should table cache data when lazy loading                                              | false   | (OPTIONAL) |
-| debounceTime    | number (ms) | prevent multiple server requests for data when lazy loading by setting a debounce time | 200     | (OPTIONAL) |
-| highlightSearch | boolean     | should table highlight matched search terms, style using .gt-highlight-search selector | false   | (OPTIONAL) |
+| Name            | Type        | Usage                                                                                         | Default |            |
+|:----------------|:------------|:----------------------------------------------------------------------------------------------|:--------|:-----------|
+| csvDelimiter    | string      | csv delimiter when exporting to CSV file                                                      | ";"     | (OPTIONAL) |
+| stack           | boolean     | stack columns on mobile devices and tablets, requires css (included)                          | false   | (OPTIONAL) |
+| lazyLoad        | boolean     | should table lazy load data                                                                   | false   | (OPTIONAL) |
+| cache           | boolean     | should table cache data when lazy loading                                                     | false   | (OPTIONAL) |
+| debounceTime    | number (ms) | prevent multiple server requests for data when lazy loading by setting a debounce time        | 200     | (OPTIONAL) |
+| highlightSearch | boolean     | should table highlight matched search terms, style using .gt-highlight-search selector        | false   | (OPTIONAL) |
+| rowSelection    | boolean     | enable row selection (on row click), emits select/deselect event with currently selected rows | false   | (OPTIONAL) |
 
 
 
@@ -279,6 +280,14 @@ Currently the table emits the following events:
 | gt-page-changed-lazy  | page changed and no data exits for new page            | current state ex. {pageCurrent: current page, recordLength: current record length} |
 | gt-info               | table info has changed (not emitted when lazy loading) | current state ex. {pageCurrent: current page, recordLength: current record length} |
 | gt-exported-csv       | table has exported data to csv file                    | file name                                                                          |
+| gt-row-select         | row selected (on row clicked)                          | row selection ex. {changedRow: row object, selectedRows: array with selected rows} |
+| gt-row-deselect       | row deselected (on row clicked)                        | row selection ex. {changedRow: row object, selectedRows: array with selected rows} |
+| gt-row-select-all     | selectAllRows function                                 | row selection ex. {changedRow: 'all', selectedRows: array with selected rows}      |
+| gt-row-deselect-all   | deselectAllRows function                               | row selection ex. {changedRow: 'all', selectedRows: array with selected rows}      |
+| gt-row-expand         | when row is expanded                                   | row state ex. {changedRow: row object, expandedRows: array with expanded rows}     |
+| gt-row-collapse       | when row is collapsed                                  | row state ex. {changedRow: row object, expandedRows: array with expanded rows}     |
+| gt-row-expand-all     | expandAllRows function                                 | row state ex. {changedRow: row object, expandedRows: array with expanded rows}     |
+| gt-row-collapse-all   | collapseAllRows function                               | row state ex. {changedRow: row object, expandedRows: array with expanded rows}     |
 
 
 **Usage:**
@@ -323,6 +332,24 @@ Override texts by passing a new object using `gtTexts` attribute.
 ```Html
 <generic-table ... [gtTexts]="{loading:'Loading data...'}"></generic-table>
 ```
+
+## Table functions
+
+| Name            | Description                                                                                             | Usage
+|:----------------|:--------------------------------------------------------------------------------------------------------|:---------------------------------------------|
+| exportCSV       | See 'Export to CSV' section below                                                                       | `myTable.exportCSV('custom-file-name')`      |
+| gtApplyFilter   | Filter table data, [see example](https://hjalmers.github.io/angular-generic-table/examples)             | `myTable.gtApplyFilter(object with filters)` |
+| gtClearFilter   | Clear filters, [see example](https://hjalmers.github.io/angular-generic-table/examples)                 | `myTable.gtClearFilter()`                    |
+| gtSearch        | See 'Global table search and highlight' section below                                                   | `myTable.gtSearch(search string)`            |
+| changeRowLength | Change number of visible rows, [see example](https://hjalmers.github.io/angular-generic-table/examples) | `myTable.changeRowLength(number of rows)`    |
+| nextPage        | Go to next page                                                                                         | `myTable.nextPage()`                         |
+| previousPage    | Go to previous                                                                                          | `myTable.previousPage()`                     |
+| goToPage        | Go to specific page (pass page number)                                                                  | `myTable.goToPage()`                         |
+| selectAllRows   | Select all rows                                                                                         | `myTable.selectAllRows()`                    |
+| deselectAllRows | Deselect all rows                                                                                       | `myTable.deselectAllRows()`                  |
+| expandAllRows   | Expand all rows                                                                                         | `myTable.expandAllRows()`                    |
+| collapseAllRows | Collapse all rows                                                                                       | `myTable.collapseAllRows()`                  |
+
 
 ## Global table search and highlight
 

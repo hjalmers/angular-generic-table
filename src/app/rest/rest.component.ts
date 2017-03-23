@@ -27,8 +27,7 @@ export class RestComponent {
 
 
     this.configObject = {
-      settings:[
-          {
+      settings:[{
         objectKey:'id',
         visible:true,
         sort:'desc',
@@ -62,8 +61,7 @@ export class RestComponent {
         columnOrder:4,
         search:false
       }],
-      fields:[
-          {
+      fields:[{
         name:'Id',
         objectKey:'id',
         classNames:'clickable sort-numeric',

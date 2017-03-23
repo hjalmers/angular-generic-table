@@ -25,8 +25,8 @@
       <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.exportCSV()">Export to CSV</button>
       <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.selectAllRows()">Select all</button>
       <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.deselectAllRows()">Deselect all</button>
-      <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.expandAllRows()">Open all</button>
-      <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.collapseAllRows()">Close all</button>
+      <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.expandAllRows()">Expand all</button>
+      <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.collapseAllRows()">Collapse all</button>
       <small class="form-text text-muted col-12 col-xl-auto mb-2 mt-lg-2 my-xl-auto row"><gt-table-info [genericTable]="myTable"></gt-table-info></small>
       <div *ngIf="showColumnControls" class="col-12 row mt-xl-2">
         <label class="form-control-label mr-sm-2">Visible columns:</label>
@@ -39,7 +39,7 @@
       </div>
 
     </form>
-    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtRowComponent]="expandedRow" [gtOptions]="{stack:true, highlightSearch:true}" (gtEvent)="trigger($event)"></generic-table>
+    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtRowComponent]="expandedRow" [gtOptions]="{stack:true, highlightSearch:true, rowSelection:true}" (gtEvent)="trigger($event)"></generic-table>
     <div class="text-center">
       <gt-pagination [gtClasses]="'justify-content-center'" [genericTable]="myTable"></gt-pagination>
     </div>

@@ -5,4 +5,5 @@ export interface GtOptions {
   stack?: boolean;
   lazyLoad?: boolean;
   highlightSearch?: boolean;
+  rowSelection?: boolean;
 }

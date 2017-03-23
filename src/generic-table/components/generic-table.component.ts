@@ -30,8 +30,12 @@ import {GtRowMeta} from "../interfaces/gt-row-meta";
       </thead>
       <tbody *ngIf="gtData && gtInfo">
       <template class="table-rows" ngFor let-row [ngForOf]="gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1] | gtMeta:(gtInfo.pageCurrent-1):gtInfo.recordLength) : (gtData | gtMeta:null:null:gtData.length | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data)">
-        <tr [ngClass]="{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading}" (click)="toggleSelect(row)">
-          <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span class="gt-row-label" *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading')? (gtFields | gtProperty:column.objectKey:'stackedHeading'):(gtFields | gtProperty:column.objectKey:'name')}}</span><gt-custom-component-factory *ngIf="column.columnComponent" class="gt-row-content" [type]="column.columnComponent.type" [injector]="column.columnComponent.injector" [row]="row" [column]="column" (redrawEvent)="redraw($event)" (click)="column.click ? column.click(row,column):'';column.expand ? toggleCollapse(row):''"></gt-custom-component-factory><span *ngIf="!column.columnComponent" class="gt-row-content" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? toggleCollapse(row):''"></span></td>
+        <tr [ngClass]="{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading}" (click)="gtOptions.rowSelection ? toggleSelect(row):null">
+          <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms;" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}">
+            <span class="gt-row-label" *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading')? (gtFields | gtProperty:column.objectKey:'stackedHeading'):(gtFields | gtProperty:column.objectKey:'name')}}</span>
+            <gt-custom-component-factory *ngIf="column.columnComponent" class="gt-row-content" [type]="column.columnComponent.type" [injector]="column.columnComponent.injector" [row]="row" [column]="column" (redrawEvent)="redraw($event)" (click)="column.click ? column.click(row,column):'';column.expand ? toggleCollapse(row):''"></gt-custom-component-factory>
+            <span *ngIf="!column.columnComponent" class="gt-row-content" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? toggleCollapse(row):''"></span>
+          </td>
         </tr>
         <tr class="row-expanded" *ngIf="metaInfo[row.$$gtRowId]?.isOpen">
           <td [attr.colspan]="(gtFields | gtVisible:gtSettings:refreshPipe).length">
@@ -99,7 +103,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     lazyLoad: false,
     cache: false,
     debounceTime: 200,
-    highlightSearch: false
+    highlightSearch: false,
+    rowSelection:false
   };
   @Input() gtOptions: GtOptions = this.gtDefaultOptions;
   public store: Array<any> = [];
@@ -367,6 +372,13 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   };
 
   /**
+   * Get meta data for row.
+   */
+  public getRowState(row:R):GtRowMeta {
+    return typeof this.metaInfo[row.$$gtRowId] === 'undefined' ? null: this.metaInfo[row.$$gtRowId];
+  }
+
+  /**
    * Expand all rows.
    */
   public expandAllRows(): void {
@@ -484,7 +496,6 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
       name: 'gt-row-'+eventName,
       value: eventValue
     });
-
   }
 
   /**

@@ -1,15 +1,17 @@
 Release History
 ---------------
 ## [Unreleased]
+# [2.0.0] - 2017-03-23
 ### Added
-- Support for selecting rows (issue #53)
+- Support for selecting rows, enable by setting `gtOtpions.rowSelection` to true (issue #53, issue #59)
 - Support for selecting/deselecting and expanding/collapsing all rows (issue #58)
+- Support for redrawing table from custom column component, useful when custom column component alters other cells in row (issue #57)
 
 ### Improvement
 - Lazy loading now uses default template (easier to keep code changes in sync)
 
 ### Breaking changes
-- project has changed name from `angular2-generic-table` to `angular-generic-table` to comply with angular best practices 
+- project has changed name from `angular2-generic-table` to `angular-generic-table` to comply with angular guidelines 
 - `isOpen` property has been removed from row object, instead access isOpen state on row using `metaInfo[row.$$gtRowId]?.isOpen` it's now also possible to see if a row is selected using `metaInfo[row.$$gtRowId]?.isSelected`
 
 # [1.1.1] - 2017-03-22
