@@ -1,0 +1,21 @@
+{
+  "TRANSLATIONS": {
+    "TITLE":"Språkstöd",
+    "DESCRIPTION": "Angular Generic Table med <a href='https://github.com/ngx-translate/core' target='_blank'>ngx-translate</a>!",
+    "SELECT": "Byt språk",
+    "EXAMPLE":"Exempel",
+    "NAME_DATA": "Hej, mitt namn är {{name}}",
+    "NAME_HEADING": "Namn",
+    "ID_HEADING": "Id",
+    "LUCKY_NUMBER_HEADING":"Turnummer",
+    "LOADING": "Laddar...",
+    "NO_DATA": "Ingen data",
+    "NO_MATCHING_DATA": "Inga träffar",
+    "NO_VISIBLE_COLUMNS_HEADING": "Inga synliga kolumner",
+    "NO_VISIBLE_COLUMNS": "Minst en kolumn måste vara synlig.",
+    "TABLE_INFO": "Visar rad #recordFrom till #recordTo av #recordsAfterSearch rader.",
+    "TABLE_INFO_AFTER_SEARCH": "Visar rad #recordFrom till #recordTo av #recordsAfterSearch rader (filtrerat från totalt #recordsAll rader).",
+    "CSV_DOWNLOAD": "export",
+    "SORT_LABEL": "Sortera:"
+  }
+}
