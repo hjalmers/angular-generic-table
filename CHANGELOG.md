@@ -1,6 +1,11 @@
 Release History
 ---------------
 ## [Unreleased]
+
+# [2.0.1] - 2017-03-24
+### Fixed
+- Removed deprecated warning
+
 # [2.0.0] - 2017-03-23
 ### Added
 - Support for selecting rows, enable by setting `gtOtpions.rowSelection` to true (issue #53, issue #59)
