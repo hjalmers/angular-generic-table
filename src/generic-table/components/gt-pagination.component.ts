@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {Input} from '@angular/core/src/metadata/directives';
+import { Component, OnInit, Input } from '@angular/core';
 import {GenericTableComponent} from './generic-table.component';
 
 @Component({

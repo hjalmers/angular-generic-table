@@ -2,6 +2,10 @@ Release History
 ---------------
 ## [Unreleased]
 
+# [2.0.2] - 2017-03-27
+### Fixed
+- Removed faulty import (see issue #60) 
+
 # [2.0.1] - 2017-03-24
 ### Fixed
 - Removed deprecated warning

@@ -1,5 +1,4 @@
-import {Component, ChangeDetectorRef, AfterViewChecked} from '@angular/core';
-import {Input} from '@angular/core/src/metadata/directives';
+import {Component, ChangeDetectorRef, AfterViewChecked, Input} from '@angular/core';
 import {GenericTableComponent} from './generic-table.component';
 
 @Component({
