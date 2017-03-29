@@ -2,7 +2,7 @@
 <p [innerHTML]="'TRANSLATIONS.DESCRIPTION' | translate"></p>
 <div class="card mb-5">
   <div class="card-header">{{'TRANSLATIONS.EXAMPLE' | translate}}</div>
-  <div class="card-block" exemplify="localizationExample" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','[gtTexts]','#langSelect','#myTable']" [source]="'child'" [target]="translationsExample" [navStyle]="'tabs'" [externalSources]="[{
+  <div class="card-block" exemplify="localizationExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','[gtTexts]','#langSelect','#myTable']" [source]="'child'" [target]="translationsExample" [navStyle]="'tabs'" [externalSources]="[{
     name:'app.module.ts',
     src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
   },{
@@ -15,13 +15,13 @@
         <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
       </select>
     </form>
-    <template [ngIf]="configObject">
+    <ng-template [ngIf]="configObject">
       <generic-table [gtClasses]="'table-sm'" #myTable [gtTexts]="translations" [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"></generic-table>
       <div class="text-center">
         <small><gt-table-info class="form-text text-muted mb-2" [genericTable]="myTable"></gt-table-info></small>
         <gt-pagination [gtClasses]="'pagination-sm justify-content-center'" [genericTable]="myTable"></gt-pagination>
       </div>
-    </template>
+    </ng-template>
   </div>
   <div class="card-footer" #translationsExample></div>
 </div>

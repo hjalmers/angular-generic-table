@@ -2,7 +2,7 @@
 <p>Use lazy loading to speed up things when working with large data sets and cache data in the table if you want to avoid unnecessary server requests. This example also utilizes column stacking on tablets and mobile devices so resize the browser and see what happens with the layout on smaller screens.</p>
 <div class="card mb-5">
   <div class="card-header">Example</div>
-  <div class="card-block" exemplify="lazyExample" [escapeStrings]="escape" [source]="'child'" [target]="lazyExample" [navStyle]="'tabs'" [externalSources]="[{
+  <div class="card-block" exemplify="lazyExample" [context]="this" [escapeStrings]="escape" [source]="'child'" [target]="lazyExample" [navStyle]="'tabs'" [externalSources]="[{
     name:'app.module.ts',
     src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
   },{

@@ -19,6 +19,7 @@ export class RestComponent {
   private myTable: GenericTableComponent<any, CustomRowComponent>;
   public expandedRow = CustomRowComponent;
   public showColumnControls = false;
+  public selectedRows:number = 0;
 
 
   constructor(private http: Http) {
@@ -137,7 +138,10 @@ export class RestComponent {
   /** Listen for events
    * */
   public trigger = function($event){
-    console.log($event)
+    console.log($event);
+    if($event.value && $event.value.selectedRows) {
+      this.selectedRows = $event.value.selectedRows.length
+    }
   };
 
 }

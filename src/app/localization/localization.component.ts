@@ -18,7 +18,7 @@ export class LocalizationComponent {
     lucky_number:number
   }> = [];
 
-  constructor(private translate: TranslateService) {
+  constructor(public translate: TranslateService) {
     translate.addLangs(["en", "sv"]);
     translate.setDefaultLang('en');
     /*translate.get('HOME.SELECT').subscribe((res)=>

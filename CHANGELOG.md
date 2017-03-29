@@ -2,6 +2,14 @@ Release History
 ---------------
 ## [Unreleased]
 
+# [4.0.0] - 2017-03-29
+### Breaking changes
+- Made some changes for angular version 4.0.0 eg. changed from `template` to `ng-template` which means that generic table now requires angular version 4+ and therefore it's added as a peer dependency (see issue #63). 
+
+### Fixed
+- Fix for collapsing rows from row component (see issue #65)
+- Fix for AOT (see issue #64)
+
 # [2.0.2] - 2017-03-27
 ### Fixed
 - Removed faulty import (see issue #60) 
@@ -20,7 +28,7 @@ Release History
 - Lazy loading now uses default template (easier to keep code changes in sync)
 
 ### Breaking changes
-- project has changed name from `angular2-generic-table` to `angular-generic-table` to comply with angular guidelines 
+- Project has changed name from `angular2-generic-table` to `angular-generic-table` to comply with angular guidelines 
 - `isOpen` property has been removed from row object, instead access isOpen state on row using `metaInfo[row.$$gtRowId]?.isOpen` it's now also possible to see if a row is selected using `metaInfo[row.$$gtRowId]?.isSelected`
 
 # [1.1.1] - 2017-03-22

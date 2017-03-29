@@ -2,7 +2,7 @@
 <p>Table using two custom column widgets, as well as external state tracking.</p>
 <div class="card mb-5">
   <div class="card-header">Example</div>
-  <div class="card-block" exemplify="customColumnsExample"
+  <div class="card-block" exemplify="customColumnsExample" [context]="this"
        [escapeStrings]="['gtSettings','gtFields','gtData','gtClasses']"
        [source]="'child'" [target]="customColumnsExample" [navStyle]="'tabs'" [externalSources]="[{
     name: 'app.module.ts',

@@ -29,7 +29,7 @@ import {GtRowMeta} from "../interfaces/gt-row-meta";
       </tr>
       </thead>
       <tbody *ngIf="gtData && gtInfo">
-      <template class="table-rows" ngFor let-row [ngForOf]="gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1] | gtMeta:(gtInfo.pageCurrent-1):gtInfo.recordLength) : (gtData | gtMeta:null:null:gtData.length | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data)">
+      <ng-template class="table-rows" ngFor let-row [ngForOf]="gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1] | gtMeta:(gtInfo.pageCurrent-1):gtInfo.recordLength) : (gtData | gtMeta:null:null:gtData.length | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data)">
         <tr [ngClass]="{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading}" (click)="gtOptions.rowSelection ? toggleSelect(row):null">
           <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms;" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}">
             <span class="gt-row-label" *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading')? (gtFields | gtProperty:column.objectKey:'stackedHeading'):(gtFields | gtProperty:column.objectKey:'name')}}</span>
@@ -39,10 +39,10 @@ import {GtRowMeta} from "../interfaces/gt-row-meta";
         </tr>
         <tr class="row-expanded" *ngIf="metaInfo[row.$$gtRowId]?.isOpen">
           <td [attr.colspan]="(gtFields | gtVisible:gtSettings:refreshPipe).length">
-            <gt-expanding-row [row]="row" [type]="gtRowComponent" (redrawEvent)="redraw($event)"></gt-expanding-row>
+            <gt-expanding-row [row]="row" [type]="gtRowComponent" (redrawEvent)="redraw($event)" (toggleRowEvent)="toggleCollapse($event)"></gt-expanding-row>
           </td>
         </tr>
-      </template>
+      </ng-template>
       <tr *ngIf="gtInfo.pageTotal === 0 && (gtInfo.searchTerms || gtInfo.filter) && !loading">
         <td class="gt-no-matching-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.noMatchingData}}</td>
       </tr>
@@ -123,8 +123,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     recordsAfterSearch: 0
   };
 
-  private refreshPipe: boolean = false;
-  private refreshSorting: boolean = false;
+  public refreshPipe: boolean = false;
+  public refreshSorting: boolean = false;
 
   constructor() {
     this.gtEvent.subscribe($event => {
@@ -444,7 +444,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    * @returns {Array} array with added rows.
    */
   private _pushLazyRows(target:Array<GtRow>,source:Array<GtRow>):Array<GtRow> {
-    for (var i = 0; i < source.length; i ++) {
+    for (let i = 0; i < source.length; i ++) {
       target.push(source[i]);
     }
     return target;
@@ -623,7 +623,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   private createStore = function (records: number, perPage: number) {
     let stores = Math.ceil(records / perPage);
     let store: Array<Array<any>> = [];
-    for (var i = 0; i < stores; i++) {
+    for (let i = 0; i < stores; i++) {
       store[i] = [];
     }
     return store;
@@ -648,7 +648,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
 
     // loop through all settings objects...
-    for (var i = 0; i < this.gtSettings.length; i++) {
+    for (let i = 0; i < this.gtSettings.length; i++) {
       let setting = this.gtSettings[i];
 
       // ...if column is visible and enabled...
@@ -671,7 +671,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     let contentPlaceholder: Array<any> = [];
 
     // create equal number of rows as rows per page
-    for (var i = 0; i < perPage; i++) {
+    for (let i = 0; i < perPage; i++) {
       // ...add temporary row object
       contentPlaceholder.push(rowObject);
     }
