@@ -1,6 +1,6 @@
 # angular-generic-table
 
-A generic table for Angular 2+. This project is a re-write of [this](https://github.com/hjalmers/angularjs-generic-table) project for AngularJS, the idea is to have support for the same features and that the configuration should be the same. Generic table uses standard markup for tables ie. table, tr and td elements etc. and has support for expanding rows, search, filters, sorting, pagination, export to CSV, column clicks, custom column rendering, custom export values. [View demo](https://hjalmers.github.io/angular-generic-table/examples)
+A generic table for Angular 2+. This project is a re-write of [this](https://github.com/hjalmers/angularjs-generic-table) project for AngularJS, the idea is to have support for the same features and that the configuration should be the same. Generic table uses standard markup for tables ie. table, tr and td elements etc. and has support for expanding rows, search, filters, sorting, pagination, export to CSV, column clicks, custom column rendering, custom export values. [View demo](https://hjalmers.github.io/angular-generic-table/)
 
 ## Features
 - Uses standard HTML tables (no divs etc.)
