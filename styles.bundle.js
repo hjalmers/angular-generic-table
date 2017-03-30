@@ -1,17 +1,6 @@
 webpackJsonp([2,5],{
 
-/***/ 1025:
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(617);
-__webpack_require__(618);
-__webpack_require__(616);
-module.exports = __webpack_require__(615);
-
-
-/***/ }),
-
-/***/ 238:
+/***/ 132:
 /***/ (function(module, exports) {
 
 /*
@@ -68,7 +57,7 @@ module.exports = function() {
 
 /***/ }),
 
-/***/ 251:
+/***/ 145:
 /***/ (function(module, exports) {
 
 /*
@@ -321,16 +310,16 @@ function updateLink(linkElement, obj) {
 
 /***/ }),
 
-/***/ 615:
+/***/ 375:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(761);
+var content = __webpack_require__(411);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(251)(content, {});
+var update = __webpack_require__(145)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -348,16 +337,16 @@ if(false) {
 
 /***/ }),
 
-/***/ 616:
+/***/ 376:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(758);
+var content = __webpack_require__(408);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(251)(content, {});
+var update = __webpack_require__(145)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -375,16 +364,16 @@ if(false) {
 
 /***/ }),
 
-/***/ 617:
+/***/ 377:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(759);
+var content = __webpack_require__(409);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(251)(content, {});
+var update = __webpack_require__(145)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -402,16 +391,16 @@ if(false) {
 
 /***/ }),
 
-/***/ 618:
+/***/ 378:
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(760);
+var content = __webpack_require__(410);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(251)(content, {});
+var update = __webpack_require__(145)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -429,25 +418,25 @@ if(false) {
 
 /***/ }),
 
-/***/ 758:
+/***/ 408:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(238)();
+exports = module.exports = __webpack_require__(132)();
 // imports
 
 
 // module
-exports.push([module.i, ".exemplify-wrapper pre.markup-example {\n  margin-top: 0;\n  padding-top: 6px;\n}\n\n.exemplify-wrapper .exemplify-label {\n  font-weight: bold;\n}\n\n.exemplify-wrapper ul.nav.nav-inline {\n  display: inline-block;\n  width: 100%;\n}\n.exemplify-wrapper ul.nav div {\n  margin-bottom: 4px;\n}\n\n.exemplify-wrapper > div.exemplify-bar {\n  margin-bottom: 6px;\n}\n.exemplify-wrapper .token.tag {\n  display: inline-block;\n  padding: 0;\n  font-size: inherit;\n  font-weight: normal;\n  line-height: 1;\n}\n\n.exemplify-wrapper > .exemplify-bar {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n}\n\n.exemplify-wrapper > .exemplify-bar a.link-copy {\n  -webkit-box-ordinal-group: 3;\n      -ms-flex-order: 2;\n          order: 2;\n}\n\n.exemplify-wrapper > .exemplify-bar a.link-hide {\n  -webkit-box-ordinal-group: 2;\n      -ms-flex-order: 1;\n          order: 1;\n}\n\n.exemplify-wrapper > .exemplify-bar > a {\n  margin-left: 6px;\n}\n\n.exemplify-wrapper pre.markup-example code {\n  -webkit-animation: fade-in 1000ms ease-in-out;\n          animation: fade-in 1000ms ease-in-out;\n  opacity: 1;\n}\n\n@-webkit-keyframes fade-in {\n  0% {\n    opacity: 0;\n  }\n  100% {\n    opacity: 1;\n  }\n}\n\n@keyframes fade-in {\n  0% {\n    opacity: 0;\n  }\n  100% {\n    opacity: 1;\n  }\n}\n", ""]);
+exports.push([module.i, ".exemplify-wrapper pre.markup-example {\n  margin-top: 0;\n  padding-top: 6px;\n}\n\n.exemplify-wrapper .exemplify-label {\n  font-weight: bold;\n}\n\n.exemplify-wrapper ul.nav.nav-inline {\n  display: inline-block;\n  width: 100%;\n}\n.exemplify-wrapper ul.nav div {\n  margin-bottom: 4px;\n}\n\n.exemplify-wrapper > div.exemplify-bar {\n  margin-bottom: 6px;\n}\n.exemplify-wrapper .token.tag {\n  display: inline-block;\n  padding: 0;\n  font-size: inherit;\n  font-weight: normal;\n  line-height: 1;\n}\n\n.exemplify-wrapper > .exemplify-bar {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n}\n\n.exemplify-wrapper > .exemplify-bar a.exemplify-copy {\n  -webkit-box-ordinal-group: 3;\n      -ms-flex-order: 2;\n          order: 2;\n}\n\n.exemplify-wrapper > .exemplify-bar a.exemplify-hide {\n  -webkit-box-ordinal-group: 2;\n      -ms-flex-order: 1;\n          order: 1;\n}\n\n.exemplify-wrapper > .exemplify-bar > a {\n  margin-left: 6px;\n}\n\n.exemplify-wrapper pre.markup-example code {\n  -webkit-animation: fade-in 1000ms ease-in-out;\n          animation: fade-in 1000ms ease-in-out;\n  opacity: 1;\n}\n\n@-webkit-keyframes fade-in {\n  0% {\n    opacity: 0;\n  }\n  100% {\n    opacity: 1;\n  }\n}\n\n@keyframes fade-in {\n  0% {\n    opacity: 0;\n  }\n  100% {\n    opacity: 1;\n  }\n}\n", ""]);
 
 // exports
 
 
 /***/ }),
 
-/***/ 759:
+/***/ 409:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(238)();
+exports = module.exports = __webpack_require__(132)();
 // imports
 
 
@@ -459,10 +448,10 @@ exports.push([module.i, "/*!\n * Bootstrap v4.0.0-alpha.6 (https://getbootstrap.
 
 /***/ }),
 
-/***/ 760:
+/***/ 410:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(238)();
+exports = module.exports = __webpack_require__(132)();
 // imports
 
 
@@ -474,10 +463,10 @@ exports.push([module.i, "/**\n * prism.js Coy theme for JavaScript, CoffeeScript
 
 /***/ }),
 
-/***/ 761:
+/***/ 411:
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(238)();
+exports = module.exports = __webpack_require__(132)();
 // imports
 exports.push([module.i, "@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);", ""]);
 
@@ -487,7 +476,18 @@ exports.push([module.i, "generic-table table thead tr th.sort-enable {\n  cursor
 // exports
 
 
+/***/ }),
+
+/***/ 673:
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(377);
+__webpack_require__(378);
+__webpack_require__(376);
+module.exports = __webpack_require__(375);
+
+
 /***/ })
 
-},[1025]);
+},[673]);
 //# sourceMappingURL=styles.bundle.js.map
