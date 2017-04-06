@@ -2,6 +2,11 @@ Release History
 ---------------
 ## [Unreleased]
 
+# [4.0.1] - 2017-04-06
+
+### Fixed
+- Fix for pagination component (see issue #67, #68, #69), pagination controls will now also be disabled when table is fetching data.
+
 # [4.0.0] - 2017-03-29
 ### Breaking changes
 - Made some changes for angular version 4.0.0 eg. changed from `template` to `ng-template` which means that generic table now requires angular version 4+ and therefore it's added as a peer dependency (see issue #63). 

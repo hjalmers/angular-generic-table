@@ -340,6 +340,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    * @param {number} page - page number.
    */
   public goToPage = function (page: number) {
+
     this.gtInfo.pageCurrent = page;
 
     // if lazy loading and if page contains no records...

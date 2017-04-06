@@ -4,18 +4,10 @@ import {GenericTableComponent} from './generic-table.component';
 @Component({
   selector: 'gt-pagination',
   template: `<nav aria-label="Table navigation" *ngIf="genericTable.gtInfo">
-  <ul class="pagination" ngClass="{{gtClasses}}">
-    <li class="page-item" ngClass="{{genericTable.gtInfo.pageCurrent > 1 ? '':'disabled'}}"><a class="page-link" href="javascript:void(0);" (click)="genericTable.gtInfo.pageCurrent > 1 && genericTable.previousPage()" tabindex="-1" [attr.aria-label]="genericTable.gtTexts.paginatePrevious"><span aria-hidden="true">&laquo;</span><span class="sr-only">{{genericTable.gtTexts.paginatePrevious}}</span></a></li>
-    <ng-template [ngIf]="genericTable.gtInfo.pageCurrent > 4">
-      <li class="page-item"><a class="page-link" href="javascript:void(0);" (click)="genericTable.goToPage(1)">1</a></li>
-      <li class="page-item" *ngIf="genericTable.gtInfo.pageTotal > 5"><span class="page-link">&hellip;</span></li>
-    </ng-template>
-    <li class="page-item" ngClass="{{genericTable.gtInfo.pageCurrent === page ? 'active':''}}" *ngFor="let page of genericTable.gtInfo.pageTotal | gtPaginationPipe:genericTable.gtInfo.pageCurrent"><a class="page-link" href="javascript:void(0);" (click)="genericTable.goToPage(page)">{{page}}</a></li>
-    <ng-template [ngIf]="genericTable.gtInfo.pageCurrent < genericTable.gtInfo.pageTotal && genericTable.gtInfo.pageTotal > 5" >
-      <li class="page-item" *ngIf="genericTable.gtInfo.pageCurrent + 3 < genericTable.gtInfo.pageTotal && genericTable.gtInfo.pageTotal > 6"><span class="page-link">&hellip;</span></li>
-      <li class="page-item" ngClass="{{genericTable.gtInfo.pageCurrent === genericTable.gtInfo.pageTotal ? 'active':''}}" ><a href="javascript:void(0);" class="page-link" (click)="genericTable.goToPage(genericTable.gtInfo.pageTotal)">{{genericTable.gtInfo.pageTotal}}</a></li>
-    </ng-template>
-    <li class="page-item" ngClass="{{genericTable.gtInfo.pageCurrent !== genericTable.gtInfo.pageTotal ? '':'disabled'}}"><a class="page-link gt-link" href="javascript:void(0);" (click)="genericTable.gtInfo.pageCurrent !== genericTable.gtInfo.pageTotal && genericTable.nextPage()" [attr.aria-label]="genericTable.gtTexts.paginateNext"><span aria-hidden="true">&raquo;</span><span class="sr-only">{{genericTable.gtTexts.paginateNext}}</span></a></li>
+  <ul class="pagination" [ngClass]="gtClasses">
+    <li class="page-item" [ngClass]="{'disabled' : genericTable.gtInfo.pageCurrent === 1 || genericTable.loading }"><a class="page-link" href="javascript:void(0);" (click)="genericTable.gtInfo.pageCurrent > 1 && genericTable.previousPage()" [attr.aria-label]="genericTable.gtTexts.paginatePrevious"><span aria-hidden="true">&laquo;</span><span class="sr-only">{{genericTable.gtTexts.paginatePrevious}}</span></a></li>
+    <li class="page-item" [ngClass]="{'disabled' : genericTable.loading && genericTable.gtInfo.pageCurrent !== page, 'active' : genericTable.gtInfo.pageCurrent === page }" *ngFor="let page of genericTable.gtInfo.pageTotal | gtPaginationPipe:genericTable.gtInfo.pageCurrent"><a class="page-link" [tabindex]="page === true ? -1:0" href="javascript:void(0);" (click)="page === true ? '':genericTable.goToPage(page)">{{page === true ? '&hellip;':page}}</a></li>
+    <li class="page-item" [ngClass]="{'disabled' : genericTable.gtInfo.pageCurrent === genericTable.gtInfo.pageTotal || genericTable.loading }"><a class="page-link gt-link" href="javascript:void(0);" (click)="genericTable.gtInfo.pageCurrent !== genericTable.gtInfo.pageTotal && genericTable.nextPage()" [attr.aria-label]="genericTable.gtTexts.paginateNext"><span aria-hidden="true">&raquo;</span><span class="sr-only">{{genericTable.gtTexts.paginateNext}}</span></a></li>
   </ul>
   </nav>
     `,
@@ -40,52 +32,51 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class PaginationPipe implements PipeTransform {
 
-  transform(totalPages: number, currentPage:number): Array<number> {
-    let pagination:Array<number>;
-    // if less than two pages
-    if(totalPages < 2){
-      pagination = [1];
+  transform(totalPages: number, currentPage:number): Array<any> {
+    let pagination:Array<any> = []; // create new empty array for pagination
+    let siblings = 2; // sibling elements ie. number of elements on each side of current page
+    let paginationLength = totalPages < (siblings*2)+1 ? totalPages: (siblings*2)+1; // number of elements in pagination array
+    let start = currentPage <= siblings ? 1: currentPage - siblings; // starting position for array
+    let modifier = totalPages - (currentPage+siblings) <= 0 ? totalPages - (currentPage+siblings):0; // modifier for pagination values
+    let modifiedPosition = start+modifier <= 0 ? 1: start+modifier;
+
+    // push pages to pagination array
+    for(let i = 0;i < paginationLength; i ++) {
+      pagination.push(modifiedPosition + i)
     }
-    // if less than three pages
-    else if(totalPages < 3){
-      pagination = [1,2];
+
+    // if first page is not included in pagination...
+    if(pagination.indexOf(1) === -1) {
+
+      // ...check if second page is in pagination...
+      if(pagination.indexOf(2) === -1){
+
+        // ...if not check if total number of pages equals seven and number of siblings are two...
+        if(totalPages === 7 && siblings === 2) {
+
+          // ...add second page and don't convert page number to ellipsis
+          pagination.unshift(2);
+        } else {
+          // ...if not, use this placeholder for ellipsis instead of actual page number
+          pagination[0] = true;
+        }
+      }
+      // ...add first page as first array item
+      pagination.unshift(1);
+    }  else if(totalPages > paginationLength) {
+      // if first page is included add extra page to keep number of items consistent
+      pagination.splice(paginationLength,0,paginationLength+1);
     }
-    // if less than four pages
-    else if(totalPages < 4){
-      pagination = [1,2,3];
+    // check if last page is included in pagination...
+    if(pagination.indexOf(totalPages) === -1) {
+
+      //...if not, page next to last should either show ellipsis or actual page number for the page
+      pagination[pagination.length-1] = pagination[pagination.length-1] === totalPages-1 ? totalPages-1:true;
+
+      //...add last page to pagination
+      pagination.push(totalPages);
     }
-    // if less than five pages
-    else if(totalPages < 5){
-      pagination = [1,2,3,4];
-    }
-    // if current page is one of the four first pages
-    else if(currentPage <= 4){
-      pagination = [1,2,3,4,5];
-    }
-    // if next to last page
-    else if(totalPages-1 === currentPage){
-      pagination = [currentPage-2,currentPage-1,currentPage];
-    }
-    // if next to next last page
-    else if(totalPages-3 === currentPage && totalPages > 10){
-      pagination = [currentPage-1,currentPage,currentPage +1,currentPage + 2];
-    }
-    // if there is more than one page left
-    else if(totalPages > currentPage){
-      pagination = [currentPage-1,currentPage,currentPage+1];
-    }
-    // if last page and page total is less than or equal to 5
-    else if(totalPages === currentPage && totalPages <= 5){
-      pagination = [currentPage-3, currentPage-2,currentPage-1,currentPage];
-    }
-    // if last page
-    else if(totalPages === currentPage){
-      pagination = [currentPage-2,currentPage-1,currentPage];
-    }
-    // if current page is not one of the four first pages
-    else if(totalPages-4 > currentPage){
-      pagination = [currentPage-1,currentPage,currentPage+1, currentPage+2];
-    }
+
     return pagination;
   }
 
