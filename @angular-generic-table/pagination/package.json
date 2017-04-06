@@ -1,0 +1,24 @@
+{
+  "name": "@angular-generic-table/pagination",
+  "version": "4.1.0",
+  "description": "A pagination component for angular generic table",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Angular",
+    "Table"
+  ],
+  "author": "Robert Hjalmers",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hjalmers/angular-generic-table.git"
+  },
+  "peerDependencies": {
+    "@angular/core": "^4.0.0",
+    "@angular/common": "^4.0.0",
+    "@angular-generic-table/core": "^4.1.0"
+  }
+}

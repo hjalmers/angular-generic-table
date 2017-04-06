@@ -24,7 +24,7 @@ export function createTranslateLoader(http: Http) {
 }
 
 /** Import generic table module */
-import { GenericTableModule } from '../generic-table/generic-table.module';
+import { GenericTableModule } from '../../@angular-generic-table/core';
 
 @NgModule({
   declarations: [

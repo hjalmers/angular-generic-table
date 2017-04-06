@@ -1,0 +1,106 @@
+// import variables from bootstrap or change to your own bootstrap theme variables
+@import "./node_modules/bootstrap/scss/_variables.scss";
+
+// basic table styles for sorting and for stacked table layout
+generic-table {
+  table {
+    thead tr {
+      th {
+        &.sort-enable {
+          cursor: pointer;
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+        &.sort-asc {
+          cursor: pointer;
+          &:hover {
+            text-decoration: underline;
+          }
+          &::after {
+            content: "";
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid #000;
+            border-radius: 2px;
+            margin-left: 4px;
+            vertical-align: middle;
+          }
+        }
+        &.sort-desc {
+          cursor: pointer;
+          &:hover {
+            text-decoration: underline;
+          }
+          &::after {
+            content: "";
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid #000;
+            border-radius: 2px;
+            margin-left: 4px;
+            vertical-align: middle;
+          }
+        }
+      }
+    }
+
+    span.gt-row-label, th.gt-sort-label {
+      display: none;
+    }
+  }
+}
+// get break point for medium devices from bootstrap
+@media (max-width: map-get($grid-breakpoints, md)) {
+  generic-table {
+    table.table-stacked {
+      thead tr {
+        display: table;
+        width: 100%;
+        th {
+          text-align:right;
+          &:first-child {
+            text-align:left;
+          }
+          &.sort-disable {
+            display: none;
+          }
+          &.gt-sort-label {
+            display: table-cell;
+          }
+        }
+      }
+      tr {
+        & + tr {
+          border-top: 1px solid #ddd;
+        }
+
+        td {
+          display: block;
+          border: none;
+          > span {
+            display: table-cell;
+          }
+          > span.gt-row-label {
+            white-space: nowrap;
+            font-weight: bold;
+          }
+          > span.gt-row-content {
+            text-align: right;
+            width: 100%;
+          }
+          &.hidden-stacked {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
