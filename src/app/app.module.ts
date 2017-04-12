@@ -15,6 +15,8 @@ import { ExemplifyModule } from "angular-exemplify";
 import { LocalizationComponent} from './localization/localization.component';
 import { CustomColumnComponent, NameComponent, AgeComponent } from './custom-column/custom-column.component';
 
+import {DragulaModule} from 'ng2-dragula'
+
 /** Only needed when using ng2-translate */
 import { TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -25,6 +27,7 @@ export function createTranslateLoader(http: Http) {
 
 /** Import generic table module */
 import { GenericTableModule } from '../../@angular-generic-table/core';
+import {GtColumnPipe, GtColumnSettingsComponent} from '../../@angular-generic-table/column-settings/components/gt-column-settings/gt-column-settings.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +40,9 @@ import { GenericTableModule } from '../../@angular-generic-table/core';
     AgeComponent,
     BasicComponent,
     ExamplesComponent,
-    LocalizationComponent
+    LocalizationComponent,
+    GtColumnSettingsComponent,
+    GtColumnPipe
   ],
   imports: [
     BrowserModule,
@@ -53,7 +58,8 @@ import { GenericTableModule } from '../../@angular-generic-table/core';
         useFactory: (createTranslateLoader),
         deps: [Http]
       }
-    })
+    }),
+    DragulaModule
   ],
   /** add components used by your table i.e. for expanding rows etc. as entry components */
   entryComponents: [

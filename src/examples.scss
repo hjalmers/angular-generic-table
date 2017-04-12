@@ -101,3 +101,14 @@ span.link {
     text-decoration: underline;
   }
 }
+.temp::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: calc(100% - 33px);
+  background: #fff;
+  position: absolute;
+  top:33px;
+  opacity: 0.5;
+  z-index: 0;
+}

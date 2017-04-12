@@ -1,0 +1,21 @@
+<!--{{genericTable.gtSettings | json}}-->
+<div style="position: absolute;width: 100%;margin-top: 34px;z-index:1;" *ngIf="show">
+
+  <div class="px-3 py-3 table-bordered border-left-0 border-right-0 w-100 bg-faded">
+      <h6>Columns</h6>
+      <small class="form-text text-muted">Double click to toggle visibility, drag and drop to reorder.</small>
+
+
+    <div [dragula]='"first-bag"'  data-visible=true [style.column-count]="genericTable.gtSettings.length/height">
+      <div *ngFor="let i = index;let column of genericTable.gtSettings | gtColumn:true" [attr.data-object-key]="column.objectKey">
+        <span class="badge badge-default">{{column.columnOrder}}</span>
+        <span (dblclick)="toggleVisibility(column)" class="badge" [ngClass]="{'badge-success':column.visible !== false, 'badge-danger':column.visible === false}">{{genericTable.gtFields | gtProperty:column.objectKey:'name'}}</span>
+      </div>
+    </div>
+    <!--<div [dragula]='"first-bag"' class="col" data-visible=false>
+      <div *ngFor="let i = index;let column of genericTable.gtSettings | gtColumn:false" [attr.data-object-key]="column.objectKey" (dblclick)="toggleVisibility(column)">
+        <span class="badge" [ngClass]="{'badge-success':column.visible !== false, 'badge-danger':column.visible === false}">{{genericTable.gtFields | gtProperty:column.objectKey:'name'}}</span>
+      </div>
+    </div>-->
+  </div>
+</div>
