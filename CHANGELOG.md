@@ -2,6 +2,9 @@ Release History
 ---------------
 ## [Unreleased]
 
+### Fixed
+- Fix for pagination component (see issue #46).
+
 # [4.0.1] - 2017-04-06
 
 ### Fixed
