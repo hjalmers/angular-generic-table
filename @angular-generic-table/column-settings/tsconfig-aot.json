@@ -11,7 +11,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "newLine": "lf",
-    "outDir": "../packages/core",
+    "outDir": "../packages/column-settings",
     "pretty": true,
     "rootDir": "./",
     "sourceMap": true,
@@ -26,7 +26,7 @@
     "index.ts"
   ],
   "angularCompilerOptions": {
-    "genDir": "../packages/core",
+    "genDir": "../packages/column-settings",
     "strictMetadataEmit": true,
     "skipMetadataEmit" : false,
     "skipTemplateCodegen": true

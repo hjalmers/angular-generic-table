@@ -20,7 +20,7 @@ export class GtPaginationComponent implements OnInit {
   public ready:boolean = false;
 
   ngOnInit() {
-    this.genericTable.gtEvent.subscribe((res)=>{
+    this.genericTable.gtEvent.subscribe((res:any)=>{
       if(res.name === 'gt-info' && res.value.pageTotal > 0){
         this.ready = true;
       }

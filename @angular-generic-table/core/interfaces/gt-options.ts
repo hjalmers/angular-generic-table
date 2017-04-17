@@ -6,4 +6,6 @@ export interface GtOptions {
   lazyLoad?: boolean;
   highlightSearch?: boolean;
   rowSelection?: boolean;
+  rowSelectionAllowMultiple?: boolean;
+  rowExpandAllowMultiple?: boolean;
 }

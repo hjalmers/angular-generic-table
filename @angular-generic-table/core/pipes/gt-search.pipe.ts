@@ -11,7 +11,7 @@ import {GtInformation} from '../interfaces/gt-information';
 export class GtSearchPipe<R extends GtRow> implements PipeTransform {
 
   /** Return property */
-  private getProperty = function(array, key){
+  private getProperty = function(array:Array<any>, key:string){
     for (let i = 0; i < array.length;i++){
       if (array[i].objectKey === key) {
         return array[i];

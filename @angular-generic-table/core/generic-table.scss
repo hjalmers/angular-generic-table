@@ -1,5 +1,5 @@
 // import variables from bootstrap or change to your own bootstrap theme variables
-@import "./node_modules/bootstrap/scss/_variables.scss";
+@import "~bootstrap/scss/_variables.scss";
 
 // basic table styles for sorting and for stacked table layout
 generic-table {
@@ -103,4 +103,3 @@ generic-table {
     }
   }
 }
-

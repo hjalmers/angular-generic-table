@@ -3,6 +3,7 @@ export interface GtConfigSetting {
   visible?: boolean;
   enabled?: boolean;
   sort?: string;
+  sortEnabled?: boolean;
   sortOrder?: number;
   columnOrder?: number;
   export?:boolean, // should column be exported to CSV (OPTIONAL)

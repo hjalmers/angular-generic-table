@@ -1,10 +1,21 @@
 {
   "name": "@angular-generic-table/core",
-  "version": "4.1.0-rc.0",
+  "version": "4.1.0-rc.3",
   "description": "A generic table component for Angular",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "../../node_modules/.bin/node-sass --source-map true --include-path scss generic-table.scss ../packages/core/css/generic-table-prebuild.css",
+    "autoprefix:css": "../../node_modules/.bin/postcss -u autoprefixer -r ../packages/core/css/generic-table-prebuild.css",
+    "minify:css": "../../node_modules/.bin/cleancss -o ../packages/core/css/generic-table-prebuild.min.css ../packages/core/css/generic-table-prebuild.css --source-map",
+    "compile:css": "npm run build:css && npm run autoprefix:css && npm run minify:css",
+    "rename:css": "../../node_modules/.bin/renamer --find \"generic-table-prebuild\" --replace \"generic-table\" ../packages/core/css/*",
+    "copy:scss": "../../node_modules/.bin/copyfiles -f generic-table.scss ../packages/core/scss",
+    "copy:meta": "../../node_modules/.bin/copyfiles -f ../../LICENSE README.md ../../CHANGELOG.md package.json README.md ../packages/core/",
+    "clean": "../../node_modules/.bin/rimraf ../packages/core",
+    "build": "npm run clean && ../../node_modules/.bin/ngc -p tsconfig-aot.json && npm run copy:meta && npm run copy:scss && npm run compile:css && npm run rename:css",
+    "prepublish": "npm run -s build",
+    "publish":"npm publish --access public"
   },
   "keywords": [
     "Angular",

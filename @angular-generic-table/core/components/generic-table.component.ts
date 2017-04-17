@@ -25,7 +25,7 @@ import {GtRowMeta} from "../interfaces/gt-row-meta";
     <table class="table" ngClass="{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}" *ngIf="(gtFields | gtVisible:gtSettings:refreshPipe).length > 0">
       <thead>
       <tr>
-        <th class="gt-sort-label" *ngIf="gtOptions.stack">{{gtTexts.sortLabel}}</th><th *ngFor="let column of gtFields | gtVisible:gtSettings:refreshPipe" ngClass="{{column.objectKey +'-column' | dashCase}} {{column.classNames}} sort-{{gtSettings | gtProperty:column.objectKey:'sort':refreshHeading}} sort-order-{{gtSettings | gtProperty:column.objectKey:'sortOrder':refreshHeading}}" (click)="gtSort(column.objectKey,$event);refreshHeading = !refreshHeading">{{column.name}}</th>
+        <th class="gt-sort-label" *ngIf="gtOptions.stack">{{gtTexts.sortLabel}}</th><th *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{column.sortEnabled ? 'sort-'+column.sort:''}} {{column.sortEnabled && column.sortOrder >= 0  ? 'sort-order-'+column.sortOrder:''}}" (click)="column.sortEnabled ? gtSort(column.objectKey,$event):'';">{{gtFields | gtProperty:column.objectKey:'name'}}</th>
       </tr>
       </thead>
       <tbody *ngIf="gtData && gtInfo">
@@ -54,7 +54,7 @@ import {GtRowMeta} from "../interfaces/gt-row-meta";
       </tr>
       </tbody>
     </table>
-    <table class="table" *ngIf="(gtFields | gtVisible:gtSettings:refreshPipe).length === 0">
+    <table class="table" ngClass="{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}"  *ngIf="(gtFields | gtVisible:gtSettings:refreshPipe).length === 0">
       <thead>
       <tr>
         <th class="gt-no-visible-columns">{{gtTexts.noVisibleColumnsHeading}}</th>
@@ -96,7 +96,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   };
   @Input() gtTexts: GtTexts = this.gtDefaultTexts;
   @Input() gtClasses: string;
-  @Output() gtEvent = new EventEmitter();
+  @Output() gtEvent:EventEmitter<any> = new EventEmitter();
   public gtDefaultOptions: GtOptions = {
     csvDelimiter: ';',
     stack: false,
@@ -104,7 +104,9 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     cache: false,
     debounceTime: 200,
     highlightSearch: false,
-    rowSelection:false
+    rowSelection:false,
+    rowSelectionAllowMultiple:false,
+    rowExpandAllowMultiple:false
   };
   @Input() gtOptions: GtOptions = this.gtDefaultOptions;
   public store: Array<any> = [];
@@ -127,7 +129,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   public refreshSorting: boolean = false;
 
   constructor() {
-    this.gtEvent.subscribe($event => {
+    this.gtEvent.subscribe(($event:any) => {
       if ($event.name === 'gt-info') {
         this.updateRecordRange();
       }
@@ -142,11 +144,20 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   private gtSort = function (objectKey: string, event: any) {
     //console.log('key pressed:',objectKey,event.metaKey);
 
-    // check if sorting is disabled
+    // loop through current settings
     for (let i = 0; i < this.gtSettings.length; i++) {
       if (this.gtSettings[i].objectKey === objectKey) {
-        if (this.gtSettings[i].sort === 'disable') {
+
+        // check if sorting is disabled...
+        if (this.gtSettings[i].sort && this.gtSettings[i].sort.indexOf('disable') !== -1) {
+          //...if so, exit function without applying any sorting
           return;
+        }
+        // check if sorting is undefined...
+        else if(typeof this.gtSettings[i].sort === 'undefined'){
+
+          //...is so, set sorting property to enable
+          this.gtSettings[i].sort = 'enable'
         }
       }
     }
@@ -230,7 +241,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
             break;
         }
         this.gtSettings[i].sortOrder = this.gtSettings[i].sort === 'enable' ? (this.gtSettings.length - 1) : this.sortOrder.indexOf(objectKey) === -1 ? this.sortOrder.indexOf('-' + objectKey) : this.sortOrder.indexOf(objectKey);
-      } else if (this.gtSettings[i].sort !== 'disable' && this.sortOrder.indexOf(this.gtSettings[i].objectKey) === -1 && this.sortOrder.indexOf('-' + this.gtSettings[i].objectKey) === -1) {
+      } else if (this.gtSettings[i].sort && this.gtSettings[i].sort.indexOf('disable') === -1 && this.sortOrder.indexOf(this.gtSettings[i].objectKey) === -1 && this.sortOrder.indexOf('-' + this.gtSettings[i].objectKey) === -1) {
         this.gtSettings[i].sort = 'enable';
         this.gtSettings[i].sortOrder = (this.gtSettings.length - 1);
       }
@@ -412,6 +423,12 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    * @param {GtRow} row - row object that should be expanded/collapsed.
    */
   public toggleCollapse(row:GtRow) {
+
+    // check if multi row expand is allowed...
+    /*if (this.gtOptions.rowExpandAllowMultiple === false) {
+     // ...if not, collapse all rows
+     this.collapseAllRows();
+     }*/
     this._toggleRowProperty(row,'isOpen');
   }
 
@@ -420,6 +437,12 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    * @param {GtRow} row - row object that should be selected/deselected.
    */
   public toggleSelect(row:GtRow) {
+
+    // check if multi row selection is allowed...
+    /*if (this.gtOptions.rowSelectionAllowMultiple === false) {
+     // ...if not, deselect all rows
+     this.deselectAllRows();
+     }*/
     this._toggleRowProperty(row,'isSelected');
   }
 
@@ -429,12 +452,15 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    * @param {string} property - name of property that should be changed/toggled.
    * @param {boolean} active - should rows be expanded/open, selected.
    */
-  private _updateMetaInfo(array:Array<GtRow>,property:string, active:boolean) {
+  private _updateMetaInfo(array:Array<GtRow>,property:string, active:boolean, exception?:GtRow) {
     for (let i = 0; i < array.length; i++) {
       if(!this.metaInfo[array[i].$$gtRowId]) {
         this.metaInfo[array[i].$$gtRowId] = {};
       }
-      this.metaInfo[array[i].$$gtRowId][property] = active;
+      if(exception && array[i].$$gtRowId === exception.$$gtRowId){
+      } else {
+        this.metaInfo[array[i].$$gtRowId][property] = active;
+      }
     }
   }
 
@@ -461,6 +487,13 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     let eventValue: any;
     switch (property) {
       case 'isOpen':
+        // check if multiple expanded rows are allowed...
+        if(this.gtOptions.rowExpandAllowMultiple === false){
+
+          //...if not, exit function
+          console.log('feature disabled: enable by setting "rowExpandAllowMultiple = true"');
+          return;
+        }
         if(active) {
           eventName = 'expand-all';
           this.openRows = this.gtOptions.lazyLoad ? this._pushLazyRows(this.openRows,this.gtData[this.gtInfo.pageCurrent - 1].slice()): this.gtData.slice();
@@ -477,6 +510,13 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         //array = this.openRows;
         break;
       case 'isSelected':
+        // check if multi row selection is allowed...
+        if(this.gtOptions.rowSelectionAllowMultiple === false){
+
+          //...if not, exit function
+          console.log('feature disabled: enable by setting "rowSelectionAllowMultiple = true"');
+          return;
+        }
         if(active) {
           eventName = 'select-all';
           this.selectedRows = this.gtOptions.lazyLoad ? this._pushLazyRows(this.selectedRows,this.gtData[this.gtInfo.pageCurrent - 1].slice()): this.gtData.slice();
@@ -518,25 +558,35 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         this.metaInfo[row.$$gtRowId] = {};
       }
 
+
+
       switch (property) {
         case 'isOpen':
           const opened = this.metaInfo[row.$$gtRowId][property];
 
-          // check if row is selected
+          // check if multiple expanded rows are allowed...
+          if(this.gtOptions.rowExpandAllowMultiple === false){
+
+            //...if not, collapse all rows except current row
+            this._updateMetaInfo(this.openRows, property,false,row);
+            this.openRows = [];
+          }
+
+          // check if row is expanded
           if (!opened) {
             eventName = 'expand';
-            // add row to selected rows
+            // add row to expanded rows
             this.openRows.push(row);
 
           } else {
             eventName = 'collapse';
-            // loop through selected rows...
+            // loop through expanded rows...
             for (let i = 0; i < this.openRows.length; i++) {
 
-              // if selected row equals passed row...
+              // if expanded row equals passed row...
               if (this.openRows[i].$$gtRowId === row.$$gtRowId) {
 
-                // ...remove row from selected rows...
+                // ...remove row from expanded rows...
                 this.openRows.splice(i, 1);
 
                 // ...and exit loop
@@ -551,6 +601,14 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
           break;
         case 'isSelected':
           const selected = this.metaInfo[row.$$gtRowId][property];
+
+          // check if multi row selection is allowed...
+          if(this.gtOptions.rowSelectionAllowMultiple === false){
+
+            //...if not, deselect all rows except current row
+            this._updateMetaInfo(this.selectedRows, property,false,row);
+            this.selectedRows = [];
+          }
 
           // check if row is selected
           if (!selected) {
@@ -681,7 +739,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
   // TODO: move to helper functions
   /** Sort by sort order */
-  private getSortOrder = function (a, b) {
+  private getSortOrder = function (a:GtConfigSetting, b:GtConfigSetting) {
     if (a.sortOrder < b.sortOrder)
       return -1;
     if (a.sortOrder > b.sortOrder || typeof a.sortOrder === 'undefined')
@@ -691,7 +749,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
   // TODO: move to helper functions
   /** Sort by column order */
-  private getColumnOrder = function (a, b) {
+  private getColumnOrder = function (a:GtConfigSetting, b:GtConfigSetting) {
     if (a.columnOrder === undefined) {
       return -1;
     }
@@ -779,7 +837,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   }
 
   /** Return property */
-  private getProperty = function (array, key) {
+  private getProperty = function (array:Array<any>, key:string) {
     for (let i = 0; i < array.length; i++) {
       if (array[i].objectKey === key) {
         return array[i];
@@ -789,56 +847,53 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
   ngOnInit() {
 
-    /** If we're not lazy loading data and handling sorting server side, we want to apply some default sorting.
+    /** Check and store sort order upon initialization.
      *  This is done by checking sort properties in the settings array of the table, if no sorting is defined
-     *  we'll sort the data by the first visible and enabled column in the table(ascending). */
-    // if not using lazy loading...
-    if (!this.gtOptions.lazyLoad) {
+     *  we'll sort the data by the first visible and enabled column in the table(ascending). Please note that actually
+     *  sorting have to be done server side when lazy loading data for obvious reasons.  */
 
-      // ...create sorting array
-      let sorting = [];
+      // create sorting array
+    let sorting = [];
 
-      // ...sort settings by sort order
-      this.gtSettings.sort(this.getSortOrder);
+    // ...sort settings by sort order
+    this.gtSettings.sort(this.getSortOrder);
+
+    // ...loop through settings
+    for (let i = 0; i < this.gtSettings.length; i++) {
+      let setting = this.gtSettings[i];
+
+      // ...if sorted ascending...
+      if (setting.sort === 'asc') {
+        // ... add to sorting
+        sorting.push(setting.objectKey);
+      }
+      // ...else if sorted descending...
+      else if (setting.sort === 'desc') {
+        // ... add to sorting
+        sorting.push("-" + setting.objectKey);
+      }
+    }
+    // ...if no sorting applied...
+    if (sorting.length === 0) {
+
+      // ...sort settings by column order
+      this.gtSettings.sort(this.getColumnOrder);
 
       // ...loop through settings
       for (let i = 0; i < this.gtSettings.length; i++) {
         let setting = this.gtSettings[i];
 
-        // ...if sorted ascending...
-        if (setting.sort === 'asc') {
-          // ... add to sorting
-          sorting.push(setting.objectKey);
-        }
-        // ...else if sorted descending...
-        else if (setting.sort === 'desc') {
-          // ... add to sorting
-          sorting.push("-" + setting.objectKey);
+        // ...if column is enabled and visible...
+        if (setting.enabled !== false && setting.visible !== false) {
+
+          // ...add first match and exit function
+          this.sortOrder = [this.gtSettings[i].objectKey];
+          return
         }
       }
-      // ...if no sorting applied...
-      if (sorting.length === 0) {
-
-        // ...sort settings by column order
-        this.gtSettings.sort(this.getColumnOrder);
-
-        // ...loop through settings
-        for (let i = 0; i < this.gtSettings.length; i++) {
-          let setting = this.gtSettings[i];
-
-          // ...if column is enabled and visible...
-          if (setting.enabled !== false && setting.visible !== false) {
-
-            // ...add first match and exit function
-            this.sortOrder = [this.gtSettings[i].objectKey];
-            return
-          }
-        }
-      } else {
-        this.sortOrder = sorting;
-      }
+    } else {
+      this.sortOrder = sorting;
     }
-
   }
 
   /**
@@ -864,6 +919,24 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
       // ...extend gtOptions default values with values passed into component
       this.gtTexts = <GtTexts>this.extend(this.gtDefaultTexts, this.gtTexts);
+    }
+
+    // if gt settings have changed...
+    if (changes['gtSettings']) {
+
+      // loop through current settings
+      for (let i = 0; i < this.gtSettings.length; i++) {
+
+        // set sort enabled/disabled setting
+        this.gtSettings[i].sortEnabled = !(this.gtSettings[i].sort && this.gtSettings[i].sort.indexOf('disable') !== -1);
+
+        // check if sorting is undefined...
+        if (typeof this.gtSettings[i].sort === 'undefined') {
+
+          //...is so, set sorting property to enable
+          this.gtSettings[i].sort = 'enable'
+        }
+      }
     }
 
     // if lazy loading data and paging information is available...

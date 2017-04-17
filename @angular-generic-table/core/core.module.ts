@@ -38,7 +38,13 @@ import {GtMetaPipe} from "./pipes/gt-meta.pipe";
     GtMetaPipe
   ],
   imports: [CommonModule],
-  exports: [GenericTableComponent,GtPaginationComponent,GtTableInfoComponent,GtPropertyPipe],
+  exports: [
+    GenericTableComponent,
+    GtPaginationComponent,
+    GtTableInfoComponent,
+    GtPropertyPipe,
+    GtExpandingRowComponent
+  ],
   entryComponents: [],
   providers: [],
   bootstrap: []

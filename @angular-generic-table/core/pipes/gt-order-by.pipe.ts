@@ -8,7 +8,7 @@ import { GtRow } from '../interfaces/gt-row';
 export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
 
   /** Return property */
-  private getProperty = function(array, key){
+  private getProperty = function(array:Array<any>, key:string){
     for (let i = 0; i < array.length;i++){
       if (array[i].objectKey === key) {
         return array[i];
@@ -17,7 +17,7 @@ export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
   };
 
   /** Return sort function */
-  private getSortFunction(field){
+  private getSortFunction(field:any){
     if(typeof field.sort === 'function'){
       return field.sort;
     } else if(typeof field.value === 'function'){

@@ -1,5 +1,7 @@
 // generic table base styles
-@import "generic-table/generic-table";
+@import "../@angular-generic-table/core/generic-table";
+@import "../@angular-generic-table/column-settings/column-settings";
+
 
 // custom css for examples
 @import 'examples';

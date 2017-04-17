@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform, Type } from "@angular/core";
+import {Injector, Pipe, PipeTransform, Type} from "@angular/core";
 import { GtConfigSetting } from "../interfaces/gt-config-setting";
 import { GtClickFunc, GtConfigField } from "../interfaces/gt-config-field";
 import { DomSanitizer } from "@angular/platform-browser";
@@ -11,7 +11,7 @@ export interface GtRenderField<R extends GtRow,C extends GtCustomComponent<any>>
   click?: GtClickFunc<R>;
   expand?: boolean;
   sortValue: any;
-  columnComponent: Type<C>;
+  columnComponent: { type: Type<any>; injector?: Injector; };
 }
 
 @Pipe({
@@ -25,7 +25,7 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
 
   // TODO: move to helper functions
   /** Sort by column order */
-  private getColumnOrder = function (a, b) {
+  private getColumnOrder = function (a:GtConfigSetting, b:GtConfigSetting) {
     if (a.columnOrder < b.columnOrder)
       return -1;
     if (a.columnOrder > b.columnOrder || typeof a.columnOrder === 'undefined')
@@ -34,12 +34,12 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
   };
 
   /** Sort by length */
-  private getOrderByLength = function (a, b) {
+  private getOrderByLength = function (a:any, b:any) {
     return b.length - a.length;
   };
 
   /** Return property */
-  private getProperty = function (array, key) {
+  private getProperty = function (array:Array<any>, key:string) {
     for (let i = 0; i < array.length; i++) {
       if (array[i].objectKey === key) {
         return array[i];
@@ -109,7 +109,7 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
     //console.log(settings.map('objectKey'));
 
     //console.log('render');
-    let columns = [];
+    let columns:Array<string> = [];
     for (let i = 0; i < settings.length; i++) {
       if (settings[i].visible !== false && settings[i].enabled !== false) {
         columns.push(settings[i].objectKey);
@@ -123,7 +123,7 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
       }
     }
     //console.log(row);
-    let keys = [];
+    let keys:Array<any> = [];
     for (let key in row) {
       //console.log(key);
       if (columns.indexOf(key) !== -1) {
@@ -161,7 +161,7 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
       }
     }
 
-    keys.sort(function (a, b) {
+    keys.sort(function (a:any, b:any) {
       return columns.indexOf(a.objectKey) < columns.indexOf(b.objectKey) ? -1 : 1;
     });
     return keys;

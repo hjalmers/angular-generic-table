@@ -33,7 +33,7 @@ export class BasicComponent {
         objectKey:'lucky_number',
         sort:'enable',
         columnOrder:2,
-        visible:false
+        visible:true
       }],
       fields:[{
         name:'Id',

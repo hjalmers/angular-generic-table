@@ -27,22 +27,21 @@
     "postbuild": "npm run -s clean:factory",
     "prepublish": "npm run -s build",
     "postpublish": "npm run -s clean",
-    "build-temp":"ngc -p @angular-generic-table/core/tsconfig-aot.json && copyfiles -f LICENSE README.md CHANGELOG.md @angular-generic-table/core/package.json @angular-generic-table/packages/core/ && npm pack @angular-generic-table/packages/core"
+    "build:core": "cd @angular-generic-table/core && npm run publish",
+    "build:column-settings": "cd @angular-generic-table/column-settings && npm run publish",
+    "build:all":"npm run build:core && npm run build:column-settings"
   },
   "private": false,
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
   "main": "index.js",
-  "dependencies": {
-    "dragula": "^3.7.2",
-    "ng2-dragula": "^1.3.0"
-  },
   "peerDependencies": {
     "@angular/core": "^4.0.0",
     "@angular/common": "^4.0.0"
   },
   "devDependencies": {
+    "@angular-generic-table/core": "4.1.0-rc.1",
     "@angular/cli": "^1.0.0",
     "@angular/common": "^4.0.0",
     "@angular/compiler": "^4.0.0",

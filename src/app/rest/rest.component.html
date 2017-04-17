@@ -37,13 +37,18 @@
           </label>
         </div>
       </div>
-
     </form>
-    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtRowComponent]="expandedRow" [gtOptions]="{stack:true, highlightSearch:true, rowSelection:true}" (gtEvent)="trigger($event)"></generic-table>
-    <div class="text-center">
-      <gt-pagination [gtClasses]="'justify-content-center'" [genericTable]="myTable"></gt-pagination>
-    </div>
-
+    <ng-template #gtColumnItem let-column>
+      <span class="badge badge-default">{{column.columnOrder + 1}}</span>
+      <span (dblclick)="columnSettings.toggleColumnVisibility(column)" class="badge" [ngClass]="{'badge-success':column.visible !== false, 'badge-danger':column.visible === false}">{{configObject.fields | gtProperty:column.objectKey:'name'}}</span>
+    </ng-template>
+    <button class="btn-link" (click)="columnSettings.toggleColumnSettings()"> {{columnSettings.active ? 'Hide column settings':'Show column settings'}}</button>
+    <gt-column-settings [genericTable]="myTable" #columnSettings [gtColumnItem]="gtColumnItem">
+      <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtRowComponent]="expandedRow" [gtOptions]="{stack:true, highlightSearch:true, rowSelection:true}" (gtEvent)="trigger($event)"></generic-table>
+      <div class="text-center">
+        <gt-pagination [gtClasses]="'justify-content-center'" [genericTable]="myTable"></gt-pagination>
+      </div>
+    </gt-column-settings>
   </div>
   <div class="card-footer" #restExample>
   </div>

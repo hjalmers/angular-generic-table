@@ -2,8 +2,15 @@ Release History
 ---------------
 ## [Unreleased]
 
+### Added
+- Column settings component for toggling column visibility and column order, see example [here](https://hjalmers.github.io/angular-generic-table/#/column-settings).
+- Support for single row selection/expand, restrict to single selection/expand by setting `gtOtpions.rowSelectionAllowMultiple` and/or `gtOtpions.rowExpandAllowMultiple` to `false`, default value is true (see issue #72).
+
 ### Fixed
+- Custom classes not applied when table had no visible columns (see issue #73).
 - Fix for pagination component (see issue #46).
+- Fix for sorting, sorting `enable` will be applied by default if setting is omitted (see issue #71). Column header will no longer emit click event if sorting is disabled.
+- Fix for sort order when lazy loading data (see issue #50).
 
 # [4.0.1] - 2017-04-06
 
@@ -28,7 +35,7 @@ Release History
 
 # [2.0.0] - 2017-03-23
 ### Added
-- Support for selecting rows, enable by setting `gtOtpions.rowSelection` to true (issue #53, issue #59)
+- Support for selecting rows, enable by setting `gtOtpions.rowSelection` to `true` (issue #53, issue #59)
 - Support for selecting/deselecting and expanding/collapsing all rows (issue #58)
 - Support for redrawing table from custom column component, useful when custom column component alters other cells in row (issue #57)
 
@@ -46,7 +53,7 @@ Release History
 - The keys declared by `gtTexts` interface are now optional (useful when you want to change a single text key) 
 
 ### Added
-- Example using [ng2-translate](https://github.com/ocombe/ng2-translate) for localization
+- Example using [ngx-translate](https://github.com/ngx-translate/core) for localization
 - Support for passing translations to pagination component 
 
 # [1.1.0] - 2017-01-20

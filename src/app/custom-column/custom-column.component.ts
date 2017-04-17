@@ -199,7 +199,7 @@ export class CustomColumnComponent {
     settings: [{
       objectKey: 'edit',
       columnOrder: 0,
-      sort: 'disabled'
+      sort: 'disable'
     }, {
       objectKey: 'id',
       columnOrder: 1,
@@ -213,7 +213,7 @@ export class CustomColumnComponent {
     }, {
       objectKey: 'save',
       columnOrder: 4,
-      sort: 'disabled'
+      sort: 'disable'
     }],
     fields: [{
       objectKey: 'edit', name: '',
