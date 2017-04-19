@@ -12,7 +12,9 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/take';
-import {GtConfig, GtCustomComponent, GtRow} from "@angular-generic-table/core";
+import {GtConfig, GtRow} from "@angular-generic-table/core";
+import {GtCustomComponent} from '../../../@angular-generic-table/core/components/gt-custom-component-factory';
+
 
 export interface StateDictionary {
   [index: number]: {name?: string, age?: number};

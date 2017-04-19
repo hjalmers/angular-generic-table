@@ -10,4 +10,4 @@ export {GtInformation} from './interfaces/gt-information';
 export {GtRow} from './interfaces/gt-row';
 export {GtTexts} from './interfaces/gt-texts';
 export {GtOptions} from './interfaces/gt-options';
-export {GtCustomComponentFactory} from './components/gt-custom-component-factory';
+export {GtCustomComponent} from './components/gt-custom-component-factory';

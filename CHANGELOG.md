@@ -5,6 +5,8 @@ Release History
 ### Added
 - Column settings component for toggling column visibility and column order, see example [here](https://hjalmers.github.io/angular-generic-table/#/column-settings).
 - Support for single row selection/expand, restrict to single selection/expand by setting `gtOtpions.rowSelectionAllowMultiple` and/or `gtOtpions.rowExpandAllowMultiple` to `false`, default value is true (see issue #72).
+- Option for default row length, use `gtOption.numberOfRows` to override default value (see issue #77).
+- Support for async loading of config objects i.e. settings and fields.
 
 ### Fixed
 - Custom classes not applied when table had no visible columns (see issue #73).
@@ -12,6 +14,7 @@ Release History
 - Fix for sorting, sorting `enable` will be applied by default if setting is omitted (see issue #71). Column header will no longer emit click event if sorting is disabled.
 - Fix for sort order when lazy loading data (see issue #50).
 - Column order will be set to property order if undefined.
+- Accept null values when using async pipe (see issue #76).
 
 # [4.0.1] - 2017-04-06
 

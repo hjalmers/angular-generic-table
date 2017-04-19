@@ -25,13 +25,12 @@ export class GtVisiblePipe<R extends GtRow> implements PipeTransform {
       }
     });
 
-    let columns = array.filter((column: GtConfigField<R,any>) => {
+    return array.filter((column: GtConfigField<R,any>) => {
         return visibleColumns.indexOf(column.objectKey) !== -1;
     }).sort(function(a,b){
       return visibleColumns.indexOf(a.objectKey) < visibleColumns.indexOf(b.objectKey) ? -1 : 1;
     });
 
-    return columns;
   }
 
 }

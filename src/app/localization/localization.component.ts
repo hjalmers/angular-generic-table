@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {GtConfig} from '../../generic-table/interfaces/gt-config';
+import { Component } from '@angular/core';
+import {GtConfig, GtTexts} from '@angular-generic-table/core';
 import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
-import {GtTexts} from '../../generic-table/interfaces/gt-texts';
 
 @Component({
   selector: 'app-localization',

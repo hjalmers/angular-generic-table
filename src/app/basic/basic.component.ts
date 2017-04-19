@@ -1,22 +1,22 @@
 import {Component} from '@angular/core';
 import {GtConfig} from '@angular-generic-table/core';
 
+export interface rowData {
+  id:number,
+  name:string,
+  lucky_number:number
+}
+
 @Component({
   selector: 'app-basic',
   templateUrl: './basic.component.html'
 })
 export class BasicComponent {
 
-  public configObject: GtConfig<any>;
-
-  public data:Array<{
-    id:number,
-    name:string,
-    lucky_number:number
-  }> = [];
+  public data:Array<rowData> = [];
+  public configObject: GtConfig<rowData>;
 
   constructor() {
-
 
     this.configObject = {
       settings:[{

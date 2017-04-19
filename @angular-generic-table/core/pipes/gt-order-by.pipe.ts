@@ -51,20 +51,20 @@ export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
     return 0; //equal each other
   }
 
-  transform(input: any, config: string[], fields: GtConfigField<R,any>[], refreshSorting: boolean, refreshData: number): any {
+  transform(input: any, sortByProperties: Array<string>, fields: GtConfigField<R,any>[], refreshSorting: boolean, refreshData: number): any {
 
     if(!Array.isArray(input) || input === null) return input;
-    if(!Array.isArray(config) || (Array.isArray(config) && config.length == 1)){
+    if(!Array.isArray(sortByProperties) || (Array.isArray(sortByProperties) && sortByProperties.length == 1)){
 
-      var propertyToCheck:string = config[0];
-      var desc = propertyToCheck.substr(0, 1) == '-';
+      let propertyToCheck:string = sortByProperties[0];
+      let desc = propertyToCheck.substr(0, 1) == '-';
 
       //Basic array
       if(!propertyToCheck || propertyToCheck == '-' || propertyToCheck == '+'){
         return !desc ? input.sort() : input.sort().reverse();
       }
       else {
-        var property:string = propertyToCheck.substr(0, 1) == '+' || propertyToCheck.substr(0, 1) == '-'
+        let property:string = propertyToCheck.substr(0, 1) == '+' || propertyToCheck.substr(0, 1) == '-'
           ? propertyToCheck.substr(1)
           : propertyToCheck;
 
@@ -91,11 +91,11 @@ export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
       //Loop over property of the array in order and sort
       return input.sort((a:any,b:any)=>{
         //console.log('multiple');
-        for(var i:number = 0; i < config.length; i++){
-          var desc = config[i].substr(0, 1) == '-';
-          var property = config[i].substr(0, 1) == '+' || config[i].substr(0, 1) == '-'
-            ? config[i].substr(1)
-            : config[i];
+        for(let i:number = 0; i < sortByProperties.length; i++){
+          let desc = sortByProperties[i].substr(0, 1) == '-';
+          let property = sortByProperties[i].substr(0, 1) == '+' || sortByProperties[i].substr(0, 1) == '-'
+            ? sortByProperties[i].substr(1)
+            : sortByProperties[i];
 
           //console.log(property);
           // check if custom sort function is defined
@@ -105,7 +105,7 @@ export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
           let propertyA = sortFunction === false ? a[property]:sortFunction(a);
           let propertyB = sortFunction === false ? b[property]:sortFunction(b);
 
-          var comparison = !desc ? GtOrderByPipe._orderByComparator(propertyA, propertyB) : -GtOrderByPipe._orderByComparator(propertyA, propertyB);
+          let comparison = !desc ? GtOrderByPipe._orderByComparator(propertyA, propertyB) : -GtOrderByPipe._orderByComparator(propertyA, propertyB);
 
           //Don't return 0 yet in case of needing to sort by next property
           if(comparison != 0) return comparison;
