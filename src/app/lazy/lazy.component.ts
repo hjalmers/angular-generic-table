@@ -1,9 +1,7 @@
 import {Component, Output, EventEmitter, ViewChild} from '@angular/core';
-import {Response, Http, URLSearchParams, RequestOptions} from '@angular/http';
-import {GtConfig} from '../../generic-table/interfaces/gt-config';
+import {Response, Http, URLSearchParams} from '@angular/http';
 import {CustomRowComponent} from '../custom-row/custom-row.component';
-import {GenericTableComponent} from '../../generic-table/components/generic-table.component';
-import {GtInformation} from '../../generic-table/interfaces/gt-information';
+import {GenericTableComponent,GtConfig, GtInformation} from '@angular-generic-table/core';
 
 @Component({
   selector: 'app-lazy',

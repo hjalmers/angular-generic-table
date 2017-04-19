@@ -11,6 +11,7 @@ Release History
 - Fix for pagination component (see issue #46).
 - Fix for sorting, sorting `enable` will be applied by default if setting is omitted (see issue #71). Column header will no longer emit click event if sorting is disabled.
 - Fix for sort order when lazy loading data (see issue #50).
+- Column order will be set to property order if undefined.
 
 # [4.0.1] - 2017-04-06
 

@@ -1,8 +1,7 @@
 import {Component, Output, EventEmitter, ViewChild} from '@angular/core';
 import {Response, Http } from '@angular/http';
-import {GenericTableComponent} from '../../generic-table/components/generic-table.component';
 import {CustomRowComponent} from '../custom-row/custom-row.component';
-import {GtConfig} from '../../generic-table/interfaces/gt-config';
+import {GenericTableComponent, GtConfig} from '@angular-generic-table/core';
 import 'rxjs/add/operator/map';
 
 @Component({

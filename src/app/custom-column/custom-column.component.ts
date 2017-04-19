@@ -6,15 +6,13 @@ import {
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
-import {GtConfig} from '../../generic-table/interfaces/gt-config';
-import {GtCustomComponent} from '../../generic-table/components/gt-custom-component-factory';
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/take';
-import {GtRow} from "../../generic-table/interfaces/gt-row";
+import {GtConfig, GtCustomComponent, GtRow} from "@angular-generic-table/core";
 
 export interface StateDictionary {
   [index: number]: {name?: string, age?: number};

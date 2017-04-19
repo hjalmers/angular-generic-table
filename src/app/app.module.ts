@@ -26,6 +26,7 @@ export function createTranslateLoader(http: Http) {
 /** Import generic table module */
 import { GenericTableModule } from '../../@angular-generic-table/core';
 import { ColumnSettingsModule } from "../../@angular-generic-table/column-settings/column-settings.module";
+import { ChangeColumnSettingsComponent } from './change-column-settings/change-column-settings.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { ColumnSettingsModule } from "../../@angular-generic-table/column-settin
     AgeComponent,
     BasicComponent,
     ExamplesComponent,
-    LocalizationComponent
+    LocalizationComponent,
+    ChangeColumnSettingsComponent
   ],
   imports: [
     BrowserModule,

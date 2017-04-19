@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {GtConfig} from '../../generic-table/interfaces/gt-config';
+import {GtConfig} from '@angular-generic-table/core';
 
 @Component({
   selector: 'app-basic',

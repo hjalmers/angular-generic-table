@@ -9,6 +9,7 @@ import { RestComponent } from './rest/rest.component';
 import { BasicComponent } from './basic/basic.component';
 import { CustomColumnComponent } from "./custom-column/custom-column.component";
 import { LocalizationComponent } from './localization/localization.component';
+import {ChangeColumnSettingsComponent} from "./change-column-settings/change-column-settings.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/examples', pathMatch: 'full' },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'static', component: BasicComponent },
   { path: 'custom-column', component: CustomColumnComponent },
   { path: 'localization', component: LocalizationComponent },
+  { path: 'column-settings-component', component: ChangeColumnSettingsComponent },
   { path: '**', component: ExamplesComponent }
 ];
 

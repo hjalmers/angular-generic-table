@@ -936,6 +936,13 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
           //...is so, set sorting property to enable
           this.gtSettings[i].sort = 'enable'
         }
+
+        // check if column order is undefined...
+        if (typeof this.gtSettings[i].columnOrder === 'undefined') {
+
+          //...is so, set sorting property to enable
+          this.gtSettings[i].columnOrder = this.gtSettings[i-1] ? this.gtSettings[i-1].columnOrder + 1:0;
+        }
       }
     }
 
