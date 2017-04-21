@@ -1,7 +1,11 @@
 Release History
 ---------------
-# [4.1.0] - 2017-04-21
 
+# [4.1.1] - 2017-04-21
+### Fixed
+- AOT error for `ColumnSettingsComponent` (see issue #80).
+
+# [4.1.0] - 2017-04-21
 ### Breaking changes
 - Package has changed name from `angular-generic-table` to `@angular-generic-table/core` so all imports and references have to be updated accordingly, not really a breaking change but still something you need to consider if you're currently on version 4.0.1 or below.
 

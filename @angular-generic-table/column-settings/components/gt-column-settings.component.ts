@@ -1,11 +1,37 @@
 import {
   Component, Input, ViewChild, TemplateRef, ElementRef, Pipe, PipeTransform, OnInit,
-  ChangeDetectorRef
+  ChangeDetectorRef, HostListener
 } from '@angular/core';
 import {GenericTableComponent} from '@angular-generic-table/core';
 import {GtConfigSetting} from '@angular-generic-table/core';
 import {DragulaService} from "ng2-dragula";
 import {GtColumnSettingsTexts} from "../interfaces/gt-column-settings-texts";
+
+@Pipe({
+  name: 'gtColumn'
+})
+export class GtColumnPipe implements PipeTransform {
+
+  // TODO: move to helper functions
+  /** Sort by column order */
+  private getColumnOrder(a:any,b:any) {
+    if (a.columnOrder < b.columnOrder)
+      return -1;
+    if (a.columnOrder > b.columnOrder || typeof a.columnOrder === 'undefined')
+      return 1;
+    return 0;
+  };
+
+  /** return enabled columns */
+  private getEnabled(column:GtConfigSetting) {
+    return column.enabled !== false ? column:null;
+  }
+
+  transform(settings: Array<GtConfigSetting>): Array<GtConfigSetting> {
+
+    return settings.filter(this.getEnabled).sort(this.getColumnOrder);
+  }
+}
 
 @Component({
   selector: 'gt-column-settings',
@@ -14,7 +40,7 @@ import {GtColumnSettingsTexts} from "../interfaces/gt-column-settings-texts";
       <span class="badge badge-default">{{index}}</span>
       <span (dblclick)="toggleColumnVisibility(column)" class="badge" [ngClass]="{'badge-success':column.visible !== false, 'badge-danger':column.visible === false}">{{genericTable.gtFields | gtProperty:column.objectKey:'name'}}</span>
     </ng-template>
-    <div class="gt-column-settings" (window:resize)="onResize($event)">
+    <div class="gt-column-settings">
       <div class="gt-column-settings-panel"  *ngIf="active" [style.padding-top]="offset" [style.height]="'calc(100% - '+offset+')'">
         <div #gtColumnSettingsHeader class="gt-column-settings-header border-bottom-0" [ngClass]="gtHeaderClasses">
           <button type="button" class="close" aria-label="Close" (click)="toggleColumnSettings()">
@@ -24,7 +50,7 @@ import {GtColumnSettingsTexts} from "../interfaces/gt-column-settings-texts";
           <small class="gt-column-settings-help form-text text-muted" *ngIf="gtTexts.help">{{gtTexts.help}}</small>
         </div>
         <div class="gt-column-settings-item-wrapper" [ngClass]="gtWrapperClasses" [dragula]='bagId'  data-visible="true" [style.max-height]="'calc(100% - '+heightAdjust+')'">
-          <div class="gt-column-settings-item pr-0 pr-sm-4" *ngFor="let i = index;let column of genericTable.gtSettings | gtColumn:true" [attr.data-object-key]="column.objectKey">
+          <div class="gt-column-settings-item pr-0 pr-sm-4" *ngFor="let i = index;let column of genericTable.gtSettings | gtColumn" [attr.data-object-key]="column.objectKey">
             <ng-template [ngTemplateOutlet]="gtColumnItem ? gtColumnItem:columnItem" [ngOutletContext]="{$implicit: column,index: this.reordered ? column.columnOrder+1:i+1, name: (genericTable.gtFields | gtProperty:column.objectKey:'name')}"></ng-template>
           </div>
         </div>
@@ -39,6 +65,14 @@ import {GtColumnSettingsTexts} from "../interfaces/gt-column-settings-texts";
 export class GtColumnSettingsComponent implements OnInit{
   get genericTable(): GenericTableComponent<any, any> {
     return this._genericTable;
+  }
+  /**
+ * Check offset height on window resize.
+ */
+  @HostListener("window:resize", [])
+  public onResize() {
+    this.offset = this._getTableHeadHeight();
+    this.heightAdjust = this._getColumnSettingsHeaderHeight();
   }
 
   @Input() set genericTable(value: GenericTableComponent<any, any>) {
@@ -74,6 +108,7 @@ export class GtColumnSettingsComponent implements OnInit{
   }
 
   ngOnInit(){
+
 
     this.bagId = this.generateId();
     // setup texts
@@ -149,14 +184,6 @@ export class GtColumnSettingsComponent implements OnInit{
   }
 
   /**
-   * Check offset height on window resize.
-   */
-  public onResize() {
-    this.offset = this._getTableHeadHeight();
-    this.heightAdjust = this._getColumnSettingsHeaderHeight();
-  }
-
-  /**
    * Get height of table head element ie. first row containing table headers.
    * @returns {string} offset height for table header in px.
    */
@@ -196,31 +223,4 @@ export class GtColumnSettingsComponent implements OnInit{
     });
   }
 
-}
-
-
-@Pipe({
-  name: 'gtColumn'
-})
-export class GtColumnPipe implements PipeTransform {
-
-  // TODO: move to helper functions
-  /** Sort by column order */
-  private getColumnOrder(a:any,b:any) {
-    if (a.columnOrder < b.columnOrder)
-      return -1;
-    if (a.columnOrder > b.columnOrder || typeof a.columnOrder === 'undefined')
-      return 1;
-    return 0;
-  };
-
-  /** return enabled columns */
-  private getEnabled(column:GtConfigSetting) {
-    return column.enabled !== false ? column:null;
-  }
-
-  transform(settings: Array<GtConfigSetting>, visible:boolean): Array<GtConfigSetting> {
-
-    return settings.filter(this.getEnabled).sort(this.getColumnOrder);
-  }
 }

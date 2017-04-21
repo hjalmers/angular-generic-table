@@ -29,7 +29,8 @@
     "postpublish": "npm run -s clean",
     "publish:core": "onpm  ./@angular-generic-table/core run publish-package",
     "publish:column-settings": "onpm  ./@angular-generic-table/column-settings run publish-package",
-    "publish:all": "npm run publish:core && npm run publish:column-settings"
+    "publish:all": "npm run publish:core && npm run publish:column-settings",
+    "build:all": "onpm ./@angular-generic-table/core run build && onpm ./@angular-generic-table/column-settings run build"
   },
   "private": false,
   "publishConfig": {
