@@ -26,105 +26,111 @@ export interface rowData {
 
 export class ChangeColumnSettingsComponent {
 
-  public configObject: GtConfig<rowData>;
+  public firstConfigObject: GtConfig<rowData>;
+  public secondConfigObject: GtConfig<rowData>;
+
+  public getBaseSettings() {
+    return [{
+      objectKey:'id',
+      sort:'asc',
+    },{
+      objectKey:'first_name',
+    },{
+      objectKey:'favorite_color',
+      visible:false
+    },{
+      objectKey:'last_name',
+      visible:false
+    },{
+      objectKey:'email',
+      visible:false
+    },{
+      objectKey:'gender',
+      visible:false
+    },{
+      objectKey:'ip_address',
+      visible:false
+    },{
+      objectKey:'company',
+      visible:false
+    },{
+      objectKey:'country',
+      visible:false
+    },{
+      objectKey:'job_title',
+      visible:false
+    },{
+      objectKey:'phone',
+      visible:false
+    },{
+      objectKey:'username',
+      visible:false
+    },{
+      objectKey:'time_zone',
+      visible:false
+    },{
+      objectKey:'profile_img',
+      visible:false
+    },{
+      objectKey:'birthday'
+    }];
+  }
+
+  public getBaseFields() {
+    return [{
+      name:'Id',
+      objectKey:'id'
+    },{
+      name:'Name',
+      objectKey:'first_name'
+    },{
+      name:'Lucky number',
+      objectKey:'favorite_color',
+    },{
+      objectKey:'last_name',
+      name:'Last name'
+    },{
+      objectKey:'email',
+      name:'Email'
+    },{
+      objectKey:'gender',
+      name:'Gender'
+    },{
+      objectKey:'ip_address',
+      name:'Ip address'
+    },{
+      objectKey:'company',
+      name:'Company'
+    },{
+      objectKey:'country',
+      name:'Country'
+    },{
+      objectKey:'job_title',
+      name:'Job title'
+    },{
+      objectKey:'phone',
+      name:'Phone'
+    },{
+      objectKey:'username',
+      name:'Username'
+    },{
+      objectKey:'time_zone',
+      name:'Time zone'
+    },{
+      objectKey:'profile_img',
+      name:'Profile img'
+    },{
+      objectKey:'birthday',
+      name:'Birthday'
+    }];
+  };
 
   public data:Array<rowData>;
 
   constructor() {
 
 
-    this.configObject = {
-      settings:[{
-        objectKey:'id',
-        sort:'asc',
-      },{
-        objectKey:'first_name',
-      },{
-        objectKey:'favorite_color',
-        visible:false
-      },{
-        objectKey:'last_name',
-        visible:false
-      },{
-        objectKey:'email',
-        visible:false
-      },{
-        objectKey:'gender',
-        visible:false
-      },{
-        objectKey:'ip_address',
-        visible:false
-      },{
-        objectKey:'company',
-        visible:false
-      },{
-        objectKey:'country',
-        visible:false
-      },{
-        objectKey:'job_title',
-        visible:false
-      },{
-        objectKey:'phone',
-        visible:false
-      },{
-        objectKey:'username',
-        visible:false
-      },{
-        objectKey:'time_zone',
-        visible:false
-      },{
-        objectKey:'profile_img',
-        visible:false
-      },{
-        objectKey:'birthday'
-      }],
-      fields:[{
-        name:'Id',
-        objectKey:'id'
-      },{
-        name:'Name',
-        objectKey:'first_name'
-      },{
-        name:'Lucky number',
-        objectKey:'favorite_color',
-      },{
-        objectKey:'last_name',
-        name:'Last name'
-      },{
-        objectKey:'email',
-        name:'Email'
-      },{
-        objectKey:'gender',
-        name:'Gender'
-      },{
-        objectKey:'ip_address',
-        name:'Ip address'
-      },{
-        objectKey:'company',
-        name:'Company'
-      },{
-        objectKey:'country',
-        name:'Country'
-      },{
-        objectKey:'job_title',
-        name:'Job title'
-      },{
-        objectKey:'phone',
-        name:'Phone'
-      },{
-        objectKey:'username',
-        name:'Username'
-      },{
-        objectKey:'time_zone',
-        name:'Time zone'
-      },{
-        objectKey:'profile_img',
-        name:'Profile img'
-      },{
-        objectKey:'birthday',
-        name:'Birthday'
-      }],
-      data:[{
+    let data =[{
         "id": 1,
         "first_name": "Ashley",
         "last_name": "Hansen",
@@ -284,8 +290,10 @@ export class ChangeColumnSettingsComponent {
         "time_zone": "Europe/Lisbon",
         "profile_img": "http://dummyimage.com/155x172.jpg/ff4444/ffffff",
         "birthday": "1969-12-27"
-      }]
-    };
+      }];
+
+    this.firstConfigObject = {settings:this.getBaseSettings(),fields:this.getBaseFields(),data:data};
+    this.secondConfigObject = {settings:this.getBaseSettings(),fields:this.getBaseFields(),data:data};
   }
 
 }

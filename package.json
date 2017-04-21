@@ -27,9 +27,9 @@
     "postbuild": "npm run -s clean:factory",
     "prepublish": "npm run -s build",
     "postpublish": "npm run -s clean",
-    "build:core": "cd @angular-generic-table/core && npm run publish",
-    "build:column-settings": "cd @angular-generic-table/column-settings && npm run publish",
-    "build:all":"npm run build:core && npm run build:column-settings"
+    "publish:core": "onpm  ./@angular-generic-table/core run publish-package",
+    "publish:column-settings": "onpm  ./@angular-generic-table/column-settings run publish-package",
+    "publish:all": "npm run publish:core && npm run publish:column-settings"
   },
   "private": false,
   "publishConfig": {
@@ -71,6 +71,7 @@
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
     "node-sass": "^4.3.0",
+    "othernpm": "^1.1.0",
     "postcss-cli": "^2.6.0",
     "prismjs": "^1.6.0",
     "protractor": "~5.1.0",

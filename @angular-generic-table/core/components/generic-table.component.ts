@@ -972,7 +972,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         }
 
         // check if column order is undefined...
-        if (typeof this._gtSettings[i].columnOrder === 'undefined') {
+        if (typeof this._gtSettings[i].columnOrder === 'undefined' && this._gtSettings[i].enabled !== false) {
 
           //...is so, set sorting property to enable
           this._gtSettings[i].columnOrder = this._gtSettings[i-1] ? this._gtSettings[i-1].columnOrder + 1:0;

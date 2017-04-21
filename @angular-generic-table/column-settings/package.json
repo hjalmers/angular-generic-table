@@ -1,21 +1,20 @@
 {
   "name": "@angular-generic-table/column-settings",
-  "version": "4.1.0-rc.3",
-  "description": "A generic table component for Angular",
+  "version": "4.1.0",
+  "description": "angular-generic-table extension that makes it easy to toggle column visibility and reoder columns.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:css": "../../node_modules/.bin/node-sass --source-map true --include-path scss column-settings.scss ../packages/column-settings/css/column-settings-prebuild.css",
-    "autoprefix:css": "../../node_modules/.bin/postcss -u autoprefixer -r ../packages/column-settings/css/column-settings-prebuild.css",
-    "minify:css": "../../node_modules/.bin/cleancss -o ../packages/column-settings/css/column-settings-prebuild.min.css ../packages/column-settings/css/column-settings-prebuild.css --source-map",
+    "build:css": "node-sass --source-map true --include-path scss column-settings.scss ../packages/column-settings/css/column-settings-prebuild.css",
+    "autoprefix:css": "postcss -u autoprefixer -r ../packages/column-settings/css/column-settings-prebuild.css",
+    "minify:css": "cleancss -o ../packages/column-settings/css/column-settings-prebuild.min.css ../packages/column-settings/css/column-settings-prebuild.css --source-map",
     "compile:css": "npm run build:css && npm run autoprefix:css && npm run minify:css",
-    "rename:css": "../../node_modules/.bin/renamer --find \"column-settings-prebuild\" --replace \"column-settings\" ../packages/column-settings/css/*",
-    "copy:scss": "../../node_modules/.bin/copyfiles -f column-settings.scss ../packages/column-settings/scss",
-    "copy:meta": "../../node_modules/.bin/copyfiles -f ../../LICENSE README.md ../../CHANGELOG.md package.json README.md ../packages/column-settings/",
-    "clean": "../../node_modules/.bin/rimraf ../packages/column-settings",
-    "build": "npm run clean && ../../node_modules/.bin/ngc -p tsconfig-aot.json && npm run copy:meta && npm run copy:scss && npm run compile:css && npm run rename:css",
-    "prepublish": "npm run -s build",
-    "publish":"npm publish --access public"
+    "rename:css": "renamer --find \"column-settings-prebuild\" --replace \"column-settings\" ../packages/column-settings/css/*",
+    "copy:scss": "copyfiles -f column-settings.scss ../packages/column-settings/scss",
+    "copy:meta": "copyfiles -f ../../LICENSE README.md ../../CHANGELOG.md package.json README.md ../packages/column-settings/",
+    "clean": "rimraf ../packages/column-settings",
+    "build": "npm run clean && ngc -p tsconfig-aot.json && npm run copy:meta && npm run copy:scss && npm run compile:css && npm run rename:css",
+    "publish-package": "npm run build && onpm ../packages/column-settings publish"
   },
   "keywords": [
     "Angular",
@@ -31,5 +30,12 @@
     "@angular-generic-table/core": "^4.1.0-rc.2",
     "dragula": "^3.7.2",
     "ng2-dragula": "^1.3.0"
+  },
+  "devDependencies": {
+    "@angular/compiler-cli": "^4.0.2",
+    "bootstrap": "^4.0.0-alpha.6",
+    "node-sass": "^4.5.2",
+    "othernpm": "^1.1.0",
+    "renamer": "^0.6.1"
   }
 }

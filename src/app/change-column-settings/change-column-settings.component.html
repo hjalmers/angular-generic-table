@@ -1,49 +1,62 @@
-<div class="container mt-4">
-  <h3>Column settings component</h3>
-  <p>Fetch data using REST-service, expand rows and display custom component, use custom functions for rendering, sorting and exporting. Apply predefined filter and simple function for adding new random data to table. This example also utilizes column stacking on tablets and mobile devices so resize the browser and see what happens with the layout on smaller screens.</p>
+<h2>Column settings component</h2>
+<p class="lead">Toggle column visibility and column order using the <code>ColumnSettingsComponent</code>.</p>
+<h5>Installation</h5>
+<p>Install with npm by running:</p>
+<code>npm install @angular-generic-table/column-settings dragula ng2-dragula --save</code>
+<p class="mt-4">More info available in the <a href="https://github.com/hjalmers/angular-generic-table/wiki/Installation-and-basic-usage" target="_blank">wiki</a>.</p>
 
-  <div class="card mb-5">
-    <div class="card-header">Example</div>
-    <div class="card-block" exemplify="columnSettingsExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','#myTable']" [source]="'child'" [target]="columnSettingsExample" [navStyle]="'tabs'" [externalSources]="[{
+<h5>Usage</h5>
+<p>This how the <code>ColumnSettingsComponent</code> looks and behaves by default but feel free to customize it using css or by passing predefined classes. You can also define your own template for the columns.</p>
+<div class="card mb-5">
+  <div class="card-header">Example</div>
+  <div class="card-block" exemplify="columnSettingsExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','#myTable','#columnSettings']" [source]="'child'" [target]="columnSettingsExample" [navStyle]="'tabs'" [externalSources]="[{
     name:'app.module.ts',
     src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
   },{
     name:'change-column-settings.component.ts',
     src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/change-column-settings/change-column-settings.component.ts'
   }]">
-      <button class="btn-link" (click)="columnSettings.toggleColumnSettings()"> {{columnSettings.active ? 'Hide column settings':'Show column settings'}}</button>
-      <gt-column-settings [genericTable]="myTable" #columnSettings>
-        <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"></generic-table>
-        <div class="text-center">
-          <gt-pagination [gtClasses]="'justify-content-center'" [genericTable]="myTable"></gt-pagination>
-        </div>
-      </gt-column-settings>
+    <button class="btn-link" (click)="columnSettings.toggleColumnSettings()"> {{columnSettings.active ? 'Hide column settings':'Show column settings'}}</button>
+    <gt-column-settings [genericTable]="myTable" #columnSettings>
+      <div class="table-responsive">
+        <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="firstConfigObject.settings" [gtFields]="firstConfigObject.fields" [gtData]="firstConfigObject.data" [gtOptions]="{numberOfRows:5}"></generic-table>
+      </div>
+      <div class="text-center">
+        <gt-pagination [gtClasses]="'justify-content-center'" [genericTable]="myTable"></gt-pagination>
+      </div>
+    </gt-column-settings>
 
-    </div>
-    <div class="card-footer" #columnSettingsExample></div>
   </div>
-
-  <div class="card mb-5">
-    <div class="card-header">Example</div>
-    <div class="card-block" exemplify="columnSettingsTemplateExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','gtColumnItem','#myCustomTable','[ngClass]','#customColumnSettings']" [source]="'child'" [target]="columnSettingsTemplateExample" [navStyle]="'tabs'" [externalSources]="[{
-    name:'app.module.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
-  },{
-    name:'change-column-settings.component.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/change-column-settings/change-column-settings.component.ts'
-  }]">
-  <ng-template #gtColumnItem let-column>
-    <span class="badge badge-default">{{column.columnOrder + 1}}</span>
-    <span (dblclick)="customColumnSettings.toggleColumnVisibility(column)" class="badge" [ngClass]="{'badge-success':column.visible !== false, 'badge-danger':column.visible === false}">{{configObject.fields | gtProperty:column.objectKey:'name'}}</span>
-  </ng-template>
-  <button class="btn-link" (click)="customColumnSettings.toggleColumnSettings()"> {{customColumnSettings.active ? 'Hide column settings':'Show column settings'}}</button>
-  <gt-column-settings [genericTable]="myCustomTable" #customColumnSettings [gtColumnItem]="gtColumnItem">
-    <generic-table [gtClasses]="'table-hover'" #myCustomTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"></generic-table>
-    <div class="text-center">
-      <gt-pagination [gtClasses]="'justify-content-center'" [genericTable]="myCustomTable"></gt-pagination>
-    </div>
-  </gt-column-settings>
-    </div>
-    <div class="card-footer" #columnSettingsTemplateExample></div>
-  </div>
+  <div class="card-footer" #columnSettingsExample></div>
 </div>
+
+<h5>Customize</h5>
+<p>Pass your own template for columns and change texts and css/classes for a custom look and feel.</p>
+<div class="card mb-5">
+  <div class="card-header">Example</div>
+  <div class="card-block" exemplify="columnSettingsTemplateExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','gtColumnItem','#myCustomTable','[ngClass]','#customColumnSettings','gtTexts','gtHeaderClasses','gtWrapperClasses']" [source]="'child'" [target]="columnSettingsTemplateExample" [navStyle]="'tabs'" [externalSources]="[{
+    name:'app.module.ts',
+    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
+  },{
+    name:'change-column-settings.component.ts',
+    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/change-column-settings/change-column-settings.component.ts'
+  }]">
+    <ng-template #gtColumnItem let-column let-index="index" let-name="name">
+      <div class="btn-group mb-1 col-12 p-0" role="group">
+        <button type="button" class="btn btn-sm w-100" [ngClass]="{'btn-success':column.visible !== false, 'btn-danger':column.visible === false}" style="cursor: move;">{{index}}: {{name}}</button>
+        <button type="button" class="btn btn-secondary btn-sm w-100"  (click)="customColumnSettings.toggleColumnVisibility(column)" style="cursor: pointer;">{{column.visible !== false ? 'visible':'hidden'}}</button>
+      </div>
+    </ng-template>
+    <button class="btn-link" (click)="customColumnSettings.toggleColumnSettings()"> {{customColumnSettings.active ? 'Hide column settings':'Show column settings'}}</button>
+    <gt-column-settings [genericTable]="myCustomTable" #customColumnSettings [gtColumnItem]="gtColumnItem" [gtTexts]="{help:'Click to toggle column visibility, drag to reorder.'}" [gtHeaderClasses]="'px-3 pt-3 pb-2 bg-faded'" [gtWrapperClasses]="'px-3 pb-2 bg-faded h-50'">
+      <div class="table-responsive">
+        <generic-table [gtClasses]="'table-hover'" #myCustomTable [gtSettings]="secondConfigObject.settings" [gtFields]="secondConfigObject.fields" [gtData]="secondConfigObject.data"></generic-table>
+      </div>
+      <div class="text-center">
+        <gt-pagination [gtClasses]="'justify-content-center'" [genericTable]="myCustomTable"></gt-pagination>
+      </div>
+    </gt-column-settings>
+  </div>
+  <div class="card-footer" #columnSettingsTemplateExample></div>
+</div>
+

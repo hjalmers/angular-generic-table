@@ -1,5 +1,5 @@
 // import variables from bootstrap or change to your own bootstrap theme variables
-@import "~bootstrap/scss/_variables.scss";
+@import "./node_modules/bootstrap/scss/_variables.scss";
 
 .gt-column-settings {
   position: relative;
@@ -88,5 +88,6 @@
   .gt-column-settings-item-wrapper {
     flex-wrap: nowrap !important;
     overflow: auto;
+    min-height: 100px;
   }
 }

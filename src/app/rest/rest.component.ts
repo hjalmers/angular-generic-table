@@ -31,7 +31,9 @@ export class RestComponent {
         objectKey:'id',
         visible:true,
         sort:'desc',
-        columnOrder:0
+        columnOrder:0,
+        enabled:true
+
       },{
         objectKey:'name',
         visible:true,

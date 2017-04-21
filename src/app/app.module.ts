@@ -27,6 +27,8 @@ export function createTranslateLoader(http: Http) {
 import { GenericTableModule } from '../../@angular-generic-table/core';
 import { ColumnSettingsModule } from "../../@angular-generic-table/column-settings/column-settings.module";
 import { ChangeColumnSettingsComponent } from './change-column-settings/change-column-settings.component';
+import { HomeComponent } from './home/home.component';
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,9 @@ import { ChangeColumnSettingsComponent } from './change-column-settings/change-c
     BasicComponent,
     ExamplesComponent,
     LocalizationComponent,
-    ChangeColumnSettingsComponent
+    ChangeColumnSettingsComponent,
+    HomeComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,

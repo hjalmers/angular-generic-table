@@ -39,3 +39,5 @@ testem.log
 .DS_Store
 Thumbs.db
 @angular-generic-table/packages/
+@angular-generic-table/core/node_modules
+@angular-generic-table/column-settings/node_modules

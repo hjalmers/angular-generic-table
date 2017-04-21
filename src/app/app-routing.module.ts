@@ -10,17 +10,18 @@ import { BasicComponent } from './basic/basic.component';
 import { CustomColumnComponent } from "./custom-column/custom-column.component";
 import { LocalizationComponent } from './localization/localization.component';
 import {ChangeColumnSettingsComponent} from "./change-column-settings/change-column-settings.component";
+import {HomeComponent} from './home/home.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/examples', pathMatch: 'full' },
-  { path: 'examples', component: ExamplesComponent },
+  { path: '', redirectTo: '/start', pathMatch: 'full' },
+  { path: 'start', component: HomeComponent },
   { path: 'lazy', component: LazyComponent },
-  { path: 'rest', component: RestComponent },
-  { path: 'static', component: BasicComponent },
+  { path: 'advanced', component: RestComponent },
+  { path: 'basic', component: BasicComponent },
   { path: 'custom-column', component: CustomColumnComponent },
   { path: 'localization', component: LocalizationComponent },
   { path: 'column-settings-component', component: ChangeColumnSettingsComponent },
-  { path: '**', component: ExamplesComponent }
+  { path: '**', component: HomeComponent }
 ];
 
 @NgModule({

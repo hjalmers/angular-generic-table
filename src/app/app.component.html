@@ -1,2 +1,27 @@
-<router-outlet></router-outlet>
+<div class="hidden-md-up fixed-top container-fluid mobile-menu px-3 py-2">
+    <div class="menu-icon float-right" [ngClass]="{'active':showMenu}" (click)="showMenu = !showMenu"><div></div></div>
+    <menu *ngIf="showMenu" class="mt-4 p-0 text-white"></menu>
+</div>
+<div class="jumbotron mt-4 mt-md-0 bg-teal text-white rounded-0">
+    <div class="row no-gutters">
+        <div class="col main">
+            <div class="container">
+                <h1 class="display-4">Angular Generic Table</h1>
+                <p class="lead">A table component for Angular 2+. For more info checkout the docs in the wiki.</p>
+                <a class="btn btn-primary" href="https://github.com/hjalmers/angular-generic-table/wiki" target="_blank">Go to wiki</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row no-gutters">
+    <div class="col main">
+        <div class="container">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <div class="col col-auto side hidden-sm-down">
+        <menu class="p-0"></menu>
+    </div>
+</div>
+
 

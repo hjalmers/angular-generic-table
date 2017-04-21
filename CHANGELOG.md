@@ -1,9 +1,12 @@
 Release History
 ---------------
-## [Unreleased]
+# [4.1.0] - 2017-04-21
+
+### Breaking changes
+- Package has changed name from `angular-generic-table` to `@angular-generic-table/core` so all imports and references have to be updated accordingly, not really a breaking change but still something you need to consider if you're currently on version 4.0.1 or below.
 
 ### Added
-- Column settings component for toggling column visibility and column order, see example [here](https://hjalmers.github.io/angular-generic-table/#/column-settings).
+- Column settings component for toggling column visibility and column order, see example [here](https://hjalmers.github.io/angular-generic-table/column-settings-component).
 - Support for single row selection/expand, restrict to single selection/expand by setting `gtOtpions.rowSelectionAllowMultiple` and/or `gtOtpions.rowExpandAllowMultiple` to `false`, default value is true (see issue #72).
 - Option for default row length, use `gtOption.numberOfRows` to override default value (see issue #77).
 - Support for async loading of config objects i.e. settings and fields.
