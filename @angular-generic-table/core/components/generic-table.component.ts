@@ -815,10 +815,14 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
           let fieldSetting = this.getProperty(this._gtFields, this._gtSettings[i].objectKey);
 
           // get export value, if export function is defined use it otherwise check for value function and as a last resort export raw data
-          csv += fieldSetting.export && typeof fieldSetting.export === 'function' ?
-              fieldSetting.export(row) : fieldSetting.value && typeof fieldSetting.value === 'function' ?
-                  fieldSetting.value(row) : row[this._gtSettings[i].objectKey];
+          let exportValue:string = fieldSetting.export && typeof fieldSetting.export === 'function' ?
+            fieldSetting.export(row) : fieldSetting.value && typeof fieldSetting.value === 'function' ?
+              fieldSetting.value(row) : row[this._gtSettings[i].objectKey];
 
+          // escape export value using double quotes (") if export value contains delimiter
+          exportValue = typeof exportValue === 'string' && exportValue.indexOf(this.gtOptions.csvDelimiter) != -1 ? '"'+exportValue+'"':exportValue;
+
+          csv += exportValue;
           if (i < (this._gtSettings.length - 1)) {
             csv += this.gtOptions.csvDelimiter;//this.csvSeparator;
           }
