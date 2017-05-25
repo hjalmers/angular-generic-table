@@ -130,12 +130,6 @@ export class RestComponent {
     })
   };
 
-  /** Apply search
-   * */
-  public applySearch = function(value: string){
-    this.myTable.gtSearch(value);
-  };
-
   /** Listen for events
    * */
   public trigger = function($event){

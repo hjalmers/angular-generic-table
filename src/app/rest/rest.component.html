@@ -17,7 +17,7 @@
         <option value=50>50</option>
         <option value=100>100</option>
       </select>
-      <input class="form-control form-control-sm mb-2 mr-sm-2 mb-lg-0" #search (keyup)="applySearch(search.value)" placeholder="Search"/>
+      <input class="form-control form-control-sm mb-2 mr-sm-2 mb-lg-0" #search (keyup)="myTable.gtSearch(search.value)" placeholder="Search"/>
       <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="applyFilter();">Apply predefined filter</button>
       <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.gtClearFilter()">Remove filter</button>
       <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="addData()">Add data</button>

@@ -3,7 +3,7 @@ import {GenericTableComponent} from './generic-table.component';
 
 @Component({
   selector: 'gt-pagination',
-  template: `<nav aria-label="Table navigation" *ngIf="genericTable && genericTable.gtInfo && ready && genericTable.gtData?.length > 0">
+  template: `<nav class="gt-pagination" aria-label="Table navigation" *ngIf="genericTable && genericTable.gtInfo && ready && genericTable.gtData?.length > 0" [ngClass]="{'no-data':genericTable.gtInfo.pageTotal === 0}">
   <ul class="pagination" [ngClass]="gtClasses">
     <li class="page-item" [ngClass]="{'disabled' : genericTable.gtInfo.pageCurrent === 1 || genericTable.loading }"><a class="page-link" href="javascript:void(0);" (click)="genericTable.gtInfo.pageCurrent > 1 && genericTable.previousPage()" [attr.aria-label]="genericTable.gtTexts.paginatePrevious"><span aria-hidden="true">&laquo;</span><span class="sr-only">{{genericTable.gtTexts.paginatePrevious}}</span></a></li>
     <li class="page-item" [ngClass]="{'disabled' : genericTable.loading && genericTable.gtInfo.pageCurrent !== page, 'active' : genericTable.gtInfo.pageCurrent === page }" *ngFor="let page of genericTable.gtInfo.pageTotal | gtPaginationPipe:genericTable.gtInfo.pageCurrent"><a class="page-link" [tabindex]="page === true ? -1:0" href="javascript:void(0);" (click)="page === true ? '':genericTable.goToPage(page)">{{page === true ? '&hellip;':page}}</a></li>
@@ -42,6 +42,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class PaginationPipe implements PipeTransform {
 
   transform(totalPages: number, currentPage:number): Array<any> {
+
+    if(totalPages === 0) {
+      return [1]
+    }
     let pagination:Array<any> = []; // create new empty array for pagination
     let siblings = 2; // sibling elements ie. number of elements on each side of current page
     let paginationLength = totalPages < (siblings*2)+1 ? totalPages: (siblings*2)+1; // number of elements in pagination array
