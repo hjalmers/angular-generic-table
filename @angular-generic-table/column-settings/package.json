@@ -14,7 +14,7 @@
     "copy:meta": "copyfiles -f ../../LICENSE README.md ../../CHANGELOG.md package.json README.md ../packages/column-settings/",
     "clean": "rimraf ../packages/column-settings",
     "build": "npm run clean && ngc -p tsconfig-aot.json && npm run copy:meta && npm run copy:scss && npm run compile:css && npm run rename:css",
-    "publish-package": "npm run build && onpm ../packages/column-settings publish"
+    "publish-package": "npm install && npm run build && onpm ../packages/column-settings publish"
   },
   "keywords": [
     "Angular",
