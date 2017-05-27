@@ -6,7 +6,7 @@ import {GtPropertyPipe} from "./pipes/gt-property.pipe";
 import {GtChunkPipe} from "./pipes/gt-chunk.pipe";
 import {GtFilterPipe} from "./pipes/gt-filter.pipe";
 import {GtOrderByPipe} from "./pipes/gt-order-by.pipe";
-import {NgModule} from "@angular/core";
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {GtExpandingRowComponent} from './components/gt-expanding-row.component';
 import {GtSearchPipe} from "./pipes/gt-search.pipe";
@@ -15,6 +15,8 @@ import {GtPaginationComponent, PaginationPipe} from './components/gt-pagination.
 import {GtTableInfoComponent, TableInfoPipe} from './components/gt-table-info.component';
 import {GtCustomComponentFactory} from "./components/gt-custom-component-factory";
 import {GtMetaPipe} from "./pipes/gt-meta.pipe";
+import {FormsModule} from "@angular/forms";
+import {GtDropdownComponent} from "./components/gt-dropdown.component";
 
 
 @NgModule({
@@ -35,18 +37,21 @@ import {GtMetaPipe} from "./pipes/gt-meta.pipe";
     PaginationPipe,
     GtTableInfoComponent,
     TableInfoPipe,
-    GtMetaPipe
+    GtMetaPipe,
+    GtDropdownComponent
   ],
-  imports: [CommonModule],
+  imports: [CommonModule,FormsModule],
   exports: [
     GenericTableComponent,
     GtPaginationComponent,
     GtTableInfoComponent,
     GtPropertyPipe,
-    GtExpandingRowComponent
+    GtExpandingRowComponent,
+    GtDropdownComponent
   ],
   entryComponents: [],
   providers: [],
-  bootstrap: []
+  bootstrap: []//,
+  //schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class GenericTableModule { }

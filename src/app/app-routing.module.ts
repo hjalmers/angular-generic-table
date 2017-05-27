@@ -11,6 +11,7 @@ import { CustomColumnComponent } from "./custom-column/custom-column.component";
 import { LocalizationComponent } from './localization/localization.component';
 import {ChangeColumnSettingsComponent} from "./change-column-settings/change-column-settings.component";
 import {HomeComponent} from './home/home.component';
+import {InlineEditingComponent} from "./inline-editing/inline-editing.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/start', pathMatch: 'full' },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'basic', component: BasicComponent },
   { path: 'custom-column', component: CustomColumnComponent },
   { path: 'localization', component: LocalizationComponent },
+  { path: 'inline-editing', component: InlineEditingComponent },
   { path: 'column-settings-component', component: ChangeColumnSettingsComponent },
   { path: '**', component: HomeComponent }
 ];

@@ -54,6 +54,55 @@ generic-table {
     span.gt-row-label, th.gt-sort-label {
       display: none;
     }
+    input.inline-edit {
+      border: none;
+      outline: none;
+      line-height: initial;
+      width: 100%;
+      background: none;
+      position: relative;
+    }
+    .gt-inline-edit {
+      position: relative;
+      &::after {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        content: 'press enter to save';
+        display: inline-block;
+        width: 100%;
+        font-size: 6px;
+        text-transform: uppercase;
+        color: red;
+        text-align: center;
+      }
+      &.gt-edited::after {
+        opacity: 1;
+      }
+      &::before {
+        opacity: 0;
+        position: absolute;
+        content: '';
+        background: red;
+        height: 1px;
+        width: 100%;
+        top: auto;
+        bottom: -1px;
+        transform: scaleX(0);
+        transition: all .2s ease-in-out;
+      }
+      &.gt-edited::before {
+        transform: scaleX(1);
+        opacity: 1;
+      }
+      .gt-dropdown .dropdown-menu {
+        animation: fade-in 0.2s ease-in-out;
+      }
+    }
+
+
   }
 }
 // get break point for medium devices from bootstrap
@@ -101,5 +150,15 @@ generic-table {
         }
       }
     }
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }

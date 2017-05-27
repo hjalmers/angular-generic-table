@@ -29,6 +29,7 @@ import { ColumnSettingsModule } from "../../@angular-generic-table/column-settin
 import { ChangeColumnSettingsComponent } from './change-column-settings/change-column-settings.component';
 import { HomeComponent } from './home/home.component';
 import { MenuComponent } from './menu/menu.component';
+import { InlineEditingComponent } from './inline-editing/inline-editing.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { MenuComponent } from './menu/menu.component';
     LocalizationComponent,
     ChangeColumnSettingsComponent,
     HomeComponent,
-    MenuComponent
+    MenuComponent,
+    InlineEditingComponent
   ],
   imports: [
     BrowserModule,

@@ -12,6 +12,7 @@ export interface GtRenderField<R extends GtRow,C extends GtCustomComponent<any>>
   expand?: boolean;
   sortValue: any;
   columnComponent: { type: Type<any>; injector?: Injector; };
+  edited?: boolean;
 }
 
 @Pipe({
