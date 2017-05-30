@@ -40,7 +40,7 @@ import {GtDropdownComponent} from "./components/gt-dropdown.component";
     GtMetaPipe,
     GtDropdownComponent
   ],
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   exports: [
     GenericTableComponent,
     GtPaginationComponent,
@@ -51,7 +51,6 @@ import {GtDropdownComponent} from "./components/gt-dropdown.component";
   ],
   entryComponents: [],
   providers: [],
-  bootstrap: []//,
-  //schemas:[CUSTOM_ELEMENTS_SCHEMA]
+  bootstrap: []
 })
 export class GenericTableModule { }

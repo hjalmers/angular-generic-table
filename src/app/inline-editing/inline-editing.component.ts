@@ -4,7 +4,8 @@ import {GtConfig} from "@angular-generic-table/core";
 export interface rowData {
   id:number,
   name:string,
-  lucky_number:number
+  lucky_number:number,
+  language?:string
 }
 
 @Component({
