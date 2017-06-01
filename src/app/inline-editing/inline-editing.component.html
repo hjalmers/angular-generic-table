@@ -1,5 +1,6 @@
 <h2>Inline editing</h2>
-<p>Table with simple inline editing.</p>
+<p>Table with simple inline editing. Edit cells using input field or select a value from a dropdown.</p>
+<div class="alert alert-info">Please note that this example only persists changes in memory so the data will be reset when component is reinitialized e.g when route changes or page is refreshed.</div>
 <div class="card mb-5">
   <div class="card-header">Example</div>
   <div class="card-block" exemplify="inlineEditExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']" [source]="'child'" [target]="inlineEditExample" [navStyle]="'tabs'" [externalSources]="[{

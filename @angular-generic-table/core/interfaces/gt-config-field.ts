@@ -28,7 +28,7 @@ export interface GtConfigField<R extends GtRow, C extends GtCustomComponent<any>
   // custom class names for column
   classNames?: string;
   // custom column component and associated injector
-  columnComponent?: { type: Type<C>, injector?: Injector },
+  columnComponent?: { type: Type<C>, injector?: Injector };
   // custom function for column presentation
   render?: GtRenderFunc<R>;
   // should the field be compiled (false by default)

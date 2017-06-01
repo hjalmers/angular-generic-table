@@ -8,5 +8,5 @@ export interface GtOptions {
   rowSelection?: boolean;
   rowSelectionAllowMultiple?: boolean;
   rowExpandAllowMultiple?: boolean;
-  numberOfRows?:number;
+  numberOfRows?: number;
 }

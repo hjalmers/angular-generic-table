@@ -12,7 +12,7 @@ import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/scan';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/take';
-import {GtConfig, GtRow} from "@angular-generic-table/core";
+import {GtConfig, GtRow} from '@angular-generic-table/core';
 import {GtCustomComponent} from '../../../@angular-generic-table/core/components/gt-custom-component-factory';
 
 
@@ -239,7 +239,7 @@ export class CustomColumnComponent {
       objectKey: 'save',
       name: '',
       value: () => '',
-      classNames:'text-right',
+      classNames: 'text-right',
       render: () => '<button type="button" class="btn btn-primary btn-sm">Save</button>',
       click: (row) => this.stateService.states
         .take(1)

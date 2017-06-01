@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import {GtConfig} from "@angular-generic-table/core";
+import { Component } from '@angular/core';
+import {GtConfig} from '@angular-generic-table/core';
 
 export interface rowData {
-  id:number,
-  name:string,
-  lucky_number:number
+  id: number;
+  name: string;
+  language?: string;
 }
 
 @Component({
@@ -13,456 +13,351 @@ export interface rowData {
 })
 export class InlineEditingComponent {
 
-  public data:Array<rowData> = [];
+  public data: Array<rowData> = [];
   public configObject: GtConfig<rowData>;
+  public languages:Array<string> = ['Albanian','Amharic','Aymara','Bulgarian','Dhivehi','Estonian','Indonesian','Kannada','Lao','Latvian','Marathi','Persian','Pisin','Punjabi','Somali','Tamil','Tok' ,'Tsonga', 'Tswana','Zulu'];
 
-  updatedRow:{
-    newValue:rowData,
-    oldValue:rowData,
-    originalValue:rowData
+  updatedRow: {
+    newValue: rowData,
+    oldValue: rowData,
+    originalValue: rowData
   };
 
   constructor() {
 
     this.configObject = {
-      settings:[{
-        objectKey:'id',
-        sort:'asc',
-        sortOrder:1,
-        columnOrder:0
-      },{
-        objectKey:'name',
-        sort:'asc',
-        sortOrder:0,
-        columnOrder:1
-      },{
-        objectKey:'lucky_number',
-        sort:'enable',
-        columnOrder:2,
-        visible:true
-      },{
-        objectKey:'language',
-        sort:'enable',
-        columnOrder:3,
-        visible:true
+      settings: [{
+        objectKey: 'id',
+        sort: 'asc',
+        sortOrder: 1,
+        columnOrder: 0
+      }, {
+        objectKey: 'name',
+        sort: 'asc',
+        sortOrder: 0,
+        columnOrder: 1
+      }, {
+        objectKey: 'language',
+        sort: 'enable',
+        columnOrder: 3,
+        visible: true
       }],
-      fields:[{
-        name:'Id',
-        objectKey:'id'
-      },{
-        name:'Name',
-        objectKey:'name',
-        inlineEdit:true
-      },{
-        name:'Lucky number',
-        objectKey:'lucky_number',
-        stackedHeading:'Custom heading'
-      },{
-        name:'Language',
-        objectKey:'language',
-        inlineEdit:['sv','en','fi','dk','no','de','sk','lk','pl','us','ab','se','hg'],
-        value:()=>{ return 'en'}
+      fields: [{
+        name: 'Id',
+        objectKey: 'id'
+      }, {
+        name: 'Name',
+        objectKey: 'name',
+        inlineEdit: true
+      }, {
+        name: 'Language',
+        objectKey: 'language',
+        inlineEdit: this.languages,
+        value: () => {
+          const langId = Math.floor(Math.random() * this.languages.length);
+          return this.languages[langId];
+        }
       }],
-      data:[{
-        "id": 1,
-        "name": "Anna",
-        "lucky_number": 63
-      }, {
-        "id": 2,
-        "name": "Julie",
-        "lucky_number": 8
-      }, {
-        "id": 3,
-        "name": "Lillian",
-        "lucky_number": 30
-      }, {
-        "id": 4,
-        "name": "Norma",
-        "lucky_number": 13
-      }, {
-        "id": 5,
-        "name": "Ralph",
-        "lucky_number": 28
-      }, {
-        "id": 6,
-        "name": "Benjamin",
-        "lucky_number": 66
-      }, {
-        "id": 7,
-        "name": "George",
-        "lucky_number": 66
-      }, {
-        "id": 8,
-        "name": "Ryan",
-        "lucky_number": 65
-      }, {
-        "id": 9,
-        "name": "Martha",
-        "lucky_number": 57
-      }, {
-        "id": 10,
-        "name": "Todd",
-        "lucky_number": 65
-      }, {
-        "id": 11,
-        "name": "Norma",
-        "lucky_number": 73
-      }, {
-        "id": 12,
-        "name": "Frank",
-        "lucky_number": 27
-      }, {
-        "id": 13,
-        "name": "Kathryn",
-        "lucky_number": 93
-      }, {
-        "id": 14,
-        "name": "Philip",
-        "lucky_number": 63
-      }, {
-        "id": 15,
-        "name": "Ronald",
-        "lucky_number": 89
-      }, {
-        "id": 16,
-        "name": "Joshua",
-        "lucky_number": 18
-      }, {
-        "id": 17,
-        "name": "Phillip",
-        "lucky_number": 16
-      }, {
-        "id": 18,
-        "name": "Susan",
-        "lucky_number": 6
-      }, {
-        "id": 19,
-        "name": "Louise",
-        "lucky_number": 52
-      }, {
-        "id": 20,
-        "name": "Gary",
-        "lucky_number": 18
-      }, {
-        "id": 21,
-        "name": "Laura",
-        "lucky_number": 9
-      }, {
-        "id": 22,
-        "name": "Tina",
-        "lucky_number": 70
-      }, {
-        "id": 23,
-        "name": "Jesse",
-        "lucky_number": 2
-      }, {
-        "id": 24,
-        "name": "Jessica",
-        "lucky_number": 15
-      }, {
-        "id": 25,
-        "name": "Scott",
-        "lucky_number": 38
-      }, {
-        "id": 26,
-        "name": "Michael",
-        "lucky_number": 23
+      data: [{
+        'id': 1,
+        'name': 'Anna'
       }, {
-        "id": 27,
-        "name": "Harold",
-        "lucky_number": 66
+        'id': 2,
+        'name': 'Julie'
       }, {
-        "id": 28,
-        "name": "William",
-        "lucky_number": 57
+        'id': 3,
+        'name': 'Lillian'
       }, {
-        "id": 29,
-        "name": "Harry",
-        "lucky_number": 14
+        'id': 4,
+        'name': 'Norma'
       }, {
-        "id": 30,
-        "name": "Dennis",
-        "lucky_number": 9
+        'id': 5,
+        'name': 'Ralph'
       }, {
-        "id": 31,
-        "name": "Sara",
-        "lucky_number": 9
+        'id': 6,
+        'name': 'Benjamin'
       }, {
-        "id": 32,
-        "name": "David",
-        "lucky_number": 31
+        'id': 7,
+        'name': 'George'
       }, {
-        "id": 33,
-        "name": "Antonio",
-        "lucky_number": 2
+        'id': 8,
+        'name': 'Ryan'
       }, {
-        "id": 34,
-        "name": "Anna",
-        "lucky_number": 85
+        'id': 9,
+        'name': 'Martha'
       }, {
-        "id": 35,
-        "name": "Earl",
-        "lucky_number": 98
+        'id': 10,
+        'name': 'Todd'
       }, {
-        "id": 36,
-        "name": "Melissa",
-        "lucky_number": 70
+        'id': 11,
+        'name': 'Norma'
       }, {
-        "id": 37,
-        "name": "Eric",
-        "lucky_number": 94
+        'id': 12,
+        'name': 'Frank'
       }, {
-        "id": 38,
-        "name": "Joe",
-        "lucky_number": 42
+        'id': 13,
+        'name': 'Kathryn'
       }, {
-        "id": 39,
-        "name": "Andrea",
-        "lucky_number": 39
+        'id': 14,
+        'name': 'Philip'
       }, {
-        "id": 40,
-        "name": "Michael",
-        "lucky_number": 44
+        'id': 15,
+        'name': 'Ronald'
       }, {
-        "id": 41,
-        "name": "Lillian",
-        "lucky_number": 10
+        'id': 16,
+        'name': 'Joshua'
       }, {
-        "id": 42,
-        "name": "Elizabeth",
-        "lucky_number": 24
+        'id': 17,
+        'name': 'Phillip'
       }, {
-        "id": 43,
-        "name": "Ryan",
-        "lucky_number": 78
+        'id': 18,
+        'name': 'Susan'
       }, {
-        "id": 44,
-        "name": "Phillip",
-        "lucky_number": 86
+        'id': 19,
+        'name': 'Louise'
       }, {
-        "id": 45,
-        "name": "Patrick",
-        "lucky_number": 64
+        'id': 20,
+        'name': 'Gary'
       }, {
-        "id": 46,
-        "name": "Barbara",
-        "lucky_number": 54
+        'id': 21,
+        'name': 'Laura'
       }, {
-        "id": 47,
-        "name": "Patricia",
-        "lucky_number": 9
+        'id': 22,
+        'name': 'Tina'
       }, {
-        "id": 48,
-        "name": "Brenda",
-        "lucky_number": 18
+        'id': 23,
+        'name': 'Jesse'
       }, {
-        "id": 49,
-        "name": "Sara",
-        "lucky_number": 12
+        'id': 24,
+        'name': 'Jessica'
       }, {
-        "id": 50,
-        "name": "Steven",
-        "lucky_number": 50
+        'id': 25,
+        'name': 'Scott'
       }, {
-        "id": 51,
-        "name": "Steven",
-        "lucky_number": 44
+        'id': 26,
+        'name': 'Michael'
       }, {
-        "id": 52,
-        "name": "Paul",
-        "lucky_number": 88
+        'id': 27,
+        'name': 'Harold'
       }, {
-        "id": 53,
-        "name": "Ann",
-        "lucky_number": 51
+        'id': 28,
+        'name': 'William'
       }, {
-        "id": 54,
-        "name": "Frank",
-        "lucky_number": 3
+        'id': 29,
+        'name': 'Harry'
       }, {
-        "id": 55,
-        "name": "Beverly",
-        "lucky_number": 10
+        'id': 30,
+        'name': 'Dennis'
       }, {
-        "id": 56,
-        "name": "Elizabeth",
-        "lucky_number": 52
+        'id': 31,
+        'name': 'Sara'
       }, {
-        "id": 57,
-        "name": "Patrick",
-        "lucky_number": 96
+        'id': 32,
+        'name': 'David'
       }, {
-        "id": 58,
-        "name": "Susan",
-        "lucky_number": 92
+        'id': 33,
+        'name': 'Antonio'
       }, {
-        "id": 59,
-        "name": "Lawrence",
-        "lucky_number": 53
+        'id': 34,
+        'name': 'Anna'
       }, {
-        "id": 60,
-        "name": "Denise",
-        "lucky_number": 65
+        'id': 35,
+        'name': 'Earl'
       }, {
-        "id": 61,
-        "name": "Carol",
-        "lucky_number": 33
+        'id': 36,
+        'name': 'Melissa'
       }, {
-        "id": 62,
-        "name": "Larry",
-        "lucky_number": 95
+        'id': 37,
+        'name': 'Eric'
       }, {
-        "id": 63,
-        "name": "Martha",
-        "lucky_number": 32
+        'id': 38,
+        'name': 'Joe'
       }, {
-        "id": 64,
-        "name": "Steve",
-        "lucky_number": 69
+        'id': 39,
+        'name': 'Andrea'
       }, {
-        "id": 65,
-        "name": "Timothy",
-        "lucky_number": 16
+        'id': 40,
+        'name': 'Michael'
       }, {
-        "id": 66,
-        "name": "Jose",
-        "lucky_number": 16
+        'id': 41,
+        'name': 'Lillian'
       }, {
-        "id": 67,
-        "name": "Jennifer",
-        "lucky_number": 96
+        'id': 42,
+        'name': 'Elizabeth'
       }, {
-        "id": 68,
-        "name": "Benjamin",
-        "lucky_number": 20
+        'id': 43,
+        'name': 'Ryan'
       }, {
-        "id": 69,
-        "name": "Christine",
-        "lucky_number": 8
+        'id': 44,
+        'name': 'Phillip'
       }, {
-        "id": 70,
-        "name": "Timothy",
-        "lucky_number": 93
+        'id': 45,
+        'name': 'Patrick'
       }, {
-        "id": 71,
-        "name": "Patricia",
-        "lucky_number": 17
+        'id': 46,
+        'name': 'Barbara'
       }, {
-        "id": 72,
-        "name": "Craig",
-        "lucky_number": 48
+        'id': 47,
+        'name': 'Patricia'
       }, {
-        "id": 73,
-        "name": "Philip",
-        "lucky_number": 88
+        'id': 48,
+        'name': 'Brenda'
       }, {
-        "id": 74,
-        "name": "Lori",
-        "lucky_number": 56
+        'id': 49,
+        'name': 'Sara'
       }, {
-        "id": 75,
-        "name": "Janet",
-        "lucky_number": 4
+        'id': 50,
+        'name': 'Steven'
       }, {
-        "id": 76,
-        "name": "Denise",
-        "lucky_number": 30
+        'id': 51,
+        'name': 'Steven'
       }, {
-        "id": 77,
-        "name": "Elizabeth",
-        "lucky_number": 44
+        'id': 52,
+        'name': 'Paul'
       }, {
-        "id": 78,
-        "name": "Thomas",
-        "lucky_number": 95
+        'id': 53,
+        'name': 'Ann'
       }, {
-        "id": 79,
-        "name": "Shirley",
-        "lucky_number": 24
+        'id': 54,
+        'name': 'Frank'
       }, {
-        "id": 80,
-        "name": "Helen",
-        "lucky_number": 9
+        'id': 55,
+        'name': 'Beverly'
       }, {
-        "id": 81,
-        "name": "Wanda",
-        "lucky_number": 98
+        'id': 56,
+        'name': 'Elizabeth'
       }, {
-        "id": 82,
-        "name": "Ernest",
-        "lucky_number": 35
+        'id': 57,
+        'name': 'Patrick'
       }, {
-        "id": 83,
-        "name": "Steven",
-        "lucky_number": 9
+        'id': 58,
+        'name': 'Susan'
       }, {
-        "id": 84,
-        "name": "Jose",
-        "lucky_number": 27
+        'id': 59,
+        'name': 'Lawrence'
       }, {
-        "id": 85,
-        "name": "Kimberly",
-        "lucky_number": 52
+        'id': 60,
+        'name': 'Denise'
       }, {
-        "id": 86,
-        "name": "Nancy",
-        "lucky_number": 48
+        'id': 61,
+        'name': 'Carol'
       }, {
-        "id": 87,
-        "name": "Christopher",
-        "lucky_number": 44
+        'id': 62,
+        'name': 'Larry'
       }, {
-        "id": 88,
-        "name": "Nancy",
-        "lucky_number": 40
+        'id': 63,
+        'name': 'Martha'
       }, {
-        "id": 89,
-        "name": "Philip",
-        "lucky_number": 34
+        'id': 64,
+        'name': 'Steve'
       }, {
-        "id": 90,
-        "name": "Bruce",
-        "lucky_number": 69
+        'id': 65,
+        'name': 'Timothy'
       }, {
-        "id": 91,
-        "name": "Jason",
-        "lucky_number": 60
+        'id': 66,
+        'name': 'Jose'
       }, {
-        "id": 92,
-        "name": "Denise",
-        "lucky_number": 30
+        'id': 67,
+        'name': 'Jennifer'
       }, {
-        "id": 93,
-        "name": "Jane",
-        "lucky_number": 66
+        'id': 68,
+        'name': 'Benjamin'
       }, {
-        "id": 94,
-        "name": "Brian",
-        "lucky_number": 49
+        'id': 69,
+        'name': 'Christine'
       }, {
-        "id": 95,
-        "name": "Eugene",
-        "lucky_number": 51
+        'id': 70,
+        'name': 'Timothy'
       }, {
-        "id": 96,
-        "name": "Jack",
-        "lucky_number": 97
+        'id': 71,
+        'name': 'Patricia'
       }, {
-        "id": 97,
-        "name": "Peter",
-        "lucky_number": 1
+        'id': 72,
+        'name': 'Craig'
       }, {
-        "id": 98,
-        "name": "Virginia",
-        "lucky_number": 20
+        'id': 73,
+        'name': 'Philip'
       }, {
-        "id": 99,
-        "name": "Walter",
-        "lucky_number": 63
+        'id': 74,
+        'name': 'Lori'
       }, {
-        "id": 100,
-        "name": "Virginia",
-        "lucky_number": 14
+        'id': 75,
+        'name': 'Janet'
+      }, {
+        'id': 76,
+        'name': 'Denise'
+      }, {
+        'id': 77,
+        'name': 'Elizabeth'
+      }, {
+        'id': 78,
+        'name': 'Thomas'
+      }, {
+        'id': 79,
+        'name': 'Shirley'
+      }, {
+        'id': 80,
+        'name': 'Helen'
+      }, {
+        'id': 81,
+        'name': 'Wanda'
+      }, {
+        'id': 82,
+        'name': 'Ernest'
+      }, {
+        'id': 83,
+        'name': 'Steven'
+      }, {
+        'id': 84,
+        'name': 'Jose'
+      }, {
+        'id': 85,
+        'name': 'Kimberly'
+      }, {
+        'id': 86,
+        'name': 'Nancy'
+      }, {
+        'id': 87,
+        'name': 'Christopher'
+      }, {
+        'id': 88,
+        'name': 'Nancy'
+      }, {
+        'id': 89,
+        'name': 'Philip'
+      }, {
+        'id': 90,
+        'name': 'Bruce'
+      }, {
+        'id': 91,
+        'name': 'Jason'
+      }, {
+        'id': 92,
+        'name': 'Denise'
+      }, {
+        'id': 93,
+        'name': 'Jane'
+      }, {
+        'id': 94,
+        'name': 'Brian'
+      }, {
+        'id': 95,
+        'name': 'Eugene'
+      }, {
+        'id': 96,
+        'name': 'Jack'
+      }, {
+        'id': 97,
+        'name': 'Peter'
+      }, {
+        'id': 98,
+        'name': 'Virginia'
+      }, {
+        'id': 99,
+        'name': 'Walter'
+      }, {
+        'id': 100,
+        'name': 'Virginia'
       }]
     };
   }
@@ -476,7 +371,7 @@ export class InlineEditingComponent {
     console.log($event);
 
 
-    if($event.value && $event.name === 'gt-row-updated') {
+    if ($event.value && $event.name === 'gt-row-updated') {
       this.updatedRow = $event.value;
     }
   };

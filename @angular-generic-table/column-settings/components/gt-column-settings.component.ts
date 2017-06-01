@@ -4,8 +4,8 @@ import {
 } from '@angular/core';
 import {GenericTableComponent} from '@angular-generic-table/core';
 import {GtConfigSetting} from '@angular-generic-table/core';
-import {DragulaService} from "ng2-dragula";
-import {GtColumnSettingsTexts} from "../interfaces/gt-column-settings-texts";
+import {DragulaService} from 'ng2-dragula';
+import {GtColumnSettingsTexts} from '../interfaces/gt-column-settings-texts';
 
 @Pipe({
   name: 'gtColumn'
@@ -14,7 +14,7 @@ export class GtColumnPipe implements PipeTransform {
 
   // TODO: move to helper functions
   /** Sort by column order */
-  private getColumnOrder(a:any,b:any) {
+  private getColumnOrder(a: any, b: any) {
     if (a.columnOrder < b.columnOrder)
       return -1;
     if (a.columnOrder > b.columnOrder || typeof a.columnOrder === 'undefined')
@@ -23,8 +23,8 @@ export class GtColumnPipe implements PipeTransform {
   };
 
   /** return enabled columns */
-  private getEnabled(column:GtConfigSetting) {
-    return column.enabled !== false ? column:null;
+  private getEnabled(column: GtConfigSetting) {
+    return column.enabled !== false ? column : null;
   }
 
   transform(settings: Array<GtConfigSetting>): Array<GtConfigSetting> {
@@ -69,7 +69,7 @@ export class GtColumnSettingsComponent implements OnInit{
   /**
  * Check offset height on window resize.
  */
-  @HostListener("window:resize", [])
+  @HostListener('window:resize', [])
   public onResize() {
     this.offset = this._getTableHeadHeight();
     this.heightAdjust = this._getColumnSettingsHeaderHeight();
@@ -82,26 +82,26 @@ export class GtColumnSettingsComponent implements OnInit{
   @ViewChild('genericTableElement') elementView: TemplateRef<ElementRef>;
   @ViewChild('gtColumnSettingsHeader') gtColumnSettingsHeader: ElementRef;
 
-  private _genericTable:GenericTableComponent<any,any>;
-  @Input() gtHeaderClasses:string = 'px-3 pt-3 pb-2 table-bordered border-left-0 border-right-0 border-bottom-0 alert-info';
-  @Input() gtWrapperClasses:string = 'px-3 pb-3 table-bordered border-left-0 border-right-0 border-top-0 alert-info';
-  @Input() overlay:boolean = true;
+  private _genericTable: GenericTableComponent<any, any>;
+  @Input() gtHeaderClasses = 'px-3 pt-3 pb-2 table-bordered border-left-0 border-right-0 border-bottom-0 alert-info';
+  @Input() gtWrapperClasses = 'px-3 pb-3 table-bordered border-left-0 border-right-0 border-top-0 alert-info';
+  @Input() overlay = true;
   @Input() gtColumnItem: TemplateRef<ElementRef>;
   public gtDefaultTexts: GtColumnSettingsTexts = {
-    title: "Columns",
-    help: "Double click to toggle visibility, drag and drop to reorder."
+    title: 'Columns',
+    help: 'Double click to toggle visibility, drag and drop to reorder.'
   };
   @Input() gtTexts: GtColumnSettingsTexts = this.gtDefaultTexts;
 
-  public active:boolean = false;
-  public offset:string;
+  public active = false;
+  public offset: string;
   public heightAdjust: string;
-  public reordered:boolean = false;
-  public bagId:string;
+  public reordered = false;
+  public bagId: string;
 
-  constructor(private dragulaService: DragulaService, private changeDetectorRef:ChangeDetectorRef) {
-    dragulaService.drop.subscribe((value:Array<any>) => {
-      if(value[0] === this.bagId){
+  constructor(private dragulaService: DragulaService, private changeDetectorRef: ChangeDetectorRef) {
+    dragulaService.drop.subscribe((value: Array<any>) => {
+      if (value[0] === this.bagId){
         this._onDrop(value.slice(1));
       }
     });
@@ -121,7 +121,7 @@ export class GtColumnSettingsComponent implements OnInit{
    *  Extend object function.
    */
   private extend = function (a: Object, b: Object) {
-    for (let key in b)
+    for (const key in b)
       if (b.hasOwnProperty(key))
         a[key] = b[key];
     return a;
@@ -134,13 +134,13 @@ export class GtColumnSettingsComponent implements OnInit{
 
     this.active = !this.active;
 
-    if(this.active) {
+    if (this.active) {
       this.offset = this._getTableHeadHeight();
 
       // check and adjust height offset
-      setTimeout(()=>{
+      setTimeout(() => {
         this.heightAdjust = this._getColumnSettingsHeaderHeight();
-      },0);
+      }, 0);
     }
   }
 
@@ -148,7 +148,7 @@ export class GtColumnSettingsComponent implements OnInit{
    * Toggle column visibility.
    * @param {object} column - column object.
    */
-  public toggleColumnVisibility(column:any) {
+  public toggleColumnVisibility(column: any) {
     // toggle column visibility
     column.visible = !column.visible;
 
@@ -156,23 +156,23 @@ export class GtColumnSettingsComponent implements OnInit{
     this._genericTable.redraw();
 
     // check and reset offset
-    setTimeout(()=>{
+    setTimeout(() => {
       this.offset = this._getTableHeadHeight();
-    },0)
+    }, 0);
   }
 
   /**
    * Order table by object key.
    * @param {string} args - name of key to sort on.
    */
-  private _onDrop(args:Array<any>) {
+  private _onDrop(args: Array<any>) {
     this.reordered = true;
-    let [e, target] = args;
+    const [e, target] = args;
     const order = {};
-    for(let i = 0;i < target.children.length;i++) {
+    for (let i = 0; i < target.children.length; i++) {
       order[target.children[i].getAttribute('data-object-key')] = i;
     }
-    for(let i = 0; i < this._genericTable.gtSettings.length; i++ ) {
+    for (let i = 0; i < this._genericTable.gtSettings.length; i++ ) {
       this._genericTable.gtSettings[i].columnOrder = order[this._genericTable.gtSettings[i].objectKey];
     }
 
@@ -187,16 +187,16 @@ export class GtColumnSettingsComponent implements OnInit{
    * Get height of table head element ie. first row containing table headers.
    * @returns {string} offset height for table header in px.
    */
-  private _getTableHeadHeight():string {
+  private _getTableHeadHeight(): string {
     try{
-      if(this.elementView.elementRef.nativeElement.nextElementSibling.firstElementChild.firstElementChild.tagName === 'THEAD') {
+      if (this.elementView.elementRef.nativeElement.nextElementSibling.firstElementChild.firstElementChild.tagName === 'THEAD') {
         return this.elementView.elementRef.nativeElement.nextElementSibling.firstElementChild.firstElementChild.offsetHeight + 'px';
       }
       if (this.elementView.elementRef.nativeElement.nextElementSibling.firstElementChild.firstElementChild.firstElementChild.tagName === 'THEAD'){
         return this.elementView.elementRef.nativeElement.nextElementSibling.firstElementChild.firstElementChild.firstElementChild.offsetHeight + 'px';
       }
       return '0px';
-    } catch(error) {
+    } catch (error) {
       return '0px';
     }
   }
@@ -205,10 +205,10 @@ export class GtColumnSettingsComponent implements OnInit{
    * Get height of table head element ie. first row containing table headers.
    * @returns {string} offset height for table header in px.
    */
-  private _getColumnSettingsHeaderHeight():string {
+  private _getColumnSettingsHeaderHeight(): string {
     try{
       return this.gtColumnSettingsHeader.nativeElement.offsetHeight + 'px';
-    } catch(error) {
+    } catch (error) {
       return '0px';
     }
   }

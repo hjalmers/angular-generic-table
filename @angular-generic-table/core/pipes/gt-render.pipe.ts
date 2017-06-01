@@ -1,11 +1,11 @@
-import {Injector, Pipe, PipeTransform, Type} from "@angular/core";
-import { GtConfigSetting } from "../interfaces/gt-config-setting";
-import { GtClickFunc, GtConfigField } from "../interfaces/gt-config-field";
-import { DomSanitizer } from "@angular/platform-browser";
-import { GtRow } from "../interfaces/gt-row";
-import { GtCustomComponent } from "../components/gt-custom-component-factory";
+import {Injector, Pipe, PipeTransform, Type} from '@angular/core';
+import { GtConfigSetting } from '../interfaces/gt-config-setting';
+import { GtClickFunc, GtConfigField } from '../interfaces/gt-config-field';
+import { DomSanitizer } from '@angular/platform-browser';
+import { GtRow } from '../interfaces/gt-row';
+import { GtCustomComponent } from '../components/gt-custom-component-factory';
 
-export interface GtRenderField<R extends GtRow,C extends GtCustomComponent<any>> {
+export interface GtRenderField<R extends GtRow, C extends GtCustomComponent<any>> {
   objectKey: string;
   renderValue?: any;
   click?: GtClickFunc<R>;
@@ -26,7 +26,7 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
 
   // TODO: move to helper functions
   /** Sort by column order */
-  private getColumnOrder = function (a:GtConfigSetting, b:GtConfigSetting) {
+  private getColumnOrder = function (a: GtConfigSetting, b: GtConfigSetting) {
     if (a.columnOrder < b.columnOrder)
       return -1;
     if (a.columnOrder > b.columnOrder || typeof a.columnOrder === 'undefined')
@@ -35,12 +35,12 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
   };
 
   /** Sort by length */
-  private getOrderByLength = function (a:any, b:any) {
+  private getOrderByLength = function (a: any, b: any) {
     return b.length - a.length;
   };
 
   /** Return property */
-  private getProperty = function (array:Array<any>, key:string) {
+  private getProperty = function (array: Array<any>, key: string) {
     for (let i = 0; i < array.length; i++) {
       if (array[i].objectKey === key) {
         return array[i];
@@ -110,7 +110,7 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
     //console.log(settings.map('objectKey'));
 
     //console.log('render');
-    let columns:Array<string> = [];
+    const columns: Array<string> = [];
     for (let i = 0; i < settings.length; i++) {
       if (settings[i].visible !== false && settings[i].enabled !== false) {
         columns.push(settings[i].objectKey);
@@ -120,12 +120,12 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
     for (let i = 0; i < fields.length; i++) {
       //console.log(!row[fields[i].objectKey]);
       if (fields[i].value && typeof fields[i].value === 'function' && !row[fields[i].objectKey]) {
-        row[fields[i].objectKey] = loading ? "" : fields[i].value(row);
+        row[fields[i].objectKey] = loading ? '' : fields[i].value(row);
       }
     }
     //console.log(row);
-    let keys:Array<any> = [];
-    for (let key in row) {
+    const keys: Array<any> = [];
+    for (const key in row) {
       //console.log(key);
       if (columns.indexOf(key) !== -1) {
         let fieldSetting;
@@ -136,18 +136,18 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
           }
         }
 
-        let columnObject: GtRenderField<R,any> = {
+        const columnObject: GtRenderField<R, any> = {
           objectKey: key,
           sortValue: row[key],
           columnComponent: fieldSetting.columnComponent
         };
 
         if (loading) {
-          columnObject.renderValue = row[key] !== null ? row[key] : "";
+          columnObject.renderValue = row[key] !== null ? row[key] : '';
         } else if (highlight && searchString && this.getProperty(settings, key).search !== false) {
-          columnObject.renderValue = fieldSetting.render && typeof fieldSetting.render === 'function' ? this.highlight(fieldSetting.render(row), searchString) : this.highlight(row[key] !== null ? row[key] : "", searchString);
+          columnObject.renderValue = fieldSetting.render && typeof fieldSetting.render === 'function' ? this.highlight(fieldSetting.render(row), searchString) : this.highlight(row[key] !== null ? row[key] : '', searchString);
         } else {
-          columnObject.renderValue = fieldSetting.render && typeof fieldSetting.render === 'function' ? this.sanitizer.bypassSecurityTrustHtml(fieldSetting.render(row)) : row[key] !== null ? row[key] : "";
+          columnObject.renderValue = fieldSetting.render && typeof fieldSetting.render === 'function' ? this.sanitizer.bypassSecurityTrustHtml(fieldSetting.render(row)) : row[key] !== null ? row[key] : '';
         }
 
         if (fieldSetting.click && typeof fieldSetting.click === 'function') {
@@ -162,7 +162,7 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
       }
     }
 
-    keys.sort(function (a:any, b:any) {
+    keys.sort(function (a: any, b: any) {
       return columns.indexOf(a.objectKey) < columns.indexOf(b.objectKey) ? -1 : 1;
     });
     return keys;

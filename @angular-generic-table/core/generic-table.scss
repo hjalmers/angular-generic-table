@@ -1,6 +1,7 @@
 // import variables from bootstrap or change to your own bootstrap theme variables
 @import "./node_modules/bootstrap/scss/_variables.scss";
 
+$gt-inline-edit-color: $brand-primary;
 // basic table styles for sorting and for stacked table layout
 generic-table {
   table {
@@ -64,28 +65,11 @@ generic-table {
     }
     .gt-inline-edit {
       position: relative;
-      &::after {
-        opacity: 0;
-        transition: opacity 0.5s ease-in-out;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        content: 'press enter to save';
-        display: inline-block;
-        width: 100%;
-        font-size: 6px;
-        text-transform: uppercase;
-        color: red;
-        text-align: center;
-      }
-      &.gt-edited::after {
-        opacity: 1;
-      }
       &::before {
         opacity: 0;
         position: absolute;
         content: '';
-        background: red;
+        background: $gt-inline-edit-color;
         height: 1px;
         width: 100%;
         top: auto;
@@ -99,8 +83,29 @@ generic-table {
       }
       .gt-dropdown .dropdown-menu {
         animation: fade-in 0.2s ease-in-out;
+        .dropdown-item {
+          cursor: pointer;
+        }
+      }
+      .gt-inline-edit-notice {
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: inline-block;
+        width: 100%;
+        font-size: 7px;
+        text-transform: uppercase;
+        color: $gt-inline-edit-color;
+        text-align: center;
+      }
+      &.gt-edited .gt-inline-edit-notice {
+        opacity: 1;
       }
     }
+
+
 
 
   }

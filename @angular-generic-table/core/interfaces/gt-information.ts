@@ -4,8 +4,8 @@ export interface GtInformation {
   pageNext?: number;
   pagePrevious?: number;
   pageTotal?: number;
-  recordFrom?:number;
-  recordTo?:number;
+  recordFrom?: number;
+  recordTo?: number;
   recordLength: number;
   recordsAll: number;
   recordsAfterFilter: number;

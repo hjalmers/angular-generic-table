@@ -7,35 +7,35 @@ import {GtInformation} from '../interfaces/gt-information';
 export class GtFilterPipe implements PipeTransform {
   //@Output() filterInfo = new EventEmitter();
 
-  transform(allRows: any[], filterBy: Object, gtInfo:GtInformation, refreshFilter: boolean, refreshData: number): any[] {
+  transform(allRows: any[], filterBy: Object, gtInfo: GtInformation, refreshFilter: boolean, refreshData: number): any[] {
     //console.log(allRows,filterBy);
     gtInfo.recordsAll = allRows.length;
 
-    if(!Array.isArray(allRows) || !filterBy) {
+    if (!Array.isArray(allRows) || !filterBy) {
       //gtInfo.filtered = false;
 
-      let length = allRows === null ? 0:allRows.length;
+      const length = allRows === null ? 0 : allRows.length;
       gtInfo.recordsAfterFilter = length;
       return allRows;
     }
 
-    let output = [];
-    for(let i = 0; i < allRows.length; i++) {
+    const output = [];
+    for (let i = 0; i < allRows.length; i++) {
 
-      let rowObject = allRows[i];
+      const rowObject = allRows[i];
       let match = true;
 
-      for (let property in filterBy) {
+      for (const property in filterBy) {
         if (filterBy.hasOwnProperty(property)) {
           //console.log(property);
           //console.log(filter[property].indexOf(obj[property]));
-          if(filterBy[property].indexOf(rowObject[property]) === -1){
+          if (filterBy[property].indexOf(rowObject[property]) === -1){
             match = false;
 
           }
         }
       }
-      if(match){
+      if (match){
         output.push(rowObject);
       }
 

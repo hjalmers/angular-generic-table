@@ -8,8 +8,8 @@ import { GtRow } from '../interfaces/gt-row';
 export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
 
   /** Return property */
-  private getProperty = function(array:Array<any>, key:string){
-    for (let i = 0; i < array.length;i++){
+  private getProperty = function(array: Array<any>, key: string){
+    for (let i = 0; i < array.length; i++){
       if (array[i].objectKey === key) {
         return array[i];
       }
@@ -17,10 +17,10 @@ export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
   };
 
   /** Return sort function */
-  private getSortFunction(field:any){
-    if(typeof field.sort === 'function'){
+  private getSortFunction(field: any){
+    if (typeof field.sort === 'function'){
       return field.sort;
-    } else if(typeof field.value === 'function'){
+    } else if (typeof field.value === 'function'){
       return field.value;
     } else {
       return false;
@@ -28,8 +28,8 @@ export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
   }
 
 
-  static _orderByComparator(a:any, b:any):number{
-    if((isNaN(parseFloat(a)) || !isFinite(a)) || (isNaN(parseFloat(b)) || !isFinite(b))){
+  static _orderByComparator(a: any, b: any): number{
+    if ((isNaN(parseFloat(a)) || !isFinite(a)) || (isNaN(parseFloat(b)) || !isFinite(b))){
 
       if (b === null || typeof b === 'undefined' && (a !== null && typeof a !== 'undefined' )) return 1;
       if (a === null || typeof a === 'undefined' && (b !== null && typeof b !== 'undefined' )) return -1;
@@ -44,38 +44,38 @@ export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
     }
     else{
       //Parse strings as numbers to compare properly
-      if(parseFloat(a) < parseFloat(b)) return -1;
-      if(parseFloat(a) > parseFloat(b)) return 1;
+      if (parseFloat(a) < parseFloat(b)) return -1;
+      if (parseFloat(a) > parseFloat(b)) return 1;
     }
 
     return 0; //equal each other
   }
 
-  transform(input: any, sortByProperties: Array<string>, fields: GtConfigField<R,any>[], refreshSorting: boolean, refreshData: number): any {
+  transform(input: any, sortByProperties: Array<string>, fields: GtConfigField<R, any>[], refreshSorting: boolean, refreshData: number): any {
 
-    if(!Array.isArray(input) || input === null) return input;
-    if(!Array.isArray(sortByProperties) || (Array.isArray(sortByProperties) && sortByProperties.length == 1)){
+    if (!Array.isArray(input) || input === null) return input;
+    if (!Array.isArray(sortByProperties) || (Array.isArray(sortByProperties) && sortByProperties.length == 1)){
 
-      let propertyToCheck:string = sortByProperties[0];
-      let desc = propertyToCheck.substr(0, 1) == '-';
+      const propertyToCheck: string = sortByProperties[0];
+      const desc = propertyToCheck.substr(0, 1) == '-';
 
       //Basic array
-      if(!propertyToCheck || propertyToCheck == '-' || propertyToCheck == '+'){
+      if (!propertyToCheck || propertyToCheck == '-' || propertyToCheck == '+'){
         return !desc ? input.sort() : input.sort().reverse();
       }
       else {
-        let property:string = propertyToCheck.substr(0, 1) == '+' || propertyToCheck.substr(0, 1) == '-'
+        const property: string = propertyToCheck.substr(0, 1) == '+' || propertyToCheck.substr(0, 1) == '-'
           ? propertyToCheck.substr(1)
           : propertyToCheck;
 
         // check if custom sort function is defined
-        let sortFunction: any = this.getSortFunction(this.getProperty(fields,property));
+        const sortFunction: any = this.getSortFunction(this.getProperty(fields, property));
 
-        return input.sort(function(a:any,b:any){
+        return input.sort(function(a: any, b: any){
 
           // use custom sort function if one is defined
-          let propertyA = sortFunction === false ? a[property]:sortFunction(a);
-          let propertyB = sortFunction === false ? b[property]:sortFunction(b);
+          const propertyA = sortFunction === false ? a[property] : sortFunction(a);
+          const propertyB = sortFunction === false ? b[property] : sortFunction(b);
 
           // if both values are undefined...
           if (typeof propertyA === 'undefined' && typeof propertyB === 'undefined' ){
@@ -89,26 +89,26 @@ export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
     }
     else {
       //Loop over property of the array in order and sort
-      return input.sort((a:any,b:any)=>{
+      return input.sort((a: any, b: any) => {
         //console.log('multiple');
-        for(let i:number = 0; i < sortByProperties.length; i++){
-          let desc = sortByProperties[i].substr(0, 1) == '-';
-          let property = sortByProperties[i].substr(0, 1) == '+' || sortByProperties[i].substr(0, 1) == '-'
+        for (let i = 0; i < sortByProperties.length; i++){
+          const desc = sortByProperties[i].substr(0, 1) == '-';
+          const property = sortByProperties[i].substr(0, 1) == '+' || sortByProperties[i].substr(0, 1) == '-'
             ? sortByProperties[i].substr(1)
             : sortByProperties[i];
 
           //console.log(property);
           // check if custom sort function is defined
-          let sortFunction: any = this.getSortFunction(this.getProperty(fields,property));
+          const sortFunction: any = this.getSortFunction(this.getProperty(fields, property));
 
           // use custom sort function if one is defined
-          let propertyA = sortFunction === false ? a[property]:sortFunction(a);
-          let propertyB = sortFunction === false ? b[property]:sortFunction(b);
+          const propertyA = sortFunction === false ? a[property] : sortFunction(a);
+          const propertyB = sortFunction === false ? b[property] : sortFunction(b);
 
-          let comparison = !desc ? GtOrderByPipe._orderByComparator(propertyA, propertyB) : -GtOrderByPipe._orderByComparator(propertyA, propertyB);
+          const comparison = !desc ? GtOrderByPipe._orderByComparator(propertyA, propertyB) : -GtOrderByPipe._orderByComparator(propertyA, propertyB);
 
           //Don't return 0 yet in case of needing to sort by next property
-          if(comparison != 0) return comparison;
+          if (comparison != 0) return comparison;
         }
 
         return 0; //equal each other

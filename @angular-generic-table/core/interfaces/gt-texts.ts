@@ -2,7 +2,7 @@ export interface GtTexts {
   loading?: string;
   noData?: string;
   noMatchingData?: string;
-  noVisibleColumnsHeading?: string,
+  noVisibleColumnsHeading?: string;
   noVisibleColumns?: string;
   tableInfo?: string;
   tableInfoAfterSearch?: string;
@@ -10,4 +10,5 @@ export interface GtTexts {
   sortLabel?: string;
   paginateNext?: string;
   paginatePrevious?: string;
+  inlineEditEdited?: string;
 }

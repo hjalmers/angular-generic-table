@@ -7,8 +7,8 @@ import {GenericTableComponent} from './generic-table.component';
 })
 export class GtTableInfoComponent implements AfterViewChecked {
 
-  @Input() genericTable:GenericTableComponent<any,any>;
-  @Input() customText:string;
+  @Input() genericTable: GenericTableComponent<any, any>;
+  @Input() customText: string;
 
   constructor(private _changeDetectionRef : ChangeDetectorRef) {
   }
@@ -26,15 +26,15 @@ import { GtTexts } from '../interfaces/gt-texts';
 })
 export class TableInfoPipe implements PipeTransform {
 
-  transform(texts:GtTexts,keys:GtInformation,refresh:number): string {
+  transform(texts: GtTexts, keys: GtInformation, refresh: number): string {
     let text = texts.tableInfo;
-    if(keys.recordsAfterSearch !== keys.recordsAll){
+    if (keys.recordsAfterSearch !== keys.recordsAll){
       text = texts.tableInfoAfterSearch;
     }
-    for (let key in keys) {
-      if( keys.hasOwnProperty(key) ) {
-        let searchString = new RegExp('#'+key, 'g');
-        text = text.replace(searchString,keys[key]);
+    for (const key in keys) {
+      if ( keys.hasOwnProperty(key) ) {
+        const searchString = new RegExp('#' + key, 'g');
+        text = text.replace(searchString, keys[key]);
       }
     }
     return text;

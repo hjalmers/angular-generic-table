@@ -7,11 +7,11 @@ import { ExamplesComponent } from './examples/examples.component';
 import { LazyComponent } from './lazy/lazy.component';
 import { RestComponent } from './rest/rest.component';
 import { BasicComponent } from './basic/basic.component';
-import { CustomColumnComponent } from "./custom-column/custom-column.component";
+import { CustomColumnComponent } from './custom-column/custom-column.component';
 import { LocalizationComponent } from './localization/localization.component';
-import {ChangeColumnSettingsComponent} from "./change-column-settings/change-column-settings.component";
+import {ChangeColumnSettingsComponent} from './change-column-settings/change-column-settings.component';
 import {HomeComponent} from './home/home.component';
-import {InlineEditingComponent} from "./inline-editing/inline-editing.component";
+import {InlineEditingComponent} from './inline-editing/inline-editing.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/start', pathMatch: 'full' },

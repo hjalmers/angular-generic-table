@@ -42,7 +42,8 @@
     "@angular/common": "^4.0.0"
   },
   "devDependencies": {
-    "@angular-generic-table/core": "4.1.0-rc.1",
+    "@angular-generic-table/core": "^4.2.0",
+    "@angular-generic-table/column-settings": "^4.2.0",
     "@angular/cli": "^1.0.0",
     "@angular/common": "^4.0.0",
     "@angular/compiler": "^4.0.0",

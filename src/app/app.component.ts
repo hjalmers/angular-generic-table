@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  showMenu:boolean = false;
+  showMenu = false;
 }

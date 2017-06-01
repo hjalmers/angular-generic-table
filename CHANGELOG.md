@@ -1,6 +1,14 @@
 Release History
 ---------------
 
+# [4.2.0] - 2017-06-01
+### Added
+- Support for simple inline editing (see issue #52)
+
+### Fixed
+- CSV escaping (see issue #89)
+- Confusing paging behaviour (see issue #87)
+
 # [4.1.1] - 2017-04-21
 ### Fixed
 - AOT error for `ColumnSettingsComponent` (see issue #80).
