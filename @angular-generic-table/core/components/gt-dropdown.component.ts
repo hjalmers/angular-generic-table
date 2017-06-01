@@ -45,7 +45,7 @@ export class GtDropdownComponent implements OnInit, OnDestroy {
 
   constructor(private renderer: Renderer2) { }
 
-  select(option) {
+  select(option:any) {
     this.active = false;
     this.state.next(this.active);
     if (this._selected !== option) {

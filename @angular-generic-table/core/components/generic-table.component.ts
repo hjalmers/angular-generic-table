@@ -709,7 +709,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    * @param {GtRow} row - row object.
    * @param {GtRenderField} column - column object.
    */
-  public gtUpdateColumn($event, row: GtRow, column: GtRenderField<any, any>) {
+  public gtUpdateColumn($event:KeyboardEvent, row: GtRow, column: GtRenderField<any, any>) {
 
     switch ($event.key) {
       case 'Enter': // update data object
