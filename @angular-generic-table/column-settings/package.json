@@ -20,6 +20,9 @@
     "Angular",
     "Table"
   ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "author": "Robert Hjalmers",
   "license": "MIT",
   "repository": {
