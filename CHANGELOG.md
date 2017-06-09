@@ -1,6 +1,11 @@
 Release History
 ---------------
 
+## [Unreleased]
+
+### Fixed
+- Loading message displayed instead of no data (see issue #95)
+
 # [4.2.0] - 2017-06-01
 ### Added
 - Support for simple inline editing (see issue #52)

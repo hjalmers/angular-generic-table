@@ -1,4 +1,4 @@
-import {Component, Output, EventEmitter, ViewChild} from '@angular/core';
+import {Component, Output, EventEmitter, ViewChild, OnInit} from '@angular/core';
 import {Response, Http } from '@angular/http';
 import {CustomRowComponent} from '../custom-row/custom-row.component';
 import {GenericTableComponent, GtConfig} from '@angular-generic-table/core';
@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
   selector: 'app-rest',
   templateUrl: './rest.component.html'
 })
-export class RestComponent {
+export class RestComponent implements OnInit {
 
   public configObject: GtConfig<any>;
 
@@ -19,12 +19,9 @@ export class RestComponent {
   public expandedRow = CustomRowComponent;
   public showColumnControls = false;
   public selectedRows = 0;
-
+  private url = 'https://private-730c61-generictable.apiary-mock.com/data'; // apiary end point
 
   constructor(private http: Http) {
-
-    const url = 'https://private-730c61-generictable.apiary-mock.com/data'; // apiary end point
-
 
     this.configObject = {
       settings: [{
@@ -92,14 +89,21 @@ export class RestComponent {
       }],
       data: []
     };
-    http.get(url)
-      .map((res: Response) => res.json())
-      .subscribe(res => {
-        this.configObject.data = res.data;
-      });
   }
 
-  public addData = function(){
+  public getData = function() {
+
+    // tell generic table instance that we're loading data
+    this.myTable.loading = true;
+
+    this.http.get(this.url)
+        .map((res: Response) => res.json())
+        .subscribe(res => {
+          this.configObject.data = res.data;
+        });
+  };
+
+  public addData = function() {
 
     // create mock data
     const random = Math.floor(Math.random() * this.configObject.data.length - 1) + 1;
@@ -138,5 +142,9 @@ export class RestComponent {
       this.selectedRows = $event.value.selectedRows.length;
     }
   };
+
+  ngOnInit() {
+    this.getData();
+  }
 
 }

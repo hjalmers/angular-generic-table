@@ -1079,7 +1079,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         name: 'gt-info',
         value: this.gtInfo
       });
-    } else if (this._gtData && this._gtData.length > 0) {
+    } else if (this._gtData && this._gtData.length >= 0 && changes['gtData'].previousValue) {
       this.loading = false;
     }
   }

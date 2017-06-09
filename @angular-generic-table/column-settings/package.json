@@ -3,6 +3,7 @@
   "version": "4.2.0",
   "description": "angular-generic-table extension that makes it easy to toggle column visibility and reoder columns.",
   "main": "index.js",
+  "types":"column-settings.module.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:css": "node-sass --source-map true --include-path scss column-settings.scss ../packages/column-settings/css/column-settings-prebuild.css",

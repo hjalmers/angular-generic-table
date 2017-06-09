@@ -3,6 +3,7 @@
   "version": "4.2.0",
   "description": "A generic table component for Angular",
   "main": "index.js",
+  "types":"core.module.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:css": "node-sass --source-map true --include-path scss generic-table.scss ../packages/core/css/generic-table-prebuild.css",
