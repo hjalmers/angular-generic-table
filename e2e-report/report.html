@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="jasmineResults">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.3/angular-material.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .status {
+            width: 85px;
+            padding: 7px;
+            border-radius: 3px;
+            text-align: center;
+        }
+
+        .failed .status {
+            background-color: rgb(255, 87, 34);
+        }
+
+        .passed .status {
+            background-color: rgb(76, 175, 80);
+        }
+
+        .pending .status {
+            background-color: rgb(255, 255, 0);
+        }
+
+        /* stack traces */
+        pre {
+            margin:0;
+        }
+        .stack.highlight {
+            background-color: yellow;
+        }
+
+        /* console logs */
+        .console-logs {
+            font-size: 12px;
+        }
+
+        .console-logs.SEVERE {
+            color: rgb(255, 87, 34);
+        }
+    </style>
+</head>
+<body ng-controller="ResultsCtrl">
+
+<div ng-cloak layout="column">
+    <md-toolbar ng-class="{'md-warn': results.counts.failed}">
+        <div class="md-toolbar-tools">
+            <h2 flex md-truncate>Results <small ng-if="results.timer.duration"> - executed in {{ results.timer.duration / 1000 }} seconds</small></h2>
+            <h6>
+                <span ng-if="results.counts.passed">Passed: {{ results.counts.passed }}</span>
+                <br ng-if="results.counts.passed"/>
+
+                <span ng-if="results.counts.pending">Pending: {{ results.counts.pending }}</span>
+                <br ng-if="results.counts.pending"/>
+
+                <span ng-if="results.counts.failed">Failed: {{ results.counts.failed }}</span>
+                <br ng-if="results.counts.failed"/>
+
+                <span ng-if="results.counts.disabled">Disabled: {{ results.counts.disabled }}</span>
+
+            </h6>
+        </div>
+    </md-toolbar>
+    <md-content flex>
+        <md-list>
+            <md-list-item ng-class="result.status" ng-repeat="result in results.sequence" ng-click="showDetail(result)">
+                <div layout="row" flex layout-padding>
+                    <div flex="none">
+                        <div class="status">{{ result.status }}</div>
+                    </div>
+                    <div ng-if="results.options.showBrowser" flex="none">
+                        <i ng-class="getBrowserClass(result)" class="fa"></i>
+                    </div>
+                    <div flex>
+                        <span>{{ result.prefix }}</span><strong>{{ result.description }}</strong>
+                        <div ng-if="result.pendingReason != ''">
+                            <small>{{ result.pendingReason }}</small>
+                        </div>
+                        <div ng-repeat="failure in result.failedExpectations">
+                            <small>{{ failure.message }}</small>
+                        </div>
+                        <!--<div ng-if="result.suspectLine">-->
+                        <!--<small>{{result.suspectLine}}</small>-->
+                        <!--</div>-->
+                    </div>
+                    <div flex="none" style="width: 80px; text-align:right;">
+                        <small>{{ result.duration / 1000 }} s</small>
+                    </div>
+                    <div flex="none" style="width: 150px">
+                        <img width="100%" ng-if="result.screenshotPath" ng-src="{{result.screenshotPath}}"/>
+                    </div>
+                </div>
+                <md-divider inset></md-divider>
+            </md-list-item>
+        </md-list>
+    </md-content>
+</div>
+
+<!-- Dialog template -->
+<script type="text/ng-template" id="dialog.html">
+    <md-dialog aria-label="" flex="90">
+        <md-toolbar ng-class="getCss(activeItem)">
+            <div layout="row" layout-padding class="md-toolbar-tools">
+                <div flex="none">
+                    <h1>Test Information:</h1>
+                </div>
+                <div flex>
+                    <small>
+                        <span>{{ activeItem.prefix }}</span>
+                        <strong>{{ activeItem.description }}</strong>
+                    </small>
+                </div>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <md-content>
+                <img width="100%" ng-if="activeItem.screenshotPath" ng-src="{{activeItem.screenshotPath}}">
+
+                <!-- failed -->
+                <md-subheader ng-if="activeItem.failedExpectations.length > 0">Stack Traces</md-subheader>
+                <div flex layout="column" layout-padding ng-repeat="failure in activeItem.failedExpectations">
+                    <div flex>
+                        <p>{{failure.message}}</p>
+                        <small>
+                            <pre class="stack" ng-class="{'highlight': (results.options.highlightSuspectLine && line === failure.suspectLine) }" ng-repeat="line in failure.stack.split('\n')">{{line}}</pre>
+                        </small>
+                    </div>
+                </div>
+
+                <!-- passed -->
+                <md-subheader ng-if="activeItem.passedExpectations.length > 0">Passed Expectations</md-subheader>
+                <div layout-padding ng-if="activeItem.passedExpectations.length > 0">
+                    <pre ng-repeat="pass in activeItem.passedExpectations">{{ pass | json }}</pre>
+                </div>
+
+                <!-- console logs -->
+                <md-subheader>Console Logs</md-subheader>
+                <div class="console-logs" ng-class="log.level" flex layout="row" layout-padding ng-repeat="log in activeItem.browserLogs">
+                    <div style="width: 75px;">
+                        <strong>{{ log.level }}</strong>
+                    </div>
+                    <div style="width: 150px">
+                        {{ log.timestamp | date:'yyyy-MM-dd HH:mm:ss.sss' }}
+                    </div>
+                    <div flex>
+                        {{ log.message }}
+                    </div>
+                </div>
+                <div layout-padding ng-if="activeItem.browserLogs.length === 0">
+                    <em>No logs</em>
+                </div>
+            </md-content>
+
+        </md-dialog-content>
+    </md-dialog>
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.3/angular-material.js"></script>
+<script>
+    var RESULTS = [];
+</script>
+
+<script src="data/6724.js"></script>
+
+<script>
+    angular.module('jasmineResults', ['ngMaterial']).config(function ($mdThemingProvider) {
+        $mdThemingProvider.theme('default').primaryPalette('green').accentPalette('yellow');
+    }).controller('ResultsCtrl', function ($scope, $mdDialog, RESULTS) {
+
+        var classes = {
+            'passed': 'md-primary',
+            'pending': 'md-accent',
+            'failed': 'md-warn'
+        };
+
+        $scope.results = RESULTS.reduce(function(combined, result) {
+
+          combined.options = combined.options || result.options;
+          combined.timer = combined.timer || result.timer;
+
+          combined.sequence = combined.sequence.concat(result.sequence);
+
+          // sum the counts
+          Object.keys(result.counts).forEach(function(key) {
+            combined.counts[key] = (combined.counts[key] || 0) + result.counts[key];
+          });
+
+          return combined;
+        }, {
+          options: null,
+          timer: null,
+          counts: {},
+          sequence: []
+        });
+
+        $scope.showDetail = function (item) {
+            $scope.activeItem = item;
+            $mdDialog.show({
+                controller: function () {
+                },
+                scope: $scope.$new(false, $scope),
+                templateUrl: 'dialog.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true
+            })
+        };
+
+        $scope.getBrowserClass = function (item) {
+            return 'fa-' + item.browserName;
+        };
+
+        $scope.getCss = function (item) {
+            return classes[item.status];
+        };
+
+    }).constant('RESULTS', RESULTS);
+</script>
+
+</body>
+</html>
