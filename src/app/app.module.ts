@@ -30,6 +30,7 @@ import { ChangeColumnSettingsComponent } from './change-column-settings/change-c
 import { HomeComponent } from './home/home.component';
 import { MenuComponent } from './menu/menu.component';
 import { InlineEditingComponent } from './inline-editing/inline-editing.component';
+import { ColumnClickComponent } from './column-click/column-click.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { InlineEditingComponent } from './inline-editing/inline-editing.componen
     ChangeColumnSettingsComponent,
     HomeComponent,
     MenuComponent,
-    InlineEditingComponent
+    InlineEditingComponent,
+    ColumnClickComponent
   ],
   imports: [
     BrowserModule,

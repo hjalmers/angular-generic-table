@@ -348,6 +348,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
    * As the table uses pure pipes, we need to force a redraw if an object in the array is changed to see the changes.
    */
   public redraw = function () {
+    this.refreshSorting = !this.refreshSorting;
+    this.refreshPageArray = !this.refreshPageArray;
     this.refreshPipe = !this.refreshPipe;
   };
 
@@ -1080,6 +1082,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         value: this.gtInfo
       });
     } else if (this._gtData && this._gtData.length >= 0 && changes['gtData'].previousValue) {
+      this.loading = false;
+    } else if(changes['gtData'].firstChange && this._gtData && this._gtData.length > 0) {
       this.loading = false;
     }
   }

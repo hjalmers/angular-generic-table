@@ -55,6 +55,12 @@ generic-table {
     span.gt-row-label, th.gt-sort-label {
       display: none;
     }
+    tr td.gt-button {
+      vertical-align: middle;
+      padding-top: 0;
+      padding-bottom: 0;
+      width:1px;
+    }
     input.inline-edit {
       border: none;
       outline: none;

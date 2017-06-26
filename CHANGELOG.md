@@ -3,8 +3,14 @@ Release History
 
 ## [Unreleased]
 
+# [4.3.0] - 2017-06-26
+
+### Added
+- Style for vertically aligning buttons inside table cell, apply with field setting `classNames:'gt-button'`
+
 ### Fixed
 - Loading message displayed instead of no data (see issue #95)
+- `redraw()` now checks sorting and updates table if sorting has changed since last redraw (see issue #98 for example).
 
 # [4.2.0] - 2017-06-01
 ### Added
