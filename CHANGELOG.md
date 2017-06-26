@@ -3,8 +3,11 @@ Release History
 
 ## [Unreleased]
 
-# [4.3.0] - 2017-06-26
+# [4.3.1] - 2017-06-26
+### Fixed
+- Typings reference for published npm package
 
+# [4.3.0] - 2017-06-26
 ### Added
 - Style for vertically aligning buttons inside table cell, apply with field setting `classNames:'gt-button'`
 
