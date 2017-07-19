@@ -94,7 +94,7 @@ export class RestComponent implements OnInit {
   public getData = function() {
 
     // tell generic table instance that we're loading data
-    this.myTable.loading = true;
+    this.myTable ? this.myTable.loading = true:'';
 
     this.http.get(this.url)
         .map((res: Response) => res.json())

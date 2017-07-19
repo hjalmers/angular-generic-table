@@ -1,0 +1,26 @@
+<h2>Totals</h2>
+<p>Add totals like sum, average etc. to your table using <code>gt-totals</code> option. Position either at the top, in the table header or at the bottom in the table footer or why not both as in the example below? Write your own functions for calculating values or pass static data (useful when lazy loading data).</p>
+<p>Add how many "rows" as you like and enable/disable auto update per row when searching or filtering the table, try searching the table below and you'll see that the total in the bottom won't update as it's been disabled (enabled by default). Works with inline editing too, try updating the number of meetings to see it in action.</p>
+<p>Apply your custom style using <code>.gt-totals</code> class or use the one provided by generic table (shown below). See docs for more info!</p>
+<div class="card mb-5">
+  <div class="card-header">Example</div>
+  <div class="card-block" exemplify="basicExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']" [source]="'child'" [target]="basicExample" [navStyle]="'tabs'" [externalSources]="[{
+    name:'app.module.ts',
+    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
+  },{
+    name:'aggregate.component.ts',
+    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/aggregate/aggregate.component.ts'
+  }]">
+    <form class="form form-inline mb-4">
+      <label for="search" class="form-control-label mr-sm-2">Search</label>
+    <input name="search" id="search" class="form-control form-control-sm mb-2 mr-sm-2 mb-lg-0" #search (keyup)="myTable.gtSearch(search.value)" placeholder="Search"/>
+    </form>
+    <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtTotals]="configObject.totals" [gtData]="configObject.data"></generic-table>
+    <small class="text-muted">* Based on total entries before filter and or search has been applied.</small>
+    <div class="text-center mt-3">
+      <small><gt-table-info class="form-text text-muted mb-2" [genericTable]="myTable"></gt-table-info></small>
+      <gt-pagination [gtClasses]="'pagination-sm justify-content-center'" [genericTable]="myTable"></gt-pagination>
+    </div>
+  </div>
+  <div class="card-footer" #basicExample></div>
+</div>

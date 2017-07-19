@@ -2,6 +2,12 @@ Release History
 ---------------
 
 ## [Unreleased]
+### Added
+- Support for column totals (see issue #100).
+
+### Fixed
+- Error with column settings causing visible columns to need an extra click when toggling column visibility (see issue #101).
+- Small style improvement for inline editing
 
 # [4.3.1] - 2017-06-26
 ### Fixed
@@ -9,19 +15,19 @@ Release History
 
 # [4.3.0] - 2017-06-26
 ### Added
-- Style for vertically aligning buttons inside table cell, apply with field setting `classNames:'gt-button'`
+- Style for vertically aligning buttons inside table cell, apply with field setting `classNames:'gt-button'`.
 
 ### Fixed
-- Loading message displayed instead of no data (see issue #95)
+- Loading message displayed instead of no data (see issue #95).
 - `redraw()` now checks sorting and updates table if sorting has changed since last redraw (see issue #98 for example).
 
 # [4.2.0] - 2017-06-01
 ### Added
-- Support for simple inline editing (see issue #52)
+- Support for simple inline editing (see issue #52).
 
 ### Fixed
-- CSV escaping (see issue #89)
-- Confusing paging behaviour (see issue #87)
+- CSV escaping (see issue #89).
+- Confusing paging behaviour (see issue #87).
 
 # [4.1.1] - 2017-04-21
 ### Fixed

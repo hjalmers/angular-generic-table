@@ -7,10 +7,10 @@ import {GtInformation} from '../interfaces/gt-information';
 export class GtFilterPipe implements PipeTransform {
   //@Output() filterInfo = new EventEmitter();
 
+
   transform(allRows: any[], filterBy: Object, gtInfo: GtInformation, refreshFilter: boolean, refreshData: number): any[] {
     //console.log(allRows,filterBy);
     gtInfo.recordsAll = allRows.length;
-
     if (!Array.isArray(allRows) || !filterBy) {
       //gtInfo.filtered = false;
 

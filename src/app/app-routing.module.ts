@@ -13,6 +13,7 @@ import {ChangeColumnSettingsComponent} from './change-column-settings/change-col
 import {HomeComponent} from './home/home.component';
 import {InlineEditingComponent} from './inline-editing/inline-editing.component';
 import {ColumnClickComponent} from './column-click/column-click.component';
+import {AggregateComponent} from "./aggregate/aggregate.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/start', pathMatch: 'full' },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'lazy', component: LazyComponent },
   { path: 'advanced', component: RestComponent },
   { path: 'basic', component: BasicComponent },
+  { path: 'totals', component: AggregateComponent },
   { path: 'custom-column', component: CustomColumnComponent },
   { path: 'column-click', component: ColumnClickComponent },
   { path: 'localization', component: LocalizationComponent },

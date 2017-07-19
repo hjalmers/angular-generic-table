@@ -31,6 +31,7 @@ import { HomeComponent } from './home/home.component';
 import { MenuComponent } from './menu/menu.component';
 import { InlineEditingComponent } from './inline-editing/inline-editing.component';
 import { ColumnClickComponent } from './column-click/column-click.component';
+import { AggregateComponent } from './aggregate/aggregate.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { ColumnClickComponent } from './column-click/column-click.component';
     HomeComponent,
     MenuComponent,
     InlineEditingComponent,
-    ColumnClickComponent
+    ColumnClickComponent,
+    AggregateComponent
   ],
   imports: [
     BrowserModule,
