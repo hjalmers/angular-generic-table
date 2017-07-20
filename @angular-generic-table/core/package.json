@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@types/tether": "^1.4.2",
-    "tether": "^1.4.2"
+    "tether": "^1.4.0"
   },
   "devDependencies": {
     "@angular/compiler-cli": "^4.0.2",
