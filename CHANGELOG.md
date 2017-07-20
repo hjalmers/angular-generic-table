@@ -2,6 +2,8 @@ Release History
 ---------------
 
 ## [Unreleased]
+
+# [4.4.0] - 2017-07-20
 ### Added
 - Support for column totals (see issue #100).
 - Mouse event added to column click handler (see issue #105).
