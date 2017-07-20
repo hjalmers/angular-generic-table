@@ -1,8 +1,8 @@
 export interface GtConfigTotal {
-  name:string;
-  position?:'header'|'footer';
+  name: string;
+  position?: 'header' | 'footer';
   update?: boolean;
-  fields:Array<{
-    [key: string]:string | number | Function
-  }>;
+  fields: {
+    [key: string]: string | number | Function;
+  };
 }
