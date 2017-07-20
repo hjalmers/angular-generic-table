@@ -24,8 +24,10 @@ export function createTranslateLoader(http: Http) {
 }
 
 /** Import generic table module */
-import { GenericTableModule } from '../../@angular-generic-table/core';
-import { ColumnSettingsModule } from '../../@angular-generic-table/column-settings/column-settings.module';
+import { GenericTableModule } from '@angular-generic-table/core';
+import { ColumnSettingsModule } from '@angular-generic-table/column-settings';
+
+/** Example components */
 import { ChangeColumnSettingsComponent } from './change-column-settings/change-column-settings.component';
 import { HomeComponent } from './home/home.component';
 import { MenuComponent } from './menu/menu.component';
@@ -57,7 +59,7 @@ import { AggregateComponent } from './aggregate/aggregate.component';
     FormsModule,
     HttpModule,
     GenericTableModule, /** ADD THIS LINE TO YOUR APP MODULE! */
-    ColumnSettingsModule,
+    ColumnSettingsModule, /** ADD THIS LINE TO INCLUDE COLUMN SETTINGS MODULE (OPTIONAL) */
     AppRoutingModule, /** holds routes used in examples */
     ExemplifyModule, /** used for generating examples */
     /** translate module only needed for localization when using ngx */
