@@ -14,7 +14,7 @@ export interface GtValueFunc<R extends GtRow> {
 }
 
 export interface GtClickFunc<R extends GtRow> {
-  (row: R, col: any): void;
+  (row: R, col: any, event: MouseEvent): void;
 }
 
 export interface GtConfigField<R extends GtRow, C extends GtCustomComponent<any>> {
