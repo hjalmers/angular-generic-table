@@ -58,6 +58,7 @@
     "@ngx-translate/http-loader": "0.0.3",
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.60",
+    "@types/tether": "^1.4.2",
     "angular-exemplify": "^2.0.0",
     "autoprefixer": "^6.6.1",
     "bootstrap": "^4.0.0-alpha.6",

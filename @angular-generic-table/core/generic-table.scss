@@ -131,7 +131,6 @@ generic-table {
       background: $gt-totals-bg;
       font-size: $gt-totals-font-size;
     }
-
   }
   table.table-sm {
     .gt-inline-edit {
@@ -141,6 +140,13 @@ generic-table {
     }
   }
 }
+
+.gt-dropdown-menu.tether-enabled {
+  display: block;
+  max-height: 320px;
+  overflow: auto;
+}
+
 // get break point for medium devices from bootstrap
 @media (max-width: map-get($grid-breakpoints, md)) {
   generic-table {

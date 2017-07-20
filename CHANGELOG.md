@@ -4,8 +4,10 @@ Release History
 ## [Unreleased]
 ### Added
 - Support for column totals (see issue #100).
+- Mouse event added to column click handler (see issue #105).
 
 ### Fixed
+- Position of dropdown when using inline editing with arrays, tether added as a dependency (see issue #104).
 - Error with column settings causing visible columns to need an extra click when toggling column visibility (see issue #101).
 - Small style improvement for inline editing
 
