@@ -17,6 +17,8 @@ import {GtCustomComponentFactory} from './components/gt-custom-component-factory
 import {GtMetaPipe} from './pipes/gt-meta.pipe';
 import {FormsModule} from '@angular/forms';
 import {GtDropdownComponent} from './components/gt-dropdown.component';
+import {GtTotalsPipe} from "./pipes/gt-totals.pipe";
+import {GtTotalsPositionPipe} from "./pipes/gt-totals-position.pipe";
 
 
 @NgModule({
@@ -38,6 +40,8 @@ import {GtDropdownComponent} from './components/gt-dropdown.component';
     GtTableInfoComponent,
     TableInfoPipe,
     GtMetaPipe,
+    GtTotalsPipe,
+    GtTotalsPositionPipe,
     GtDropdownComponent
   ],
   imports: [CommonModule, FormsModule],

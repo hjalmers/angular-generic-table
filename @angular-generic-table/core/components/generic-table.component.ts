@@ -29,13 +29,25 @@ import {GtRenderField} from '../pipes/gt-render.pipe';
         <th class="gt-sort-label" *ngIf="gtOptions.stack">{{gtTexts.sortLabel}}</th><th *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{column.sortEnabled ? 'sort-'+column.sort:''}} {{column.sortEnabled && column.sortOrder >= 0  ? 'sort-order-'+column.sortOrder:''}}" (click)="column.sortEnabled ? gtSort(column.objectKey,$event):'';">{{gtFields | gtProperty:column.objectKey:'name'}}</th>
       </tr>
       </thead>
+      <ng-template [ngIf]="gtTotals && (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length).length > 0">
+        <thead class="gt-totals">
+        <tr *ngFor="let total of gtTotals | gtTotalsPosition">
+          <td *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;" ngClass="{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}">{{test}}<span *ngIf="i === 0" class="float-left">{{total.name}}</span><span [innerHTML]="total.fields[column.objectKey] | gtTotals:total.update === false ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals"></span></td>
+        </tr>
+        </thead>
+        <tfoot class="gt-totals">
+        <tr *ngFor="let total of gtTotals | gtTotalsPosition:'footer'">
+          <td *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;" ngClass="{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}"><span *ngIf="i === 0" class="float-left">{{total.name}}</span><span [innerHTML]="total.fields[column.objectKey] | gtTotals:total.update === false ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals"></span></td>
+        </tr>
+        </tfoot>
+      </ng-template>
       <tbody *ngIf="gtData && gtInfo">
       <ng-template class="table-rows" ngFor let-row [ngForOf]="gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1] | gtMeta:(gtInfo.pageCurrent-1):gtInfo.recordLength) : (gtData | gtMeta:null:null:gtData.length | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data)">
         <tr [ngClass]="{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading}" (click)="gtOptions.rowSelection ? toggleSelect(row):null">
           <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms;" ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{(gtFields | gtProperty:column.objectKey:'inlineEdit') ? 'gt-inline-edit':''}} {{column.edited ? 'gt-edited':''}}">
             <span class="gt-row-label" *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading')? (gtFields | gtProperty:column.objectKey:'stackedHeading'):(gtFields | gtProperty:column.objectKey:'name')}}</span>
-            <gt-custom-component-factory *ngIf="column.columnComponent" class="gt-row-content" [type]="column.columnComponent.type" [injector]="column.columnComponent.injector" [row]="row" [column]="column" (redrawEvent)="redraw($event)" (click)="column.click ? column.click(row,column):'';column.expand ? toggleCollapse(row):''"></gt-custom-component-factory>
-            <span *ngIf="!column.columnComponent && !(gtFields | gtProperty:column.objectKey:'inlineEdit')" class="gt-row-content" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column):'';column.expand ? toggleCollapse(row):''"></span>
+            <gt-custom-component-factory *ngIf="column.columnComponent" class="gt-row-content" [type]="column.columnComponent.type" [injector]="column.columnComponent.injector" [row]="row" [column]="column" (redrawEvent)="redraw($event)" (click)="column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row):''"></gt-custom-component-factory>
+            <span *ngIf="!column.columnComponent && !(gtFields | gtProperty:column.objectKey:'inlineEdit')" class="gt-row-content" [innerHTML]="column.renderValue" (click)="column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row):''"></span>
             <ng-template [ngIf]="!column.columnComponent && (gtFields | gtProperty:column.objectKey:'inlineEdit') === true">
               <input class="inline-edit" type="text" [(ngModel)]="column.renderValue" (keyup)="gtUpdateColumn($event,row, column)">
               <span class="gt-inline-edit-notice">{{gtTexts.inlineEditEdited}}</span>
@@ -87,6 +99,9 @@ import {GtRenderField} from '../pipes/gt-render.pipe';
   `,
 })
 export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> implements OnInit, OnChanges {
+  get gtTotals(): any {
+    return this._gtTotals;
+  }
 
   get gtFields(): GtConfigField<R, any>[] {
     return this._gtFields;
@@ -98,6 +113,10 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
   get gtData(): Array<any> {
     return this._gtData;
+  }
+
+  @Input() set gtTotals(value: any) {
+    this._gtTotals = value;
   }
   @Input() set gtFields(value: GtConfigField<R, any>[]) {
     this._gtFields = value;
@@ -118,6 +137,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   private _gtSettings: GtConfigSetting[] = [];
   private _gtFields: GtConfigField<R, any>[] = [];
   private _gtData: Array<any>;
+  private _gtTotals:any;
   public gtDefaultTexts: GtTexts = {
     loading: 'Loading...',
     noData: 'No data',
@@ -165,12 +185,16 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   };
 
   public refreshPipe = false;
+  public refreshTotals = false;
   public refreshSorting = false;
 
   constructor() {
     this.gtEvent.subscribe(($event: any) => {
       if ($event.name === 'gt-info') {
         this.updateRecordRange();
+      }
+      if ($event.name === 'gt-row-updated') {
+        this.updateTotals();
       }
     });
   }
@@ -354,11 +378,16 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   };
 
   /** Update record range. */
-  private updateRecordRange = function () {
+  private updateRecordRange() {
     this.gtInfo.recordFrom = this.gtInfo.recordsAfterSearch === 0 ? 0 : (this.gtInfo.pageCurrent - 1) * this.gtInfo.recordLength + 1;
     this.gtInfo.recordTo = this.gtInfo.recordsAfterSearch < this.gtInfo.pageCurrent * this.gtInfo.recordLength ? this.gtInfo.recordsAfterSearch : this.gtInfo.pageCurrent * this.gtInfo.recordLength;
     //this._changeDetectionRef.detectChanges();
   };
+
+  /** Update totals. */
+  private updateTotals() {
+    this.refreshTotals = !this.refreshTotals;
+  }
 
   /** Go to next page. */
   public nextPage = function () {
@@ -725,7 +754,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         column.edited = false;
         break;
       default: // mark cell as edited if value has changed
-          column.edited = row[column.objectKey] !== column.renderValue;
+        column.edited = row[column.objectKey] !== column.renderValue;
         break;
     }
   }
@@ -744,11 +773,13 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     this.gtInfo.filter = filter;
     // go to first page
     this.goToPage(1);
+    this.updateTotals();
   };
 
   /** Clear/remove applied filter(s). */
   public gtClearFilter() {
     this.gtInfo.filter = false;
+    this.updateTotals();
     //this.updateRecordRange();
   };
 
@@ -760,6 +791,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     this.gtInfo.searchTerms = value;
     //always go to first page when searching
     this.goToPage(1);
+    this.updateTotals();
   };
 
   /**

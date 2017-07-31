@@ -1,6 +1,6 @@
 {
   "name": "angular-generic-table",
-  "version": "4.3.0",
+  "version": "4.4.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -42,8 +42,6 @@
     "@angular/common": "^4.0.0"
   },
   "devDependencies": {
-    "@angular-generic-table/core": "^4.3.0",
-    "@angular-generic-table/column-settings": "^4.3.0",
     "@angular/cli": "^1.0.0",
     "@angular/common": "^4.0.0",
     "@angular/compiler": "^4.0.0",
@@ -58,6 +56,7 @@
     "@ngx-translate/http-loader": "0.0.3",
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.60",
+    "@types/tether": "^1.4.2",
     "angular-exemplify": "^2.0.0",
     "autoprefixer": "^6.6.1",
     "bootstrap": "^4.0.0-alpha.6",

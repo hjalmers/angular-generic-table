@@ -1,12 +1,13 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, Renderer2} from '@angular/core';
 import {Subject} from 'rxjs/Subject';
+import * as Tether from 'tether';
 
 @Component({
   selector: 'gt-dropdown',
   template: `
     <div class="dropdown gt-dropdown" [ngClass]="{'show':active}">
       <div class="dropdown-toggle" (click)="toggleDropdown()" [attr.aria-expanded]="active">{{selected}}</div>
-      <div class="dropdown-menu" *ngIf="active">
+      <div class="gt-dropdown-menu dropdown-menu" *ngIf="active">
         <button *ngFor="let option of options;" class="dropdown-item" (click)="select(option)" [ngClass]="{'active':option === selected}">{{option}}</button>
       </div>
     </div>
@@ -22,10 +23,7 @@ import {Subject} from 'rxjs/Subject';
     .gt-dropdown .dropdown-toggle:hover::after {
       opacity: 1;
     }
-    .gt-dropdown .dropdown-menu {
-      max-height: 320px;
-      overflow: auto;
-    }`]
+  `]
 })
 export class GtDropdownComponent implements OnInit, OnDestroy {
 
@@ -42,6 +40,7 @@ export class GtDropdownComponent implements OnInit, OnDestroy {
 
   active = false; // is dropdown active or not
   state: Subject<boolean> = new Subject(); // current state of dropdown
+  tether: any;
 
   constructor(private renderer: Renderer2) { }
 
@@ -62,8 +61,23 @@ export class GtDropdownComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+
     this.state.subscribe((state) => {
       if (state) {
+
+        this.tether = new Tether({
+          element: '.dropdown-menu',
+          target: '.dropdown.gt-dropdown.show',
+          attachment: 'top left',
+          targetAttachment: 'bottom left',
+          constraints: [{
+            to: 'window',
+            attachment:'together'
+          }]
+        });
+
+        this.tether.position();
 
         // set up click listener and listen for click outside dropdown
         this.clickListener = this.renderer.listen('document', 'click', (event: MouseEvent) => {
@@ -81,6 +95,7 @@ export class GtDropdownComponent implements OnInit, OnDestroy {
           }
         });
       } else {
+        this.tether.destroy();
         this.removeListeners();
       }
     });

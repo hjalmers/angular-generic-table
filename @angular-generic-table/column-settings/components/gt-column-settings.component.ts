@@ -149,8 +149,9 @@ export class GtColumnSettingsComponent implements OnInit{
    * @param {object} column - column object.
    */
   public toggleColumnVisibility(column: any) {
+
     // toggle column visibility
-    column.visible = !column.visible;
+    column.visible = typeof column.visible === 'undefined' ? false:!column.visible;
 
     // redraw table
     this._genericTable.redraw();

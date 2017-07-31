@@ -1,7 +1,12 @@
 // import variables from bootstrap or change to your own bootstrap theme variables
 @import "./node_modules/bootstrap/scss/_variables.scss";
 
-$gt-inline-edit-color: $brand-primary;
+$gt-inline-edit-color: $brand-primary !default;
+$gt-totals-font-weight: $font-weight-bold !default;
+$gt-totals-color: $gray-light !default;
+$gt-totals-bg: $gray-lightest !default;
+$gt-totals-font-size: $font-size-sm !default;
+
 // basic table styles for sorting and for stacked table layout
 generic-table {
   table {
@@ -68,6 +73,7 @@ generic-table {
       width: 100%;
       background: none;
       position: relative;
+      text-align: inherit;
     }
     .gt-inline-edit {
       position: relative;
@@ -75,6 +81,7 @@ generic-table {
         opacity: 0;
         position: absolute;
         content: '';
+        margin-left: -$table-cell-padding;
         background: $gt-inline-edit-color;
         height: 1px;
         width: 100%;
@@ -111,11 +118,35 @@ generic-table {
       }
     }
 
+    thead.gt-totals {
+      border-bottom: 2px solid $table-border-color;
+    }
 
-
-
+    tfoot.gt-totals {
+      border-top: 2px solid $table-border-color;
+    }
+    .gt-totals tr td {
+      font-weight: $gt-totals-font-weight;
+      color: $gt-totals-color;
+      background: $gt-totals-bg;
+      font-size: $gt-totals-font-size;
+    }
+  }
+  table.table-sm {
+    .gt-inline-edit {
+      &::before {
+        margin-left: -$table-sm-cell-padding;
+      }
+    }
   }
 }
+
+.gt-dropdown-menu.tether-enabled {
+  display: block;
+  max-height: 320px;
+  overflow: auto;
+}
+
 // get break point for medium devices from bootstrap
 @media (max-width: map-get($grid-breakpoints, md)) {
   generic-table {
