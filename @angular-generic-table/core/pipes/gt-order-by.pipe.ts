@@ -18,14 +18,14 @@ export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
 
   /** Return sort function */
   private getSortFunction(field: any){
-    if(field){
-      if (typeof field.sort === 'function'){
-        return field.sort;
-      } else if (typeof field.value === 'function'){
-        return field.value;
-      } else {
-        return false;
-      }
+    if(!field){
+      console.log('error trying to sort undefined field');
+      return false;
+    }
+    if (typeof field.sort === 'function'){
+      return field.sort;
+    } else if (typeof field.value === 'function'){
+      return field.value;
     } else {
       return false;
     }
