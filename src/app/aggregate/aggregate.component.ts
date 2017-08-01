@@ -53,13 +53,13 @@ export class AggregateComponent {
           sales:(rows, objectKey)=>{
             return rows
               .map(row=>parseFloat(row[objectKey]))
-              .reduce((sum, value)=>{ return sum + value}).toFixed(2)
+              .reduce((sum, value)=>{ return (isNaN(sum)? 0:sum) + (isNaN(value)? 0:value)}).toFixed(2)
           },
           name:'Men: 46, Women: 54',
           meetings:(rows, objectKey)=>{
             return rows
               .map(row=>parseFloat(row[objectKey] === "" ? 0:row[objectKey]))
-              .reduce((sum, value)=>{ return sum + value})
+              .reduce((sum, value)=>{ return (isNaN(sum)? 0:sum) + (isNaN(value)? 0:value)})
           }
         }
       },{
@@ -68,12 +68,12 @@ export class AggregateComponent {
           sales:(rows, objectKey)=>{
             return (rows
                 .map(row=>parseFloat(row[objectKey]))
-                .reduce((sum, value)=>{ return sum + value})/rows.length).toFixed(2);
+                .reduce((sum, value)=>{ return (isNaN(sum)? 0:sum) + (isNaN(value)? 0:value)})/rows.length).toFixed(2);
           },
           meetings:(rows, objectKey)=>{
             return (rows
                 .map(row=>parseFloat(row[objectKey] === "" ? 0:row[objectKey]))
-                .reduce((sum, value)=>{ return sum + value})/rows.length).toFixed(1);
+                .reduce((sum, value)=>{ return (isNaN(sum)? 0:sum) + (isNaN(value)? 0:value)})/rows.length).toFixed(1);
           }
         }
       },{
@@ -83,12 +83,12 @@ export class AggregateComponent {
             let totalMeetings = rows
               .map(row=>parseFloat(row.meetings === "" ? 0:row.meetings))
               .reduce((sum, value)=>{
-              return sum + value
+              return (isNaN(sum)? 0:sum) + (isNaN(value)? 0:value)
             });
 
             let totalSales = rows
               .map(row=>parseFloat(row[objectKey]))
-              .reduce((sum, value)=>{ return sum + value});
+              .reduce((sum, value)=>{ return (isNaN(sum)? 0:sum) + (isNaN(value)? 0:value)});
 
             return (totalSales/totalMeetings).toFixed(2);
           }
