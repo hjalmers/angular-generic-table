@@ -3,6 +3,10 @@ Release History
 
 ## [Unreleased]
 
+### Fixed
+- Sorting of boolean values (see issue #106).
+- Added check for undefined fields (see issue #107).
+
 # [4.4.0] - 2017-07-20
 ### Added
 - Support for column totals (see issue #100).

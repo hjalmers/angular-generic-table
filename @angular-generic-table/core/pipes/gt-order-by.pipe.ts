@@ -18,6 +18,10 @@ export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
 
   /** Return sort function */
   private getSortFunction(field: any){
+    if(!field){
+      console.log('error trying to sort undefined field');
+      return false;
+    }
     if (typeof field.sort === 'function'){
       return field.sort;
     } else if (typeof field.value === 'function'){
@@ -29,6 +33,11 @@ export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
 
 
   static _orderByComparator(a: any, b: any): number{
+
+    // sort boolean values as strings
+    if(typeof a === 'boolean') {a = a.toString();}
+    if(typeof b === 'boolean') {b = b.toString();}
+
     if ((isNaN(parseFloat(a)) || !isFinite(a)) || (isNaN(parseFloat(b)) || !isFinite(b))){
 
       if (b === null || typeof b === 'undefined' && (a !== null && typeof a !== 'undefined' )) return 1;
