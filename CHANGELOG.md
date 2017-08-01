@@ -6,6 +6,7 @@ Release History
 ### Fixed
 - Sorting of boolean values (see issue #106).
 - Added check for undefined fields (see issue #107).
+- Initialize sort table when settings change (see issue #108). 
 
 # [4.4.0] - 2017-07-20
 ### Added

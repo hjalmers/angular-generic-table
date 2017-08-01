@@ -219,7 +219,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         // check if sorting is undefined...
         else if (typeof this._gtSettings[i].sort === 'undefined'){
 
-          //...is so, set sorting property to enable
+          //...if so, set sorting property to enable
           this._gtSettings[i].sort = 'enable';
         }
       }
@@ -1071,14 +1071,14 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         // check if sorting is undefined...
         if (typeof this._gtSettings[i].sort === 'undefined') {
 
-          //...is so, set sorting property to enable
+          //...if so, set sorting property to enable
           this._gtSettings[i].sort = 'enable';
         }
 
         // check if column order is undefined...
         if (typeof this._gtSettings[i].columnOrder === 'undefined' && this._gtSettings[i].enabled !== false) {
 
-          //...is so, set sorting property to enable
+          //...if so, set column order to be previous column order + 1 or if first column to be 0
           this._gtSettings[i].columnOrder = this._gtSettings[i - 1] ? this._gtSettings[i - 1].columnOrder + 1 : 0;
         }
       }
