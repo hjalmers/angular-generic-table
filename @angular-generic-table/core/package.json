@@ -1,6 +1,6 @@
 {
   "name": "@angular-generic-table/core",
-  "version": "4.4.0",
+  "version": "4.4.1",
   "description": "A generic table component for Angular",
   "main": "index.js",
   "scripts": {
