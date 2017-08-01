@@ -163,6 +163,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         this._gtSettings[i].columnOrder = this._gtSettings[i - 1] ? this._gtSettings[i - 1].columnOrder + 1 : 0;
       }
     }
+    this.restructureSorting();
   }
   @Input() set gtData(value: Array<any>) {
     this._gtData = value;
@@ -1010,16 +1011,14 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     }
   };
 
-  ngOnInit() {
-
+  private restructureSorting = function () {
     /** Check and store sort order upon initialization.
      *  This is done by checking sort properties in the settings array of the table, if no sorting is defined
      *  we'll sort the data by the first visible and enabled column in the table(ascending). Please note that actually
      *  sorting have to be done server side when lazy loading data for obvious reasons.  */
-      // create sorting array
+    // create sorting array
     const sorting = [];
-    if (this._gtSettings){
-
+    if (this._gtSettings) {
 
       // ...sort settings by sort order
       this._gtSettings.sort(this.getSortOrder);
@@ -1063,6 +1062,10 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     if (this.sortOrder.length === 0) {
       this.sortOrder = sorting;
     }
+  }
+
+  ngOnInit() {
+      this.restructureSorting();
   }
 
   /**
