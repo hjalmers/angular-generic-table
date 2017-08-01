@@ -204,3 +204,31 @@ generic-table {
     opacity: 1;
   }
 }
+
+// Sticky
+.flex {
+  display: block;
+  height: 300px;
+  position: static;
+  margin-top: 50px;
+  overflow: auto;
+}
+
+.flex thead {
+  display: table;
+  position: absolute;
+  width: 100%;
+  top: 0;
+}
+
+/* fit header to content */
+.flex thead tr th {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  float: left;
+}
+.flex tbody {
+  display: table;
+  width: 100%;
+}
