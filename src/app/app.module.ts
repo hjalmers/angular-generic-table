@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, Http} from '@angular/http';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 
 /** Components used in example */
 import { AppComponent } from './app.component';
@@ -9,6 +10,14 @@ import { LazyComponent } from './lazy/lazy.component';
 import { RestComponent } from './rest/rest.component';
 import { CustomRowComponent } from './custom-row/custom-row.component';
 import { BasicComponent } from './basic/basic.component';
+import { 
+  AddRemoveEditComponent, 
+  RequiredNameComponent,
+  RequiredNumberComponent,
+  EditSaveButtonComponent,
+  DeleteDiscardButtonComponent,
+  SelectedCheckboxComponent
+} from './add-remove-edit/add-remove-edit.component';
 import { ExamplesComponent } from './examples/examples.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ExemplifyModule } from 'angular-exemplify';
@@ -44,6 +53,11 @@ import { AggregateComponent } from './aggregate/aggregate.component';
     CustomColumnComponent,
     NameComponent,
     AgeComponent,
+    RequiredNameComponent,
+    RequiredNumberComponent,
+    EditSaveButtonComponent,
+    DeleteDiscardButtonComponent,
+    SelectedCheckboxComponent,
     BasicComponent,
     ExamplesComponent,
     LocalizationComponent,
@@ -52,12 +66,14 @@ import { AggregateComponent } from './aggregate/aggregate.component';
     MenuComponent,
     InlineEditingComponent,
     ColumnClickComponent,
-    AggregateComponent
+    AggregateComponent,
+    AddRemoveEditComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
+    NgbModalModule.forRoot(),
     GenericTableModule, /** ADD THIS LINE TO YOUR APP MODULE! */
     ColumnSettingsModule, /** ADD THIS LINE TO INCLUDE COLUMN SETTINGS MODULE (OPTIONAL) */
     AppRoutingModule, /** holds routes used in examples */
@@ -75,7 +91,12 @@ import { AggregateComponent } from './aggregate/aggregate.component';
   entryComponents: [
     CustomRowComponent,
     NameComponent,
-    AgeComponent
+    AgeComponent,
+    RequiredNameComponent,
+    RequiredNumberComponent,
+    EditSaveButtonComponent,
+    DeleteDiscardButtonComponent,
+    SelectedCheckboxComponent
   ],
   bootstrap: [AppComponent]
 })
