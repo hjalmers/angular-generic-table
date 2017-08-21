@@ -1,0 +1,71 @@
+<h2>Add, remove or edit rows with custom columns</h2>
+<p>Table using several custom column widgets, as well as external state tracking. Functions for adding, removing and inline editing (with data validation).</p>
+<div class="alert alert-info">Please note that this example only persists changes in memory so the data will be reset when component is reinitialized e.g when route changes or page is refreshed.</div>
+<div class="card mb-5">
+    <div class="card-header">Example</div>
+    <div class="card-block" exemplify="addRemoveExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']" [source]="'child'" [target]="addRemoveExample"
+        [navStyle]="'tabs'" [externalSources]="">
+        <div class="row">
+            <div class="col col-md-6">
+                <div class="row">
+                    <div class="col col-md-3">
+                        <div class="form-group input-group">
+                            <button type="reset" (click)="deleteSelectedRows()" [disabled]="myTable.selectedRows.length === 0" class="btn btn-danger">
+                                <i class="fa fa-trash-o"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col col-md-3">
+                        <div class="form-group input-group">
+                            <button class="btn btn-success" (click)="addNew(content)"><i class="fa fa-plus"></i> New</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-md-6">
+                <div class="form-group input-group pull-right" style="width:240px;">
+                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                    <input type="text" class="form-control" #search (keyup)="myTable.gtSearch(search.value)">
+                </div>
+            </div>
+        </div>
+        <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data" [gtOptions]="{stack:true, highlightSearch:true, rowSelection:true}"></generic-table>
+        <div class="text-center">
+            <small><gt-table-info class="form-text text-muted mb-2" [genericTable]="myTable"></gt-table-info></small>
+            <gt-pagination [gtClasses]="'pagination-sm justify-content-center'" [genericTable]="myTable"></gt-pagination>
+        </div>
+        <small class="form-text text-muted col-12 col-xl-auto mb-2 mt-lg-2 my-xl-auto row">Number of selected rows: {{myTable.selectedRows.length}}</small>
+    </div>
+    <div class="card-footer" #addRemoveExample></div>
+</div>
+
+<!-- Modal -->
+<ng-template #content let-c="close" let-d="dismiss">
+    <form (ngSubmit)="onSubmit(newItemForm)" #newItemForm="ngForm">
+        <div class="modal-header">
+            <h4 class="modal-title">New lucky number</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group" [ngClass]="{ 'has-danger': name?.errors && (name?.dirty || name?.touched) }">
+                <label class="col-sm-2 control-label text-nowrap" for="name">Name</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" ngModel #name="ngModel" id="name" name="name" placeholder="Name" [ngClass]="{'form-control-danger' : name?.errors && (name?.dirty || name?.touched) }" required/>
+                </div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-danger': lucky_number?.errors && (lucky_number?.dirty || lucky_number?.touched) }">
+                <label class="col-sm-2 control-label text-nowrap" for="lucky_number">Lucky number</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" ngModel #lucky_number="ngModel" id="lucky_number" name="lucky_number" [ngClass]="{'form-control-danger' : lucky_number?.errors && (lucky_number?.dirty || lucky_number?.touched)}" placeholder="Lucky number" required
+                    />
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-success" [disabled]="!newItemForm.valid"><i class="fa fa-check"></i> Save</button>
+            <button type="button" class="btn btn-secondary" (click)="c('Close click')"><i class="fa fa-times"></i> Close</button>
+        </div>
+    </form>
+</ng-template>

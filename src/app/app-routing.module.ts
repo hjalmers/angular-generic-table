@@ -14,6 +14,7 @@ import {HomeComponent} from './home/home.component';
 import {InlineEditingComponent} from './inline-editing/inline-editing.component';
 import {ColumnClickComponent} from './column-click/column-click.component';
 import {AggregateComponent} from "./aggregate/aggregate.component";
+import {AddRemoveEditComponent} from "./add-remove-edit/add-remove-edit.component"
 
 const routes: Routes = [
   { path: '', redirectTo: '/start', pathMatch: 'full' },
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'column-click', component: ColumnClickComponent },
   { path: 'localization', component: LocalizationComponent },
   { path: 'inline-editing', component: InlineEditingComponent },
+  { path: 'add-remove-edit', component: AddRemoveEditComponent },
   { path: 'column-settings-component', component: ChangeColumnSettingsComponent },
   { path: '**', component: HomeComponent }
 ];

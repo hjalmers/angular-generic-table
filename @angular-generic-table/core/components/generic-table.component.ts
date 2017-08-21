@@ -555,6 +555,26 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   }
 
   /**
+  * removes a row from the table
+  * @param {any} row - the row object to remove
+  */
+  public removeRow(row: GtRow) {
+    if (this.isRowSelected(row)) {
+      this.toggleSelect(row);
+    }
+    let index = this._gtData.indexOf(row);
+    this._gtData.splice(index, 1);
+  }
+
+  /**
+  * check if a row is selected
+  * @param {any} row - row object
+  */
+  public isRowSelected(row: GtRow): boolean {
+    return this.metaInfo[row.$$gtRowId] && this.metaInfo[row.$$gtRowId].isSelected
+  }
+
+  /**
    * Update meta info for all rows, ie. isSelected, isOpen.
    * @param {Array} array - array that holds rows that need to be updated.
    * @param {string} property - name of property that should be changed/toggled.
@@ -1065,7 +1085,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
   }
 
   ngOnInit() {
-      this.restructureSorting();
+    this.restructureSorting();
   }
 
   /**
