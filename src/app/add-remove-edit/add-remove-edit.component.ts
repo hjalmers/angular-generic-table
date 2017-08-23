@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild, Injectable, Inject } from '@angular/core';
 import { GenericTableComponent, GtConfig, GtRow } from '@angular-generic-table/core';
-import { GtCustomComponent } from '../../../@angular-generic-table/core/components/gt-custom-component-factory';
+import { GtCustomComponent } from '@angular-generic-table/core/components/gt-custom-component-factory';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -73,7 +73,7 @@ export class EditService {
   }
 
   public setValidation(rowId: string, property: string, isValid: boolean) {
-    var validationsForRow = this._validations[rowId];
+    const validationsForRow = this._validations[rowId];
     if (!validationsForRow) {
       this._validations[rowId] = {};
     }
@@ -81,11 +81,11 @@ export class EditService {
   }
 
   public isValid(rowId: string) {
-    var validationsForRow = this._validations[rowId];
+      const validationsForRow = this._validations[rowId];
     if (!validationsForRow) {
       return true;
     }
-    for (var prop in validationsForRow) {
+    for (let prop in validationsForRow) {
       if (validationsForRow.hasOwnProperty(prop)) {
         if (validationsForRow[prop] === false) {
           return false;
@@ -224,9 +224,14 @@ export class RequiredNumberComponent extends CustomColumnComponentBase {
 
 @Component({
   template: `
-    <button *ngIf="view | async" class="btn btn-sm btn-secondary" (click)=click($event);><i class="fa fa-pencil"></i></button>
-    <button *ngIf="edit | async" class="btn btn-sm btn-success" [disabled]="!isValid" (click)=click($event);><i class="fa fa-check"></i></button>
-  `
+    <button *ngIf="view | async" class="btn btn-sm btn-outline-primary" (click)=click($event);><i class="fa fa-pencil"></i></button>
+    <button *ngIf="edit | async" class="btn btn-sm btn-primary" [disabled]="!isValid" (click)=click($event);><i class="fa fa-save"></i></button>
+  `,
+  styles:[`
+  .btn.btn-sm {
+      padding-top: 0.15rem;
+      padding-bottom: 0.15rem;
+  }`]
 })
 export class EditSaveButtonComponent extends CustomColumnComponentBase {
   constructor(editService: EditService, private stateService: StateService) {
@@ -261,9 +266,14 @@ export class EditSaveButtonComponent extends CustomColumnComponentBase {
 
 @Component({
   template: `
-    <button *ngIf="view | async" class="btn btn-sm btn-danger" (click)=click($event);><i class="fa fa-trash-o"></i></button>
-    <button *ngIf="edit | async" class="btn btn-sm btn-secondary" (click)=click($event);><i class="fa fa-times"></i></button>
-  `
+    <button *ngIf="view | async" class="btn btn-sm btn-outline-danger" (click)=click($event);><i class="fa fa-trash-o"></i></button>
+    <button *ngIf="edit | async" class="btn btn-sm btn-outline-primary" (click)=click($event);><i class="fa fa-times"></i></button>
+  `,
+  styles:[`
+  .btn.btn-sm {
+      padding-top: 0.15rem;
+      padding-bottom: 0.15rem;
+  }`]
 })
 export class DeleteDiscardButtonComponent extends CustomColumnComponentBase {
   constructor(editService: EditService) {
@@ -307,7 +317,7 @@ export class AddRemoveEditComponent implements AfterViewInit {
   }
 
   public deleteSelectedRows() {
-    for (var i = this.myTable.selectedRows.length - 1; i >= 0; i--) {
+    for (let i = this.myTable.selectedRows.length - 1; i >= 0; i--) {
       console.log(`remove row ${JSON.stringify(this.myTable.selectedRows[i])}`);
       this.myTable.removeRow(this.myTable.selectedRows[i]);
     }
@@ -338,33 +348,23 @@ export class AddRemoveEditComponent implements AfterViewInit {
     this.configObject = {
       settings: [{
         objectKey: 'selected',
-        columnOrder: 0,
         search: false,
         sort: 'disable'
       }, {
         objectKey: 'id',
-        sort: 'asc',
-        sortOrder: 1,
-        columnOrder: 1
+        sort: 'desc'
       }, {
-        objectKey: 'name',
-        sort: 'asc',
-        sortOrder: 0,
-        columnOrder: 2
+        objectKey: 'name'
       }, {
         objectKey: 'lucky_number',
-        sort: 'enable',
-        columnOrder: 3,
         visible: true
       }, {
         objectKey: "edit_action",
         sort: 'disable',
-        columnOrder: 4,
         search: false
       }, {
         objectKey: "delete_action",
         sort: 'disable',
-        columnOrder: 5,
         search: false
       }],
       fields: [{
