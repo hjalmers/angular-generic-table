@@ -2,6 +2,13 @@ Release History
 ---------------
 
 ## [Unreleased]
+### Added
+- Function for checking if a row is selected
+- Function for removing a row
+- Complex example with custom components for adding, removing and inline editing of rows (including data validation).
+
+### Fixed
+- Improved row id generation
 
 # [4.4.1] - 2017-08-01
 ### Fixed
