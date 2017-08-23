@@ -1,5 +1,5 @@
 import {Component, Output, EventEmitter, ViewChild} from '@angular/core';
-import {Response, Http, URLSearchParams} from '@angular/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {CustomRowComponent} from '../custom-row/custom-row.component';
 import {GenericTableComponent, GtConfig, GtInformation} from '@angular-generic-table/core';
 
@@ -38,12 +38,7 @@ export class LazyComponent {
   };
 
 
-  constructor(private http: Http) {
-
-    //let url = './app/generic-table/data.json'; // json mock file
-    const params: URLSearchParams = new URLSearchParams();
-    params.set('page', '1');
-    params.set('per_page', '10');
+  constructor(private http: HttpClient) {
 
     this.configObject = {
       settings: [{
@@ -89,9 +84,6 @@ export class LazyComponent {
         value: function(row){return row.first_name + ' ' + row.last_name; },
         render: function(row){//if(row.first_name && row.last_name){
           return '<div>' + row.first_name + ' ' + row.last_name + '</div>';
-          //} else {
-          //return '';
-          //}
         },
         sort: function(row){return row.first_name + ' ' + row.last_name; }
       }, {
@@ -114,7 +106,7 @@ export class LazyComponent {
   }
 
   public getData = function(pageCurrent, recordLength){
-    const params: URLSearchParams = new URLSearchParams();
+    const params: HttpParams = new HttpParams();
     params.set('page', pageCurrent);
     params.set('per_page', recordLength);
 
@@ -125,9 +117,9 @@ export class LazyComponent {
 
     // create a new request
     this.req = this.http.get(this.url, {
-      search: params
+        params: params
     })
-      .map((res: Response) => res.json())
+      //.map((res: Response) => res.json())
       .subscribe(res => {
         this.configObject.data = res.data;
         this.configObject.info = <GtInformation>res['paging'];

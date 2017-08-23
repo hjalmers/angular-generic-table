@@ -1,8 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule, Http} from '@angular/http';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import {HttpClientModule, HttpClient} from '@angular/common/http';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 /** Components used in example */
 import { AppComponent } from './app.component';
@@ -10,8 +11,8 @@ import { LazyComponent } from './lazy/lazy.component';
 import { RestComponent } from './rest/rest.component';
 import { CustomRowComponent } from './custom-row/custom-row.component';
 import { BasicComponent } from './basic/basic.component';
-import { 
-  AddRemoveEditComponent, 
+import {
+  AddRemoveEditComponent,
   RequiredNameComponent,
   RequiredNumberComponent,
   EditSaveButtonComponent,
@@ -28,7 +29,7 @@ import { CustomColumnComponent, NameComponent, AgeComponent } from './custom-col
 import { TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-export function createTranslateLoader(http: Http) {
+export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
@@ -71,9 +72,9 @@ import { AggregateComponent } from './aggregate/aggregate.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     FormsModule,
-    HttpModule,
-    NgbModalModule.forRoot(),
+    NgbModule.forRoot(),
     GenericTableModule, /** ADD THIS LINE TO YOUR APP MODULE! */
     ColumnSettingsModule, /** ADD THIS LINE TO INCLUDE COLUMN SETTINGS MODULE (OPTIONAL) */
     AppRoutingModule, /** holds routes used in examples */
@@ -83,7 +84,7 @@ import { AggregateComponent } from './aggregate/aggregate.component';
       loader: {
         provide: TranslateLoader,
         useFactory: (createTranslateLoader),
-        deps: [Http]
+        deps: [HttpClient]
       }
     })
   ],

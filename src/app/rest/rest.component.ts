@@ -1,5 +1,6 @@
 import {Component, Output, EventEmitter, ViewChild, OnInit} from '@angular/core';
-import {Response, Http } from '@angular/http';
+import {Response } from '@angular/http';
+import {HttpClient} from '@angular/common/http';
 import {CustomRowComponent} from '../custom-row/custom-row.component';
 import {GenericTableComponent, GtConfig} from '@angular-generic-table/core';
 import 'rxjs/add/operator/map';
@@ -21,7 +22,7 @@ export class RestComponent implements OnInit {
   public selectedRows = 0;
   private url = 'https://private-730c61-generictable.apiary-mock.com/data'; // apiary end point
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
 
     this.configObject = {
       settings: [{
@@ -97,7 +98,7 @@ export class RestComponent implements OnInit {
     this.myTable ? this.myTable.loading = true:'';
 
     this.http.get(this.url)
-        .map((res: Response) => res.json())
+        //.map((res: Response) => res.json())
         .subscribe(res => {
           this.configObject.data = res.data;
         });
