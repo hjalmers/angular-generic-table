@@ -2,7 +2,7 @@
 <p>Use lazy loading to speed things up when working with large data sets and cache data in the table if you want to avoid unnecessary server requests. This example also utilizes column stacking on tablets and mobile devices so resize the browser and see what happens with the layout on smaller screens.</p>
 <div class="card mb-5">
   <div class="card-header">Example</div>
-  <div class="card-block" exemplify="lazyExample" [context]="this" [escapeStrings]="escape" [source]="'child'" [target]="lazyExample" [navStyle]="'tabs'" [externalSources]="[{
+  <div class="card-body" exemplify="lazyExample" [context]="this" [escapeStrings]="escape" [source]="'child'" [target]="lazyExample" [navStyle]="'tabs'" [externalSources]="[{
     name:'app.module.ts',
     src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
   },{
@@ -23,10 +23,10 @@
       <small class="form-text text-muted mb-2">
         Please note that the mock service currently doesn't support search, this is why this example has a fixed search string (just to show the highlight feature together with lazy load). Do the search server-side and return search terms in your response. Separate multiple search terms with a space [ ] or match whole phrase by putting them within quotes ["].
       </small>
-      <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.selectAllRows()">Select all</button>
-      <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.deselectAllRows()">Deselect all</button>
-      <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.expandAllRows()">Expand all</button>
-      <button class="btn btn-secondary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.collapseAllRows()">Collapse all</button>
+      <button class="btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.selectAllRows()">Select all</button>
+      <button class="btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.deselectAllRows()">Deselect all</button>
+      <button class="btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.expandAllRows()">Expand all</button>
+      <button class="btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.collapseAllRows()">Collapse all</button>
     </form>
     <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtInfo]="configObject.info" [gtRowComponent]="expandedRow" (gtEvent)="trigger($event)" [gtOptions]="{stack:true, highlightSearch:true, lazyLoad:true, rowSelection:true}"></generic-table>
     <div class="text-center">

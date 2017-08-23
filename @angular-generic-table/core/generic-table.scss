@@ -1,11 +1,37 @@
 // import variables from bootstrap or change to your own bootstrap theme variables
-@import "./node_modules/bootstrap/scss/_variables.scss";
 
-$gt-inline-edit-color: $brand-primary !default;
+// default values for bootstrap 4 beta for backwards compatibility,
+// override by importing bootstrap variables before this file or by setting your own variables
+$gray-100: #f8f9fa !default;
+$gray-700: #495057 !default;
+$gray-200: #e9ecef !default;
+$blue:    #007bff !default;
+
+$table-cell-padding:            .75rem !default;
+$table-cell-padding-sm:         .3rem !default;
+$table-border-color:            $gray-200 !default;
+
+$font-weight-bold: bold !default;
+$font-size-sm:   .875rem !default;
+
+$grid-breakpoints: (
+        xs: 0,
+        sm: 576px,
+        md: 768px,
+        lg: 992px,
+        xl: 1200px
+) !default;
+
+// variables used by generic table
+$gt-inline-edit-color: $blue !default;
 $gt-totals-font-weight: $font-weight-bold !default;
-$gt-totals-color: $gray-light !default;
-$gt-totals-bg: $gray-lightest !default;
+$gt-totals-color: $gray-700 !default;
+$gt-totals-bg: $gray-100 !default;
 $gt-totals-font-size: $font-size-sm !default;
+$gt-table-border-color: $table-border-color !default;
+$gt-table-cell-padding: $table-cell-padding !default;
+$gt-table-cell-padding-sm: $table-cell-padding-sm !default;
+$gt-medium-width: map-get($grid-breakpoints, md)!default;
 
 // basic table styles for sorting and for stacked table layout
 generic-table {
@@ -81,7 +107,7 @@ generic-table {
         opacity: 0;
         position: absolute;
         content: '';
-        margin-left: -$table-cell-padding;
+        margin-left: -$gt-table-cell-padding;
         background: $gt-inline-edit-color;
         height: 1px;
         width: 100%;
@@ -119,11 +145,11 @@ generic-table {
     }
 
     thead.gt-totals {
-      border-bottom: 2px solid $table-border-color;
+      border-bottom: 2px solid $gt-table-border-color;
     }
 
     tfoot.gt-totals {
-      border-top: 2px solid $table-border-color;
+      border-top: 2px solid $gt-table-border-color;
     }
     .gt-totals tr td {
       font-weight: $gt-totals-font-weight;
@@ -135,20 +161,19 @@ generic-table {
   table.table-sm {
     .gt-inline-edit {
       &::before {
-        margin-left: -$table-sm-cell-padding;
+        margin-left: -$gt-table-cell-padding-sm;
       }
     }
   }
 }
 
-.gt-dropdown-menu.tether-enabled {
-  display: block;
+.gt-dropdown-menu.show {
   max-height: 320px;
   overflow: auto;
 }
 
 // get break point for medium devices from bootstrap
-@media (max-width: map-get($grid-breakpoints, md)) {
+@media (max-width: $gt-medium-width) {
   generic-table {
     table.table-stacked {
       thead tr {
