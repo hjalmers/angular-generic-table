@@ -32,6 +32,7 @@ $gt-table-border-color: $table-border-color !default;
 $gt-table-cell-padding: $table-cell-padding !default;
 $gt-table-cell-padding-sm: $table-cell-padding-sm !default;
 $gt-medium-width: map-get($grid-breakpoints, md)!default;
+$gt-small-width: map-get($grid-breakpoints, sm)!default;
 
 // basic table styles for sorting and for stacked table layout
 generic-table {

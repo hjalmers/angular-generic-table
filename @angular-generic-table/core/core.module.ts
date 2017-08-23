@@ -1,3 +1,6 @@
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 import {GenericTableComponent} from './components/generic-table.component';
 import {GtRenderPipe} from './pipes/gt-render.pipe';
 import {GtVisiblePipe} from './pipes/gt-visible.pipe';
@@ -6,8 +9,6 @@ import {GtPropertyPipe} from './pipes/gt-property.pipe';
 import {GtChunkPipe} from './pipes/gt-chunk.pipe';
 import {GtFilterPipe} from './pipes/gt-filter.pipe';
 import {GtOrderByPipe} from './pipes/gt-order-by.pipe';
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
 import {GtExpandingRowComponent} from './components/gt-expanding-row.component';
 import {GtSearchPipe} from './pipes/gt-search.pipe';
 import {ComponentAnchorDirective} from './directives/component-anchor.directive';
@@ -15,7 +16,6 @@ import {GtPaginationComponent, PaginationPipe} from './components/gt-pagination.
 import {GtTableInfoComponent, TableInfoPipe} from './components/gt-table-info.component';
 import {GtCustomComponentFactory} from './components/gt-custom-component-factory';
 import {GtMetaPipe} from './pipes/gt-meta.pipe';
-import {FormsModule} from '@angular/forms';
 import {GtDropdownComponent} from './components/gt-dropdown.component';
 import {GtTotalsPipe} from "./pipes/gt-totals.pipe";
 import {GtTotalsPositionPipe} from "./pipes/gt-totals-position.pipe";
@@ -55,7 +55,6 @@ import {GtTotalsPositionPipe} from "./pipes/gt-totals-position.pipe";
   ],
   entryComponents: [],
   providers: [],
-  bootstrap: []//,
-  //schemas:[CUSTOM_ELEMENTS_SCHEMA]
+  bootstrap: []
 })
 export class GenericTableModule { }

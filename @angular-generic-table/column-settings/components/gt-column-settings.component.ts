@@ -37,7 +37,7 @@ export class GtColumnPipe implements PipeTransform {
   selector: 'gt-column-settings',
   template: `
     <ng-template #columnItem let-column let-index="index">
-      <span class="badge badge-default">{{index}}</span>
+      <span class="badge badge-secondary">{{index}}</span>
       <span (dblclick)="toggleColumnVisibility(column)" class="badge" [ngClass]="{'badge-success':column.visible !== false, 'badge-danger':column.visible === false}">{{genericTable.gtFields | gtProperty:column.objectKey:'name'}}</span>
     </ng-template>
     <div class="gt-column-settings">

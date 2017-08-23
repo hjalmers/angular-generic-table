@@ -7,7 +7,7 @@ import * as Tether from 'tether';
   template: `
     <div class="dropdown gt-dropdown" [ngClass]="{'show':active}">
       <div class="dropdown-toggle" (click)="toggleDropdown()" [attr.aria-expanded]="active">{{selected}}</div>
-      <div class="gt-dropdown-menu dropdown-menu" *ngIf="active">
+      <div class="gt-dropdown-menu dropdown-menu" *ngIf="active" [ngClass]="{'show':active}">
         <button *ngFor="let option of options;" class="dropdown-item" (click)="select(option)" [ngClass]="{'active':option === selected}">{{option}}</button>
       </div>
     </div>
