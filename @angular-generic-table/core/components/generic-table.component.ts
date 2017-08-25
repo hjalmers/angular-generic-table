@@ -917,6 +917,9 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
             }
         });
     }
+    /**
+     * Cancel edit - cancel and reset inline edits.
+     */
     public cancelEdit() {
         // loop through rows that have been edited
         Object.keys(this.editedRows).map((key) => {
