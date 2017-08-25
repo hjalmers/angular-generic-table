@@ -8,6 +8,7 @@ Release History
 - Complex example with custom components for adding, removing and inline editing of rows (including data validation).
 
 ### Fixed
+- Inline edit listens to global keydown events ie. it's now possible update multiple rows with the enter key without the input needing to have focus (see issue #115). 
 - Improved row id generation
 
 # [4.4.1] - 2017-08-01
