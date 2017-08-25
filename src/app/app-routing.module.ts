@@ -15,6 +15,7 @@ import {InlineEditingComponent} from './inline-editing/inline-editing.component'
 import {ColumnClickComponent} from './column-click/column-click.component';
 import {AggregateComponent} from './aggregate/aggregate.component';
 import {AddRemoveEditComponent} from './add-remove-edit/add-remove-edit.component';
+import {RecordSelectionComponent} from './record-selection/record-selection.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/start', pathMatch: 'full' },
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'lazy', component: LazyComponent },
   { path: 'advanced', component: RestComponent },
   { path: 'basic', component: BasicComponent },
+  { path: 'record-selection', component: RecordSelectionComponent },
   { path: 'totals', component: AggregateComponent },
   { path: 'custom-column', component: CustomColumnComponent },
   { path: 'column-click', component: ColumnClickComponent },

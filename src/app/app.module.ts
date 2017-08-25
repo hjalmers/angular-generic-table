@@ -44,6 +44,7 @@ import { MenuComponent } from './menu/menu.component';
 import { InlineEditingComponent } from './inline-editing/inline-editing.component';
 import { ColumnClickComponent } from './column-click/column-click.component';
 import { AggregateComponent } from './aggregate/aggregate.component';
+import { RecordSelectionComponent } from './record-selection/record-selection.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { AggregateComponent } from './aggregate/aggregate.component';
     InlineEditingComponent,
     ColumnClickComponent,
     AggregateComponent,
-    AddRemoveEditComponent
+    AddRemoveEditComponent,
+    RecordSelectionComponent
   ],
   imports: [
     BrowserModule,
