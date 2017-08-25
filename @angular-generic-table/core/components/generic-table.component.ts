@@ -138,6 +138,10 @@ import {GtRenderField} from '../interfaces/gt-render-field';
     `,
 })
 export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> implements OnInit, OnChanges, OnDestroy {
+    get hasEdits(): boolean {
+        return Object.keys(this.editedRows).length > 0;
+    }
+
     get gtOptions(): GtOptions {
         return this._gtOptions;
     }
@@ -272,6 +276,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         changes: { [key: string]: GtRenderField<GtRow, any>},
         row: GtRow
     }} = {};
+
     private data: { exportData: Array<any> } = { exportData: [] }; // Store filtered data for export
 
     constructor(private renderer: Renderer2) {
@@ -292,7 +297,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
      */
     private gtSort = function (objectKey: string, event: any) {
 
-        this.cancelEdit(); // cancel inline editing
+        this.inlineEditCancel(); // cancel inline editing
 
         // loop through current settings
         for (let i = 0; i < this._gtSettings.length; i++) {
@@ -496,7 +501,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     public goToPage = function (page: number) {
 
         this.gtInfo.pageCurrent = page;
-        this.cancelEdit(); // cancel inline edit
+        this.inlineEditCancel(); // cancel inline edit
 
         // if lazy loading and if page contains no records...
         if (this._gtOptions.lazyLoad) {
@@ -892,35 +897,40 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         this.globalInlineEditListener = this.renderer.listen('document', 'keydown', $event => {
             switch ($event.key) {
                 case 'Enter': // update data object
-
-                    // loop through rows that have been edited
-                    Object.keys(this.editedRows).map((key) => {
-                        const ROW = this.editedRows[key].row; // row to update
-                        const CHANGES = this.editedRows[key].changes; // changes to the row
-
-                        // loop through changes in row
-                        Object.keys(CHANGES).map((objectKey) => {
-                            const oldValue = {...ROW};
-                            ROW[objectKey] = CHANGES[objectKey].renderValue; // update data value
-                            this.updateRow(ROW, oldValue); // update meta info for row and send event
-                            CHANGES[objectKey].edited = false; // disable edit mode
-                        });
-                    });
-                    // clear rows marked as edited as the rows have been updated
-                    this.editedRows = {};
-                    // remove listener
-                    this._stopListeningForKeydownEvent();
+                    this.inlineEditUpdate();
                     break;
                 case 'Escape': // cancel
-                    this.cancelEdit();
+                    this.inlineEditCancel();
                     break;
             }
         });
     }
     /**
-     * Cancel edit - cancel and reset inline edits.
+     * Inline edit update - accept changes and update row values.
      */
-    public cancelEdit() {
+    public inlineEditUpdate() {
+        // loop through rows that have been edited
+        Object.keys(this.editedRows).map((key) => {
+            const ROW = this.editedRows[key].row; // row to update
+            const CHANGES = this.editedRows[key].changes; // changes to the row
+
+            // loop through changes in row
+            Object.keys(CHANGES).map((objectKey) => {
+                const oldValue = {...ROW};
+                ROW[objectKey] = CHANGES[objectKey].renderValue; // update data value
+                this.updateRow(ROW, oldValue); // update meta info for row and send event
+                CHANGES[objectKey].edited = false; // disable edit mode
+            });
+        });
+        // clear rows marked as edited as the rows have been updated
+        this.editedRows = {};
+        // remove listener
+        this._stopListeningForKeydownEvent();
+    }
+    /**
+     * Inline edit cancel - cancel and reset inline edits.
+     */
+    public inlineEditCancel() {
         // loop through rows that have been edited
         Object.keys(this.editedRows).map((key) => {
             const ROW = this.editedRows[key].row; // row to update

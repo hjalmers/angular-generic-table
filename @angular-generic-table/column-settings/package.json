@@ -1,6 +1,6 @@
 {
   "name": "@angular-generic-table/column-settings",
-  "version": "4.4.1",
+  "version": "4.5.0",
   "description": "angular-generic-table extension that makes it easy to toggle column visibility and reoder columns.",
   "main": "index.js",
   "scripts": {
@@ -30,7 +30,7 @@
     "url": "https://github.com/hjalmers/angular-generic-table.git"
   },
   "peerDependencies": {
-    "@angular-generic-table/core": "^4.4.1",
+    "@angular-generic-table/core": "^4.5.0",
     "dragula": "^3.7.2",
     "ng2-dragula": "^1.5.0"
   },

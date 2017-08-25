@@ -2,14 +2,18 @@ Release History
 ---------------
 
 ## [Unreleased]
+
+# [4.5.0] - 2017-08-25
 ### Added
-- Function for checking if a row is selected
-- Function for removing a row
-- Complex example with custom components for adding, removing and inline editing of rows (including data validation).
+- Method for checking if a row is selected, see [methods](https://github.com/hjalmers/angular-generic-table/wiki/Methods) in wiki for more info.
+- Method for removing a row, see [methods](https://github.com/hjalmers/angular-generic-table/wiki/Methods) in wiki for more info.
+- Methods for accepting (saving) and rejecting (canceling) inline edits as well has checking if table has pending inline edits, see [methods](https://github.com/hjalmers/angular-generic-table/wiki/Methods) in wiki for more info.
+- Complex example with custom components for adding, removing and inline editing of rows (including data validation), see example [here](https://hjalmers.github.io/angular-generic-table/add-remove-edit).
 
 ### Fixed
 - Inline edit listens to global keydown events ie. it's now possible update multiple rows with the enter key without the input needing to have focus (see issue #115). 
 - Improved row id generation
+- If `gtRowComponent` is passed to the table `row-expandable` class will be added to rows (see issue #119).
 
 # [4.4.1] - 2017-08-01
 ### Fixed
