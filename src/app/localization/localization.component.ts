@@ -439,7 +439,7 @@ export class LocalizationComponent {
       }]
     };
 
-    if(translate.currentLang) {
+    if (translate.currentLang) {
       this.translateTable();
     } else {
       translate.addLangs(['en', 'sv']);

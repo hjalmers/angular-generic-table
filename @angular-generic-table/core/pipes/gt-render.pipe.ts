@@ -1,19 +1,9 @@
-import {Injector, Pipe, PipeTransform, Type} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 import { GtConfigSetting } from '../interfaces/gt-config-setting';
-import { GtClickFunc, GtConfigField } from '../interfaces/gt-config-field';
+import { GtConfigField } from '../interfaces/gt-config-field';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GtRow } from '../interfaces/gt-row';
-import { GtCustomComponent } from '../components/gt-custom-component-factory';
-
-export interface GtRenderField<R extends GtRow, C extends GtCustomComponent<any>> {
-  objectKey: string;
-  renderValue?: any;
-  click?: GtClickFunc<R>;
-  expand?: boolean;
-  sortValue: any;
-  columnComponent: { type: Type<any>; injector?: Injector; };
-  edited?: boolean;
-}
+import { GtRenderField } from '../interfaces/gt-render-field';
 
 @Pipe({
   name: 'gtRender'

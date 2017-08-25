@@ -17,8 +17,8 @@ import {GtTableInfoComponent, TableInfoPipe} from './components/gt-table-info.co
 import {GtCustomComponentFactory} from './components/gt-custom-component-factory';
 import {GtMetaPipe} from './pipes/gt-meta.pipe';
 import {GtDropdownComponent} from './components/gt-dropdown.component';
-import {GtTotalsPipe} from "./pipes/gt-totals.pipe";
-import {GtTotalsPositionPipe} from "./pipes/gt-totals-position.pipe";
+import {GtTotalsPipe} from './pipes/gt-totals.pipe';
+import {GtTotalsPositionPipe} from './pipes/gt-totals-position.pipe';
 
 
 @NgModule({

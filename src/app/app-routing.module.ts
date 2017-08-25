@@ -13,8 +13,8 @@ import {ChangeColumnSettingsComponent} from './change-column-settings/change-col
 import {HomeComponent} from './home/home.component';
 import {InlineEditingComponent} from './inline-editing/inline-editing.component';
 import {ColumnClickComponent} from './column-click/column-click.component';
-import {AggregateComponent} from "./aggregate/aggregate.component";
-import {AddRemoveEditComponent} from "./add-remove-edit/add-remove-edit.component"
+import {AggregateComponent} from './aggregate/aggregate.component';
+import {AddRemoveEditComponent} from './add-remove-edit/add-remove-edit.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/start', pathMatch: 'full' },

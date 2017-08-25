@@ -15,7 +15,7 @@ export class InlineEditingComponent {
 
   public data: Array<rowData> = [];
   public configObject: GtConfig<rowData>;
-  public languages:Array<string> = ['Albanian','Amharic','Aymara','Bulgarian','Dhivehi','Estonian','Indonesian','Kannada','Lao','Latvian','Marathi','Persian','Pisin','Punjabi','Somali','Tamil','Tok' ,'Tsonga', 'Tswana','Zulu'];
+  public languages: Array<string> = ['Albanian', 'Amharic', 'Aymara', 'Bulgarian', 'Dhivehi', 'Estonian', 'Indonesian', 'Kannada', 'Lao', 'Latvian', 'Marathi', 'Persian', 'Pisin', 'Punjabi', 'Somali', 'Tamil', 'Tok' , 'Tsonga', 'Tswana', 'Zulu'];
 
   updatedRow: {
     newValue: rowData,
@@ -48,7 +48,8 @@ export class InlineEditingComponent {
       }, {
         name: 'Name',
         objectKey: 'name',
-        inlineEdit: true
+        inlineEdit: true,
+          sort: (row) => {return row.name.substring(1, 5); }
       }, {
         name: 'Language',
         objectKey: 'language',

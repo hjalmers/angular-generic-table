@@ -24,7 +24,7 @@ export class ColumnClickComponent {
         objectKey: 'order',
         sort: 'asc',
         sortOrder: 0,
-        visible:false
+        visible: false
       }, {
         objectKey: 'name',
         sort: 'disable',
@@ -52,19 +52,19 @@ export class ColumnClickComponent {
         name: 'Lucky number',
         objectKey: 'lucky_number'
       }, {
-        name:'',
-        classNames:'gt-button',
+        name: '',
+        classNames: 'gt-button',
         objectKey: 'move_up',
-        value:()=>{ return 'up'},
-        render:(row)=>{ return '<button class="btn btn-sm btn-primary '+(row.order === 1 ? "disabled":"")+'"><i class="fa fa-arrow-up"></i></button>'},
-        click:(row)=>{ return this.move(row)}
+        value: () => { return 'up'; },
+        render: (row) => { return '<button class="btn btn-sm btn-primary ' + (row.order === 1 ? 'disabled' : '') + '"><i class="fa fa-arrow-up"></i></button>'; },
+        click: (row) => { return this.move(row); }
       }, {
-        name:'',
-        classNames:'gt-button',
+        name: '',
+        classNames: 'gt-button',
         objectKey: 'move_down',
-        value:()=>{ return 'down'},
-        render:(row)=>{ return '<button class="btn btn-sm btn-primary '+(row.order === this.configObject.data.length ? "disabled":"")+'"><i class="fa fa-arrow-down"></i></button>'},
-        click:(row)=>{ return this.move(row,false)}
+        value: () => { return 'down'; },
+        render: (row) => { return '<button class="btn btn-sm btn-primary ' + (row.order === this.configObject.data.length ? 'disabled' : '') + '"><i class="fa fa-arrow-down"></i></button>'; },
+        click: (row) => { return this.move(row, false); }
       }],
       data: [{
         'order': 1,
@@ -190,9 +190,9 @@ export class ColumnClickComponent {
     };
   }
 
-  move(row:any,up:boolean = true) {
-    if(up) {
-      this.configObject.data[row.order-2].order += 1; // update row above clicked row
+  move(row: any, up: boolean = true) {
+    if (up) {
+      this.configObject.data[row.order - 2].order += 1; // update row above clicked row
       row.order -= 1; // update clicked row
     } else {
       this.configObject.data[row.order].order -= 1; // update row below clicked row

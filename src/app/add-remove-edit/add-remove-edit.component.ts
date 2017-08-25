@@ -85,7 +85,7 @@ export class EditService {
     if (!validationsForRow) {
       return true;
     }
-    for (let prop in validationsForRow) {
+    for (const prop in validationsForRow) {
       if (validationsForRow.hasOwnProperty(prop)) {
         if (validationsForRow[prop] === false) {
           return false;
@@ -119,7 +119,7 @@ export class SelectedCheckboxComponent extends GtCustomComponent<GtRow> {
 abstract class CustomColumnComponentBase extends GtCustomComponent<Row> implements OnInit {
   public edit: Observable<boolean>;
   public view: Observable<boolean>;
-  protected editModeActive: boolean = false;
+  protected editModeActive = false;
 
   get isValid(): boolean {
     return true;
@@ -154,7 +154,7 @@ abstract class CustomColumnComponentBase extends GtCustomComponent<Row> implemen
 })
 export class RequiredNameComponent extends CustomColumnComponentBase {
   private _name: string;
-  private _propertyName = "name";
+  private _propertyName = 'name';
 
   get name() {
     return this._name;
@@ -193,7 +193,7 @@ export class RequiredNameComponent extends CustomColumnComponentBase {
 })
 export class RequiredNumberComponent extends CustomColumnComponentBase {
   private _number: number;
-  private _propertyName = "lucky_number";
+  private _propertyName = 'lucky_number';
 
   get number() {
     return this._number;
@@ -227,7 +227,7 @@ export class RequiredNumberComponent extends CustomColumnComponentBase {
     <button *ngIf="view | async" class="btn btn-sm btn-outline-primary" (click)=click($event);><i class="fa fa-pencil"></i></button>
     <button *ngIf="edit | async" class="btn btn-sm btn-primary" [disabled]="!isValid" (click)=click($event);><i class="fa fa-save"></i></button>
   `,
-  styles:[`
+  styles: [`
   .btn.btn-sm {
       padding-top: 0.15rem;
       padding-bottom: 0.15rem;
@@ -269,7 +269,7 @@ export class EditSaveButtonComponent extends CustomColumnComponentBase {
     <button *ngIf="view | async" class="btn btn-sm btn-outline-danger" (click)=click($event);><i class="fa fa-trash-o"></i></button>
     <button *ngIf="edit | async" class="btn btn-sm btn-outline-primary" (click)=click($event);><i class="fa fa-times"></i></button>
   `,
-  styles:[`
+  styles: [`
   .btn.btn-sm {
       padding-top: 0.15rem;
       padding-bottom: 0.15rem;
@@ -324,7 +324,7 @@ export class AddRemoveEditComponent implements AfterViewInit {
   }
 
   addNew(content) {
-    this.modalRef = this.modalService.open(content)
+    this.modalRef = this.modalService.open(content);
     this.modalRef.result.then((result) => {
       console.log(`Closed with: ${result}`);
     }, (reason) => {
@@ -333,7 +333,7 @@ export class AddRemoveEditComponent implements AfterViewInit {
   }
 
   onSubmit(newItemForm: NgForm) {
-    let newItem: Row = {
+    const newItem: Row = {
       id: Math.max.apply(null, this.configObject.data.map(x => x.id)) + 1,
       name: newItemForm.value.name,
       lucky_number: newItemForm.value.lucky_number
@@ -359,11 +359,11 @@ export class AddRemoveEditComponent implements AfterViewInit {
         objectKey: 'lucky_number',
         visible: true
       }, {
-        objectKey: "edit_action",
+        objectKey: 'edit_action',
         sort: 'disable',
         search: false
       }, {
-        objectKey: "delete_action",
+        objectKey: 'delete_action',
         sort: 'disable',
         search: false
       }],

@@ -44,7 +44,7 @@ export class GtDropdownComponent implements OnInit, OnDestroy {
 
   constructor(private renderer: Renderer2) { }
 
-  select(option:any) {
+  select(option: any) {
     this.active = false;
     this.state.next(this.active);
     if (this._selected !== option) {
@@ -73,7 +73,7 @@ export class GtDropdownComponent implements OnInit, OnDestroy {
           targetAttachment: 'bottom left',
           constraints: [{
             to: 'window',
-            attachment:'together'
+            attachment: 'together'
           }]
         });
 

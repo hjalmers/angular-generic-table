@@ -10,6 +10,7 @@
     name:'inline-editing.component.ts',
     src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/inline-editing/inline-editing.component.ts'
   }]">
+    <button class="btn btn-sm btn-primary mb-3" (click)="myTable.exportCSV()">Export</button>
     <div class="table-responsive">
       <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data" (gtEvent)="trigger($event)"></generic-table>
     </div>

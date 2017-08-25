@@ -272,6 +272,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         changes: { [key: string]: GtRenderField<GtRow, any>},
         row: GtRow
     }} = {};
+    private data: { exportData: Array<any> } = { exportData: [] }; // Store filtered data for export
 
     constructor(private renderer: Renderer2) {
         this.gtEvent.subscribe(($event: any) => {
@@ -762,7 +763,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
                     const selected = this.metaInfo[row.$$gtRowId][property];
 
                     // check if multi row selection is allowed...
-                    if (this._gtOptions.rowSelectionAllowMultiple === false){
+                    if (this._gtOptions.rowSelectionAllowMultiple === false) {
 
                         // ...if not, deselect all rows except current row
                         this._updateMetaInfo(this.selectedRows, property, false, row);
@@ -1038,10 +1039,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     // TODO: move to helper functions
     /** Sort by sort order */
     private getSortOrder = function (a: GtConfigSetting, b: GtConfigSetting) {
-        if (a.sortOrder < b.sortOrder)
-            return -1;
-        if (a.sortOrder > b.sortOrder || typeof a.sortOrder === 'undefined')
-            return 1;
+        if (a.sortOrder < b.sortOrder) { return -1; }
+        if (a.sortOrder > b.sortOrder || typeof a.sortOrder === 'undefined') { return 1; }
         return 0;
     };
 
@@ -1051,18 +1050,13 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         if (a.columnOrder === undefined) {
             return -1;
         }
-        if (a.columnOrder < b.columnOrder)
+        if (a.columnOrder < b.columnOrder) {
             return -1;
-        if (a.columnOrder > b.columnOrder)
+        }
+        if (a.columnOrder > b.columnOrder) {
             return 1;
+        }
         return 0;
-    };
-
-    /** Store filtered data for export */
-    private data: {
-        exportData: Array<any>
-    } = {
-        exportData: []
     };
 
     /** Export data as CSV
@@ -1072,19 +1066,19 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         const data = this.data.exportData;
         let csv = '';
 
-        //csv export headers
+        // csv export headers
         for (let i = 0; i < this._gtSettings.length; i++) {
             if (this._gtSettings[i].export !== false) {
                 csv += this.getProperty(this._gtFields, this._gtSettings[i].objectKey).name;
 
                 if (i < (this._gtSettings.length - 1)) {
-                    csv += this._gtOptions.csvDelimiter; //this.csvSeparator;
+                    csv += this._gtOptions.csvDelimiter;
                 }
             }
         }
 
         // csv export body
-        data.forEach((row, i) => {
+        data.forEach((row) => {
             csv += '\n';
             for (let i = 0; i < this._gtSettings.length; i++) {
                 if (this._gtSettings[i].export !== false) {
@@ -1097,11 +1091,11 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
                             fieldSetting.value(row) : row[this._gtSettings[i].objectKey];
 
                     // escape export value using double quotes (") if export value contains delimiter
-                    exportValue = typeof exportValue === 'string' && exportValue.indexOf(this._gtOptions.csvDelimiter) != -1 ? '"' + exportValue + '"' : exportValue;
+                    exportValue = typeof exportValue === 'string' && exportValue.indexOf(this._gtOptions.csvDelimiter) !== -1 ? '"' + exportValue + '"' : exportValue;
 
                     csv += exportValue;
                     if (i < (this._gtSettings.length - 1)) {
-                        csv += this._gtOptions.csvDelimiter; //this.csvSeparator;
+                        csv += this._gtOptions.csvDelimiter;
                     }
                 }
             }
@@ -1113,8 +1107,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
         if (window.navigator.msSaveOrOpenBlob) {
             navigator.msSaveOrOpenBlob(blob, fileName ? fileName : this.gtTexts.csvDownload + '.csv');
-        }
-        else {
+        } else {
             const link = document.createElement('a');
             link.style.display = 'none';
             document.body.appendChild(link);
@@ -1123,8 +1116,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
                 link.setAttribute('download', fileName ? fileName : this.gtTexts.csvDownload + '.csv');
                 document.body.appendChild(link);
                 link.click();
-            }
-            else {
+            } else {
                 csv = 'data:text/csv;charset=utf-8,' + csv;
                 window.open(encodeURI(csv));
             }
@@ -1167,9 +1159,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
                 if (setting.sort === 'asc') {
                     // ... add to sorting
                     sorting.push(setting.objectKey);
-                }
-                // ...else if sorted descending...
-                else if (setting.sort === 'desc') {
+                } /* ...else if sorted descending... */ else if (setting.sort === 'desc') {
                     // ... add to sorting
                     sorting.push('-' + setting.objectKey);
                 }
@@ -1208,9 +1198,11 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
      *  Extend object function.
      */
     private extend = function (a: Object, b: Object) {
-        for (const key in b)
-            if (b.hasOwnProperty(key))
+        for (const key in b) {
+            if (b.hasOwnProperty(key)) {
                 a[key] = b[key];
+            }
+        }
         return a;
     };
 
@@ -1236,7 +1228,6 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
             // ...and if store is empty or page length has changed...
             if (this.store.length === 0 || this.store[0].length !== this.gtInfo.recordLength) {
-                //console.log('create store');
                 // ...create store
                 this.store = this.createStore(this.gtInfo.recordsAfterSearch, this.gtInfo.recordLength);
             }
