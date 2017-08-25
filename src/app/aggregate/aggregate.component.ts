@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {GtConfig} from '@angular-generic-table/core';
-export interface rowData {
+export interface RowData {
   id: number;
   name: string;
   sales: number;
@@ -13,8 +13,8 @@ export interface rowData {
 })
 export class AggregateComponent {
 
-  public data: Array<rowData> = [];
-  public configObject: GtConfig<rowData>;
+  public data: Array<RowData> = [];
+  public configObject: GtConfig<RowData>;
 
   constructor() {
 

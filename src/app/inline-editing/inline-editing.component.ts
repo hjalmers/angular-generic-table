@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {GtConfig} from '@angular-generic-table/core';
 
-export interface rowData {
+export interface RowData {
   id: number;
   name: string;
   language?: string;
@@ -13,14 +13,14 @@ export interface rowData {
 })
 export class InlineEditingComponent {
 
-  public data: Array<rowData> = [];
-  public configObject: GtConfig<rowData>;
+  public data: Array<RowData> = [];
+  public configObject: GtConfig<RowData>;
   public languages: Array<string> = ['Albanian', 'Amharic', 'Aymara', 'Bulgarian', 'Dhivehi', 'Estonian', 'Indonesian', 'Kannada', 'Lao', 'Latvian', 'Marathi', 'Persian', 'Pisin', 'Punjabi', 'Somali', 'Tamil', 'Tok' , 'Tsonga', 'Tswana', 'Zulu'];
 
   updatedRow: {
-    newValue: rowData,
-    oldValue: rowData,
-    originalValue: rowData
+    newValue: RowData,
+    oldValue: RowData,
+    originalValue: RowData
   };
 
   constructor() {
