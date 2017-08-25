@@ -14,6 +14,7 @@ Release History
 - Inline edit listens to global keydown events ie. it's now possible update multiple rows with the enter key without the input needing to have focus (see issue #115). 
 - Improved row id generation
 - If `gtRowComponent` is passed to the table `row-expandable` class will be added to rows (see issue #119).
+- Support for Bootstrap 4 beta (see issue #117).
 
 # [4.4.1] - 2017-08-01
 ### Fixed
