@@ -8,7 +8,7 @@ Release History
 - Support for conditional row classes, see [example](https://hjalmers.github.io/angular-generic-table/styling) (issue #120).
 - Support for conditional column classes, see [example](https://hjalmers.github.io/angular-generic-table/styling) (issue #118).
 
-### Notes
+### Deprecated
 - Field setting `classNames` have been deprecated in favor for `columnClass` and will be removed in a future release.
 
 # [4.5.0] - 2017-08-25
