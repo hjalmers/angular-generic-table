@@ -747,6 +747,13 @@ var GenericTableComponent = (function () {
         },
         set: function (value) {
             this._gtFields = value;
+            var COLUMNS_WITH_CLASS_NAMES = this._gtFields
+                .map(function (column) { return column; })
+                .filter(function (column) { return column.classNames; });
+            // TODO: remove deprecated warning when setting has been removed
+            if (COLUMNS_WITH_CLASS_NAMES.length > 0) {
+                console.warn('Field setting "classNames" have been deprecated in favor for "columnClass" and will be removed in the future, please update field settings for column with object key: ' + COLUMNS_WITH_CLASS_NAMES[0].objectKey);
+            }
         },
         enumerable: true,
         configurable: true
@@ -1426,7 +1433,7 @@ __decorate([
 GenericTableComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'generic-table',
-        template: "\n        <table class=\"table\" ngClass=\"{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}\"\n               *ngIf=\"gtFields && gtSettings && (gtFields | gtVisible:gtSettings:refreshPipe).length > 0\">\n            <thead>\n            <tr>\n                <th class=\"gt-sort-label\" *ngIf=\"gtOptions.stack\">{{gtTexts.sortLabel}}</th>\n                <th *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe\"\n                    ngClass=\"{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{column.sortEnabled ? 'sort-'+column.sort:''}} {{column.sortEnabled && column.sortOrder >= 0  ? 'sort-order-'+column.sortOrder:''}}\"\n                    (click)=\"column.sortEnabled ? gtSort(column.objectKey,$event):'';\">\n                    {{gtFields | gtProperty:column.objectKey:'name'}}\n                </th>\n            </tr>\n            </thead>\n            <ng-template\n                    [ngIf]=\"gtTotals && (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length).length > 0\">\n                <thead class=\"gt-totals\">\n                <tr *ngFor=\"let total of gtTotals | gtTotalsPosition\">\n                    <td *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;\"\n                        ngClass=\"{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}\">\n                        {{test}}<span *ngIf=\"i === 0\" class=\"float-left\">{{total.name}}</span><span\n                            [innerHTML]=\"total.fields[column.objectKey] | gtTotals:total.update === false ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals\"></span>\n                    </td>\n                </tr>\n                </thead>\n                <tfoot class=\"gt-totals\">\n                <tr *ngFor=\"let total of gtTotals | gtTotalsPosition:'footer'\">\n                    <td *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;\"\n                        ngClass=\"{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}\">\n                        <span *ngIf=\"i === 0\" class=\"float-left\">{{total.name}}</span><span\n                            [innerHTML]=\"total.fields[column.objectKey] | gtTotals:total.update === false ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals\"></span>\n                    </td>\n                </tr>\n                </tfoot>\n            </ng-template>\n            <tbody *ngIf=\"gtData && gtInfo\">\n            <ng-template class=\"table-rows\" ngFor let-row\n                         [ngForOf]=\"gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1] | gtMeta:(gtInfo.pageCurrent-1):gtInfo.recordLength) : (gtData | gtMeta:null:null:gtData.length | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data)\">\n                <tr [ngClass]=\"{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading, 'row-expandable':gtRowComponent}\"\n                    (click)=\"gtOptions.rowSelection ? toggleSelect(row):null\">\n                    <td *ngFor=\"let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms;\"\n                        ngClass=\"{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{(gtFields | gtProperty:column.objectKey:'inlineEdit') ? 'gt-inline-edit':''}} {{column.edited ? 'gt-edited':''}}\">\n                        <span class=\"gt-row-label\"\n                              *ngIf=\"gtOptions.stack\">{{(gtFields | gtProperty:column.objectKey:'stackedHeading') ? (gtFields | gtProperty:column.objectKey:'stackedHeading') : (gtFields | gtProperty:column.objectKey:'name')}}</span>\n                        <gt-custom-component-factory *ngIf=\"column.columnComponent\" class=\"gt-row-content\"\n                                                     [type]=\"column.columnComponent.type\"\n                                                     [injector]=\"column.columnComponent.injector\" [row]=\"row\"\n                                                     [column]=\"column\" (redrawEvent)=\"redraw($event)\"\n                                                     (click)=\"column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row):''\"></gt-custom-component-factory>\n                        <span *ngIf=\"!column.columnComponent && !(gtFields | gtProperty:column.objectKey:'inlineEdit')\"\n                              class=\"gt-row-content\" [innerHTML]=\"column.renderValue\"\n                              (click)=\"column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row):''\"></span>\n                        <ng-template\n                                [ngIf]=\"!column.columnComponent && (gtFields | gtProperty:column.objectKey:'inlineEdit') === true\">\n                            <input class=\"inline-edit\" type=\"text\" [(ngModel)]=\"column.renderValue\"\n                                   (keyup)=\"gtUpdateColumn($event,row, column)\">\n                            <span class=\"gt-inline-edit-notice\">{{gtTexts.inlineEditEdited}}</span>\n                        </ng-template>\n                        <gt-dropdown\n                                *ngIf=\"!column.columnComponent && (gtFields | gtProperty:column.objectKey:'inlineEdit') && (gtFields | gtProperty:column.objectKey:'inlineEdit').length > 0\"\n                                [options]=\"gtFields | gtProperty:column.objectKey:'inlineEdit'\"\n                                [(selected)]=\"column.renderValue\" (selectedChange)=\"gtDropdownSelect(row, column)\">Add\n                            inline editing module\n                        </gt-dropdown>\n                    </td>\n                </tr>\n                <tr class=\"row-expanded\" *ngIf=\"metaInfo[row.$$gtRowId]?.isOpen\">\n                    <td [attr.colspan]=\"(gtFields | gtVisible:gtSettings:refreshPipe).length\">\n                        <gt-expanding-row [row]=\"row\" [type]=\"gtRowComponent\" (redrawEvent)=\"redraw($event)\"\n                                          (toggleRowEvent)=\"toggleCollapse($event)\"></gt-expanding-row>\n                    </td>\n                </tr>\n            </ng-template>\n            <tr *ngIf=\"gtInfo.pageTotal === 0 && (gtInfo.searchTerms || gtInfo.filter) && !loading\">\n                <td class=\"gt-no-matching-results\" [attr.colspan]=\"(gtFields | gtVisible:gtSettings).length\">\n                    {{gtTexts.noMatchingData}}\n                </td>\n            </tr>\n            <tr *ngIf=\"gtInfo.pageTotal === 0 && !(gtInfo.searchTerms || gtInfo.filter) && !loading\">\n                <td class=\"gt-no-results\" [attr.colspan]=\"(gtFields | gtVisible:gtSettings).length\">{{gtTexts.noData}}\n                </td>\n            </tr>\n            <tr *ngIf=\"gtInfo.pageTotal === 0 && loading\">\n                <td class=\"gt-loading-data\" [attr.colspan]=\"(gtFields | gtVisible:gtSettings).length\">{{gtTexts.loading}}</td>\n            </tr>\n            </tbody>\n        </table>\n        <table class=\"table\" ngClass=\"{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}\"\n               *ngIf=\"gtFields && gtSettings && (gtFields | gtVisible:gtSettings:refreshPipe).length === 0\">\n            <thead>\n            <tr>\n                <th class=\"gt-no-visible-columns\">{{gtTexts.noVisibleColumnsHeading}}</th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr>\n                <td class=\"gt-no-visible-columns\">{{gtTexts.noVisibleColumns}}</td>\n            </tr>\n            </tbody>\n        </table>\n        <table class=\"table\" ngClass=\"{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}\"\n               *ngIf=\"!gtFields || !gtSettings\">\n            <thead>\n            <tr>\n                <th class=\"gt-loading-config\">&nbsp;</th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr>\n                <td class=\"gt-loading-config\">&nbsp;</td>\n            </tr>\n            </tbody>\n        </table>\n    ",
+        template: "\n        <table class=\"table\" ngClass=\"{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}\"\n               *ngIf=\"gtFields && gtSettings && (gtFields | gtVisible:gtSettings:refreshPipe).length > 0\">\n            <thead>\n            <tr>\n                <th class=\"gt-sort-label\" *ngIf=\"gtOptions.stack\">{{gtTexts.sortLabel}}</th>\n                <th *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe\"\n                    ngClass=\"{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{column.sortEnabled ? 'sort-'+column.sort:''}} {{column.sortEnabled && column.sortOrder >= 0  ? 'sort-order-'+column.sortOrder:''}} {{ gtFields | gtColumnClass:'th':column }}\"\n                    (click)=\"column.sortEnabled ? gtSort(column.objectKey,$event):'';\">\n                    {{gtFields | gtProperty:column.objectKey:'name'}}\n                </th>\n            </tr>\n            </thead>\n            <ng-template\n                    [ngIf]=\"gtTotals && (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length).length > 0\">\n                <thead class=\"gt-totals\">\n                <tr *ngFor=\"let total of gtTotals | gtTotalsPosition\">\n                    <td *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;\"\n                        ngClass=\"{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{ gtFields | gtColumnClass:'total':column }}\">\n                        <span *ngIf=\"i === 0\" class=\"float-left\">{{total.name}}</span><span\n                            [innerHTML]=\"total.fields[column.objectKey] | gtTotals:total.update === false ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals\"></span>\n                    </td>\n                </tr>\n                </thead>\n                <tfoot class=\"gt-totals\">\n                <tr *ngFor=\"let total of gtTotals | gtTotalsPosition:'footer'\">\n                    <td *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;\"\n                        ngClass=\"{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{ gtFields | gtColumnClass:'total':column }}\">\n                        <span *ngIf=\"i === 0\" class=\"float-left\">{{total.name}}</span><span\n                            [innerHTML]=\"total.fields[column.objectKey] | gtTotals:total.update === false ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals\"></span>\n                    </td>\n                </tr>\n                </tfoot>\n            </ng-template>\n            <tbody *ngIf=\"gtData && gtInfo\">\n            <ng-template class=\"table-rows\" ngFor let-row\n                         [ngForOf]=\"gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1] | gtMeta:(gtInfo.pageCurrent-1):gtInfo.recordLength) : (gtData | gtMeta:null:null:gtData.length | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data | gtRowClass:gtFields)\">\n                <tr [ngClass]=\"{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading, 'row-expandable':gtRowComponent}\" class=\"{{row.$$gtRowClass}}\"\n                    (click)=\"gtOptions.rowSelection ? toggleSelect(row):null\">\n                    <td *ngFor=\"let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms;\"\n                        ngClass=\"{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{(gtFields | gtProperty:column.objectKey:'inlineEdit') ? 'gt-inline-edit':''}} {{column.edited ? 'gt-edited':''}} {{ gtFields | gtColumnClass:row:column }}\">\n                        <span class=\"gt-row-label\"\n                              *ngIf=\"gtOptions.stack\">{{(gtFields | gtProperty:column.objectKey:'stackedHeading') ? (gtFields | gtProperty:column.objectKey:'stackedHeading') : (gtFields | gtProperty:column.objectKey:'name')}}</span>\n                        <gt-custom-component-factory *ngIf=\"column.columnComponent\" class=\"gt-row-content\"\n                                                     [type]=\"column.columnComponent.type\"\n                                                     [injector]=\"column.columnComponent.injector\" [row]=\"row\"\n                                                     [column]=\"column\" (redrawEvent)=\"redraw($event)\"\n                                                     (click)=\"column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row):''\"></gt-custom-component-factory>\n                        <span *ngIf=\"!column.columnComponent && !(gtFields | gtProperty:column.objectKey:'inlineEdit')\"\n                              class=\"gt-row-content\" [innerHTML]=\"column.renderValue\"\n                              (click)=\"column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row):''\"></span>\n                        <ng-template\n                                [ngIf]=\"!column.columnComponent && (gtFields | gtProperty:column.objectKey:'inlineEdit') === true\">\n                            <input class=\"inline-edit\" type=\"text\" [(ngModel)]=\"column.renderValue\"\n                                   (keyup)=\"gtUpdateColumn($event,row, column)\">\n                            <span class=\"gt-inline-edit-notice\">{{gtTexts.inlineEditEdited}}</span>\n                        </ng-template>\n                        <gt-dropdown\n                                *ngIf=\"!column.columnComponent && (gtFields | gtProperty:column.objectKey:'inlineEdit') && (gtFields | gtProperty:column.objectKey:'inlineEdit').length > 0\"\n                                [options]=\"gtFields | gtProperty:column.objectKey:'inlineEdit'\"\n                                [(selected)]=\"column.renderValue\" (selectedChange)=\"gtDropdownSelect(row, column)\">Add\n                            inline editing module\n                        </gt-dropdown>\n                    </td>\n                </tr>\n                <tr class=\"row-expanded\" *ngIf=\"metaInfo[row.$$gtRowId]?.isOpen\">\n                    <td [attr.colspan]=\"(gtFields | gtVisible:gtSettings:refreshPipe).length\">\n                        <gt-expanding-row [row]=\"row\" [type]=\"gtRowComponent\" (redrawEvent)=\"redraw($event)\"\n                                          (toggleRowEvent)=\"toggleCollapse($event)\"></gt-expanding-row>\n                    </td>\n                </tr>\n            </ng-template>\n            <tr *ngIf=\"gtInfo.pageTotal === 0 && (gtInfo.searchTerms || gtInfo.filter) && !loading\">\n                <td class=\"gt-no-matching-results\" [attr.colspan]=\"(gtFields | gtVisible:gtSettings).length\">\n                    {{gtTexts.noMatchingData}}\n                </td>\n            </tr>\n            <tr *ngIf=\"gtInfo.pageTotal === 0 && !(gtInfo.searchTerms || gtInfo.filter) && !loading\">\n                <td class=\"gt-no-results\" [attr.colspan]=\"(gtFields | gtVisible:gtSettings).length\">{{gtTexts.noData}}\n                </td>\n            </tr>\n            <tr *ngIf=\"gtInfo.pageTotal === 0 && loading\">\n                <td class=\"gt-loading-data\" [attr.colspan]=\"(gtFields | gtVisible:gtSettings).length\">{{gtTexts.loading}}</td>\n            </tr>\n            </tbody>\n        </table>\n        <table class=\"table\" ngClass=\"{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}\"\n               *ngIf=\"gtFields && gtSettings && (gtFields | gtVisible:gtSettings:refreshPipe).length === 0\">\n            <thead>\n            <tr>\n                <th class=\"gt-no-visible-columns\">{{gtTexts.noVisibleColumnsHeading}}</th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr>\n                <td class=\"gt-no-visible-columns\">{{gtTexts.noVisibleColumns}}</td>\n            </tr>\n            </tbody>\n        </table>\n        <table class=\"table\" ngClass=\"{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}\"\n               *ngIf=\"!gtFields || !gtSettings\">\n            <thead>\n            <tr>\n                <th class=\"gt-loading-config\">&nbsp;</th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr>\n                <td class=\"gt-loading-config\">&nbsp;</td>\n            </tr>\n            </tbody>\n        </table>\n    ",
     }),
     __metadata("design:paramtypes", [typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer2"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer2"]) === "function" && _g || Object])
 ], GenericTableComponent);
@@ -1926,12 +1933,16 @@ var _a, _b;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__components_gt_dropdown_component__ = __webpack_require__("../../../../../@angular-generic-table/core/components/gt-dropdown.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__pipes_gt_totals_pipe__ = __webpack_require__("../../../../../@angular-generic-table/core/pipes/gt-totals.pipe.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pipes_gt_totals_position_pipe__ = __webpack_require__("../../../../../@angular-generic-table/core/pipes/gt-totals-position.pipe.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pipes_gt_row_class_pipe__ = __webpack_require__("../../../../../@angular-generic-table/core/pipes/gt-row-class.pipe.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__pipes_gt_column_class_pipe__ = __webpack_require__("../../../../../@angular-generic-table/core/pipes/gt-column-class.pipe.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -1980,6 +1991,8 @@ GenericTableModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_17__pipes_gt_meta_pipe__["a" /* GtMetaPipe */],
             __WEBPACK_IMPORTED_MODULE_19__pipes_gt_totals_pipe__["a" /* GtTotalsPipe */],
             __WEBPACK_IMPORTED_MODULE_20__pipes_gt_totals_position_pipe__["a" /* GtTotalsPositionPipe */],
+            __WEBPACK_IMPORTED_MODULE_21__pipes_gt_row_class_pipe__["a" /* GtRowClassPipe */],
+            __WEBPACK_IMPORTED_MODULE_22__pipes_gt_column_class_pipe__["a" /* GtColumnClassPipe */],
             __WEBPACK_IMPORTED_MODULE_18__components_gt_dropdown_component__["a" /* GtDropdownComponent */]
         ],
         imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */]],
@@ -4030,18 +4043,21 @@ var GtChunkPipe = (function () {
     function GtChunkPipe() {
     }
     GtChunkPipe.prototype.transform = function (array, gtInfo, chunkSize, page, refreshPageArray, refreshData, gtEvent, data) {
-        if (!Array.isArray(array))
+        if (!Array.isArray(array)) {
             return array;
+        }
         data.exportData = array; // store data for export
-        var pages = [];
-        for (var i = 0, len = array.length; i < len; i += chunkSize)
-            pages.push(array.slice(i, i + chunkSize));
-        gtInfo.pageTotal = pages.length;
+        var PAGES = [];
+        var ENTRIES = array.length;
+        for (var i = 0; i < ENTRIES; i += chunkSize) {
+            PAGES.push(array.slice(i, i + chunkSize));
+        }
+        gtInfo.pageTotal = PAGES.length;
         setTimeout(function () { return gtEvent.emit({
             name: 'gt-info',
             value: gtInfo
         }); }, 0);
-        return pages[page - 1];
+        return PAGES[page - 1];
     };
     return GtChunkPipe;
 }());
@@ -4052,6 +4068,56 @@ GtChunkPipe = __decorate([
 ], GtChunkPipe);
 
 //# sourceMappingURL=gt-chunk.pipe.js.map
+
+/***/ }),
+
+/***/ "../../../../../@angular-generic-table/core/pipes/gt-column-class.pipe.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GtColumnClassPipe; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var GtColumnClassPipe = (function () {
+    function GtColumnClassPipe() {
+    }
+    GtColumnClassPipe.prototype.transform = function (gtFields, row, column) {
+        // find columns with columnClass property defined
+        var COLUMN_WITH_CLASS = gtFields
+            .map(function (field) { return field; })
+            .filter(function (field) { return field.columnClass && field.objectKey === column.objectKey; })[0];
+        if (!COLUMN_WITH_CLASS) {
+            return;
+        }
+        else if (typeof COLUMN_WITH_CLASS.columnClass === 'function') {
+            // if column class is a function, try using the function...
+            try {
+                return COLUMN_WITH_CLASS.columnClass(row, column);
+            }
+            catch (error) {
+                console.log('Error when trying to get column class name using formula.', error);
+            }
+        }
+        else {
+            // if not a function, return plain string value
+            return COLUMN_WITH_CLASS.columnClass;
+        }
+    };
+    return GtColumnClassPipe;
+}());
+GtColumnClassPipe = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Pipe"])({
+        name: 'gtColumnClass'
+    })
+], GtColumnClassPipe);
+
+//# sourceMappingURL=gt-column-class.pipe.js.map
 
 /***/ }),
 
@@ -4483,6 +4549,72 @@ var _a;
 
 /***/ }),
 
+/***/ "../../../../../@angular-generic-table/core/pipes/gt-row-class.pipe.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GtRowClassPipe; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var GtRowClassPipe = (function () {
+    function GtRowClassPipe() {
+    }
+    GtRowClassPipe.prototype.transform = function (array, gtFields) {
+        if (array) {
+            // find columns with rowClass property defined
+            var COLUMNS_WITH_CLASS = gtFields
+                .map(function (column) { return column; })
+                .filter(function (column) { return column.rowClass; });
+            COLUMNS_WITH_CLASS.map(function (column) {
+                // for each column with rowClass property defined...
+                array.map(function (row) {
+                    // loop through rows and set row class
+                    if (typeof column.rowClass === 'function') {
+                        // if row class is a function, try using the function...
+                        try {
+                            if (row.$$gtRowClass) {
+                                row.$$gtRowClass = row.$$gtRowClass.concat(' ' + column.rowClass(row, column));
+                            }
+                            else {
+                                row.$$gtRowClass = column.rowClass(row, column);
+                            }
+                        }
+                        catch (error) {
+                            console.log('Error when trying to get row class name using formula.', error);
+                        }
+                    }
+                    else {
+                        // if not a function, return plain string value
+                        if (row.$$gtRowClass) {
+                            row.$$gtRowClass = row.$$gtRowClass.concat(' ' + column.rowClass);
+                        }
+                        else {
+                            row.$$gtRowClass = column.rowClass;
+                        }
+                    }
+                });
+            });
+        }
+        return array;
+    };
+    return GtRowClassPipe;
+}());
+GtRowClassPipe = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Pipe"])({
+        name: 'gtRowClass'
+    })
+], GtRowClassPipe);
+
+//# sourceMappingURL=gt-row-class.pipe.js.map
+
+/***/ }),
+
 /***/ "../../../../../@angular-generic-table/core/pipes/gt-search.pipe.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -4720,7 +4852,7 @@ webpackEmptyAsyncContext.id = "../../../../../src/$$_gendir lazy recursive";
 /***/ "../../../../../src/app/add-remove-edit/add-remove-edit.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Add, remove or edit rows with custom columns</h2>\n<p>Table using several custom column widgets, as well as external state tracking. Functions for adding, removing and inline editing (with data validation).</p>\n<div class=\"alert alert-info\">Please note that this example only persists changes in memory so the data will be reset when component is reinitialized e.g when route changes or page is refreshed.</div>\n<div class=\"card mb-5\">\n    <div class=\"card-header\">Example</div>\n    <div class=\"card-body\" exemplify=\"addRemoveExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']\" [source]=\"'child'\" [target]=\"addRemoveExample\"\n         [navStyle]=\"'tabs'\" [externalSources]=\"[{\n    name:'app.module.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular-generic-table/master/src/app/app.module.ts'\n  },{\n    name:'app-remove-edit.component.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular-generic-table/master/src/app/add-remove-edit/add-remove-edit.component.ts'\n  }]\">\n        <div class=\"row mb-3\">\n            <div class=\"col-12 col-sm-auto\">\n                <div class=\"input-group input-group-sm mr-sm-2 mb-3 mb-sm-0\">\n                    <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\n                    <input class=\"form-control\" #search (keyup)=\"myTable.gtSearch(search.value)\" placeholder=\"Search\">\n                </div>\n            </div>\n            <div class=\"col-12 col-sm\">\n                <div class=\"row justify-content-end\">\n                    <div class=\"col-12 col-sm-auto mb-3 mb-sm-0\">\n                        <button class=\"btn btn-sm btn-primary w-100\" (click)=\"addNew(content)\">Add new row</button>\n                    </div>\n                    <div class=\"col-12 col-sm-auto mb-3 mb-sm-0\">\n                        <button type=\"reset\" (click)=\"deleteSelectedRows()\" [disabled]=\"myTable.selectedRows.length === 0\" class=\"btn btn-sm btn-danger w-100\">\n                            Delete {{myTable.selectedRows.length}} rows\n                        </button>\n                    </div>\n                </div>\n            </div>\n\n        </div>\n        <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\" [gtOptions]=\"{highlightSearch:true, rowSelection:true}\"></generic-table>\n        <div class=\"text-center\">\n            <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\n            <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\n        </div>\n        <small class=\"form-text text-muted col-12 col-xl-auto mb-2 mt-lg-2 my-xl-auto row\">Number of selected rows: {{myTable.selectedRows.length}}</small>\n    </div>\n    <div class=\"card-footer\" #addRemoveExample></div>\n</div>\n\n<!-- Modal -->\n<ng-template #content let-c=\"close\" let-d=\"dismiss\">\n    <form (ngSubmit)=\"onSubmit(newItemForm)\" #newItemForm=\"ngForm\">\n        <div class=\"modal-header\">\n            <h4 class=\"modal-title\">New lucky number</h4>\n            <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\n                <span aria-hidden=\"true\">&times;</span>\n            </button>\n        </div>\n        <div class=\"modal-body\">\n            <div class=\"form-group\" [ngClass]=\"{ 'has-danger': name?.errors && (name?.dirty || name?.touched) }\">\n                <label class=\"col-sm-2 control-label text-nowrap\" for=\"name\">Name</label>\n                <div class=\"col-sm-10\">\n                    <input class=\"form-control\" ngModel #name=\"ngModel\" id=\"name\" name=\"name\" placeholder=\"Name\" [ngClass]=\"{'form-control-danger' : name?.errors && (name?.dirty || name?.touched) }\" required/>\n                </div>\n            </div>\n            <div class=\"form-group\" [ngClass]=\"{ 'has-danger': lucky_number?.errors && (lucky_number?.dirty || lucky_number?.touched) }\">\n                <label class=\"col-sm-2 control-label text-nowrap\" for=\"lucky_number\">Lucky number</label>\n                <div class=\"col-sm-10\">\n                    <input type=\"number\" class=\"form-control\" ngModel #lucky_number=\"ngModel\" id=\"lucky_number\" name=\"lucky_number\" [ngClass]=\"{'form-control-danger' : lucky_number?.errors && (lucky_number?.dirty || lucky_number?.touched)}\" placeholder=\"Lucky number\" required/>\n                </div>\n            </div>\n        </div>\n        <div class=\"modal-footer\">\n            <button type=\"button\" class=\"btn btn-outline-primary\" (click)=\"c('Close click')\">Close</button>\n            <button class=\"btn btn-primary\" [disabled]=\"!newItemForm.valid\">Save</button>\n        </div>\n    </form>\n</ng-template>\n"
+module.exports = "<h2>Add, remove or edit rows with custom columns</h2>\r\n<p>Table using several custom column widgets, as well as external state tracking. Functions for adding, removing and inline editing (with data validation).</p>\r\n<div class=\"alert alert-info\">Please note that this example only persists changes in memory so the data will be reset when component is reinitialized e.g when route changes or page is refreshed.</div>\r\n<div class=\"card mb-5\">\r\n    <div class=\"card-header\">Example</div>\r\n    <div class=\"card-body\" exemplify=\"addRemoveExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']\" [source]=\"'child'\" [target]=\"addRemoveExample\"\r\n         [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'app-remove-edit.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular-generic-table/master/src/app/add-remove-edit/add-remove-edit.component.ts'\r\n  }]\">\r\n        <div class=\"row mb-3\">\r\n            <div class=\"col-12 col-sm-auto\">\r\n                <div class=\"input-group input-group-sm mr-sm-2 mb-3 mb-sm-0\">\r\n                    <span class=\"input-group-addon\"><i class=\"fa fa-search\"></i></span>\r\n                    <input class=\"form-control\" #search (keyup)=\"myTable.gtSearch(search.value)\" placeholder=\"Search\">\r\n                </div>\r\n            </div>\r\n            <div class=\"col-12 col-sm\">\r\n                <div class=\"row justify-content-end\">\r\n                    <div class=\"col-12 col-sm-auto mb-3 mb-sm-0\">\r\n                        <button class=\"btn btn-sm btn-primary w-100\" (click)=\"addNew(content)\">Add new row</button>\r\n                    </div>\r\n                    <div class=\"col-12 col-sm-auto mb-3 mb-sm-0\">\r\n                        <button type=\"reset\" (click)=\"deleteSelectedRows()\" [disabled]=\"myTable.selectedRows.length === 0\" class=\"btn btn-sm btn-danger w-100\">\r\n                            Delete {{myTable.selectedRows.length}} rows\r\n                        </button>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n\r\n        </div>\r\n        <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\" [gtOptions]=\"{highlightSearch:true, rowSelection:true}\"></generic-table>\r\n        <div class=\"text-center\">\r\n            <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\r\n            <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n        </div>\r\n        <small class=\"form-text text-muted col-12 col-xl-auto mb-2 mt-lg-2 my-xl-auto row\">Number of selected rows: {{myTable.selectedRows.length}}</small>\r\n    </div>\r\n    <div class=\"card-footer\" #addRemoveExample></div>\r\n</div>\r\n\r\n<!-- Modal -->\r\n<ng-template #content let-c=\"close\" let-d=\"dismiss\">\r\n    <form (ngSubmit)=\"onSubmit(newItemForm)\" #newItemForm=\"ngForm\">\r\n        <div class=\"modal-header\">\r\n            <h4 class=\"modal-title\">New lucky number</h4>\r\n            <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"d('Cross click')\">\r\n                <span aria-hidden=\"true\">&times;</span>\r\n            </button>\r\n        </div>\r\n        <div class=\"modal-body\">\r\n            <div class=\"form-group\" [ngClass]=\"{ 'has-danger': name?.errors && (name?.dirty || name?.touched) }\">\r\n                <label class=\"col-sm-2 control-label text-nowrap\" for=\"name\">Name</label>\r\n                <div class=\"col-sm-10\">\r\n                    <input class=\"form-control\" ngModel #name=\"ngModel\" id=\"name\" name=\"name\" placeholder=\"Name\" [ngClass]=\"{'form-control-danger' : name?.errors && (name?.dirty || name?.touched) }\" required/>\r\n                </div>\r\n            </div>\r\n            <div class=\"form-group\" [ngClass]=\"{ 'has-danger': lucky_number?.errors && (lucky_number?.dirty || lucky_number?.touched) }\">\r\n                <label class=\"col-sm-2 control-label text-nowrap\" for=\"lucky_number\">Lucky number</label>\r\n                <div class=\"col-sm-10\">\r\n                    <input type=\"number\" class=\"form-control\" ngModel #lucky_number=\"ngModel\" id=\"lucky_number\" name=\"lucky_number\" [ngClass]=\"{'form-control-danger' : lucky_number?.errors && (lucky_number?.dirty || lucky_number?.touched)}\" placeholder=\"Lucky number\" required/>\r\n                </div>\r\n            </div>\r\n        </div>\r\n        <div class=\"modal-footer\">\r\n            <button type=\"button\" class=\"btn btn-outline-primary\" (click)=\"c('Close click')\">Close</button>\r\n            <button class=\"btn btn-primary\" [disabled]=\"!newItemForm.valid\">Save</button>\r\n        </div>\r\n    </form>\r\n</ng-template>\r\n"
 
 /***/ }),
 
@@ -5127,7 +5259,7 @@ var AddRemoveEditComponent = (function () {
                     }
                 }, {
                     name: '',
-                    classNames: 'gt-button',
+                    columnClass: 'gt-button',
                     objectKey: 'delete_action',
                     value: function () { return ''; },
                     columnComponent: {
@@ -5135,7 +5267,7 @@ var AddRemoveEditComponent = (function () {
                     }
                 }, {
                     name: '',
-                    classNames: 'gt-button',
+                    columnClass: 'gt-button',
                     objectKey: 'edit_action',
                     value: function () { return ''; },
                     columnComponent: {
@@ -5284,7 +5416,7 @@ var _a, _b, _c, _d;
 /***/ "../../../../../src/app/aggregate/aggregate.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Totals</h2>\n<p>Add totals like sum, average etc. to your table using <code>gt-totals</code> option. Position either at the top, in the table header or at the bottom in the table footer or why not both as in the example below? Write your own functions for calculating values or pass static data (useful when lazy loading data).</p>\n<p>Add how many \"rows\" as you like and enable/disable auto update per row when searching or filtering the table, try searching the table below and you'll see that the total in the bottom won't update as it's been disabled (enabled by default). Works with inline editing too, try updating the number of meetings to see it in action.</p>\n<p>Apply your custom style using <code>.gt-totals</code> class or use the one provided by generic table (shown below). See docs for more info!</p>\n<div class=\"card mb-5\">\n  <div class=\"card-header\">Example</div>\n  <div class=\"card-body\" exemplify=\"basicExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']\" [source]=\"'child'\" [target]=\"basicExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\n    name:'app.module.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\n  },{\n    name:'aggregate.component.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/aggregate/aggregate.component.ts'\n  }]\">\n    <form class=\"form form-inline mb-4\">\n      <label for=\"search\" class=\"form-control-label mr-sm-2\">Search</label>\n    <input name=\"search\" id=\"search\" class=\"form-control form-control-sm mb-2 mr-sm-2 mb-lg-0\" #search (keyup)=\"myTable.gtSearch(search.value)\" placeholder=\"Search\"/>\n    </form>\n    <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtTotals]=\"configObject.totals\" [gtData]=\"configObject.data\"></generic-table>\n    <small class=\"text-muted\">* Based on total entries before filter and or search has been applied.</small>\n    <div class=\"text-center mt-3\">\n      <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\n      <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\n    </div>\n  </div>\n  <div class=\"card-footer\" #basicExample></div>\n</div>\n"
+module.exports = "<h2>Totals</h2>\r\n<p>Add totals like sum, average etc. to your table using <code>gt-totals</code> option. Position either at the top, in the table header or at the bottom in the table footer or why not both as in the example below? Write your own functions for calculating values or pass static data (useful when lazy loading data).</p>\r\n<p>Add how many \"rows\" as you like and enable/disable auto update per row when searching or filtering the table, try searching the table below and you'll see that the total in the bottom won't update as it's been disabled (enabled by default). Works with inline editing too, try updating the number of meetings to see it in action.</p>\r\n<p>Apply your custom style using <code>.gt-totals</code> class or use the one provided by generic table (shown below). See docs for more info!</p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"basicExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']\" [source]=\"'child'\" [target]=\"basicExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'aggregate.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/aggregate/aggregate.component.ts'\r\n  }]\">\r\n    <form class=\"form form-inline mb-4\">\r\n      <label for=\"search\" class=\"form-control-label mr-sm-2\">Search</label>\r\n    <input name=\"search\" id=\"search\" class=\"form-control form-control-sm mb-2 mr-sm-2 mb-lg-0\" #search (keyup)=\"myTable.gtSearch(search.value)\" placeholder=\"Search\"/>\r\n    </form>\r\n    <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtTotals]=\"configObject.totals\" [gtData]=\"configObject.data\"></generic-table>\r\n    <small class=\"text-muted\">* Based on total entries before filter and or search has been applied.</small>\r\n    <div class=\"text-center mt-3\">\r\n      <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\r\n      <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n    </div>\r\n  </div>\r\n  <div class=\"card-footer\" #basicExample></div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -5327,12 +5459,12 @@ var AggregateComponent = (function () {
                 }, {
                     name: 'Meetings',
                     objectKey: 'meetings',
-                    classNames: 'text-right',
+                    columnClass: 'text-right',
                     inlineEdit: true
                 }, {
                     name: 'Sales volume',
                     objectKey: 'sales',
-                    classNames: 'text-right'
+                    columnClass: 'text-right'
                 }],
             totals: [{
                     name: 'Total *',
@@ -5918,6 +6050,7 @@ AggregateComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__aggregate_aggregate_component__ = __webpack_require__("../../../../../src/app/aggregate/aggregate.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__add_remove_edit_add_remove_edit_component__ = __webpack_require__("../../../../../src/app/add-remove-edit/add-remove-edit.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__record_selection_record_selection_component__ = __webpack_require__("../../../../../src/app/record-selection/record-selection.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__styling_styling_component__ = __webpack_require__("../../../../../src/app/styling/styling.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5938,12 +6071,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
 var routes = [
     { path: '', redirectTo: '/start', pathMatch: 'full' },
     { path: 'start', component: __WEBPACK_IMPORTED_MODULE_8__home_home_component__["a" /* HomeComponent */] },
     { path: 'lazy', component: __WEBPACK_IMPORTED_MODULE_2__lazy_lazy_component__["a" /* LazyComponent */] },
     { path: 'advanced', component: __WEBPACK_IMPORTED_MODULE_3__rest_rest_component__["a" /* RestComponent */] },
     { path: 'basic', component: __WEBPACK_IMPORTED_MODULE_4__basic_basic_component__["a" /* BasicComponent */] },
+    { path: 'styling', component: __WEBPACK_IMPORTED_MODULE_14__styling_styling_component__["a" /* StylingComponent */] },
     { path: 'record-selection', component: __WEBPACK_IMPORTED_MODULE_13__record_selection_record_selection_component__["a" /* RecordSelectionComponent */] },
     { path: 'totals', component: __WEBPACK_IMPORTED_MODULE_11__aggregate_aggregate_component__["a" /* AggregateComponent */] },
     { path: 'custom-column', component: __WEBPACK_IMPORTED_MODULE_5__custom_column_custom_column_component__["b" /* CustomColumnComponent */] },
@@ -5973,7 +6108,7 @@ AppRoutingModule = __decorate([
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"d-md-none fixed-top container-fluid mobile-menu px-3 py-2\">\n    <div class=\"menu-icon float-right\" [ngClass]=\"{'active':showMenu}\" (click)=\"showMenu = !showMenu\"><div></div></div>\n    <menu *ngIf=\"showMenu\" class=\"mt-4 p-0 text-white\"></menu>\n</div>\n<div class=\"jumbotron mt-4 mt-md-0 bg-teal text-white rounded-0\">\n    <div class=\"row no-gutters\">\n        <div class=\"col main\">\n            <div class=\"container\">\n                <h1 class=\"display-4\">Angular Generic Table</h1>\n                <p class=\"lead\">A table component for Angular 2+. For more info checkout the docs in the wiki.</p>\n                <a class=\"btn btn-primary\" href=\"https://github.com/hjalmers/angular-generic-table/wiki\" target=\"_blank\">Go to wiki</a>\n            </div>\n        </div>\n    </div>\n</div>\n<div class=\"row no-gutters\">\n    <div class=\"col main\">\n        <div class=\"container\">\n            <router-outlet></router-outlet>\n        </div>\n    </div>\n    <div class=\"col col-auto side d-none d-md-block\">\n        <menu class=\"p-0\"></menu>\n    </div>\n</div>\n\n\n"
+module.exports = "<div class=\"d-md-none fixed-top container-fluid mobile-menu px-3 py-2\">\r\n    <div class=\"menu-icon float-right\" [ngClass]=\"{'active':showMenu}\" (click)=\"showMenu = !showMenu\"><div></div></div>\r\n    <menu *ngIf=\"showMenu\" class=\"mt-4 p-0 text-white\"></menu>\r\n</div>\r\n<div class=\"jumbotron mt-4 mt-md-0 bg-teal text-white rounded-0\">\r\n    <div class=\"row no-gutters\">\r\n        <div class=\"col main\">\r\n            <div class=\"container\">\r\n                <h1 class=\"display-4\">Angular Generic Table</h1>\r\n                <p class=\"lead\">A table component for Angular 2+. For more info checkout the docs in the wiki.</p>\r\n                <a class=\"btn btn-primary\" href=\"https://github.com/hjalmers/angular-generic-table/wiki\" target=\"_blank\">Go to wiki</a>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n<div class=\"row no-gutters\">\r\n    <div class=\"col main\">\r\n        <div class=\"container\">\r\n            <router-outlet></router-outlet>\r\n        </div>\r\n    </div>\r\n    <div class=\"col col-auto side d-none d-md-block\">\r\n        <menu class=\"p-0\"></menu>\r\n    </div>\r\n</div>\r\n\r\n\r\n"
 
 /***/ }),
 
@@ -6041,6 +6176,7 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__column_click_column_click_component__ = __webpack_require__("../../../../../src/app/column-click/column-click.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__aggregate_aggregate_component__ = __webpack_require__("../../../../../src/app/aggregate/aggregate.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__record_selection_record_selection_component__ = __webpack_require__("../../../../../src/app/record-selection/record-selection.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__styling_styling_component__ = __webpack_require__("../../../../../src/app/styling/styling.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6081,6 +6217,7 @@ function createTranslateLoader(http) {
 
 
 
+
 var AppModule = (function () {
     function AppModule() {
     }
@@ -6111,7 +6248,8 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_24__column_click_column_click_component__["a" /* ColumnClickComponent */],
             __WEBPACK_IMPORTED_MODULE_25__aggregate_aggregate_component__["a" /* AggregateComponent */],
             __WEBPACK_IMPORTED_MODULE_10__add_remove_edit_add_remove_edit_component__["a" /* AddRemoveEditComponent */],
-            __WEBPACK_IMPORTED_MODULE_26__record_selection_record_selection_component__["a" /* RecordSelectionComponent */]
+            __WEBPACK_IMPORTED_MODULE_26__record_selection_record_selection_component__["a" /* RecordSelectionComponent */],
+            __WEBPACK_IMPORTED_MODULE_27__styling_styling_component__["a" /* StylingComponent */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -6153,7 +6291,7 @@ AppModule = __decorate([
 /***/ "../../../../../src/app/basic/basic.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Basic</h2>\n<p>Table with static data and simple pagination.</p>\n<div class=\"card mb-5\">\n  <div class=\"card-header\">Example</div>\n  <div class=\"card-body\" exemplify=\"basicExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']\" [source]=\"'child'\" [target]=\"basicExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\n    name:'app.module.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\n  },{\n    name:'basic.component.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/basic/basic.component.ts'\n  }]\">\n    <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\"></generic-table>\n    <div class=\"text-center\">\n      <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\n      <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\n    </div>\n  </div>\n  <div class=\"card-footer\" #basicExample></div>\n</div>\n"
+module.exports = "<h2>Basic</h2>\r\n<p>Table with static data and simple pagination.</p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"basicExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']\" [source]=\"'child'\" [target]=\"basicExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'basic.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/basic/basic.component.ts'\r\n  }]\">\r\n    <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\"></generic-table>\r\n    <div class=\"text-center\">\r\n      <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\r\n      <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n    </div>\r\n  </div>\r\n  <div class=\"card-footer\" #basicExample></div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -6624,7 +6762,7 @@ BasicComponent = __decorate([
 /***/ "../../../../../src/app/change-column-settings/change-column-settings.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Column settings component</h2>\n<p class=\"lead\">Toggle column visibility and column order using the <code>ColumnSettingsComponent</code>.</p>\n<h5>Installation</h5>\n<p>Install with npm by running:</p>\n<code>npm install @angular-generic-table/column-settings dragula ng2-dragula --save</code>\n<p class=\"mt-4\">More info available in the <a href=\"https://github.com/hjalmers/angular-generic-table/wiki/Installation-and-basic-usage\" target=\"_blank\">wiki</a>.</p>\n\n<h5>Usage</h5>\n<p>This how the <code>ColumnSettingsComponent</code> looks and behaves by default but feel free to customize it using css or by passing predefined classes. You can also define your own template for the columns.</p>\n<div class=\"card mb-5\">\n  <div class=\"card-header\">Example</div>\n  <div class=\"card-body\" exemplify=\"columnSettingsExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','#myTable','#columnSettings']\" [source]=\"'child'\" [target]=\"columnSettingsExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\n    name:'app.module.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\n  },{\n    name:'change-column-settings.component.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/change-column-settings/change-column-settings.component.ts'\n  }]\">\n    <button class=\"btn-link\" (click)=\"columnSettings.toggleColumnSettings()\"> {{columnSettings.active ? 'Hide column settings':'Show column settings'}}</button>\n    <gt-column-settings [genericTable]=\"myTable\" #columnSettings>\n      <div class=\"table-responsive\">\n        <generic-table [gtClasses]=\"'table-hover'\" #myTable [gtSettings]=\"firstConfigObject.settings\" [gtFields]=\"firstConfigObject.fields\" [gtData]=\"firstConfigObject.data\" [gtOptions]=\"{numberOfRows:5}\"></generic-table>\n      </div>\n      <div class=\"text-center\">\n        <gt-pagination [gtClasses]=\"'justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\n      </div>\n    </gt-column-settings>\n\n  </div>\n  <div class=\"card-footer\" #columnSettingsExample></div>\n</div>\n\n<h5>Customize</h5>\n<p>Pass your own template for columns and change texts and css/classes for a custom look and feel.</p>\n<div class=\"card mb-5\">\n  <div class=\"card-header\">Example</div>\n  <div class=\"card-body\" exemplify=\"columnSettingsTemplateExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','gtColumnItem','#myCustomTable','[ngClass]','#customColumnSettings','gtTexts','gtHeaderClasses','gtWrapperClasses']\" [source]=\"'child'\" [target]=\"columnSettingsTemplateExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\n    name:'app.module.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\n  },{\n    name:'change-column-settings.component.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/change-column-settings/change-column-settings.component.ts'\n  }]\">\n    <ng-template #gtColumnItem let-column let-index=\"index\" let-name=\"name\">\n      <div class=\"btn-group btn-group-sm mb-1 col-12 p-0\" role=\"group\">\n        <button type=\"button\" class=\"btn w-100\" [ngClass]=\"{'btn-primary':column.visible !== false, 'btn-secondary':column.visible === false}\" style=\"cursor: move;\">{{index}}: {{name}}</button>\n        <button type=\"button\" class=\"btn w-100\" [ngClass]=\"{'btn-outline-primary':column.visible !== false, 'btn-outline-secondary':column.visible === false}\" (click)=\"customColumnSettings.toggleColumnVisibility(column)\" style=\"cursor: pointer;\">{{column.visible !== false ? 'visible':'hidden'}}</button>\n      </div>\n    </ng-template>\n    <button class=\"btn-link\" (click)=\"customColumnSettings.toggleColumnSettings()\"> {{customColumnSettings.active ? 'Hide column settings':'Show column settings'}}</button>\n    <gt-column-settings [genericTable]=\"myCustomTable\" #customColumnSettings [gtColumnItem]=\"gtColumnItem\" [gtTexts]=\"{help:'Click to toggle column visibility, drag to reorder.'}\" [gtHeaderClasses]=\"'px-3 pt-3 pb-2 bg-light'\" [gtWrapperClasses]=\"'px-3 pb-2 bg-light h-50'\">\n      <div class=\"table-responsive\">\n        <generic-table [gtClasses]=\"'table-hover'\" #myCustomTable [gtSettings]=\"secondConfigObject.settings\" [gtFields]=\"secondConfigObject.fields\" [gtData]=\"secondConfigObject.data\"></generic-table>\n      </div>\n      <div class=\"text-center\">\n        <gt-pagination [gtClasses]=\"'justify-content-center'\" [genericTable]=\"myCustomTable\"></gt-pagination>\n      </div>\n    </gt-column-settings>\n  </div>\n  <div class=\"card-footer\" #columnSettingsTemplateExample></div>\n</div>\n\n"
+module.exports = "<h2>Column settings component</h2>\r\n<p class=\"lead\">Toggle column visibility and column order using the <code>ColumnSettingsComponent</code>.</p>\r\n<h5>Installation</h5>\r\n<p>Install with npm by running:</p>\r\n<code>npm install @angular-generic-table/column-settings dragula ng2-dragula --save</code>\r\n<p class=\"mt-4\">More info available in the <a href=\"https://github.com/hjalmers/angular-generic-table/wiki/Installation-and-basic-usage\" target=\"_blank\">wiki</a>.</p>\r\n\r\n<h5>Usage</h5>\r\n<p>This how the <code>ColumnSettingsComponent</code> looks and behaves by default but feel free to customize it using css or by passing predefined classes. You can also define your own template for the columns.</p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"columnSettingsExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','#myTable','#columnSettings']\" [source]=\"'child'\" [target]=\"columnSettingsExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'change-column-settings.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/change-column-settings/change-column-settings.component.ts'\r\n  }]\">\r\n    <button class=\"btn-link\" (click)=\"columnSettings.toggleColumnSettings()\"> {{columnSettings.active ? 'Hide column settings':'Show column settings'}}</button>\r\n    <gt-column-settings [genericTable]=\"myTable\" #columnSettings>\r\n      <div class=\"table-responsive\">\r\n        <generic-table [gtClasses]=\"'table-hover'\" #myTable [gtSettings]=\"firstConfigObject.settings\" [gtFields]=\"firstConfigObject.fields\" [gtData]=\"firstConfigObject.data\" [gtOptions]=\"{numberOfRows:5}\"></generic-table>\r\n      </div>\r\n      <div class=\"text-center\">\r\n        <gt-pagination [gtClasses]=\"'justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n      </div>\r\n    </gt-column-settings>\r\n\r\n  </div>\r\n  <div class=\"card-footer\" #columnSettingsExample></div>\r\n</div>\r\n\r\n<h5>Customize</h5>\r\n<p>Pass your own template for columns and change texts and css/classes for a custom look and feel.</p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"columnSettingsTemplateExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','gtColumnItem','#myCustomTable','[ngClass]','#customColumnSettings','gtTexts','gtHeaderClasses','gtWrapperClasses']\" [source]=\"'child'\" [target]=\"columnSettingsTemplateExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'change-column-settings.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/change-column-settings/change-column-settings.component.ts'\r\n  }]\">\r\n    <ng-template #gtColumnItem let-column let-index=\"index\" let-name=\"name\">\r\n      <div class=\"btn-group btn-group-sm mb-1 col-12 p-0\" role=\"group\">\r\n        <button type=\"button\" class=\"btn w-100\" [ngClass]=\"{'btn-primary':column.visible !== false, 'btn-secondary':column.visible === false}\" style=\"cursor: move;\">{{index}}: {{name}}</button>\r\n        <button type=\"button\" class=\"btn w-100\" [ngClass]=\"{'btn-outline-primary':column.visible !== false, 'btn-outline-secondary':column.visible === false}\" (click)=\"customColumnSettings.toggleColumnVisibility(column)\" style=\"cursor: pointer;\">{{column.visible !== false ? 'visible':'hidden'}}</button>\r\n      </div>\r\n    </ng-template>\r\n    <button class=\"btn-link\" (click)=\"customColumnSettings.toggleColumnSettings()\"> {{customColumnSettings.active ? 'Hide column settings':'Show column settings'}}</button>\r\n    <gt-column-settings [genericTable]=\"myCustomTable\" #customColumnSettings [gtColumnItem]=\"gtColumnItem\" [gtTexts]=\"{help:'Click to toggle column visibility, drag to reorder.'}\" [gtHeaderClasses]=\"'px-3 pt-3 pb-2 bg-light'\" [gtWrapperClasses]=\"'px-3 pb-2 bg-light h-50'\">\r\n      <div class=\"table-responsive\">\r\n        <generic-table [gtClasses]=\"'table-hover'\" #myCustomTable [gtSettings]=\"secondConfigObject.settings\" [gtFields]=\"secondConfigObject.fields\" [gtData]=\"secondConfigObject.data\"></generic-table>\r\n      </div>\r\n      <div class=\"text-center\">\r\n        <gt-pagination [gtClasses]=\"'justify-content-center'\" [genericTable]=\"myCustomTable\"></gt-pagination>\r\n      </div>\r\n    </gt-column-settings>\r\n  </div>\r\n  <div class=\"card-footer\" #columnSettingsTemplateExample></div>\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -6922,7 +7060,7 @@ ChangeColumnSettingsComponent = __decorate([
 /***/ "../../../../../src/app/column-click/column-click.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Column click</h2>\n<p>This examples uses column click function to re-order rows, but you could call any function you like and apply your own style if you want something else than a regular button.</p>\n<div class=\"card mb-5\">\n  <div class=\"card-header\">Example</div>\n  <div class=\"card-body\" exemplify=\"columnClickExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','#myTable','ngModel','[ngClass]','#columnSettings','gtEvent']\" [source]=\"'child'\" [target]=\"columnClickExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\n    name:'app.module.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\n  },{\n    name:'column-click.component.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/column-click/column-click.component.ts'\n  }]\">\n    <div class=\"table-responsive\">\n      <generic-table [gtClasses]=\"'table-hover'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\"></generic-table>\n    </div>\n    <div class=\"text-center\">\n      <gt-pagination [gtClasses]=\"'justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\n    </div>\n  </div>\n  <div class=\"card-footer\" #columnClickExample>\n  </div>\n</div>\n\n"
+module.exports = "<h2>Column click</h2>\r\n<p>This examples uses column click function to re-order rows, but you could call any function you like and apply your own style if you want something else than a regular button.</p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"columnClickExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','#myTable','ngModel','[ngClass]','#columnSettings','gtEvent']\" [source]=\"'child'\" [target]=\"columnClickExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'column-click.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/column-click/column-click.component.ts'\r\n  }]\">\r\n    <div class=\"table-responsive\">\r\n      <generic-table [gtClasses]=\"'table-hover'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\"></generic-table>\r\n    </div>\r\n    <div class=\"text-center\">\r\n      <gt-pagination [gtClasses]=\"'justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n    </div>\r\n  </div>\r\n  <div class=\"card-footer\" #columnClickExample>\r\n  </div>\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -6982,14 +7120,14 @@ var ColumnClickComponent = (function () {
                     objectKey: 'lucky_number'
                 }, {
                     name: '',
-                    classNames: 'gt-button',
+                    columnClass: 'gt-button',
                     objectKey: 'move_up',
                     value: function () { return 'up'; },
                     render: function (row) { return '<button class="btn btn-sm btn-primary ' + (row.order === 1 ? 'disabled' : '') + '"><i class="fa fa-arrow-up"></i></button>'; },
                     click: function (row) { return _this.move(row); }
                 }, {
                     name: '',
-                    classNames: 'gt-button',
+                    columnClass: 'gt-button',
                     objectKey: 'move_down',
                     value: function () { return 'down'; },
                     render: function (row) { return '<button class="btn btn-sm btn-primary ' + (row.order === _this.configObject.data.length ? 'disabled' : '') + '"><i class="fa fa-arrow-down"></i></button>'; },
@@ -7152,7 +7290,7 @@ var _a;
 /***/ "../../../../../src/app/custom-column/custom-column.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Custom columns</h2>\n<p>Table using two custom column widgets, as well as external state tracking.</p>\n<div class=\"card mb-5\">\n  <div class=\"card-header\">Example</div>\n  <div class=\"card-body\" exemplify=\"customColumnsExample\" [context]=\"this\"\n       [escapeStrings]=\"['gtSettings','gtFields','gtData','gtClasses']\"\n       [source]=\"'child'\" [target]=\"customColumnsExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\n    name: 'app.module.ts',\n    src: 'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\n  },\n  {\n    name: 'custom-column.component.ts',\n    src: 'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/custom-column/custom-column.component.ts'\n  }]\">\n    <generic-table [gtSettings]=\"gtConfig.settings\"\n                   [gtFields]=\"gtConfig.fields\"\n                   [gtData]=\"gtConfig.data\"\n                   [gtClasses]=\"'table-sm'\"></generic-table>\n    <button type=\"button\" class=\"btn btn-primary btn-sm float-right\" (click)=\"saveAll()\">Save All</button>\n  </div>\n  <div class=\"card-footer\" #customColumnsExample></div>\n</div>\n"
+module.exports = "<h2>Custom columns</h2>\r\n<p>Table using two custom column widgets, as well as external state tracking.</p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"customColumnsExample\" [context]=\"this\"\r\n       [escapeStrings]=\"['gtSettings','gtFields','gtData','gtClasses']\"\r\n       [source]=\"'child'\" [target]=\"customColumnsExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name: 'app.module.ts',\r\n    src: 'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },\r\n  {\r\n    name: 'custom-column.component.ts',\r\n    src: 'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/custom-column/custom-column.component.ts'\r\n  }]\">\r\n    <generic-table [gtSettings]=\"gtConfig.settings\"\r\n                   [gtFields]=\"gtConfig.fields\"\r\n                   [gtData]=\"gtConfig.data\"\r\n                   [gtClasses]=\"'table-sm'\"></generic-table>\r\n    <button type=\"button\" class=\"btn btn-primary btn-sm float-right\" (click)=\"saveAll()\">Save All</button>\r\n  </div>\r\n  <div class=\"card-footer\" #customColumnsExample></div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -7411,7 +7549,7 @@ var CustomColumnComponent = (function () {
                     objectKey: 'save',
                     name: '',
                     value: function () { return ''; },
-                    classNames: 'text-right',
+                    columnClass: 'text-right',
                     render: function () { return '<button type="button" class="btn btn-primary btn-sm">Save</button>'; },
                     click: function (row) { return _this.stateService.states
                         .take(1)
@@ -7639,7 +7777,7 @@ HomeComponent = __decorate([
 /***/ "../../../../../src/app/inline-editing/inline-editing.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Inline editing</h2>\n<p>Table with simple inline editing. Edit cells using input field or select a value from a dropdown.</p>\n<div class=\"alert alert-info\">Please note that this example only persists changes in memory so the data will be reset when component is reinitialized e.g when route changes or page is refreshed.</div>\n<div class=\"card mb-5\">\n  <div class=\"card-header\">Example</div>\n  <div class=\"card-body\" exemplify=\"inlineEditExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']\" [source]=\"'child'\" [target]=\"inlineEditExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\n    name:'app.module.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\n  },{\n    name:'inline-editing.component.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/inline-editing/inline-editing.component.ts'\n  }]\">\n    <ng-container *ngIf=\"myTable.hasEdits\">\n      <button class=\"btn btn-sm btn-outline-primary mb-3\" (click)=\"myTable.inlineEditCancel()\">Cancel edit</button>\n      <button class=\"btn btn-sm btn-primary mb-3\" (click)=\"myTable.inlineEditUpdate()\">Save changes</button>\n    </ng-container>\n    <div class=\"table-responsive\">\n      <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\" (gtEvent)=\"trigger($event)\"></generic-table>\n    </div>\n    <div class=\"text-center\">\n      <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\n      <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\n    </div>\n    <div class=\"alert alert-info\" *ngIf=\"updatedRow\">\n      <div><strong>From:</strong> {{updatedRow?.oldValue | json}}</div>\n      <div><strong>To:</strong> {{updatedRow?.newValue | json}}</div>\n      <div><strong>Original:</strong> {{updatedRow?.originalValue | json}}</div>\n    </div>\n\n  </div>\n  <div class=\"card-footer\" #inlineEditExample></div>\n</div>\n\n"
+module.exports = "<h2>Inline editing</h2>\r\n<p>Table with simple inline editing. Edit cells using input field or select a value from a dropdown.</p>\r\n<div class=\"alert alert-info\">Please note that this example only persists changes in memory so the data will be reset when component is reinitialized e.g when route changes or page is refreshed.</div>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"inlineEditExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']\" [source]=\"'child'\" [target]=\"inlineEditExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'inline-editing.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/inline-editing/inline-editing.component.ts'\r\n  }]\">\r\n    <ng-container *ngIf=\"myTable.hasEdits\">\r\n      <button class=\"btn btn-sm btn-outline-primary mb-3\" (click)=\"myTable.inlineEditCancel()\">Cancel edit</button>\r\n      <button class=\"btn btn-sm btn-primary mb-3\" (click)=\"myTable.inlineEditUpdate()\">Save changes</button>\r\n    </ng-container>\r\n    <div class=\"table-responsive\">\r\n      <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\" (gtEvent)=\"trigger($event)\"></generic-table>\r\n    </div>\r\n    <div class=\"text-center\">\r\n      <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\r\n      <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n    </div>\r\n    <div class=\"alert alert-info\" *ngIf=\"updatedRow\">\r\n      <div><strong>From:</strong> {{updatedRow?.oldValue | json}}</div>\r\n      <div><strong>To:</strong> {{updatedRow?.newValue | json}}</div>\r\n      <div><strong>Original:</strong> {{updatedRow?.originalValue | json}}</div>\r\n    </div>\r\n\r\n  </div>\r\n  <div class=\"card-footer\" #inlineEditExample></div>\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -8029,7 +8167,7 @@ InlineEditingComponent = __decorate([
 /***/ "../../../../../src/app/lazy/lazy.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Lazy loading</h2>\n<p>Use lazy loading to speed things up when working with large data sets and cache data in the table if you want to avoid unnecessary server requests. This example also utilizes column stacking on tablets and mobile devices so resize the browser and see what happens with the layout on smaller screens.</p>\n<div class=\"card mb-5\">\n  <div class=\"card-header\">Example</div>\n  <div class=\"card-body\" exemplify=\"lazyExample\" [context]=\"this\" [escapeStrings]=\"escape\" [source]=\"'child'\" [target]=\"lazyExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\n    name:'app.module.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\n  },{\n    name:'lazy.component.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/lazy/lazy.component.ts'\n  }]\">\n    <form class=\"form form-inline mb-4\">\n      <label for=\"highlight_input\" class=\"form-control-label mr-sm-2\">Search</label>\n      <input id=\"highlight_input\" class=\"form-control form-control-sm mb-2 mr-sm-2 mb-sm-0\" value=\"al\" disabled placeholder=\"Search\"/>\n      <label class=\"form-control-label mr-sm-2\">Visible columns:</label>\n      <div class=\"form-check form-check-inline ml-0 mr-sm-2\" *ngFor=\"let column of configObject.settings\">\n        <label class=\"form-check-label\">\n          <input type=\"checkbox\" name=\"{{column.objectKey}}\" class=\"form-check-input\" [(ngModel)]=\"column.visible\" (change)=\"myTable.redraw()\">\n          {{configObject.fields | gtProperty:column.objectKey:'name'}}\n        </label>\n      </div>\n      <small class=\"form-text text-muted\"><gt-table-info [genericTable]=\"myTable\"></gt-table-info></small>\n      <small class=\"form-text text-muted mb-2\">\n        Please note that the mock service currently doesn't support search, this is why this example has a fixed search string (just to show the highlight feature together with lazy load). Do the search server-side and return search terms in your response. Separate multiple search terms with a space [ ] or match whole phrase by putting them within quotes [\"].\n      </small>\n      <button class=\"btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0\" (click)=\"myTable.selectAllRows()\">Select all</button>\n      <button class=\"btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0\" (click)=\"myTable.deselectAllRows()\">Deselect all</button>\n      <button class=\"btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0\" (click)=\"myTable.expandAllRows()\">Expand all</button>\n      <button class=\"btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0\" (click)=\"myTable.collapseAllRows()\">Collapse all</button>\n    </form>\n    <generic-table [gtClasses]=\"'table-hover'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [(gtData)]=\"configObject.data\" [gtInfo]=\"configObject.info\" [gtRowComponent]=\"expandedRow\" (gtEvent)=\"trigger($event)\" [gtOptions]=\"{stack:true, highlightSearch:true, lazyLoad:true, rowSelection:true}\"></generic-table>\n    <div class=\"text-center\">\n      <gt-pagination [gtClasses]=\"'justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\n    </div>\n  </div>\n  <div class=\"card-footer\" #lazyExample>\n  </div>\n</div>\n"
+module.exports = "<h2>Lazy loading</h2>\r\n<p>Use lazy loading to speed things up when working with large data sets and cache data in the table if you want to avoid unnecessary server requests. This example also utilizes column stacking on tablets and mobile devices so resize the browser and see what happens with the layout on smaller screens.</p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"lazyExample\" [context]=\"this\" [escapeStrings]=\"escape\" [source]=\"'child'\" [target]=\"lazyExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'lazy.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/lazy/lazy.component.ts'\r\n  }]\">\r\n    <form class=\"form form-inline mb-4\">\r\n      <label for=\"highlight_input\" class=\"form-control-label mr-sm-2\">Search</label>\r\n      <input id=\"highlight_input\" class=\"form-control form-control-sm mb-2 mr-sm-2 mb-sm-0\" value=\"al\" disabled placeholder=\"Search\"/>\r\n      <label class=\"form-control-label mr-sm-2\">Visible columns:</label>\r\n      <div class=\"form-check form-check-inline ml-0 mr-sm-2\" *ngFor=\"let column of configObject.settings\">\r\n        <label class=\"form-check-label\">\r\n          <input type=\"checkbox\" name=\"{{column.objectKey}}\" class=\"form-check-input\" [(ngModel)]=\"column.visible\" (change)=\"myTable.redraw()\">\r\n          {{configObject.fields | gtProperty:column.objectKey:'name'}}\r\n        </label>\r\n      </div>\r\n      <small class=\"form-text text-muted\"><gt-table-info [genericTable]=\"myTable\"></gt-table-info></small>\r\n      <small class=\"form-text text-muted mb-2\">\r\n        Please note that the mock service currently doesn't support search, this is why this example has a fixed search string (just to show the highlight feature together with lazy load). Do the search server-side and return search terms in your response. Separate multiple search terms with a space [ ] or match whole phrase by putting them within quotes [\"].\r\n      </small>\r\n      <button class=\"btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0\" (click)=\"myTable.selectAllRows()\">Select all</button>\r\n      <button class=\"btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0\" (click)=\"myTable.deselectAllRows()\">Deselect all</button>\r\n      <button class=\"btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0\" (click)=\"myTable.expandAllRows()\">Expand all</button>\r\n      <button class=\"btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0\" (click)=\"myTable.collapseAllRows()\">Collapse all</button>\r\n    </form>\r\n    <generic-table [gtClasses]=\"'table-hover'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [(gtData)]=\"configObject.data\" [gtInfo]=\"configObject.info\" [gtRowComponent]=\"expandedRow\" (gtEvent)=\"trigger($event)\" [gtOptions]=\"{stack:true, highlightSearch:true, lazyLoad:true, rowSelection:true}\"></generic-table>\r\n    <div class=\"text-center\">\r\n      <gt-pagination [gtClasses]=\"'justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n    </div>\r\n  </div>\r\n  <div class=\"card-footer\" #lazyExample>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -8078,13 +8216,14 @@ var LazyComponent = (function () {
         };
         this.getData = function (pageCurrent, recordLength) {
             var _this = this;
-            var params = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpParams */]();
-            params.set('page', pageCurrent);
-            params.set('per_page', recordLength);
+            var params = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpParams */]()
+                .set('page', pageCurrent)
+                .set('per_page', recordLength);
             // if we have an ongoing request cancel it
             if (typeof this.req !== 'undefined') {
                 this.req.unsubscribe();
             }
+            console.log(params);
             // create a new request
             this.req = this.http.get(this.url, {
                 params: params
@@ -8132,7 +8271,7 @@ var LazyComponent = (function () {
                     name: 'Id',
                     objectKey: 'id',
                     expand: true,
-                    classNames: 'clickable'
+                    columnClass: 'clickable'
                 }, {
                     name: 'Name',
                     objectKey: 'name',
@@ -8144,8 +8283,8 @@ var LazyComponent = (function () {
                 }, {
                     name: 'Favorite color',
                     objectKey: 'favorite_color',
-                    classNames: 'text-xs-right',
-                    render: function (row) { return '<div style="float:right;width:15px;height:15px;border-radius:50%;background: ' + row.favorite_color + '"></div>'; },
+                    columnClass: 'text-right',
+                    render: function (row) { return '<div class="float-right" style="width:15px;height:15px;border-radius:50%;background: ' + row.favorite_color + '"></div>'; },
                     click: function (row) { return console.log(row.first_name + '\'s favorite color is: ' + row.favorite_color); }
                 }, {
                     name: 'Gender',
@@ -8185,7 +8324,7 @@ var _a, _b;
 /***/ "../../../../../src/app/localization/localization.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>{{ 'TRANSLATIONS.TITLE' | translate }}</h2>\n<p [innerHTML]=\"'TRANSLATIONS.DESCRIPTION' | translate\"></p>\n<div class=\"card mb-5\">\n  <div class=\"card-header\">{{'TRANSLATIONS.EXAMPLE' | translate}}</div>\n  <div class=\"card-body\" exemplify=\"localizationExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','[gtTexts]','#langSelect','#myTable']\" [source]=\"'child'\" [target]=\"translationsExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\n    name:'app.module.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\n  },{\n    name:'localization.component.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/localization/localization.component.ts'\n  }]\">\n    <form class=\"form form-inline mb-4\">\n      <label for=\"language\" class=\"form-control-label mr-sm-2\">{{ 'TRANSLATIONS.SELECT' | translate }}</label>\n      <select id=\"language\" class=\"form-control form-control-sm mb-2 mr-sm-2 mb-lg-0\" #langSelect (change)=\"translate.use(langSelect.value)\">\n        <option *ngFor=\"let lang of translate.getLangs()\" [value]=\"lang\" [selected]=\"lang === translate.currentLang\">{{ lang }}</option>\n      </select>\n    </form>\n    <ng-template [ngIf]=\"configObject\">\n      <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtTexts]=\"translations\" [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\"></generic-table>\n      <div class=\"text-center\">\n        <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\n        <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\n      </div>\n    </ng-template>\n  </div>\n  <div class=\"card-footer\" #translationsExample></div>\n</div>\n"
+module.exports = "<h2>{{ 'TRANSLATIONS.TITLE' | translate }}</h2>\r\n<p [innerHTML]=\"'TRANSLATIONS.DESCRIPTION' | translate\"></p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">{{'TRANSLATIONS.EXAMPLE' | translate}}</div>\r\n  <div class=\"card-body\" exemplify=\"localizationExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','[gtTexts]','#langSelect','#myTable']\" [source]=\"'child'\" [target]=\"translationsExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'localization.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/localization/localization.component.ts'\r\n  }]\">\r\n    <form class=\"form form-inline mb-4\">\r\n      <label for=\"language\" class=\"form-control-label mr-sm-2\">{{ 'TRANSLATIONS.SELECT' | translate }}</label>\r\n      <select id=\"language\" class=\"form-control form-control-sm mb-2 mr-sm-2 mb-lg-0\" #langSelect (change)=\"translate.use(langSelect.value)\">\r\n        <option *ngFor=\"let lang of translate.getLangs()\" [value]=\"lang\" [selected]=\"lang === translate.currentLang\">{{ lang }}</option>\r\n      </select>\r\n    </form>\r\n    <ng-template [ngIf]=\"configObject\">\r\n      <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtTexts]=\"translations\" [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\"></generic-table>\r\n      <div class=\"text-center\">\r\n        <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\r\n        <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n      </div>\r\n    </ng-template>\r\n  </div>\r\n  <div class=\"card-footer\" #translationsExample></div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -8688,7 +8827,7 @@ var _a;
 /***/ "../../../../../src/app/menu/menu.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h5>Angular generic table</h5>\n<ul class=\"navbar-nav mb-4\">\n  <li class=\"nav-item\">\n    <a class=\"nav-link\" routerLink=\"/start\" routerLinkActive=\"active\">Getting started</a>\n  </li>\n  <li class=\"nav-item\">\n    <a class=\"nav-link\" href=\"https://github.com/hjalmers/angular-generic-table/releases\" target=\"_blank\">Release notes</a>\n  </li>\n</ul>\n<h5>Core</h5>\n<ul class=\"navbar-nav mb-4\">\n  <li class=\"nav-item\">\n    <a class=\"nav-link\" routerLink=\"/basic\" routerLinkActive=\"active\">Basic example</a>\n  </li>\n  <li class=\"nav-item\">\n    <a class=\"nav-link\" routerLink=\"/advanced\" routerLinkActive=\"active\">Advanced example</a>\n  </li>\n  <li class=\"nav-item\">\n    <a class=\"nav-link\" routerLink=\"/column-click\" routerLinkActive=\"active\">Column click example</a>\n  </li>\n  <!--<li class=\"nav-item\">\n    <a class=\"nav-link\" routerLink=\"/record-selection\" routerLinkActive=\"active\">Record selection</a>\n  </li>-->\n  <li class=\"nav-item\">\n    <a class=\"nav-link\" routerLink=\"/totals\" routerLinkActive=\"active\">Totals example</a>\n  </li>\n  <li class=\"nav-item\">\n    <a class=\"nav-link\" routerLink=\"/localization\" routerLinkActive=\"active\">Localization</a>\n  </li>\n  <li class=\"nav-item\">\n    <a class=\"nav-link\" routerLink=\"/lazy\" routerLinkActive=\"active\">Lazy loading</a>\n  </li>\n  <li class=\"nav-item\">\n    <a class=\"nav-link\" routerLink=\"/inline-editing\" routerLinkActive=\"active\">Inline editing</a>\n  </li>\n  <li class=\"nav-item\">\n    <a class=\"nav-link\" routerLink=\"/add-remove-edit\" routerLinkActive=\"active\">Add, remove and edit rows</a>\n  </li>\n  <li class=\"nav-item\">\n     <a class=\"nav-link\" routerLink=\"/custom-column\" routerLinkActive=\"active\">Custom component inside table cell</a>\n  </li>\n</ul>\n<h5>Column settings</h5>\n<ul class=\"navbar-nav\">\n  <li class=\"nav-item\">\n    <a class=\"nav-link\" routerLink=\"/column-settings-component\" routerLinkActive=\"active\">Column settings component</a>\n  </li>\n</ul>\n"
+module.exports = "<h5>Angular generic table</h5>\r\n<ul class=\"navbar-nav mb-4\">\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/start\" routerLinkActive=\"active\">Getting started</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" href=\"https://github.com/hjalmers/angular-generic-table/releases\" target=\"_blank\">Release notes</a>\r\n  </li>\r\n</ul>\r\n<h5>Core</h5>\r\n<ul class=\"navbar-nav mb-4\">\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/basic\" routerLinkActive=\"active\">Basic example</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/advanced\" routerLinkActive=\"active\">Advanced example</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/styling\" routerLinkActive=\"active\">Styling</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/column-click\" routerLinkActive=\"active\">Column click example</a>\r\n  </li>\r\n  <!--<li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/record-selection\" routerLinkActive=\"active\">Record selection</a>\r\n  </li>-->\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/totals\" routerLinkActive=\"active\">Totals example</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/localization\" routerLinkActive=\"active\">Localization</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/lazy\" routerLinkActive=\"active\">Lazy loading</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/inline-editing\" routerLinkActive=\"active\">Inline editing</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/add-remove-edit\" routerLinkActive=\"active\">Add, remove and edit rows</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n     <a class=\"nav-link\" routerLink=\"/custom-column\" routerLinkActive=\"active\">Custom component inside table cell</a>\r\n  </li>\r\n</ul>\r\n<h5>Column settings</h5>\r\n<ul class=\"navbar-nav\">\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/column-settings-component\" routerLinkActive=\"active\">Column settings component</a>\r\n  </li>\r\n</ul>\r\n"
 
 /***/ }),
 
@@ -8749,7 +8888,7 @@ MenuComponent = __decorate([
 /***/ "../../../../../src/app/record-selection/record-selection.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Basic</h2>\n<p>Table with static data and simple pagination.</p>\n<div class=\"card mb-5\">\n  <div class=\"card-header\">Example</div>\n  <div class=\"card-body\" exemplify=\"basicExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']\" [source]=\"'child'\" [target]=\"basicExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\n    name:'app.module.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\n  },{\n    name:'record-selection.component.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/record-selection/record-selection.component.ts'\n  }]\">\n    <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [(gtData)]=\"configObject.data\" [gtOptions]=\"{rowSelection:true}\"></generic-table>\n    <div class=\"text-center\">\n      <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\n      <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\n    </div>\n  </div>\n  <div class=\"card-footer\" #basicExample></div>\n</div>\n"
+module.exports = "<h2>Basic</h2>\r\n<p>Table with static data and simple pagination.</p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"basicExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']\" [source]=\"'child'\" [target]=\"basicExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'record-selection.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/record-selection/record-selection.component.ts'\r\n  }]\">\r\n    <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [(gtData)]=\"configObject.data\" [gtOptions]=\"{rowSelection:true}\"></generic-table>\r\n    <div class=\"text-center\">\r\n      <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\r\n      <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n    </div>\r\n  </div>\r\n  <div class=\"card-footer\" #basicExample></div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -9233,7 +9372,7 @@ var _a;
 /***/ "../../../../../src/app/rest/rest.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Advanced</h2>\n<p>Fetch data using REST-service, expand rows and display a custom component, use custom functions for rendering, sorting and exporting. Apply predefined filter and simple function for adding new random data to table. To control columns we use the <code><a routerLink=\"/column-settings-component\">ColumnSettingsComponent</a></code>. This example also utilizes column stacking on tablets and mobile devices so resize the browser and see what happens with the layout on smaller screens.</p>\n<div class=\"card mb-5\">\n  <div class=\"card-header\">Example</div>\n  <div class=\"card-body\" exemplify=\"restExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','#myTable','ngModel','[ngClass]','#columnSettings','gtEvent']\" [source]=\"'child'\" [target]=\"restExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\n    name:'app.module.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\n  },{\n    name:'rest.component.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/rest/rest.component.ts'\n  }]\">\n    <form class=\"form form-inline mb-4\">\n      <label for=\"rows\" class=\"form-control-label mr-sm-2\">Rows</label>\n      <select id=\"rows\" class=\"form-control form-control-sm mr-sm-2 mb-3 mb-sm-0\" #rowLength (change)=\"myTable.changeRowLength(rowLength.value)\">\n        <option value=10>10</option>\n        <option value=25>25</option>\n        <option value=50>50</option>\n        <option value=100>100</option>\n      </select>\n      <input class=\"form-control form-control-sm mr-sm-2 mb-3 mb-sm-0\" #search (keyup)=\"myTable.gtSearch(search.value)\" placeholder=\"Search\"/>\n      <div ngbDropdown class=\"col-12 col-sm-auto mr-sm-3 mb-3 mb-sm-0 p-0\">\n        <button class=\"btn btn-sm btn-primary w-100\" id=\"actions\" ngbDropdownToggle>Actions</button>\n        <div ngbDropdownMenu aria-labelledby=\"actions\">\n          <button class=\"dropdown-item\" (click)=\"applyFilter();\">Apply predefined filter</button>\n          <button class=\"dropdown-item\" (click)=\"myTable.gtClearFilter()\">Remove filter</button>\n          <button class=\"dropdown-item\" (click)=\"addData()\">Add data</button>\n          <button class=\"dropdown-item\" (click)=\"showColumnControls = !showColumnControls\">Toggle columns</button>\n          <button class=\"dropdown-item\" (click)=\"myTable.exportCSV()\">Export to CSV</button>\n          <button class=\"dropdown-item\" (click)=\"myTable.selectAllRows()\">Select all</button>\n          <button class=\"dropdown-item\" (click)=\"myTable.deselectAllRows()\">Deselect all</button>\n          <button class=\"dropdown-item\" (click)=\"myTable.expandAllRows()\">Expand all</button>\n          <button class=\"dropdown-item\" (click)=\"myTable.collapseAllRows()\">Collapse all</button>\n          <!--<button class=\"dropdown-item\" (click)=\"getData()\">Refresh data</button>-->\n        </div>\n      </div>\n      <small class=\"form-text text-muted col-12 col-xl-auto mb-2 mt-lg-2 my-xl-auto row\"><gt-table-info [genericTable]=\"myTable\"></gt-table-info> Number of selected rows: {{selectedRows}}</small>\n      <div *ngIf=\"showColumnControls\" class=\"col-12 row mt-xl-2\">\n        <label class=\"form-control-label mr-sm-2\">Visible columns:</label>\n        <div class=\"form-check form-check-inline ml-0 ml-sm-2\" *ngFor=\"let column of configObject.settings\">\n          <label class=\"form-check-label\">\n            <input type=\"checkbox\" name=\"{{column.objectKey}}\" class=\"form-check-input\" [(ngModel)]=\"column.visible\" (change)=\"myTable.redraw()\">\n            {{configObject.fields | gtProperty:column.objectKey:'name'}}\n          </label>\n        </div>\n      </div>\n    </form>\n    <button class=\"btn-link\" (click)=\"columnSettings.toggleColumnSettings()\"> {{columnSettings.active ? 'Hide column settings':'Show column settings'}}</button>\n    <gt-column-settings [genericTable]=\"myTable\" #columnSettings>\n      <div class=\"table-responsive\">\n        <generic-table [gtClasses]=\"'table-hover'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\" [gtRowComponent]=\"expandedRow\" [gtOptions]=\"{stack:true, highlightSearch:true, rowSelection:true}\" (gtEvent)=\"trigger($event)\"></generic-table>\n      </div>\n      <div class=\"text-center\">\n        <gt-pagination [gtClasses]=\"'justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\n      </div>\n    </gt-column-settings>\n  </div>\n  <div class=\"card-footer\" #restExample>\n  </div>\n</div>\n"
+module.exports = "<h2>Advanced</h2>\r\n<p>Fetch data using REST-service, expand rows and display a custom component, use custom functions for rendering, sorting and exporting. Apply predefined filter and simple function for adding new random data to table. To control columns we use the <code><a routerLink=\"/column-settings-component\">ColumnSettingsComponent</a></code>. This example also utilizes column stacking on tablets and mobile devices so resize the browser and see what happens with the layout on smaller screens.</p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"restExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','#myTable','ngModel','[ngClass]','#columnSettings','gtEvent']\" [source]=\"'child'\" [target]=\"restExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'rest.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/rest/rest.component.ts'\r\n  }]\">\r\n    <form class=\"form form-inline mb-4\">\r\n      <label for=\"rows\" class=\"form-control-label mr-sm-2\">Rows</label>\r\n      <select id=\"rows\" class=\"form-control form-control-sm mr-sm-2 mb-3 mb-sm-0\" #rowLength (change)=\"myTable.changeRowLength(rowLength.value)\">\r\n        <option value=10>10</option>\r\n        <option value=25>25</option>\r\n        <option value=50>50</option>\r\n        <option value=100>100</option>\r\n      </select>\r\n      <input class=\"form-control form-control-sm mr-sm-2 mb-3 mb-sm-0\" #search (keyup)=\"myTable.gtSearch(search.value)\" placeholder=\"Search\"/>\r\n      <div ngbDropdown class=\"col-12 col-sm-auto mr-sm-3 mb-3 mb-sm-0 p-0\">\r\n        <button class=\"btn btn-sm btn-primary w-100\" id=\"actions\" ngbDropdownToggle>Actions</button>\r\n        <div ngbDropdownMenu aria-labelledby=\"actions\">\r\n          <button class=\"dropdown-item\" (click)=\"applyFilter();\">Apply predefined filter</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.gtClearFilter()\">Remove filter</button>\r\n          <button class=\"dropdown-item\" (click)=\"addData()\">Add data</button>\r\n          <button class=\"dropdown-item\" (click)=\"showColumnControls = !showColumnControls\">Toggle columns</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.exportCSV()\">Export to CSV</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.selectAllRows()\">Select all</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.deselectAllRows()\">Deselect all</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.expandAllRows()\">Expand all</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.collapseAllRows()\">Collapse all</button>\r\n          <!--<button class=\"dropdown-item\" (click)=\"getData()\">Refresh data</button>-->\r\n        </div>\r\n      </div>\r\n      <small class=\"form-text text-muted col-12 col-xl-auto mb-2 mt-lg-2 my-xl-auto row\"><gt-table-info [genericTable]=\"myTable\"></gt-table-info> Number of selected rows: {{selectedRows}}</small>\r\n      <div *ngIf=\"showColumnControls\" class=\"col-12 row mt-xl-2\">\r\n        <label class=\"form-control-label mr-sm-2\">Visible columns:</label>\r\n        <div class=\"form-check form-check-inline ml-0 ml-sm-2\" *ngFor=\"let column of configObject.settings\">\r\n          <label class=\"form-check-label\">\r\n            <input type=\"checkbox\" name=\"{{column.objectKey}}\" class=\"form-check-input\" [(ngModel)]=\"column.visible\" (change)=\"myTable.redraw()\">\r\n            {{configObject.fields | gtProperty:column.objectKey:'name'}}\r\n          </label>\r\n        </div>\r\n      </div>\r\n    </form>\r\n    <button class=\"btn-link\" (click)=\"columnSettings.toggleColumnSettings()\"> {{columnSettings.active ? 'Hide column settings':'Show column settings'}}</button>\r\n    <gt-column-settings [genericTable]=\"myTable\" #columnSettings>\r\n      <div class=\"table-responsive\">\r\n        <generic-table [gtClasses]=\"'table-hover'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\" [gtRowComponent]=\"expandedRow\" [gtOptions]=\"{stack:true, highlightSearch:true, rowSelection:true}\" (gtEvent)=\"trigger($event)\"></generic-table>\r\n      </div>\r\n      <div class=\"text-center\">\r\n        <gt-pagination [gtClasses]=\"'justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n      </div>\r\n    </gt-column-settings>\r\n  </div>\r\n  <div class=\"card-footer\" #restExample>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -9352,27 +9491,27 @@ var RestComponent = (function () {
             fields: [{
                     name: 'Id',
                     objectKey: 'id',
-                    classNames: 'clickable sort-numeric',
+                    columnClass: 'clickable sort-numeric',
                     expand: true
                 }, {
                     name: 'Name',
                     objectKey: 'name',
-                    classNames: 'sort-string',
+                    columnClass: 'sort-string',
                     value: function (row) { return row.first_name + ' ' + row.last_name; },
                     render: function (row) { return '<div>' + row.first_name + ' ' + row.last_name + '</div>'; }
                 }, {
                     name: 'Favorite color',
                     objectKey: 'favorite_color',
-                    classNames: 'text-xs-right',
+                    columnClass: 'text-right',
                     render: function (row) { return '<div style="float:right;width:15px;height:15px;border-radius:50%;background: ' + row.favorite_color + '"></div>'; },
                     click: function (row) { return console.log(row.first_name + '\'s favorite color is: ' + row.favorite_color); }
                 }, {
                     name: 'Gender',
-                    classNames: 'sort-string',
+                    columnClass: 'sort-string',
                     objectKey: 'gender'
                 }, {
                     name: 'Email',
-                    classNames: 'sort-string',
+                    columnClass: 'sort-string',
                     objectKey: 'email',
                     render: function (row) { return '<a href="mailto:' + row.email + '">' + row.email + '</a>'; }
                 }],
@@ -9402,6 +9541,512 @@ RestComponent = __decorate([
 
 var _a, _b;
 //# sourceMappingURL=rest.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/styling/styling.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<h2>Styling</h2>\n<strong>Columns and rows</strong>\n<p>Since generic table uses standard html elements like <code>tr, td, th</code> etc. you can style it like you normally would style a table. In addition generic table supports conditional classes for both rows (tr elements) and individual columns (td elements).</p>\n<p>Pass either a function or a string to <code>rowClass</code> and/or <code>columnClass</code> in field declaration to add custom classes to rows and/or columns.</p>\n<p>The example below is not intended to be realistic or beautiful, it's just meant to show some of the things you can do with <code>rowClass</code> and <code>columnClass</code>. Note that <code>th</code> is passed as row property for the table header and <code>total</code> for total rows, something that's handy if you just want to apply styles to data rows.</p>\n<strong>Table element</strong>\n<p>Use <code>gtClasses</code> input to append class names to the table element.</p>\n<div class=\"alert alert-info my-4\">\n  <h4 class=\"alert-heading\">Using Bootstrap?</h4>\n  Bootstrap has a couple of pretty useful utility classes which works great with generic table, for example add the class <code>text-right</code> to <code>columnClass</code> to align the content of the column to the right, or maybe <code>d-none d-md-table-cell</code> to hide a column on small screens.</div>\n<div class=\"card mb-5\">\n  <div class=\"card-header\">Example</div>\n  <div class=\"card-body\" exemplify=\"stylingExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']\" [source]=\"'child'\" [target]=\"stylingExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\n    name:'app.module.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\n  },{\n    name:'styling.component.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/styling/styling.component.ts'\n  }]\">\n    <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtSettings]=\"configObject.settings\" [gtTotals]=\"configObject.totals\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\"></generic-table>\n    <div class=\"text-center\">\n      <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\n      <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\n    </div>\n  </div>\n  <div class=\"card-footer\" #stylingExample></div>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/styling/styling.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return StylingComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var StylingComponent = (function () {
+    function StylingComponent() {
+        this.data = [];
+        this.configObject = {
+            settings: [{
+                    objectKey: 'id',
+                    sort: 'asc',
+                    sortOrder: 1,
+                    columnOrder: 0
+                }, {
+                    objectKey: 'name',
+                    sort: 'asc',
+                    sortOrder: 0,
+                    columnOrder: 1
+                }, {
+                    objectKey: 'lucky_number',
+                    sort: 'enable',
+                    columnOrder: 2,
+                    visible: true
+                }],
+            fields: [{
+                    name: 'Id',
+                    objectKey: 'id',
+                    columnClass: 'd-none d-md-table-cell'
+                }, {
+                    name: 'Name',
+                    objectKey: 'name',
+                    columnClass: function (row, col) {
+                        switch (row) {
+                            case 'th':
+                                return 'bg-dark text-white';
+                            case 'total':
+                                return 'bg-primary text-white text-right';
+                            default:
+                                if (row.lucky_number < 25) {
+                                    return 'bg-white text-secondary';
+                                }
+                                else if (row.lucky_number < 50) {
+                                    return 'bg-light text-dark';
+                                }
+                                else if (row.lucky_number < 75) {
+                                    return 'bg-secondary text-white';
+                                }
+                                else {
+                                    return 'bg-dark text-white';
+                                }
+                        }
+                    }
+                }, {
+                    name: 'Lucky number',
+                    objectKey: 'lucky_number',
+                    rowClass: function (row, col) { return row.id === 1 ? 'bg-info text-white' : ''; },
+                    columnClass: 'text-right'
+                }],
+            totals: [{
+                    name: 'Sum of lucky numbers',
+                    fields: {
+                        lucky_number: function (rows, objectKey) {
+                            return rows
+                                .map(function (row) { return row.lucky_number; })
+                                .reduce(function (sum, value) {
+                                return (isNaN(sum) ? 0 : sum) + (isNaN(value) ? 0 : value);
+                            });
+                        }
+                    }
+                }],
+            data: [{
+                    'id': 1,
+                    'name': 'Anna',
+                    'lucky_number': 63
+                }, {
+                    'id': 2,
+                    'name': 'Julie',
+                    'lucky_number': 8
+                }, {
+                    'id': 3,
+                    'name': 'Lillian',
+                    'lucky_number': 30
+                }, {
+                    'id': 4,
+                    'name': 'Norma',
+                    'lucky_number': 13
+                }, {
+                    'id': 5,
+                    'name': 'Ralph',
+                    'lucky_number': 28
+                }, {
+                    'id': 6,
+                    'name': 'Benjamin',
+                    'lucky_number': 66
+                }, {
+                    'id': 7,
+                    'name': 'George',
+                    'lucky_number': 66
+                }, {
+                    'id': 8,
+                    'name': 'Ryan',
+                    'lucky_number': 65
+                }, {
+                    'id': 9,
+                    'name': 'Martha',
+                    'lucky_number': 57
+                }, {
+                    'id': 10,
+                    'name': 'Todd',
+                    'lucky_number': 65
+                }, {
+                    'id': 11,
+                    'name': 'Norma',
+                    'lucky_number': 73
+                }, {
+                    'id': 12,
+                    'name': 'Frank',
+                    'lucky_number': 27
+                }, {
+                    'id': 13,
+                    'name': 'Kathryn',
+                    'lucky_number': 93
+                }, {
+                    'id': 14,
+                    'name': 'Philip',
+                    'lucky_number': 63
+                }, {
+                    'id': 15,
+                    'name': 'Ronald',
+                    'lucky_number': 89
+                }, {
+                    'id': 16,
+                    'name': 'Joshua',
+                    'lucky_number': 18
+                }, {
+                    'id': 17,
+                    'name': 'Phillip',
+                    'lucky_number': 16
+                }, {
+                    'id': 18,
+                    'name': 'Susan',
+                    'lucky_number': 6
+                }, {
+                    'id': 19,
+                    'name': 'Louise',
+                    'lucky_number': 52
+                }, {
+                    'id': 20,
+                    'name': 'Gary',
+                    'lucky_number': 18
+                }, {
+                    'id': 21,
+                    'name': 'Laura',
+                    'lucky_number': 9
+                }, {
+                    'id': 22,
+                    'name': 'Tina',
+                    'lucky_number': 70
+                }, {
+                    'id': 23,
+                    'name': 'Jesse',
+                    'lucky_number': 2
+                }, {
+                    'id': 24,
+                    'name': 'Jessica',
+                    'lucky_number': 15
+                }, {
+                    'id': 25,
+                    'name': 'Scott',
+                    'lucky_number': 38
+                }, {
+                    'id': 26,
+                    'name': 'Michael',
+                    'lucky_number': 23
+                }, {
+                    'id': 27,
+                    'name': 'Harold',
+                    'lucky_number': 66
+                }, {
+                    'id': 28,
+                    'name': 'William',
+                    'lucky_number': 57
+                }, {
+                    'id': 29,
+                    'name': 'Harry',
+                    'lucky_number': 14
+                }, {
+                    'id': 30,
+                    'name': 'Dennis',
+                    'lucky_number': 9
+                }, {
+                    'id': 31,
+                    'name': 'Sara',
+                    'lucky_number': 9
+                }, {
+                    'id': 32,
+                    'name': 'David',
+                    'lucky_number': 31
+                }, {
+                    'id': 33,
+                    'name': 'Antonio',
+                    'lucky_number': 2
+                }, {
+                    'id': 34,
+                    'name': 'Anna',
+                    'lucky_number': 85
+                }, {
+                    'id': 35,
+                    'name': 'Earl',
+                    'lucky_number': 98
+                }, {
+                    'id': 36,
+                    'name': 'Melissa',
+                    'lucky_number': 70
+                }, {
+                    'id': 37,
+                    'name': 'Eric',
+                    'lucky_number': 94
+                }, {
+                    'id': 38,
+                    'name': 'Joe',
+                    'lucky_number': 42
+                }, {
+                    'id': 39,
+                    'name': 'Andrea',
+                    'lucky_number': 39
+                }, {
+                    'id': 40,
+                    'name': 'Michael',
+                    'lucky_number': 44
+                }, {
+                    'id': 41,
+                    'name': 'Lillian',
+                    'lucky_number': 10
+                }, {
+                    'id': 42,
+                    'name': 'Elizabeth',
+                    'lucky_number': 24
+                }, {
+                    'id': 43,
+                    'name': 'Ryan',
+                    'lucky_number': 78
+                }, {
+                    'id': 44,
+                    'name': 'Phillip',
+                    'lucky_number': 86
+                }, {
+                    'id': 45,
+                    'name': 'Patrick',
+                    'lucky_number': 64
+                }, {
+                    'id': 46,
+                    'name': 'Barbara',
+                    'lucky_number': 54
+                }, {
+                    'id': 47,
+                    'name': 'Patricia',
+                    'lucky_number': 9
+                }, {
+                    'id': 48,
+                    'name': 'Brenda',
+                    'lucky_number': 18
+                }, {
+                    'id': 49,
+                    'name': 'Sara',
+                    'lucky_number': 12
+                }, {
+                    'id': 50,
+                    'name': 'Steven',
+                    'lucky_number': 50
+                }, {
+                    'id': 51,
+                    'name': 'Steven',
+                    'lucky_number': 44
+                }, {
+                    'id': 52,
+                    'name': 'Paul',
+                    'lucky_number': 88
+                }, {
+                    'id': 53,
+                    'name': 'Ann',
+                    'lucky_number': 51
+                }, {
+                    'id': 54,
+                    'name': 'Frank',
+                    'lucky_number': 3
+                }, {
+                    'id': 55,
+                    'name': 'Beverly',
+                    'lucky_number': 10
+                }, {
+                    'id': 56,
+                    'name': 'Elizabeth',
+                    'lucky_number': 52
+                }, {
+                    'id': 57,
+                    'name': 'Patrick',
+                    'lucky_number': 96
+                }, {
+                    'id': 58,
+                    'name': 'Susan',
+                    'lucky_number': 92
+                }, {
+                    'id': 59,
+                    'name': 'Lawrence',
+                    'lucky_number': 53
+                }, {
+                    'id': 60,
+                    'name': 'Denise',
+                    'lucky_number': 65
+                }, {
+                    'id': 61,
+                    'name': 'Carol',
+                    'lucky_number': 33
+                }, {
+                    'id': 62,
+                    'name': 'Larry',
+                    'lucky_number': 95
+                }, {
+                    'id': 63,
+                    'name': 'Martha',
+                    'lucky_number': 32
+                }, {
+                    'id': 64,
+                    'name': 'Steve',
+                    'lucky_number': 69
+                }, {
+                    'id': 65,
+                    'name': 'Timothy',
+                    'lucky_number': 16
+                }, {
+                    'id': 66,
+                    'name': 'Jose',
+                    'lucky_number': 16
+                }, {
+                    'id': 67,
+                    'name': 'Jennifer',
+                    'lucky_number': 96
+                }, {
+                    'id': 68,
+                    'name': 'Benjamin',
+                    'lucky_number': 20
+                }, {
+                    'id': 69,
+                    'name': 'Christine',
+                    'lucky_number': 8
+                }, {
+                    'id': 70,
+                    'name': 'Timothy',
+                    'lucky_number': 93
+                }, {
+                    'id': 71,
+                    'name': 'Patricia',
+                    'lucky_number': 17
+                }, {
+                    'id': 72,
+                    'name': 'Craig',
+                    'lucky_number': 48
+                }, {
+                    'id': 73,
+                    'name': 'Philip',
+                    'lucky_number': 88
+                }, {
+                    'id': 74,
+                    'name': 'Lori',
+                    'lucky_number': 56
+                }, {
+                    'id': 75,
+                    'name': 'Janet',
+                    'lucky_number': 4
+                }, {
+                    'id': 76,
+                    'name': 'Denise',
+                    'lucky_number': 30
+                }, {
+                    'id': 77,
+                    'name': 'Elizabeth',
+                    'lucky_number': 44
+                }, {
+                    'id': 78,
+                    'name': 'Thomas',
+                    'lucky_number': 95
+                }, {
+                    'id': 79,
+                    'name': 'Shirley',
+                    'lucky_number': 24
+                }, {
+                    'id': 80,
+                    'name': 'Helen',
+                    'lucky_number': 9
+                }, {
+                    'id': 81,
+                    'name': 'Wanda',
+                    'lucky_number': 98
+                }, {
+                    'id': 82,
+                    'name': 'Ernest',
+                    'lucky_number': 35
+                }, {
+                    'id': 83,
+                    'name': 'Steven',
+                    'lucky_number': 9
+                }, {
+                    'id': 84,
+                    'name': 'Jose',
+                    'lucky_number': 27
+                }, {
+                    'id': 85,
+                    'name': 'Kimberly',
+                    'lucky_number': 52
+                }, {
+                    'id': 86,
+                    'name': 'Nancy',
+                    'lucky_number': 48
+                }, {
+                    'id': 87,
+                    'name': 'Christopher',
+                    'lucky_number': 44
+                }, {
+                    'id': 88,
+                    'name': 'Nancy',
+                    'lucky_number': 40
+                }, {
+                    'id': 89,
+                    'name': 'Philip',
+                    'lucky_number': 34
+                }, {
+                    'id': 90,
+                    'name': 'Bruce',
+                    'lucky_number': 69
+                }, {
+                    'id': 91,
+                    'name': 'Jason',
+                    'lucky_number': 60
+                }, {
+                    'id': 92,
+                    'name': 'Denise',
+                    'lucky_number': 30
+                }, {
+                    'id': 93,
+                    'name': 'Jane',
+                    'lucky_number': 66
+                }, {
+                    'id': 94,
+                    'name': 'Brian',
+                    'lucky_number': 49
+                }, {
+                    'id': 95,
+                    'name': 'Eugene',
+                    'lucky_number': 51
+                }, {
+                    'id': 96,
+                    'name': 'Jack',
+                    'lucky_number': 97
+                }, {
+                    'id': 97,
+                    'name': 'Peter',
+                    'lucky_number': 1
+                }, {
+                    'id': 98,
+                    'name': 'Virginia',
+                    'lucky_number': 20
+                }, {
+                    'id': 99,
+                    'name': 'Walter',
+                    'lucky_number': 63
+                }, {
+                    'id': 100,
+                    'name': 'Virginia',
+                    'lucky_number': 14
+                }]
+        };
+    }
+    return StylingComponent;
+}());
+StylingComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-styling',
+        template: __webpack_require__("../../../../../src/app/styling/styling.component.html")
+    }),
+    __metadata("design:paramtypes", [])
+], StylingComponent);
+
+//# sourceMappingURL=styling.component.js.map
 
 /***/ }),
 
