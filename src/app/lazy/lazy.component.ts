@@ -77,20 +77,20 @@ export class LazyComponent {
         name: 'Id',
         objectKey: 'id',
         expand: true,
-        classNames: 'clickable'
+        columnClass: 'clickable'
       }, {
         name: 'Name',
         objectKey: 'name',
         value: function(row){return row.first_name + ' ' + row.last_name; },
-        render: function(row){//if(row.first_name && row.last_name){
+        render: function(row){
           return '<div>' + row.first_name + ' ' + row.last_name + '</div>';
         },
         sort: function(row){return row.first_name + ' ' + row.last_name; }
       }, {
         name: 'Favorite color',
         objectKey: 'favorite_color',
-        classNames: 'text-xs-right',
-        render: function(row){return '<div style="float:right;width:15px;height:15px;border-radius:50%;background: ' + row.favorite_color + '"></div>'; },
+        columnClass: 'text-right',
+        render: function(row){return '<div class="float-right" style="width:15px;height:15px;border-radius:50%;background: ' + row.favorite_color + '"></div>'; },
         click: (row) => {return console.log(row.first_name + '\'s favorite color is: ' + row.favorite_color ); }
       }, {
         name: 'Gender',
@@ -106,20 +106,20 @@ export class LazyComponent {
   }
 
   public getData = function(pageCurrent, recordLength){
-    const params: HttpParams = new HttpParams();
-    params.set('page', pageCurrent);
-    params.set('per_page', recordLength);
+    const params = new HttpParams()
+        .set('page', pageCurrent)
+        .set('per_page', recordLength);
 
     // if we have an ongoing request cancel it
-    if (typeof this.req !== 'undefined'){
+    if (typeof this.req !== 'undefined') {
       this.req.unsubscribe();
     }
+    console.log(params);
 
     // create a new request
     this.req = this.http.get(this.url, {
         params: params
     })
-      //.map((res: Response) => res.json())
       .subscribe(res => {
         this.configObject.data = res.data;
         this.configObject.info = <GtInformation>res['paging'];
