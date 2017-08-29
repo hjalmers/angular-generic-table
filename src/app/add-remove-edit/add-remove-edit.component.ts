@@ -392,7 +392,7 @@ export class AddRemoveEditComponent implements AfterViewInit {
         }
       }, {
         name: '',
-        classNames: 'gt-button',
+        columnClass: 'gt-button',
         objectKey: 'delete_action',
         value: () => '',
         columnComponent: {
@@ -400,7 +400,7 @@ export class AddRemoveEditComponent implements AfterViewInit {
         }
       }, {
         name: '',
-        classNames: 'gt-button',
+        columnClass: 'gt-button',
         objectKey: 'edit_action',
         value: () => '',
         columnComponent: {

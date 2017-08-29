@@ -239,7 +239,7 @@ export class CustomColumnComponent {
       objectKey: 'save',
       name: '',
       value: () => '',
-      classNames: 'text-right',
+      columnClass: 'text-right',
       render: () => '<button type="button" class="btn btn-primary btn-sm">Save</button>',
       click: (row) => this.stateService.states
         .take(1)

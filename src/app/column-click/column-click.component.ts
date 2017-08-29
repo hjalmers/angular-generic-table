@@ -53,14 +53,14 @@ export class ColumnClickComponent {
         objectKey: 'lucky_number'
       }, {
         name: '',
-        classNames: 'gt-button',
+        columnClass: 'gt-button',
         objectKey: 'move_up',
         value: () => { return 'up'; },
         render: (row) => { return '<button class="btn btn-sm btn-primary ' + (row.order === 1 ? 'disabled' : '') + '"><i class="fa fa-arrow-up"></i></button>'; },
         click: (row) => { return this.move(row); }
       }, {
         name: '',
-        classNames: 'gt-button',
+        columnClass: 'gt-button',
         objectKey: 'move_down',
         value: () => { return 'down'; },
         render: (row) => { return '<button class="btn btn-sm btn-primary ' + (row.order === this.configObject.data.length ? 'disabled' : '') + '"><i class="fa fa-arrow-down"></i></button>'; },

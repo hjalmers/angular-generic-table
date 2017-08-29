@@ -64,27 +64,27 @@ export class RestComponent implements OnInit {
       fields: [{
         name: 'Id',
         objectKey: 'id',
-        classNames: 'clickable sort-numeric',
+        columnClass: 'clickable sort-numeric',
         expand: true
       }, {
         name: 'Name',
         objectKey: 'name',
-        classNames: 'sort-string',
+        columnClass: 'sort-string',
         value: function(row){return row.first_name + ' ' + row.last_name; },
         render: function(row){return '<div>' + row.first_name + ' ' + row.last_name + '</div>'; }
       }, {
         name: 'Favorite color',
         objectKey: 'favorite_color',
-        classNames: 'text-xs-right',
+        columnClass: 'text-right',
         render: function(row){return '<div style="float:right;width:15px;height:15px;border-radius:50%;background: ' + row.favorite_color + '"></div>'; },
         click: (row) => {return console.log(row.first_name + '\'s favorite color is: ' + row.favorite_color ); }
       }, {
         name: 'Gender',
-        classNames: 'sort-string',
+        columnClass: 'sort-string',
         objectKey: 'gender'
       }, {
         name: 'Email',
-        classNames: 'sort-string',
+        columnClass: 'sort-string',
         objectKey: 'email',
         render: function(row){return '<a href="mailto:' + row.email + '">' + row.email + '</a>'; }
       }],

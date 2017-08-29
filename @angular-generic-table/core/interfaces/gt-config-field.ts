@@ -16,6 +16,9 @@ export interface GtValueFunc<R extends GtRow> {
 export interface GtClickFunc<R extends GtRow> {
   (row: R, col: any, event: MouseEvent): void;
 }
+export interface GtClassFunc {
+    (row: any, col: any): string;
+}
 
 export interface GtConfigField<R extends GtRow, C extends GtCustomComponent<any>> {
   // name or label of field
@@ -27,6 +30,10 @@ export interface GtConfigField<R extends GtRow, C extends GtCustomComponent<any>
   objectKey: string;
   // custom class names for column
   classNames?: string;
+  // custom class names for row
+  rowClass?: string | GtClassFunc;
+  // custom class names for column
+  columnClass?: string | GtClassFunc;
   // custom column component and associated injector
   columnComponent?: { type: Type<C>, injector?: Injector };
   // custom function for column presentation

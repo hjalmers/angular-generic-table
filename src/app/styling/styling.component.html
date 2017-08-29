@@ -1,0 +1,27 @@
+<h2>Styling</h2>
+<strong>Columns and rows</strong>
+<p>Since generic table uses standard html elements like <code>tr, td, th</code> etc. you can style it like you normally would style a table. In addition generic table supports conditional classes for both rows (tr elements) and individual columns (td elements).</p>
+<p>Pass either a function or a string to <code>rowClass</code> and/or <code>columnClass</code> in field declaration to add custom classes to rows and/or columns.</p>
+<p>The example below is not intended to be realistic or beautiful, it's just meant to show some of the things you can do with <code>rowClass</code> and <code>columnClass</code>. Note that <code>th</code> is passed as row property for the table header and <code>total</code> for total rows, something that's handy if you just want to apply styles to data rows.</p>
+<strong>Table element</strong>
+<p>Use <code>gtClasses</code> input to append class names to the table element.</p>
+<div class="alert alert-info my-4">
+  <h4 class="alert-heading">Using Bootstrap?</h4>
+  Bootstrap has a couple of pretty useful utility classes which works great with generic table, for example add the class <code>text-right</code> to <code>columnClass</code> to align the content of the column to the right, or maybe <code>d-none d-md-table-cell</code> to hide a column on small screens.</div>
+<div class="card mb-5">
+  <div class="card-header">Example</div>
+  <div class="card-body" exemplify="basicExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']" [source]="'child'" [target]="basicExample" [navStyle]="'tabs'" [externalSources]="[{
+    name:'app.module.ts',
+    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
+  },{
+    name:'basic.component.ts',
+    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/basic/basic.component.ts'
+  }]">
+    <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtTotals]="configObject.totals" [gtFields]="configObject.fields" [gtData]="configObject.data"></generic-table>
+    <div class="text-center">
+      <small><gt-table-info class="form-text text-muted mb-2" [genericTable]="myTable"></gt-table-info></small>
+      <gt-pagination [gtClasses]="'pagination-sm justify-content-center'" [genericTable]="myTable"></gt-pagination>
+    </div>
+  </div>
+  <div class="card-footer" #basicExample></div>
+</div>

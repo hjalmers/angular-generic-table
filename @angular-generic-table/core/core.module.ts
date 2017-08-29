@@ -19,7 +19,8 @@ import {GtMetaPipe} from './pipes/gt-meta.pipe';
 import {GtDropdownComponent} from './components/gt-dropdown.component';
 import {GtTotalsPipe} from './pipes/gt-totals.pipe';
 import {GtTotalsPositionPipe} from './pipes/gt-totals-position.pipe';
-
+import {GtRowClassPipe} from './pipes/gt-row-class.pipe';
+import {GtColumnClassPipe} from './pipes/gt-column-class.pipe';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,8 @@ import {GtTotalsPositionPipe} from './pipes/gt-totals-position.pipe';
     GtMetaPipe,
     GtTotalsPipe,
     GtTotalsPositionPipe,
+    GtRowClassPipe,
+    GtColumnClassPipe,
     GtDropdownComponent
   ],
   imports: [CommonModule, FormsModule],

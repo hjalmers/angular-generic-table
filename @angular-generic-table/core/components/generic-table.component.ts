@@ -30,7 +30,7 @@ import {GtRenderField} from '../interfaces/gt-render-field';
             <tr>
                 <th class="gt-sort-label" *ngIf="gtOptions.stack">{{gtTexts.sortLabel}}</th>
                 <th *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe"
-                    ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{column.sortEnabled ? 'sort-'+column.sort:''}} {{column.sortEnabled && column.sortOrder >= 0  ? 'sort-order-'+column.sortOrder:''}}"
+                    ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{column.sortEnabled ? 'sort-'+column.sort:''}} {{column.sortEnabled && column.sortOrder >= 0  ? 'sort-order-'+column.sortOrder:''}} {{ gtFields | gtColumnClass:'th':column }}"
                     (click)="column.sortEnabled ? gtSort(column.objectKey,$event):'';">
                     {{gtFields | gtProperty:column.objectKey:'name'}}
                 </th>
@@ -41,8 +41,8 @@ import {GtRenderField} from '../interfaces/gt-render-field';
                 <thead class="gt-totals">
                 <tr *ngFor="let total of gtTotals | gtTotalsPosition">
                     <td *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;"
-                        ngClass="{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}">
-                        {{test}}<span *ngIf="i === 0" class="float-left">{{total.name}}</span><span
+                        ngClass="{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{ gtFields | gtColumnClass:'total':column }}">
+                        <span *ngIf="i === 0" class="float-left">{{total.name}}</span><span
                             [innerHTML]="total.fields[column.objectKey] | gtTotals:total.update === false ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals"></span>
                     </td>
                 </tr>
@@ -50,7 +50,7 @@ import {GtRenderField} from '../interfaces/gt-render-field';
                 <tfoot class="gt-totals">
                 <tr *ngFor="let total of gtTotals | gtTotalsPosition:'footer'">
                     <td *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;"
-                        ngClass="{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}}">
+                        ngClass="{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{ gtFields | gtColumnClass:'total':column }}">
                         <span *ngIf="i === 0" class="float-left">{{total.name}}</span><span
                             [innerHTML]="total.fields[column.objectKey] | gtTotals:total.update === false ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals"></span>
                     </td>
@@ -59,11 +59,11 @@ import {GtRenderField} from '../interfaces/gt-render-field';
             </ng-template>
             <tbody *ngIf="gtData && gtInfo">
             <ng-template class="table-rows" ngFor let-row
-                         [ngForOf]="gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1] | gtMeta:(gtInfo.pageCurrent-1):gtInfo.recordLength) : (gtData | gtMeta:null:null:gtData.length | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data)">
-                <tr [ngClass]="{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading, 'row-expandable':gtRowComponent}"
+                         [ngForOf]="gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1] | gtMeta:(gtInfo.pageCurrent-1):gtInfo.recordLength) : (gtData | gtMeta:null:null:gtData.length | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data | gtRowClass:gtFields)">
+                <tr [ngClass]="{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading, 'row-expandable':gtRowComponent}" class="{{row.$$gtRowClass}}"
                     (click)="gtOptions.rowSelection ? toggleSelect(row):null">
                     <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms;"
-                        ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{(gtFields | gtProperty:column.objectKey:'inlineEdit') ? 'gt-inline-edit':''}} {{column.edited ? 'gt-edited':''}}">
+                        ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{(gtFields | gtProperty:column.objectKey:'inlineEdit') ? 'gt-inline-edit':''}} {{column.edited ? 'gt-edited':''}} {{ gtFields | gtColumnClass:row:column }}">
                         <span class="gt-row-label"
                               *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading') ? (gtFields | gtProperty:column.objectKey:'stackedHeading') : (gtFields | gtProperty:column.objectKey:'name')}}</span>
                         <gt-custom-component-factory *ngIf="column.columnComponent" class="gt-row-content"
@@ -182,6 +182,13 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     }
     @Input() set gtFields(value: GtConfigField<R, any>[]) {
         this._gtFields = value;
+        const COLUMNS_WITH_CLASS_NAMES = this._gtFields
+            .map(column => column)
+            .filter(column => column.classNames);
+        // TODO: remove deprecated warning when setting has been removed
+        if (COLUMNS_WITH_CLASS_NAMES.length > 0) {
+            console.warn('Field setting "classNames" have been deprecated in favor for "columnClass" and will be removed in the future, please update field settings for column with object key: ' + COLUMNS_WITH_CLASS_NAMES[0].objectKey);
+        }
     }
     @Input() set gtSettings(value: GtConfigSetting[]) {
         this._gtSettings = value;

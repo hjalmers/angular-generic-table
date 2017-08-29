@@ -38,12 +38,12 @@ export class AggregateComponent {
       }, {
         name: 'Meetings',
         objectKey: 'meetings',
-        classNames: 'text-right',
+        columnClass: 'text-right',
         inlineEdit: true
       }, {
         name: 'Sales volume',
         objectKey: 'sales',
-        classNames: 'text-right'
+        columnClass: 'text-right'
       }],
       totals: [{
         name: 'Total *',
