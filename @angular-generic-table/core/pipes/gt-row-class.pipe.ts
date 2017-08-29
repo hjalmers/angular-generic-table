@@ -1,16 +1,17 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import {GtConfigField} from '../interfaces/gt-config-field';
 
 @Pipe({
     name: 'gtRowClass'
 })
 export class GtRowClassPipe implements PipeTransform {
 
-    transform(array: Array<any>, gtFields?: any ): any {
+    transform(array: Array<any>, gtFields: Array<GtConfigField<any, any>> ): any {
         if (array) {
             // find columns with rowClass property defined
             const COLUMNS_WITH_CLASS = gtFields
-                .map(field => field)
-                .filter(field => field.rowClass);
+                .map(column => column)
+                .filter(column => column.rowClass);
             COLUMNS_WITH_CLASS.map(column => {
                 // for each column with rowClass property defined...
                 array.map(row => {
