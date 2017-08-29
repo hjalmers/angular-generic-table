@@ -3,6 +3,14 @@ Release History
 
 ## [Unreleased]
 
+# [4.6.0] - 2017-08-29
+### Added
+- Support for conditional row classes, see [example](https://hjalmers.github.io/angular-generic-table/styling) (issue #120).
+- Support for conditional column classes, see [example](https://hjalmers.github.io/angular-generic-table/styling) (issue #118).
+
+### Notes
+- Field setting `classNames` have been deprecated in favor for `columnClass` and will be removed in a future release.
+
 # [4.5.0] - 2017-08-25
 ### Added
 - Method for checking if a row is selected, see [methods](https://github.com/hjalmers/angular-generic-table/wiki/Methods) in wiki for more info.
