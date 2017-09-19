@@ -58,7 +58,7 @@ import {GtRenderField} from '../interfaces/gt-render-field';
                 </tfoot>
             </ng-template>
             <tbody *ngIf="gtData && gtInfo">
-            <ng-template class="table-rows" ngFor let-row
+            <ng-template class="table-rows" ngFor let-row let-last="last" 
                          [ngForOf]="gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1] | gtMeta:(gtInfo.pageCurrent-1):gtInfo.recordLength) : (gtData | gtMeta:null:null:gtData.length | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data | gtRowClass:gtFields)">
                 <tr [ngClass]="{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading, 'row-expandable':gtRowComponent}" class="{{row.$$gtRowClass}}"
                     (click)="gtOptions.rowSelection ? toggleSelect(row):null">
@@ -93,6 +93,9 @@ import {GtRenderField} from '../interfaces/gt-render-field';
                         <gt-expanding-row [row]="row" [type]="gtRowComponent" (redrawEvent)="redraw($event)"
                                           (toggleRowEvent)="toggleCollapse($event)"></gt-expanding-row>
                     </td>
+                </tr>                
+                <tr *ngIf="gtOptions.reportColumnWidth && last">
+                    <td style="padding: 0; border:none;" *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe" gtColumnWidth [objectKey]="column.objectKey" [widths]="columnWidth"></td>
                 </tr>
             </ng-template>
             <tr *ngIf="gtInfo.pageTotal === 0 && (gtInfo.searchTerms || gtInfo.filter) && !loading">
@@ -220,6 +223,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     }
 
     @Input() gtRowComponent: Type<C>;
+    public columnWidth: Object = {};
     public configObject: GtConfig<R>;
     public sortOrder: Array<any> = [];
     public metaInfo: {[gtRowId: string]: GtRowMeta} = {};
@@ -256,7 +260,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         rowSelection: false,
         rowSelectionAllowMultiple: true,
         rowExpandAllowMultiple: true,
-        numberOfRows: 10
+        numberOfRows: 10,
+        reportColumnWidth: false
     };
     private _gtOptions: GtOptions = this.gtDefaultOptions;
     public store: Array<any> = [];

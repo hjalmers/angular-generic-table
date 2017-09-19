@@ -9,4 +9,5 @@ export interface GtOptions {
   rowSelectionAllowMultiple?: boolean;
   rowExpandAllowMultiple?: boolean;
   numberOfRows?: number;
+  reportColumnWidth?: boolean;
 }

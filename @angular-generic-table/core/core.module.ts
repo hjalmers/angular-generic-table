@@ -21,6 +21,7 @@ import {GtTotalsPipe} from './pipes/gt-totals.pipe';
 import {GtTotalsPositionPipe} from './pipes/gt-totals-position.pipe';
 import {GtRowClassPipe} from './pipes/gt-row-class.pipe';
 import {GtColumnClassPipe} from './pipes/gt-column-class.pipe';
+import {GtColumnWidthDirective} from './directives/gt-column-width.directive';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {GtColumnClassPipe} from './pipes/gt-column-class.pipe';
     GtTotalsPositionPipe,
     GtRowClassPipe,
     GtColumnClassPipe,
-    GtDropdownComponent
+    GtDropdownComponent,
+    GtColumnWidthDirective
   ],
   imports: [CommonModule, FormsModule],
   exports: [
