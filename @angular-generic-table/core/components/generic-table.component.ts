@@ -90,10 +90,15 @@ import {GtRenderField} from '../interfaces/gt-render-field';
                 </tr>
                 <tr class="row-expanded" *ngIf="metaInfo[row.$$gtRowId]?.isOpen">
                     <td [attr.colspan]="(gtFields | gtVisible:gtSettings:refreshPipe).length">
-                        <gt-expanding-row [row]="row" [type]="gtRowComponent" (redrawEvent)="redraw($event)"
+                        <gt-expanding-row [row]="row" 
+                                          [type]="gtRowComponent"
+                                          [columnWidth]="columnWidth"
+                                          [gtFields]="gtFields"
+                                          [gtSettings]="gtSettings"
+                                          (redrawEvent)="redraw($event)"
                                           (toggleRowEvent)="toggleCollapse($event)"></gt-expanding-row>
                     </td>
-                </tr>                
+                </tr>          
                 <tr *ngIf="gtOptions.reportColumnWidth && last">
                     <td style="padding: 0; border:none;" *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe" gtColumnWidth [objectKey]="column.objectKey" [widths]="columnWidth"></td>
                 </tr>
