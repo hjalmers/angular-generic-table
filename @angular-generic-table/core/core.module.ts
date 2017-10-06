@@ -22,44 +22,49 @@ import {GtTotalsPositionPipe} from './pipes/gt-totals-position.pipe';
 import {GtRowClassPipe} from './pipes/gt-row-class.pipe';
 import {GtColumnClassPipe} from './pipes/gt-column-class.pipe';
 import {GtColumnWidthDirective} from './directives/gt-column-width.directive';
+import {GtDrilldownComponent} from './components/gt-drilldown.component';
 
 @NgModule({
-  declarations: [
-    ComponentAnchorDirective,
-    GenericTableComponent,
-    GtPaginationComponent,
-    GtVisiblePipe,
-    GtRenderPipe,
-    DashCasePipe,
-    GtPropertyPipe,
-    GtChunkPipe,
-    GtFilterPipe,
-    GtOrderByPipe,
-    GtExpandingRowComponent,
-    GtCustomComponentFactory,
-    GtSearchPipe,
-    PaginationPipe,
-    GtTableInfoComponent,
-    TableInfoPipe,
-    GtMetaPipe,
-    GtTotalsPipe,
-    GtTotalsPositionPipe,
-    GtRowClassPipe,
-    GtColumnClassPipe,
-    GtDropdownComponent,
-    GtColumnWidthDirective
-  ],
-  imports: [CommonModule, FormsModule],
-  exports: [
-    GenericTableComponent,
-    GtPaginationComponent,
-    GtTableInfoComponent,
-    GtPropertyPipe,
-    GtExpandingRowComponent,
-    GtDropdownComponent
-  ],
-  entryComponents: [],
-  providers: [],
-  bootstrap: []
+    declarations: [
+        ComponentAnchorDirective,
+        GenericTableComponent,
+        GtPaginationComponent,
+        GtVisiblePipe,
+        GtRenderPipe,
+        DashCasePipe,
+        GtPropertyPipe,
+        GtChunkPipe,
+        GtFilterPipe,
+        GtOrderByPipe,
+        GtExpandingRowComponent,
+        GtCustomComponentFactory,
+        GtSearchPipe,
+        PaginationPipe,
+        GtTableInfoComponent,
+        TableInfoPipe,
+        GtMetaPipe,
+        GtTotalsPipe,
+        GtTotalsPositionPipe,
+        GtRowClassPipe,
+        GtColumnClassPipe,
+        GtDropdownComponent,
+        GtColumnWidthDirective,
+        GtDrilldownComponent
+    ],
+    imports: [CommonModule, FormsModule],
+    exports: [
+        GenericTableComponent,
+        GtPaginationComponent,
+        GtTableInfoComponent,
+        GtPropertyPipe,
+        GtExpandingRowComponent,
+        GtDropdownComponent,
+        GtDrilldownComponent
+    ],
+    entryComponents: [
+        GtDrilldownComponent
+    ],
+    providers: [],
+    bootstrap: []
 })
 export class GenericTableModule { }

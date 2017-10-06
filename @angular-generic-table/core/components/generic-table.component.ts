@@ -58,9 +58,10 @@ import {GtRenderField} from '../interfaces/gt-render-field';
                 </tfoot>
             </ng-template>
             <tbody *ngIf="gtData && gtInfo">
-            <ng-template class="table-rows" ngFor let-row let-last="last" 
+            <ng-template class="table-rows" ngFor let-row let-last="last"
                          [ngForOf]="gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1] | gtMeta:(gtInfo.pageCurrent-1):gtInfo.recordLength) : (gtData | gtMeta:null:null:gtData.length | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data | gtRowClass:gtFields)">
-                <tr [ngClass]="{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading, 'row-expandable':gtRowComponent}" class="{{row.$$gtRowClass}}"
+                <tr [ngClass]="{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading, 'row-expandable':gtRowComponent}"
+                    class="{{row.$$gtRowClass}}"
                     (click)="gtOptions.rowSelection ? toggleSelect(row):null">
                     <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms;"
                         ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{(gtFields | gtProperty:column.objectKey:'inlineEdit') ? 'gt-inline-edit':''}} {{column.edited ? 'gt-edited':''}} {{ gtFields | gtColumnClass:row:column }}">
@@ -70,10 +71,10 @@ import {GtRenderField} from '../interfaces/gt-render-field';
                                                      [type]="column.columnComponent.type"
                                                      [injector]="column.columnComponent.injector" [row]="row"
                                                      [column]="column" (redrawEvent)="redraw($event)"
-                                                     (click)="column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row):''"></gt-custom-component-factory>
+                                                     (click)="column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row, column.expand):''"></gt-custom-component-factory>
                         <span *ngIf="!column.columnComponent && !(gtFields | gtProperty:column.objectKey:'inlineEdit')"
                               class="gt-row-content" [innerHTML]="column.renderValue"
-                              (click)="column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row):''"></span>
+                              (click)="column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row, column.expand):''"></span>
                         <ng-template
                                 [ngIf]="!column.columnComponent && (gtFields | gtProperty:column.objectKey:'inlineEdit') === true">
                             <input class="inline-edit" type="text" [(ngModel)]="column.renderValue"
@@ -90,17 +91,22 @@ import {GtRenderField} from '../interfaces/gt-render-field';
                 </tr>
                 <tr class="row-expanded" *ngIf="metaInfo[row.$$gtRowId]?.isOpen">
                     <td [attr.colspan]="(gtFields | gtVisible:gtSettings:refreshPipe).length">
-                        <gt-expanding-row [row]="row" 
-                                          [type]="gtRowComponent"
+                        <gt-expanding-row [row]="row"
+                                          [type]="gtRowComponent ? gtRowComponent:expandedRow.component"
                                           [columnWidth]="columnWidth"
                                           [gtFields]="gtFields"
+                                          [gtOptions]="gtOptions"
+                                          [gtInfo]="gtInfo"
                                           [gtSettings]="gtSettings"
+                                          [data]="expandedRow.data"
                                           (redrawEvent)="redraw($event)"
                                           (toggleRowEvent)="toggleCollapse($event)"></gt-expanding-row>
                     </td>
-                </tr>          
+                </tr>
                 <tr *ngIf="gtOptions.reportColumnWidth && last">
-                    <td style="padding: 0; border:none;" *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe" gtColumnWidth [objectKey]="column.objectKey" [widths]="columnWidth"></td>
+                    <td style="padding: 0; border:none;"
+                        *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe" gtColumnWidth
+                        [objectKey]="column.objectKey" [widths]="columnWidth"></td>
                 </tr>
             </ng-template>
             <tr *ngIf="gtInfo.pageTotal === 0 && (gtInfo.searchTerms || gtInfo.filter) && !loading">
@@ -146,6 +152,10 @@ import {GtRenderField} from '../interfaces/gt-render-field';
     `,
 })
 export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> implements OnInit, OnChanges, OnDestroy {
+    get gtRowComponent(): Type<C> {
+        return this._gtRowComponent;
+    }
+
     get hasEdits(): boolean {
         return Object.keys(this.editedRows).length > 0;
     }
@@ -227,7 +237,11 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         this._gtData = value;
     }
 
-    @Input() gtRowComponent: Type<C>;
+    @Input() set gtRowComponent(value: Type<C>) {
+        console.warn('GtRowComponent has been deprecated and support will be removed in a future release, see https://github.com/hjalmers/angular-generic-table/issues/34');
+        this._gtRowComponent = value;
+    }
+
     public columnWidth: Object = {};
     public configObject: GtConfig<R>;
     public sortOrder: Array<any> = [];
@@ -238,6 +252,11 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     private _gtFields: GtConfigField<R, any>[] = [];
     private _gtData: Array<any>;
     private _gtTotals: any;
+    private _gtRowComponent: Type<C>;
+    public expandedRow: {
+        component: Type<C>;
+        data: Array<any>;
+    };
     public gtDefaultTexts: GtTexts = {
         loading: 'Loading...',
         noData: 'No data',
@@ -587,8 +606,12 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     /**
      * Toggle row collapsed state ie. expanded/open or collapsed/closed.
      * @param {GtRow} row - row object that should be expanded/collapsed.
+     * @param {Type<C>} component - component to render when row is expanded.
      */
-    public toggleCollapse(row: GtRow) {
+    public toggleCollapse(row: GtRow, expandedRow?: { component: Type<C>, data: any }) {
+        if (expandedRow) {
+            this.expandedRow = expandedRow;
+        }
         this._toggleRowProperty(row, 'isOpen');
     }
 

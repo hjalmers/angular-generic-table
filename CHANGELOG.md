@@ -2,6 +2,11 @@ Release History
 ---------------
 
 ## [Unreleased]
+### Added
+- Drilldown component, see [example](https://hjalmers.github.io/angular-generic-table/drilldown), (issue #137).
+
+### Deprecated
+- Input `GtRowComponent` has been deprecated and support will be removed in a future release, see issue #34 for more info.
 
 # [4.6.0] - 2017-08-29
 ### Added

@@ -46,6 +46,8 @@ import { ColumnClickComponent } from './column-click/column-click.component';
 import { AggregateComponent } from './aggregate/aggregate.component';
 import { RecordSelectionComponent } from './record-selection/record-selection.component';
 import { StylingComponent } from './styling/styling.component';
+import {DrilldownComponent} from './drilldown/drilldown.component';
+import {DrilldownModule} from '../../@angular-generic-table/drilldown/drilldown.module';
 
 @NgModule({
     declarations: [
@@ -72,7 +74,8 @@ import { StylingComponent } from './styling/styling.component';
         AggregateComponent,
         AddRemoveEditComponent,
         RecordSelectionComponent,
-        StylingComponent
+        StylingComponent,
+        DrilldownComponent
     ],
     imports: [
         BrowserModule,
