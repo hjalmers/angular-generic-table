@@ -10,10 +10,10 @@ export class GtTableInfoComponent implements AfterViewChecked {
   @Input() genericTable: GenericTableComponent<any, any>;
   @Input() customText: string;
 
-  constructor(private _changeDetectionRef : ChangeDetectorRef) {
+  constructor(private _changeDetectionRef: ChangeDetectorRef) {
   }
 
-  ngAfterViewChecked(){
+  ngAfterViewChecked() {
     this._changeDetectionRef.detectChanges();
   }
 }

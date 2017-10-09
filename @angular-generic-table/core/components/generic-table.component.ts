@@ -58,12 +58,12 @@ import {GtRenderField} from '../interfaces/gt-render-field';
                 </tfoot>
             </ng-template>
             <tbody *ngIf="gtData && gtInfo">
-            <ng-template class="table-rows" ngFor let-row let-last="last"
+            <ng-template class="table-rows" ngFor let-row let-last="last" [ngForTrackBy]="trackByFn"
                          [ngForOf]="gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1] | gtMeta:(gtInfo.pageCurrent-1):gtInfo.recordLength) : (gtData | gtMeta:null:null:gtData.length | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data | gtRowClass:gtFields)">
                 <tr [ngClass]="{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading, 'row-expandable':gtRowComponent}"
                     class="{{row.$$gtRowClass}}"
                     (click)="gtOptions.rowSelection ? toggleSelect(row):null">
-                    <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms;"
+                    <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms;trackBy:trackByColumnFn"
                         ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{(gtFields | gtProperty:column.objectKey:'inlineEdit') ? 'gt-inline-edit':''}} {{column.edited ? 'gt-edited':''}} {{ gtFields | gtColumnClass:row:column }}">
                         <span class="gt-row-label"
                               *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading') ? (gtFields | gtProperty:column.objectKey:'stackedHeading') : (gtFields | gtProperty:column.objectKey:'name')}}</span>
@@ -184,10 +184,10 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         this._gtOptions = value;
 
         // if number of rows is passed and if number of rows differs from current record length...
-        if (this._gtOptions.numberOfRows && this.gtInfo.recordLength !== this._gtOptions.numberOfRows) {
+        if (this.gtOptions.numberOfRows && this.gtInfo.recordLength !== this.gtOptions.numberOfRows) {
 
             // ...update record length and redraw table
-            this.gtInfo.recordLength = this._gtOptions.numberOfRows;
+            this.gtInfo.recordLength = this.gtOptions.numberOfRows;
             this.redraw();
         }
 
@@ -298,7 +298,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         pageTotal: 0,
         recordFrom: 0,
         recordTo: 0,
-        recordLength: this._gtOptions.numberOfRows,
+        recordLength: this.gtOptions.numberOfRows,
         recordsAll: 0,
         recordsAfterFilter: 0,
         recordsAfterSearch: 0
@@ -447,10 +447,15 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
      * Change number of rows to be displayed.
      * @param {string} rowLength - total number of rows.
      * @param {boolean} reset - should page be reset to first page.
-     * @returns {number} number of pages to display.
      */
     public changeRowLength = function (rowLength: any, reset?: boolean) {
+
+        let lengthValue = isNaN(parseInt(rowLength, 10)) ? 0 : parseInt(rowLength, 10);
         let newPosition = 1;
+
+        if (!lengthValue && this.gtData) {
+            lengthValue = this.gtData.length;
+        }
 
         // if reset is not true and we're not lazy loading data...
         if (reset !== true && this._gtOptions.lazyLoad !== true) {
@@ -460,11 +465,11 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
             const currentPosition = this._gtData.indexOf(this._gtData[currentRecord]) + 1;
 
             // ...get new position
-            newPosition = Math.ceil(currentPosition / rowLength);
+            newPosition = Math.ceil(currentPosition / lengthValue);
         }
 
         // change row length
-        this.gtInfo.recordLength = parseInt(rowLength, 10);
+        this.gtInfo.recordLength = lengthValue;
 
         // go to new position
         this.gtInfo.pageCurrent = newPosition;
@@ -473,7 +478,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         if (this._gtOptions.lazyLoad) {
 
             // ...replace data with place holders for new data
-            this._gtData[0] = this.loadingContent(rowLength);
+            this._gtData[0] = this.loadingContent(lengthValue);
 
             // ...empty current store
             this.store = [];
@@ -483,7 +488,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
         this.gtEvent.emit({
             name: 'gt-row-length-changed',
-            value: rowLength
+            value: lengthValue
         });
     };
 
@@ -1244,6 +1249,12 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     };
 
     ngOnInit() {
+
+        // if number of row to display from start is set to null or 0...
+        if (!this.gtOptions.numberOfRows) {
+            // ...change row length
+            this.changeRowLength(this.gtOptions.numberOfRows);
+        }
         this.restructureSorting();
     }
 
@@ -1269,7 +1280,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         }
 
         // if lazy loading data and paging information is available...
-        if (this._gtOptions.lazyLoad && this.gtInfo) {
+        if (this.gtOptions.lazyLoad && this.gtInfo) {
 
             // ...calculate total number of pages
             this.gtInfo.pageTotal = Math.ceil(this.gtInfo.recordsAfterSearch / this.gtInfo.recordLength);
@@ -1301,6 +1312,14 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         } else if (changes['gtData'] && changes['gtData'].firstChange && this._gtData && this._gtData.length > 0) {
             this.loading = false;
         }
+    }
+
+    trackByFn(index: number, item: GtRow) {
+        return item.$$gtRowId;
+    }
+
+    trackByColumnFn(index: number, item: GtConfigField<any, any>) {
+        return item.objectKey;
     }
 
     ngOnDestroy() {
