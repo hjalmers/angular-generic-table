@@ -45,7 +45,7 @@ export interface GtConfigField<R extends GtRow, C extends GtCustomComponent<any>
   // custom click callback
   click?: GtClickFunc<R>;
   // should row open or close (expand) when clicked
-  expand?: boolean | { component: Type<C>, data: any };
+  expand?: boolean | { component: Type<C>, data?: any };
   // custom function for export presentation
   export?: GtValueFunc<R>;
   sort?: GtValueFunc<R>;
