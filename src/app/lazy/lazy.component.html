@@ -8,6 +8,9 @@
   },{
     name:'lazy.component.ts',
     src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/lazy/lazy.component.ts'
+  },{
+    name:'custom-row.component.ts',
+    src:'https://raw.githubusercontent.com/hjalmers/angular-generic-table/master/src/app/custom-row/custom-row.component.ts'
   }]">
     <form class="form form-inline mb-4">
       <label for="highlight_input" class="form-control-label mr-sm-2">Search</label>
@@ -28,7 +31,7 @@
       <button class="btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.expandAllRows()">Expand all</button>
       <button class="btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0" (click)="myTable.collapseAllRows()">Collapse all</button>
     </form>
-    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtInfo]="configObject.info" [gtRowComponent]="expandedRow" (gtEvent)="trigger($event)" [gtOptions]="{stack:true, highlightSearch:true, lazyLoad:true, rowSelection:true}"></generic-table>
+    <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtInfo]="configObject.info" (gtEvent)="trigger($event)" [gtOptions]="{stack:true, highlightSearch:true, lazyLoad:true, rowSelection:true}"></generic-table>
     <div class="text-center">
       <gt-pagination [gtClasses]="'justify-content-center'" [genericTable]="myTable"></gt-pagination>
     </div>

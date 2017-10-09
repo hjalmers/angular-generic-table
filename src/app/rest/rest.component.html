@@ -4,10 +4,13 @@
   <div class="card-header">Example</div>
   <div class="card-body" exemplify="restExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','#myTable','ngModel','[ngClass]','#columnSettings','gtEvent']" [source]="'child'" [target]="restExample" [navStyle]="'tabs'" [externalSources]="[{
     name:'app.module.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
+    src:'https://raw.githubusercontent.com/hjalmers/angular-generic-table/master/src/app/app.module.ts'
   },{
     name:'rest.component.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/rest/rest.component.ts'
+    src:'https://raw.githubusercontent.com/hjalmers/angular-generic-table/master/src/app/rest/rest.component.ts'
+  },{
+    name:'custom-row.component.ts',
+    src:'https://raw.githubusercontent.com/hjalmers/angular-generic-table/master/src/app/custom-row/custom-row.component.ts'
   }]">
     <form class="form form-inline mb-4">
       <label for="rows" class="form-control-label mr-sm-2">Rows</label>
@@ -47,7 +50,7 @@
     <button class="btn-link" (click)="columnSettings.toggleColumnSettings()"> {{columnSettings.active ? 'Hide column settings':'Show column settings'}}</button>
     <gt-column-settings [genericTable]="myTable" #columnSettings>
       <div class="table-responsive">
-        <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data" [gtRowComponent]="expandedRow" [gtOptions]="{stack:true, highlightSearch:true, rowSelection:true}" (gtEvent)="trigger($event)"></generic-table>
+        <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data" [gtOptions]="{stack:true, highlightSearch:true, rowSelection:true}" (gtEvent)="trigger($event)"></generic-table>
       </div>
       <div class="text-center">
         <gt-pagination [gtClasses]="'justify-content-center'" [genericTable]="myTable"></gt-pagination>

@@ -17,7 +17,6 @@ export class RestComponent implements OnInit {
 
   @ViewChild(GenericTableComponent)
   private myTable: GenericTableComponent<any, CustomRowComponent>;
-  public expandedRow = CustomRowComponent;
   public showColumnControls = false;
   public selectedRows = 0;
   private url = 'https://private-730c61-generictable.apiary-mock.com/data'; // apiary end point
@@ -65,7 +64,9 @@ export class RestComponent implements OnInit {
         name: 'Id',
         objectKey: 'id',
         columnClass: 'clickable sort-numeric',
-        expand: true
+        expand: {
+          component: CustomRowComponent
+        }
       }, {
         name: 'Name',
         objectKey: 'name',
