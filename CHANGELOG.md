@@ -2,6 +2,8 @@ Release History
 ---------------
 
 ## [Unreleased]
+
+# [4.7.0] - 2017-10-10
 ### Added
 - Drilldown component, see [example](https://hjalmers.github.io/angular-generic-table/drilldown), (issue #137).
 - Support for displaying all rows, (issue #139).
