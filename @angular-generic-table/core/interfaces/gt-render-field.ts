@@ -7,7 +7,7 @@ export interface GtRenderField<R extends GtRow, C extends GtCustomComponent<any>
     objectKey: string;
     renderValue?: any;
     click?: GtClickFunc<R>;
-    expand?: boolean;
+    expand?: boolean | { component: Type<C>, data?: any };
     sortValue: any;
     columnComponent: { type: Type<any>; injector?: Injector; };
     edited?: boolean;
