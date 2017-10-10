@@ -355,6 +355,7 @@ var GenericTableComponent = (function () {
     function GenericTableComponent(renderer) {
         var _this = this;
         this.renderer = renderer;
+        this.columnWidth = {};
         this.sortOrder = [];
         this.metaInfo = {};
         this.selectedRows = [];
@@ -387,7 +388,8 @@ var GenericTableComponent = (function () {
             rowSelection: false,
             rowSelectionAllowMultiple: true,
             rowExpandAllowMultiple: true,
-            numberOfRows: 10
+            numberOfRows: 10,
+            reportColumnWidth: false
         };
         this._gtOptions = this.gtDefaultOptions;
         this.store = [];
@@ -398,7 +400,7 @@ var GenericTableComponent = (function () {
             pageTotal: 0,
             recordFrom: 0,
             recordTo: 0,
-            recordLength: this._gtOptions.numberOfRows,
+            recordLength: this.gtOptions.numberOfRows,
             recordsAll: 0,
             recordsAfterFilter: 0,
             recordsAfterSearch: 0
@@ -522,33 +524,36 @@ var GenericTableComponent = (function () {
          * Change number of rows to be displayed.
          * @param {string} rowLength - total number of rows.
          * @param {boolean} reset - should page be reset to first page.
-         * @returns {number} number of pages to display.
          */
         this.changeRowLength = function (rowLength, reset) {
+            var lengthValue = isNaN(parseInt(rowLength, 10)) ? 0 : parseInt(rowLength, 10);
             var newPosition = 1;
+            if (!lengthValue && this.gtData) {
+                lengthValue = this.gtData.length;
+            }
             // if reset is not true and we're not lazy loading data...
             if (reset !== true && this._gtOptions.lazyLoad !== true) {
                 // ...get current position in record set
                 var currentRecord = this.gtInfo.recordLength * (this.gtInfo.pageCurrent - 1);
                 var currentPosition = this._gtData.indexOf(this._gtData[currentRecord]) + 1;
                 // ...get new position
-                newPosition = Math.ceil(currentPosition / rowLength);
+                newPosition = Math.ceil(currentPosition / lengthValue);
             }
             // change row length
-            this.gtInfo.recordLength = parseInt(rowLength, 10);
+            this.gtInfo.recordLength = lengthValue;
             // go to new position
             this.gtInfo.pageCurrent = newPosition;
             // if lazy loading data...
             if (this._gtOptions.lazyLoad) {
                 // ...replace data with place holders for new data
-                this._gtData[0] = this.loadingContent(rowLength);
+                this._gtData[0] = this.loadingContent(lengthValue);
                 // ...empty current store
                 this.store = [];
             }
             // this.updateRecordRange();
             this.gtEvent.emit({
                 name: 'gt-row-length-changed',
-                value: rowLength
+                value: lengthValue
             });
         };
         /**
@@ -706,6 +711,17 @@ var GenericTableComponent = (function () {
             }
         });
     }
+    Object.defineProperty(GenericTableComponent.prototype, "gtRowComponent", {
+        get: function () {
+            return this._gtRowComponent;
+        },
+        set: function (value) {
+            console.warn('GtRowComponent has been deprecated and support will be removed in a future release, see https://github.com/hjalmers/angular-generic-table/issues/34');
+            this._gtRowComponent = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(GenericTableComponent.prototype, "hasEdits", {
         get: function () {
             return Object.keys(this.editedRows).length > 0;
@@ -720,9 +736,9 @@ var GenericTableComponent = (function () {
         set: function (value) {
             this._gtOptions = value;
             // if number of rows is passed and if number of rows differs from current record length...
-            if (this._gtOptions.numberOfRows && this.gtInfo.recordLength !== this._gtOptions.numberOfRows) {
+            if (this.gtOptions.numberOfRows && this.gtInfo.recordLength !== this.gtOptions.numberOfRows) {
                 // ...update record length and redraw table
-                this.gtInfo.recordLength = this._gtOptions.numberOfRows;
+                this.gtInfo.recordLength = this.gtOptions.numberOfRows;
                 this.redraw();
             }
             // ...extend gtOptions default values with values passed into component
@@ -837,8 +853,12 @@ var GenericTableComponent = (function () {
     /**
      * Toggle row collapsed state ie. expanded/open or collapsed/closed.
      * @param {GtRow} row - row object that should be expanded/collapsed.
+     * @param {Type<C>} component - component to render when row is expanded.
      */
-    GenericTableComponent.prototype.toggleCollapse = function (row) {
+    GenericTableComponent.prototype.toggleCollapse = function (row, expandedRow) {
+        if (expandedRow) {
+            this.expandedRow = expandedRow;
+        }
         this._toggleRowProperty(row, 'isOpen');
     };
     /**
@@ -1342,6 +1362,11 @@ var GenericTableComponent = (function () {
         });
     };
     GenericTableComponent.prototype.ngOnInit = function () {
+        // if number of row to display from start is set to null or 0...
+        if (!this.gtOptions.numberOfRows) {
+            // ...change row length
+            this.changeRowLength(this.gtOptions.numberOfRows);
+        }
         this.restructureSorting();
     };
     GenericTableComponent.prototype.ngOnChanges = function (changes) {
@@ -1351,7 +1376,7 @@ var GenericTableComponent = (function () {
             this.gtTexts = this.extend(this.gtDefaultTexts, this.gtTexts);
         }
         // if lazy loading data and paging information is available...
-        if (this._gtOptions.lazyLoad && this.gtInfo) {
+        if (this.gtOptions.lazyLoad && this.gtInfo) {
             // ...calculate total number of pages
             this.gtInfo.pageTotal = Math.ceil(this.gtInfo.recordsAfterSearch / this.gtInfo.recordLength);
             // ...declare store position
@@ -1378,6 +1403,12 @@ var GenericTableComponent = (function () {
         else if (changes['gtData'] && changes['gtData'].firstChange && this._gtData && this._gtData.length > 0) {
             this.loading = false;
         }
+    };
+    GenericTableComponent.prototype.trackByFn = function (index, item) {
+        return item.$$gtRowId;
+    };
+    GenericTableComponent.prototype.trackByColumnFn = function (index, item) {
+        return item.objectKey;
     };
     GenericTableComponent.prototype.ngOnDestroy = function () {
         // remove listener
@@ -1412,11 +1443,12 @@ __decorate([
 ], GenericTableComponent.prototype, "gtData", null);
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["Type"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["Type"]) === "function" && _c || Object)
-], GenericTableComponent.prototype, "gtRowComponent", void 0);
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["Type"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["Type"]) === "function" && _c || Object),
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["Type"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["Type"]) === "function" && _d || Object])
+], GenericTableComponent.prototype, "gtRowComponent", null);
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-    __metadata("design:type", typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__interfaces_gt_texts__["GtTexts"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__interfaces_gt_texts__["GtTexts"]) === "function" && _d || Object)
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__interfaces_gt_texts__["GtTexts"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__interfaces_gt_texts__["GtTexts"]) === "function" && _e || Object)
 ], GenericTableComponent.prototype, "gtTexts", void 0);
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
@@ -1424,21 +1456,21 @@ __decorate([
 ], GenericTableComponent.prototype, "gtClasses", void 0);
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _e || Object)
+    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _f || Object)
 ], GenericTableComponent.prototype, "gtEvent", void 0);
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-    __metadata("design:type", typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_3__interfaces_gt_information__["GtInformation"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__interfaces_gt_information__["GtInformation"]) === "function" && _f || Object)
+    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_3__interfaces_gt_information__["GtInformation"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__interfaces_gt_information__["GtInformation"]) === "function" && _g || Object)
 ], GenericTableComponent.prototype, "gtInfo", void 0);
 GenericTableComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'generic-table',
-        template: "\n        <table class=\"table\" ngClass=\"{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}\"\n               *ngIf=\"gtFields && gtSettings && (gtFields | gtVisible:gtSettings:refreshPipe).length > 0\">\n            <thead>\n            <tr>\n                <th class=\"gt-sort-label\" *ngIf=\"gtOptions.stack\">{{gtTexts.sortLabel}}</th>\n                <th *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe\"\n                    ngClass=\"{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{column.sortEnabled ? 'sort-'+column.sort:''}} {{column.sortEnabled && column.sortOrder >= 0  ? 'sort-order-'+column.sortOrder:''}} {{ gtFields | gtColumnClass:'th':column }}\"\n                    (click)=\"column.sortEnabled ? gtSort(column.objectKey,$event):'';\">\n                    {{gtFields | gtProperty:column.objectKey:'name'}}\n                </th>\n            </tr>\n            </thead>\n            <ng-template\n                    [ngIf]=\"gtTotals && (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length).length > 0\">\n                <thead class=\"gt-totals\">\n                <tr *ngFor=\"let total of gtTotals | gtTotalsPosition\">\n                    <td *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;\"\n                        ngClass=\"{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{ gtFields | gtColumnClass:'total':column }}\">\n                        <span *ngIf=\"i === 0\" class=\"float-left\">{{total.name}}</span><span\n                            [innerHTML]=\"total.fields[column.objectKey] | gtTotals:total.update === false ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals\"></span>\n                    </td>\n                </tr>\n                </thead>\n                <tfoot class=\"gt-totals\">\n                <tr *ngFor=\"let total of gtTotals | gtTotalsPosition:'footer'\">\n                    <td *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;\"\n                        ngClass=\"{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{ gtFields | gtColumnClass:'total':column }}\">\n                        <span *ngIf=\"i === 0\" class=\"float-left\">{{total.name}}</span><span\n                            [innerHTML]=\"total.fields[column.objectKey] | gtTotals:total.update === false ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals\"></span>\n                    </td>\n                </tr>\n                </tfoot>\n            </ng-template>\n            <tbody *ngIf=\"gtData && gtInfo\">\n            <ng-template class=\"table-rows\" ngFor let-row\n                         [ngForOf]=\"gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1] | gtMeta:(gtInfo.pageCurrent-1):gtInfo.recordLength) : (gtData | gtMeta:null:null:gtData.length | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data | gtRowClass:gtFields)\">\n                <tr [ngClass]=\"{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading, 'row-expandable':gtRowComponent}\" class=\"{{row.$$gtRowClass}}\"\n                    (click)=\"gtOptions.rowSelection ? toggleSelect(row):null\">\n                    <td *ngFor=\"let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms;\"\n                        ngClass=\"{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{(gtFields | gtProperty:column.objectKey:'inlineEdit') ? 'gt-inline-edit':''}} {{column.edited ? 'gt-edited':''}} {{ gtFields | gtColumnClass:row:column }}\">\n                        <span class=\"gt-row-label\"\n                              *ngIf=\"gtOptions.stack\">{{(gtFields | gtProperty:column.objectKey:'stackedHeading') ? (gtFields | gtProperty:column.objectKey:'stackedHeading') : (gtFields | gtProperty:column.objectKey:'name')}}</span>\n                        <gt-custom-component-factory *ngIf=\"column.columnComponent\" class=\"gt-row-content\"\n                                                     [type]=\"column.columnComponent.type\"\n                                                     [injector]=\"column.columnComponent.injector\" [row]=\"row\"\n                                                     [column]=\"column\" (redrawEvent)=\"redraw($event)\"\n                                                     (click)=\"column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row):''\"></gt-custom-component-factory>\n                        <span *ngIf=\"!column.columnComponent && !(gtFields | gtProperty:column.objectKey:'inlineEdit')\"\n                              class=\"gt-row-content\" [innerHTML]=\"column.renderValue\"\n                              (click)=\"column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row):''\"></span>\n                        <ng-template\n                                [ngIf]=\"!column.columnComponent && (gtFields | gtProperty:column.objectKey:'inlineEdit') === true\">\n                            <input class=\"inline-edit\" type=\"text\" [(ngModel)]=\"column.renderValue\"\n                                   (keyup)=\"gtUpdateColumn($event,row, column)\">\n                            <span class=\"gt-inline-edit-notice\">{{gtTexts.inlineEditEdited}}</span>\n                        </ng-template>\n                        <gt-dropdown\n                                *ngIf=\"!column.columnComponent && (gtFields | gtProperty:column.objectKey:'inlineEdit') && (gtFields | gtProperty:column.objectKey:'inlineEdit').length > 0\"\n                                [options]=\"gtFields | gtProperty:column.objectKey:'inlineEdit'\"\n                                [(selected)]=\"column.renderValue\" (selectedChange)=\"gtDropdownSelect(row, column)\">Add\n                            inline editing module\n                        </gt-dropdown>\n                    </td>\n                </tr>\n                <tr class=\"row-expanded\" *ngIf=\"metaInfo[row.$$gtRowId]?.isOpen\">\n                    <td [attr.colspan]=\"(gtFields | gtVisible:gtSettings:refreshPipe).length\">\n                        <gt-expanding-row [row]=\"row\" [type]=\"gtRowComponent\" (redrawEvent)=\"redraw($event)\"\n                                          (toggleRowEvent)=\"toggleCollapse($event)\"></gt-expanding-row>\n                    </td>\n                </tr>\n            </ng-template>\n            <tr *ngIf=\"gtInfo.pageTotal === 0 && (gtInfo.searchTerms || gtInfo.filter) && !loading\">\n                <td class=\"gt-no-matching-results\" [attr.colspan]=\"(gtFields | gtVisible:gtSettings).length\">\n                    {{gtTexts.noMatchingData}}\n                </td>\n            </tr>\n            <tr *ngIf=\"gtInfo.pageTotal === 0 && !(gtInfo.searchTerms || gtInfo.filter) && !loading\">\n                <td class=\"gt-no-results\" [attr.colspan]=\"(gtFields | gtVisible:gtSettings).length\">{{gtTexts.noData}}\n                </td>\n            </tr>\n            <tr *ngIf=\"gtInfo.pageTotal === 0 && loading\">\n                <td class=\"gt-loading-data\" [attr.colspan]=\"(gtFields | gtVisible:gtSettings).length\">{{gtTexts.loading}}</td>\n            </tr>\n            </tbody>\n        </table>\n        <table class=\"table\" ngClass=\"{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}\"\n               *ngIf=\"gtFields && gtSettings && (gtFields | gtVisible:gtSettings:refreshPipe).length === 0\">\n            <thead>\n            <tr>\n                <th class=\"gt-no-visible-columns\">{{gtTexts.noVisibleColumnsHeading}}</th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr>\n                <td class=\"gt-no-visible-columns\">{{gtTexts.noVisibleColumns}}</td>\n            </tr>\n            </tbody>\n        </table>\n        <table class=\"table\" ngClass=\"{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}\"\n               *ngIf=\"!gtFields || !gtSettings\">\n            <thead>\n            <tr>\n                <th class=\"gt-loading-config\">&nbsp;</th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr>\n                <td class=\"gt-loading-config\">&nbsp;</td>\n            </tr>\n            </tbody>\n        </table>\n    ",
+        template: "\n        <table class=\"table\" ngClass=\"{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}\"\n               *ngIf=\"gtFields && gtSettings && (gtFields | gtVisible:gtSettings:refreshPipe).length > 0\">\n            <thead>\n            <tr>\n                <th class=\"gt-sort-label\" *ngIf=\"gtOptions.stack\">{{gtTexts.sortLabel}}</th>\n                <th *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe\"\n                    ngClass=\"{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{column.sortEnabled ? 'sort-'+column.sort:''}} {{column.sortEnabled && column.sortOrder >= 0  ? 'sort-order-'+column.sortOrder:''}} {{ gtFields | gtColumnClass:'th':column }}\"\n                    (click)=\"column.sortEnabled ? gtSort(column.objectKey,$event):'';\">\n                    {{gtFields | gtProperty:column.objectKey:'name'}}\n                </th>\n            </tr>\n            </thead>\n            <ng-template\n                    [ngIf]=\"gtTotals && (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length).length > 0\">\n                <thead class=\"gt-totals\">\n                <tr *ngFor=\"let total of gtTotals | gtTotalsPosition\">\n                    <td *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;\"\n                        ngClass=\"{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{ gtFields | gtColumnClass:'total':column }}\">\n                        <span *ngIf=\"i === 0\" class=\"float-left\">{{total.name}}</span><span\n                            [innerHTML]=\"total.fields[column.objectKey] | gtTotals:total.update === false ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals\"></span>\n                    </td>\n                </tr>\n                </thead>\n                <tfoot class=\"gt-totals\">\n                <tr *ngFor=\"let total of gtTotals | gtTotalsPosition:'footer'\">\n                    <td *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;\"\n                        ngClass=\"{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{ gtFields | gtColumnClass:'total':column }}\">\n                        <span *ngIf=\"i === 0\" class=\"float-left\">{{total.name}}</span><span\n                            [innerHTML]=\"total.fields[column.objectKey] | gtTotals:total.update === false ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals\"></span>\n                    </td>\n                </tr>\n                </tfoot>\n            </ng-template>\n            <tbody *ngIf=\"gtData && gtInfo\">\n            <ng-template class=\"table-rows\" ngFor let-row let-last=\"last\" [ngForTrackBy]=\"trackByFn\"\n                         [ngForOf]=\"gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1] | gtMeta:(gtInfo.pageCurrent-1):gtInfo.recordLength) : (gtData | gtMeta:null:null:gtData.length | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data | gtRowClass:gtFields)\">\n                <tr [ngClass]=\"{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading, 'row-expandable':gtRowComponent}\"\n                    class=\"{{row.$$gtRowClass}}\"\n                    (click)=\"gtOptions.rowSelection ? toggleSelect(row):null\">\n                    <td *ngFor=\"let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms;trackBy:trackByColumnFn\"\n                        ngClass=\"{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{(gtFields | gtProperty:column.objectKey:'inlineEdit') ? 'gt-inline-edit':''}} {{column.edited ? 'gt-edited':''}} {{ gtFields | gtColumnClass:row:column }}\">\n                        <span class=\"gt-row-label\"\n                              *ngIf=\"gtOptions.stack\">{{(gtFields | gtProperty:column.objectKey:'stackedHeading') ? (gtFields | gtProperty:column.objectKey:'stackedHeading') : (gtFields | gtProperty:column.objectKey:'name')}}</span>\n                        <gt-custom-component-factory *ngIf=\"column.columnComponent\" class=\"gt-row-content\"\n                                                     [type]=\"column.columnComponent.type\"\n                                                     [injector]=\"column.columnComponent.injector\" [row]=\"row\"\n                                                     [column]=\"column\" (redrawEvent)=\"redraw($event)\"\n                                                     (click)=\"column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row, column.expand):''\"></gt-custom-component-factory>\n                        <span *ngIf=\"!column.columnComponent && !(gtFields | gtProperty:column.objectKey:'inlineEdit')\"\n                              class=\"gt-row-content\" [innerHTML]=\"column.renderValue\"\n                              (click)=\"column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row, column.expand):''\"></span>\n                        <ng-template\n                                [ngIf]=\"!column.columnComponent && (gtFields | gtProperty:column.objectKey:'inlineEdit') === true\">\n                            <input class=\"inline-edit\" type=\"text\" [(ngModel)]=\"column.renderValue\"\n                                   (keyup)=\"gtUpdateColumn($event,row, column)\">\n                            <span class=\"gt-inline-edit-notice\">{{gtTexts.inlineEditEdited}}</span>\n                        </ng-template>\n                        <gt-dropdown\n                                *ngIf=\"!column.columnComponent && (gtFields | gtProperty:column.objectKey:'inlineEdit') && (gtFields | gtProperty:column.objectKey:'inlineEdit').length > 0\"\n                                [options]=\"gtFields | gtProperty:column.objectKey:'inlineEdit'\"\n                                [(selected)]=\"column.renderValue\" (selectedChange)=\"gtDropdownSelect(row, column)\">Add\n                            inline editing module\n                        </gt-dropdown>\n                    </td>\n                </tr>\n                <tr class=\"row-expanded\" *ngIf=\"metaInfo[row.$$gtRowId]?.isOpen\">\n                    <td [attr.colspan]=\"(gtFields | gtVisible:gtSettings:refreshPipe).length\">\n                        <gt-expanding-row [row]=\"row\"\n                                          [type]=\"gtRowComponent ? gtRowComponent:expandedRow.component\"\n                                          [columnWidth]=\"columnWidth\"\n                                          [gtFields]=\"gtFields\"\n                                          [gtOptions]=\"gtOptions\"\n                                          [gtInfo]=\"gtInfo\"\n                                          [gtSettings]=\"gtSettings\"\n                                          [data]=\"expandedRow.data\"\n                                          (redrawEvent)=\"redraw($event)\"\n                                          (toggleRowEvent)=\"toggleCollapse($event)\"></gt-expanding-row>\n                    </td>\n                </tr>\n                <tr *ngIf=\"gtOptions.reportColumnWidth && last\">\n                    <td style=\"padding: 0; border:none;\"\n                        *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe\" gtColumnWidth\n                        [objectKey]=\"column.objectKey\" [widths]=\"columnWidth\"></td>\n                </tr>\n            </ng-template>\n            <tr *ngIf=\"gtInfo.pageTotal === 0 && (gtInfo.searchTerms || gtInfo.filter) && !loading\">\n                <td class=\"gt-no-matching-results\" [attr.colspan]=\"(gtFields | gtVisible:gtSettings).length\">\n                    {{gtTexts.noMatchingData}}\n                </td>\n            </tr>\n            <tr *ngIf=\"gtInfo.pageTotal === 0 && !(gtInfo.searchTerms || gtInfo.filter) && !loading\">\n                <td class=\"gt-no-results\" [attr.colspan]=\"(gtFields | gtVisible:gtSettings).length\">{{gtTexts.noData}}\n                </td>\n            </tr>\n            <tr *ngIf=\"gtInfo.pageTotal === 0 && loading\">\n                <td class=\"gt-loading-data\" [attr.colspan]=\"(gtFields | gtVisible:gtSettings).length\">{{gtTexts.loading}}</td>\n            </tr>\n            </tbody>\n        </table>\n        <table class=\"table\" ngClass=\"{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}\"\n               *ngIf=\"gtFields && gtSettings && (gtFields | gtVisible:gtSettings:refreshPipe).length === 0\">\n            <thead>\n            <tr>\n                <th class=\"gt-no-visible-columns\">{{gtTexts.noVisibleColumnsHeading}}</th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr>\n                <td class=\"gt-no-visible-columns\">{{gtTexts.noVisibleColumns}}</td>\n            </tr>\n            </tbody>\n        </table>\n        <table class=\"table\" ngClass=\"{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}\"\n               *ngIf=\"!gtFields || !gtSettings\">\n            <thead>\n            <tr>\n                <th class=\"gt-loading-config\">&nbsp;</th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr>\n                <td class=\"gt-loading-config\">&nbsp;</td>\n            </tr>\n            </tbody>\n        </table>\n    ",
     }),
-    __metadata("design:paramtypes", [typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer2"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer2"]) === "function" && _g || Object])
+    __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer2"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer2"]) === "function" && _h || Object])
 ], GenericTableComponent);
 
-var _a, _b, _c, _d, _e, _f, _g;
+var _a, _b, _c, _d, _e, _f, _g, _h;
 //# sourceMappingURL=generic-table.component.js.map
 
 /***/ }),
@@ -1510,6 +1542,56 @@ GtCustomComponentFactory = __decorate([
 
 var _a, _b;
 //# sourceMappingURL=gt-custom-component-factory.js.map
+
+/***/ }),
+
+/***/ "../../../../../@angular-generic-table/core/components/gt-drilldown.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GtDrilldownComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__gt_expanding_row_component__ = __webpack_require__("../../../../../@angular-generic-table/core/components/gt-expanding-row.component.ts");
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var GtDrilldownComponent = (function (_super) {
+    __extends(GtDrilldownComponent, _super);
+    function GtDrilldownComponent() {
+        return _super.call(this) || this;
+    }
+    GtDrilldownComponent.prototype.ngOnInit = function () {
+    };
+    return GtDrilldownComponent;
+}(__WEBPACK_IMPORTED_MODULE_1__gt_expanding_row_component__["a" /* GtExpandedRow */]));
+GtDrilldownComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'gt-drilldown',
+        template: "\n      <table class=\"table\">\n          <tr *ngFor=\"let row of data\">\n              <!--<td *ngFor=\"let column of gtSettings\" [style.width]=\"columnWidth[column.objectKey]\">{{column.objectKey}}</td>-->\n              <td *ngFor=\"let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms;\"\n                  ngClass=\"{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{(gtFields | gtProperty:column.objectKey:'inlineEdit') ? 'gt-inline-edit':''}} {{column.edited ? 'gt-edited':''}} {{ gtFields | gtColumnClass:row:column }}\" [style.width]=\"columnWidth[column.objectKey]\" [style.max-width]=\"columnWidth[column.objectKey]\">\n                        <span class=\"gt-row-label\"\n                              *ngIf=\"gtOptions.stack\">{{(gtFields | gtProperty:column.objectKey:'stackedHeading') ? (gtFields | gtProperty:column.objectKey:'stackedHeading') : (gtFields | gtProperty:column.objectKey:'name')}}</span>\n                  <gt-custom-component-factory *ngIf=\"column.columnComponent\" class=\"gt-row-content\"\n                                               [type]=\"column.columnComponent.type\"\n                                               [injector]=\"column.columnComponent.injector\" [row]=\"row\"\n                                               [column]=\"column\" (redrawEvent)=\"redraw($event)\"\n                                               (click)=\"column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row):''\"></gt-custom-component-factory>\n                  <span *ngIf=\"!column.columnComponent\"\n                        class=\"gt-row-content\" [innerHTML]=\"column.renderValue\"\n                        (click)=\"column.click ? column.click(row,column,$event):''\"></span>\n              </td>\n\n          </tr>\n      </table>\n  ",
+        styles: []
+    }),
+    __metadata("design:paramtypes", [])
+], GtDrilldownComponent);
+
+//# sourceMappingURL=gt-drilldown.component.js.map
 
 /***/ }),
 
@@ -1678,6 +1760,12 @@ var GtExpandingRowComponent = (function () {
     }
     GtExpandingRowComponent.prototype.newInstance = function (instance) {
         instance.row = this.row;
+        instance.columnWidth = this.columnWidth;
+        instance.gtSettings = this.gtSettings;
+        instance.gtFields = this.gtFields;
+        instance.gtOptions = this.gtOptions;
+        instance.gtInfo = this.gtInfo;
+        instance.data = typeof this.data === 'function' ? this.data(this.row) : this.data;
         instance.redrawEvent.subscribe(this.redrawEvent);
         instance.toggleRowEvent.subscribe(this.toggleRowEvent);
     };
@@ -1692,6 +1780,30 @@ __decorate([
     __metadata("design:type", Object)
 ], GtExpandingRowComponent.prototype, "row", void 0);
 __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], GtExpandingRowComponent.prototype, "columnWidth", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], GtExpandingRowComponent.prototype, "gtSettings", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], GtExpandingRowComponent.prototype, "gtFields", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], GtExpandingRowComponent.prototype, "gtOptions", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], GtExpandingRowComponent.prototype, "gtInfo", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], GtExpandingRowComponent.prototype, "data", void 0);
+__decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
     __metadata("design:type", Object)
 ], GtExpandingRowComponent.prototype, "redrawEvent", void 0);
@@ -1702,7 +1814,7 @@ __decorate([
 GtExpandingRowComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'gt-expanding-row',
-        template: "\n    <div appComponentAnchor\n         [ctor]=\"type\" (instance)=\"newInstance($event)\"></div>"
+        template: "\n        <div appComponentAnchor\n             [ctor]=\"type\" (instance)=\"newInstance($event)\"></div>"
     })
 ], GtExpandingRowComponent);
 
@@ -1812,9 +1924,9 @@ var PaginationPipe = (function () {
         }
         // check if last page is included in pagination...
         if (pagination.indexOf(totalPages) === -1) {
-            //...if not, page next to last should either show ellipsis or actual page number for the page
+            // ...if not, page next to last should either show ellipsis or actual page number for the page
             pagination[pagination.length - 1] = pagination[pagination.length - 1] === totalPages - 1 ? totalPages - 1 : true;
-            //...add last page to pagination
+            // ...add last page to pagination
             pagination.push(totalPages);
         }
         return pagination;
@@ -1935,12 +2047,16 @@ var _a, _b;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pipes_gt_totals_position_pipe__ = __webpack_require__("../../../../../@angular-generic-table/core/pipes/gt-totals-position.pipe.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pipes_gt_row_class_pipe__ = __webpack_require__("../../../../../@angular-generic-table/core/pipes/gt-row-class.pipe.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__pipes_gt_column_class_pipe__ = __webpack_require__("../../../../../@angular-generic-table/core/pipes/gt-column-class.pipe.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__directives_gt_column_width_directive__ = __webpack_require__("../../../../../@angular-generic-table/core/directives/gt-column-width.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__components_gt_drilldown_component__ = __webpack_require__("../../../../../@angular-generic-table/core/components/gt-drilldown.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -1993,7 +2109,9 @@ GenericTableModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_20__pipes_gt_totals_position_pipe__["a" /* GtTotalsPositionPipe */],
             __WEBPACK_IMPORTED_MODULE_21__pipes_gt_row_class_pipe__["a" /* GtRowClassPipe */],
             __WEBPACK_IMPORTED_MODULE_22__pipes_gt_column_class_pipe__["a" /* GtColumnClassPipe */],
-            __WEBPACK_IMPORTED_MODULE_18__components_gt_dropdown_component__["a" /* GtDropdownComponent */]
+            __WEBPACK_IMPORTED_MODULE_18__components_gt_dropdown_component__["a" /* GtDropdownComponent */],
+            __WEBPACK_IMPORTED_MODULE_23__directives_gt_column_width_directive__["a" /* GtColumnWidthDirective */],
+            __WEBPACK_IMPORTED_MODULE_24__components_gt_drilldown_component__["a" /* GtDrilldownComponent */]
         ],
         imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */]],
         exports: [
@@ -2002,9 +2120,12 @@ GenericTableModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_15__components_gt_table_info_component__["a" /* GtTableInfoComponent */],
             __WEBPACK_IMPORTED_MODULE_7__pipes_gt_property_pipe__["a" /* GtPropertyPipe */],
             __WEBPACK_IMPORTED_MODULE_11__components_gt_expanding_row_component__["b" /* GtExpandingRowComponent */],
-            __WEBPACK_IMPORTED_MODULE_18__components_gt_dropdown_component__["a" /* GtDropdownComponent */]
+            __WEBPACK_IMPORTED_MODULE_18__components_gt_dropdown_component__["a" /* GtDropdownComponent */],
+            __WEBPACK_IMPORTED_MODULE_24__components_gt_drilldown_component__["a" /* GtDrilldownComponent */]
         ],
-        entryComponents: [],
+        entryComponents: [
+            __WEBPACK_IMPORTED_MODULE_24__components_gt_drilldown_component__["a" /* GtDrilldownComponent */]
+        ],
         providers: [],
         bootstrap: []
     })
@@ -2069,6 +2190,62 @@ var _a, _b, _c, _d, _e;
 
 /***/ }),
 
+/***/ "../../../../../@angular-generic-table/core/directives/gt-column-width.directive.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GtColumnWidthDirective; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var GtColumnWidthDirective = (function () {
+    function GtColumnWidthDirective(hostElement, cdRef) {
+        this.hostElement = hostElement;
+        this.cdRef = cdRef;
+    }
+    GtColumnWidthDirective.prototype.ngOnInit = function () {
+        this.checkSize();
+    };
+    GtColumnWidthDirective.prototype.onResize = function ($event) {
+        this.checkSize();
+    };
+    GtColumnWidthDirective.prototype.checkSize = function () {
+        this.widths[this.objectKey] = window.getComputedStyle(this.hostElement.nativeElement, null).getPropertyValue('width');
+        this.cdRef.detectChanges();
+    };
+    return GtColumnWidthDirective;
+}());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], GtColumnWidthDirective.prototype, "objectKey", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Object)
+], GtColumnWidthDirective.prototype, "widths", void 0);
+GtColumnWidthDirective = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"])({
+        selector: '[gtColumnWidth]',
+        host: {
+            '(window:resize)': 'onResize($event)'
+        }
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"]) === "function" && _b || Object])
+], GtColumnWidthDirective);
+
+var _a, _b;
+//# sourceMappingURL=gt-column-width.directive.js.map
+
+/***/ }),
+
 /***/ "../../../../../@angular-generic-table/core/index.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2082,31 +2259,34 @@ var _a, _b, _c, _d, _e;
 /* unused harmony reexport GtTableInfoComponent */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_gt_pagination_component__ = __webpack_require__("../../../../../@angular-generic-table/core/components/gt-pagination.component.ts");
 /* unused harmony reexport GtPaginationComponent */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_module__ = __webpack_require__("../../../../../@angular-generic-table/core/core.module.ts");
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_4__core_module__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_gt_config__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-config.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interfaces_gt_config___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__interfaces_gt_config__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_gt_drilldown_component__ = __webpack_require__("../../../../../@angular-generic-table/core/components/gt-drilldown.component.ts");
+/* unused harmony reexport GtDrilldownComponent */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__core_module__ = __webpack_require__("../../../../../@angular-generic-table/core/core.module.ts");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_5__core_module__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_gt_config__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-config.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_gt_config___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_gt_config__);
 /* unused harmony reexport GtConfig */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_gt_config_field__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-config-field.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__interfaces_gt_config_field___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__interfaces_gt_config_field__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_gt_config_field__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-config-field.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_gt_config_field___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__interfaces_gt_config_field__);
 /* unused harmony reexport GtConfigField */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_gt_config_setting__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-config-setting.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__interfaces_gt_config_setting___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__interfaces_gt_config_setting__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_gt_config_setting__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-config-setting.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_gt_config_setting___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__interfaces_gt_config_setting__);
 /* unused harmony reexport GtConfigSetting */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_gt_information__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-information.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__interfaces_gt_information___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__interfaces_gt_information__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_gt_information__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-information.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_gt_information___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__interfaces_gt_information__);
 /* unused harmony reexport GtInformation */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_gt_row__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-row.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__interfaces_gt_row___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__interfaces_gt_row__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__interfaces_gt_row__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-row.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__interfaces_gt_row___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__interfaces_gt_row__);
 /* unused harmony reexport GtRow */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__interfaces_gt_texts__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-texts.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__interfaces_gt_texts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__interfaces_gt_texts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__interfaces_gt_texts__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-texts.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__interfaces_gt_texts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__interfaces_gt_texts__);
 /* unused harmony reexport GtTexts */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__interfaces_gt_options__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-options.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__interfaces_gt_options___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__interfaces_gt_options__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__interfaces_gt_options__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-options.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__interfaces_gt_options___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__interfaces_gt_options__);
 /* unused harmony reexport GtOptions */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_gt_custom_component_factory__ = __webpack_require__("../../../../../@angular-generic-table/core/components/gt-custom-component-factory.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__components_gt_custom_component_factory__ = __webpack_require__("../../../../../@angular-generic-table/core/components/gt-custom-component-factory.ts");
 /* unused harmony reexport GtCustomComponent */
+
 
 
 
@@ -6051,6 +6231,7 @@ AggregateComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__add_remove_edit_add_remove_edit_component__ = __webpack_require__("../../../../../src/app/add-remove-edit/add-remove-edit.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__record_selection_record_selection_component__ = __webpack_require__("../../../../../src/app/record-selection/record-selection.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__styling_styling_component__ = __webpack_require__("../../../../../src/app/styling/styling.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__drilldown_drilldown_component__ = __webpack_require__("../../../../../src/app/drilldown/drilldown.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6072,12 +6253,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
 var routes = [
     { path: '', redirectTo: '/start', pathMatch: 'full' },
     { path: 'start', component: __WEBPACK_IMPORTED_MODULE_8__home_home_component__["a" /* HomeComponent */] },
     { path: 'lazy', component: __WEBPACK_IMPORTED_MODULE_2__lazy_lazy_component__["a" /* LazyComponent */] },
     { path: 'advanced', component: __WEBPACK_IMPORTED_MODULE_3__rest_rest_component__["a" /* RestComponent */] },
     { path: 'basic', component: __WEBPACK_IMPORTED_MODULE_4__basic_basic_component__["a" /* BasicComponent */] },
+    { path: 'drilldown', component: __WEBPACK_IMPORTED_MODULE_15__drilldown_drilldown_component__["a" /* DrilldownComponent */] },
     { path: 'styling', component: __WEBPACK_IMPORTED_MODULE_14__styling_styling_component__["a" /* StylingComponent */] },
     { path: 'record-selection', component: __WEBPACK_IMPORTED_MODULE_13__record_selection_record_selection_component__["a" /* RecordSelectionComponent */] },
     { path: 'totals', component: __WEBPACK_IMPORTED_MODULE_11__aggregate_aggregate_component__["a" /* AggregateComponent */] },
@@ -6177,6 +6360,7 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__aggregate_aggregate_component__ = __webpack_require__("../../../../../src/app/aggregate/aggregate.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__record_selection_record_selection_component__ = __webpack_require__("../../../../../src/app/record-selection/record-selection.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__styling_styling_component__ = __webpack_require__("../../../../../src/app/styling/styling.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__drilldown_drilldown_component__ = __webpack_require__("../../../../../src/app/drilldown/drilldown.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6218,6 +6402,7 @@ function createTranslateLoader(http) {
 
 
 
+
 var AppModule = (function () {
     function AppModule() {
     }
@@ -6249,7 +6434,8 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_25__aggregate_aggregate_component__["a" /* AggregateComponent */],
             __WEBPACK_IMPORTED_MODULE_10__add_remove_edit_add_remove_edit_component__["a" /* AddRemoveEditComponent */],
             __WEBPACK_IMPORTED_MODULE_26__record_selection_record_selection_component__["a" /* RecordSelectionComponent */],
-            __WEBPACK_IMPORTED_MODULE_27__styling_styling_component__["a" /* StylingComponent */]
+            __WEBPACK_IMPORTED_MODULE_27__styling_styling_component__["a" /* StylingComponent */],
+            __WEBPACK_IMPORTED_MODULE_28__drilldown_drilldown_component__["a" /* DrilldownComponent */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -7613,7 +7799,7 @@ CustomColumnComponent = __decorate([
 /***/ "../../../../../src/app/custom-row/custom-row.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n<div class=\"col-sm-12\">\r\n  <div class=\"row\">\r\n    <h4 class=\"col-10\">My custom row component</h4>\r\n    <div class=\"col-2 text-sm-right\">\r\n      <i class=\"fa fa-close fa-lg\" (click)=\"$hide()\" aria-hidden=\"true\"></i>\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"form-group col-sm-3\">\r\n      <label class=\"control-label\">First name</label>\r\n      <div class=\"form-control-static\">{{row.first_name}}</div>\r\n    </div>\r\n    <div class=\"form-group col-sm-3\">\r\n      <label class=\"control-label\">Last name</label>\r\n      <div class=\"form-control-static\">{{row.last_name}}</div>\r\n    </div>\r\n    <div class=\"form-group col-sm-3\">\r\n      <label class=\"control-label\">Favorite color</label>\r\n      <div class=\"form-control-static\">{{row.favorite_color}}</div>\r\n    </div>\r\n    <div class=\"form-group col-sm-3\">\r\n      <div style=\"border-radius: 50%;width: 55px;height: 55px;display: inline-block;vertical-align: middle;\" [style.background]=\"row.favorite_color\"></div>\r\n    </div>\r\n  </div>\r\n  <button class=\"btn btn-primary btn btn-primary col-12 col-sm-auto float-right\" (click)=\"newRandomColor();\">New random color</button>\r\n</div>\r\n</div>\r\n"
+module.exports = "<div class=\"row p-3\">\r\n<div class=\"col-sm-12\">\r\n  <div class=\"row\">\r\n    <h4 class=\"col-10\">My custom row component</h4>\r\n    <div class=\"col-2 text-sm-right\">\r\n      <i class=\"fa fa-close fa-lg\" (click)=\"$hide()\" aria-hidden=\"true\"></i>\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n    <div class=\"form-group col-sm-3\">\r\n      <label class=\"control-label\">First name</label>\r\n      <div class=\"form-control-static\">{{row.first_name}}</div>\r\n    </div>\r\n    <div class=\"form-group col-sm-3\">\r\n      <label class=\"control-label\">Last name</label>\r\n      <div class=\"form-control-static\">{{row.last_name}}</div>\r\n    </div>\r\n    <div class=\"form-group col-sm-3\">\r\n      <label class=\"control-label\">Favorite color</label>\r\n      <div class=\"form-control-static\">{{row.favorite_color}}</div>\r\n    </div>\r\n    <div class=\"form-group col-sm-3\">\r\n      <div style=\"border-radius: 50%;width: 55px;height: 55px;display: inline-block;vertical-align: middle;\" [style.background]=\"row.favorite_color\"></div>\r\n    </div>\r\n  </div>\r\n  <button class=\"btn btn-primary btn btn-primary col-12 col-sm-auto float-right\" (click)=\"newRandomColor();\">New random color</button>\r\n</div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -7653,8 +7839,8 @@ var CustomRowComponent = (function (_super) {
     CustomRowComponent.prototype.ngOnInit = function () {
     };
     CustomRowComponent.prototype.newRandomColor = function () {
-        this.row.favorite_color = '#000'.replace(/0/g, function (f) { return '0369cf'[Math.random() * 6 | 0]; });
-        this.$redraw();
+        this.row.favorite_color = '#000'.replace(/0/g, function (f) { return '0369cf'[Math.random() * 6 | 0]; }); // generate new color and update favorite color
+        this.$redraw(); // manually redraw table (since table uses on push and we're updating a object property)
     };
     ;
     return CustomRowComponent;
@@ -7668,6 +7854,162 @@ CustomRowComponent = __decorate([
 ], CustomRowComponent);
 
 //# sourceMappingURL=custom-row.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/drilldown/drilldown.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<h2>Drilldown</h2>\r\n<p>Table with drilldown component. The drilldown component is basically a nested table that inherits the configuration from it's parent table. It also makes use of the <code>reportColumnWidth</code> option to preserve column widths. It's currently pretty basic but it supports some of the features from the main table like render etc. but feel free to create your own nested drilldown component using the <a href=\"\" target=\"_blank\">drilldown component</a> if you need more control.</p>\r\n<p class=\"alert alert-info\">Note that you need to set  <code>[gtOptions]=\"{{ '{' }}reportColumnWidth:true{{ '}' }}\"</code> to use the drilldown component.</p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"drilldownExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']\" [source]=\"'child'\" [target]=\"drilldownExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'drilldown.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/drilldown/drilldown.component.ts'\r\n  }]\">\r\n    <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\"  [gtOptions]=\"{reportColumnWidth:true}\"></generic-table>\r\n    <div class=\"text-center\">\r\n      <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\r\n      <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n    </div>\r\n  </div>\r\n  <div class=\"card-footer\" #drilldownExample></div>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/drilldown/drilldown.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DrilldownComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_generic_table_core_components_gt_drilldown_component__ = __webpack_require__("../../../../../@angular-generic-table/core/components/gt-drilldown.component.ts");
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var DrilldownComponent = (function () {
+    function DrilldownComponent() {
+        this.data = [{
+                name: 'banana',
+                type: 'fruit',
+                qty: 15,
+                color: '#ffd10d'
+            }, {
+                name: 'pear',
+                type: 'fruit',
+                qty: 5,
+                color: '#36850a'
+            }, {
+                name: 'apple',
+                type: 'fruit',
+                qty: 6,
+                color: '#a3ff17'
+            }, {
+                name: 'orange',
+                type: 'fruit',
+                qty: 26,
+                color: '#ff8e09'
+            }, {
+                name: 'kiwi',
+                type: 'fruit',
+                qty: 2,
+                color: '#586e37'
+            }, {
+                name: 'potato',
+                type: 'vegetable',
+                qty: 23,
+                color: '#c3a14f'
+            }, {
+                name: 'pepper',
+                type: 'vegetable',
+                qty: 7,
+                color: '#c3130d'
+            }, {
+                name: 'broccoli',
+                type: 'vegetable',
+                qty: 5,
+                color: '#357400'
+            }, {
+                name: 'garlic',
+                type: 'vegetable',
+                qty: 4,
+                color: '#d9d9d9'
+            }];
+        this.configObject = {
+            settings: [{
+                    objectKey: 'name',
+                    columnOrder: 0
+                }, {
+                    objectKey: 'qty',
+                    columnOrder: 1
+                }, {
+                    objectKey: 'color',
+                    columnOrder: 3,
+                    search: false
+                }, {
+                    objectKey: 'variants',
+                    columnOrder: 2,
+                    search: false
+                }],
+            fields: [{
+                    name: 'Name',
+                    objectKey: 'name',
+                    render: function (row) { return row.name.charAt(0).toUpperCase() + row.name.slice(1); },
+                    expand: {
+                        component: __WEBPACK_IMPORTED_MODULE_1__angular_generic_table_core_components_gt_drilldown_component__["a" /* GtDrilldownComponent */],
+                        data: function (row) { return row.drilldown; }
+                    }
+                }, {
+                    name: 'Quantity',
+                    objectKey: 'qty',
+                    columnClass: 'text-right'
+                }, {
+                    name: 'Color',
+                    objectKey: 'color',
+                    columnClass: 'text-right',
+                    render: function (row) { return row.color ? '<div class="d-inline-block" style="width:15px;height:15px;border-radius:50%;background: ' + row.color + '"></div>' : 'n/a'; }
+                }, {
+                    name: 'Variants',
+                    objectKey: 'variants',
+                    columnClass: 'text-right',
+                    value: function (row) { return row.drilldown ? row.drilldown.length : 1; },
+                }],
+            data: this.groupData(this.data)
+        };
+    }
+    // group fruits and vegetables by type
+    DrilldownComponent.prototype.groupData = function (array) {
+        return array.reduce(function (prev, el) {
+            if (prev.map(function (i) { return i.type; }).indexOf(el.type) === -1) {
+                var GROUP = __assign({}, el); // create a copy of our element (fruit or vegetable)
+                GROUP.name = el.type + 's'; // make plural
+                GROUP.color = null; // color not applicable for group
+                GROUP.drilldown = [el]; // add element to drilldown array
+                prev.push(GROUP); // push group to array
+            }
+            else {
+                var INDEX = prev.map(function (i) { return i.type; }).indexOf(el.type); // get index of type in array
+                prev[INDEX].qty += el.qty; // add to quantity
+                prev[INDEX].drilldown.push(el); // push element to drilldown array
+            }
+            return prev;
+        }, []);
+    };
+    return DrilldownComponent;
+}());
+DrilldownComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-drilldown',
+        template: __webpack_require__("../../../../../src/app/drilldown/drilldown.component.html"),
+        styles: ["\n        :host ::ng-deep tr > td.name-column .gt-row-content::before {\n            display: inline-block;\n            content: \"\\f078\";\n            font: normal normal normal 14px/1 FontAwesome;\n            width: 20px;\n        }\n\n        :host ::ng-deep tr > td.name-column .gt-row-content {\n            cursor: pointer;\n            white-space: nowrap;\n        }\n\n        :host ::ng-deep tr.row-open > td.name-column .gt-row-content::before {\n            display: inline-block;\n            content: \"\\f077\";\n            font: normal normal normal 14px/1 FontAwesome;\n        }\n\n        :host ::ng-deep tr.row-expanded td.name-column .gt-row-content {\n            cursor: initial;\n        }\n\n        :host ::ng-deep tr.row-expanded td.name-column .gt-row-content::before {\n            content: '';\n        }\n\n        :host ::ng-deep gt-drilldown .table {\n            margin: 0;\n            border-bottom: solid 1px #e9ecef;\n        }\n    "]
+    }),
+    __metadata("design:paramtypes", [])
+], DrilldownComponent);
+
+//# sourceMappingURL=drilldown.component.js.map
 
 /***/ }),
 
@@ -8167,7 +8509,7 @@ InlineEditingComponent = __decorate([
 /***/ "../../../../../src/app/lazy/lazy.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Lazy loading</h2>\r\n<p>Use lazy loading to speed things up when working with large data sets and cache data in the table if you want to avoid unnecessary server requests. This example also utilizes column stacking on tablets and mobile devices so resize the browser and see what happens with the layout on smaller screens.</p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"lazyExample\" [context]=\"this\" [escapeStrings]=\"escape\" [source]=\"'child'\" [target]=\"lazyExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'lazy.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/lazy/lazy.component.ts'\r\n  }]\">\r\n    <form class=\"form form-inline mb-4\">\r\n      <label for=\"highlight_input\" class=\"form-control-label mr-sm-2\">Search</label>\r\n      <input id=\"highlight_input\" class=\"form-control form-control-sm mb-2 mr-sm-2 mb-sm-0\" value=\"al\" disabled placeholder=\"Search\"/>\r\n      <label class=\"form-control-label mr-sm-2\">Visible columns:</label>\r\n      <div class=\"form-check form-check-inline ml-0 mr-sm-2\" *ngFor=\"let column of configObject.settings\">\r\n        <label class=\"form-check-label\">\r\n          <input type=\"checkbox\" name=\"{{column.objectKey}}\" class=\"form-check-input\" [(ngModel)]=\"column.visible\" (change)=\"myTable.redraw()\">\r\n          {{configObject.fields | gtProperty:column.objectKey:'name'}}\r\n        </label>\r\n      </div>\r\n      <small class=\"form-text text-muted\"><gt-table-info [genericTable]=\"myTable\"></gt-table-info></small>\r\n      <small class=\"form-text text-muted mb-2\">\r\n        Please note that the mock service currently doesn't support search, this is why this example has a fixed search string (just to show the highlight feature together with lazy load). Do the search server-side and return search terms in your response. Separate multiple search terms with a space [ ] or match whole phrase by putting them within quotes [\"].\r\n      </small>\r\n      <button class=\"btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0\" (click)=\"myTable.selectAllRows()\">Select all</button>\r\n      <button class=\"btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0\" (click)=\"myTable.deselectAllRows()\">Deselect all</button>\r\n      <button class=\"btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0\" (click)=\"myTable.expandAllRows()\">Expand all</button>\r\n      <button class=\"btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0\" (click)=\"myTable.collapseAllRows()\">Collapse all</button>\r\n    </form>\r\n    <generic-table [gtClasses]=\"'table-hover'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [(gtData)]=\"configObject.data\" [gtInfo]=\"configObject.info\" [gtRowComponent]=\"expandedRow\" (gtEvent)=\"trigger($event)\" [gtOptions]=\"{stack:true, highlightSearch:true, lazyLoad:true, rowSelection:true}\"></generic-table>\r\n    <div class=\"text-center\">\r\n      <gt-pagination [gtClasses]=\"'justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n    </div>\r\n  </div>\r\n  <div class=\"card-footer\" #lazyExample>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<h2>Lazy loading</h2>\r\n<p>Use lazy loading to speed things up when working with large data sets and cache data in the table if you want to avoid unnecessary server requests. This example also utilizes column stacking on tablets and mobile devices so resize the browser and see what happens with the layout on smaller screens.</p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"lazyExample\" [context]=\"this\" [escapeStrings]=\"escape\" [source]=\"'child'\" [target]=\"lazyExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'lazy.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/lazy/lazy.component.ts'\r\n  },{\r\n    name:'custom-row.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular-generic-table/master/src/app/custom-row/custom-row.component.ts'\r\n  }]\">\r\n    <form class=\"form form-inline mb-4\">\r\n      <label for=\"highlight_input\" class=\"form-control-label mr-sm-2\">Search</label>\r\n      <input id=\"highlight_input\" class=\"form-control form-control-sm mb-2 mr-sm-2 mb-sm-0\" value=\"al\" disabled placeholder=\"Search\"/>\r\n      <label class=\"form-control-label mr-sm-2\">Visible columns:</label>\r\n      <div class=\"form-check form-check-inline ml-0 mr-sm-2\" *ngFor=\"let column of configObject.settings\">\r\n        <label class=\"form-check-label\">\r\n          <input type=\"checkbox\" name=\"{{column.objectKey}}\" class=\"form-check-input\" [(ngModel)]=\"column.visible\" (change)=\"myTable.redraw()\">\r\n          {{configObject.fields | gtProperty:column.objectKey:'name'}}\r\n        </label>\r\n      </div>\r\n      <small class=\"form-text text-muted\"><gt-table-info [genericTable]=\"myTable\"></gt-table-info></small>\r\n      <small class=\"form-text text-muted mb-2\">\r\n        Please note that the mock service currently doesn't support search, this is why this example has a fixed search string (just to show the highlight feature together with lazy load). Do the search server-side and return search terms in your response. Separate multiple search terms with a space [ ] or match whole phrase by putting them within quotes [\"].\r\n      </small>\r\n      <button class=\"btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0\" (click)=\"myTable.selectAllRows()\">Select all</button>\r\n      <button class=\"btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0\" (click)=\"myTable.deselectAllRows()\">Deselect all</button>\r\n      <button class=\"btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0\" (click)=\"myTable.expandAllRows()\">Expand all</button>\r\n      <button class=\"btn btn-outline-primary btn-sm col-12 col-sm-auto mb-2 mr-sm-2 mb-lg-0\" (click)=\"myTable.collapseAllRows()\">Collapse all</button>\r\n    </form>\r\n    <generic-table [gtClasses]=\"'table-hover'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [(gtData)]=\"configObject.data\" [gtInfo]=\"configObject.info\" (gtEvent)=\"trigger($event)\" [gtOptions]=\"{stack:true, highlightSearch:true, lazyLoad:true, rowSelection:true}\"></generic-table>\r\n    <div class=\"text-center\">\r\n      <gt-pagination [gtClasses]=\"'justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n    </div>\r\n  </div>\r\n  <div class=\"card-footer\" #lazyExample>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -8196,7 +8538,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var LazyComponent = (function () {
     function LazyComponent(http) {
         this.http = http;
-        this.expandedRow = __WEBPACK_IMPORTED_MODULE_2__custom_row_custom_row_component__["a" /* CustomRowComponent */]; // this is the component that will be displayed when expanding a row
         // only used by example
         this.escape = ['[gtClasses]', '[gtSettings]', '[gtFields]', '[(gtData)]', '[gtRowComponent]', '[gtOptions]', '[genericTable]', '[gtInfo]', 'gtEvent', 'gtData', '#myTable', 'ngModel'];
         this.data = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
@@ -8270,7 +8611,9 @@ var LazyComponent = (function () {
             fields: [{
                     name: 'Id',
                     objectKey: 'id',
-                    expand: true,
+                    expand: {
+                        component: __WEBPACK_IMPORTED_MODULE_2__custom_row_custom_row_component__["a" /* CustomRowComponent */]
+                    },
                     columnClass: 'clickable'
                 }, {
                     name: 'Name',
@@ -8827,7 +9170,7 @@ var _a;
 /***/ "../../../../../src/app/menu/menu.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h5>Angular generic table</h5>\r\n<ul class=\"navbar-nav mb-4\">\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/start\" routerLinkActive=\"active\">Getting started</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" href=\"https://github.com/hjalmers/angular-generic-table/releases\" target=\"_blank\">Release notes</a>\r\n  </li>\r\n</ul>\r\n<h5>Core</h5>\r\n<ul class=\"navbar-nav mb-4\">\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/basic\" routerLinkActive=\"active\">Basic example</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/advanced\" routerLinkActive=\"active\">Advanced example</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/styling\" routerLinkActive=\"active\">Styling</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/column-click\" routerLinkActive=\"active\">Column click example</a>\r\n  </li>\r\n  <!--<li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/record-selection\" routerLinkActive=\"active\">Record selection</a>\r\n  </li>-->\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/totals\" routerLinkActive=\"active\">Totals example</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/localization\" routerLinkActive=\"active\">Localization</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/lazy\" routerLinkActive=\"active\">Lazy loading</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/inline-editing\" routerLinkActive=\"active\">Inline editing</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/add-remove-edit\" routerLinkActive=\"active\">Add, remove and edit rows</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n     <a class=\"nav-link\" routerLink=\"/custom-column\" routerLinkActive=\"active\">Custom component inside table cell</a>\r\n  </li>\r\n</ul>\r\n<h5>Column settings</h5>\r\n<ul class=\"navbar-nav\">\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/column-settings-component\" routerLinkActive=\"active\">Column settings component</a>\r\n  </li>\r\n</ul>\r\n"
+module.exports = "<h5>Angular generic table</h5>\r\n<ul class=\"navbar-nav mb-4\">\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/start\" routerLinkActive=\"active\">Getting started</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" href=\"https://github.com/hjalmers/angular-generic-table/releases\" target=\"_blank\">Release notes</a>\r\n  </li>\r\n</ul>\r\n<h5>Core</h5>\r\n<ul class=\"navbar-nav mb-4\">\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/basic\" routerLinkActive=\"active\">Basic example</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/advanced\" routerLinkActive=\"active\">Advanced example</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/styling\" routerLinkActive=\"active\">Styling</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/column-click\" routerLinkActive=\"active\">Column click example</a>\r\n  </li>\r\n  <!--<li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/record-selection\" routerLinkActive=\"active\">Record selection</a>\r\n  </li>-->\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/totals\" routerLinkActive=\"active\">Totals example</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/localization\" routerLinkActive=\"active\">Localization</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/lazy\" routerLinkActive=\"active\">Lazy loading</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/inline-editing\" routerLinkActive=\"active\">Inline editing</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/add-remove-edit\" routerLinkActive=\"active\">Add, remove and edit rows</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n     <a class=\"nav-link\" routerLink=\"/custom-column\" routerLinkActive=\"active\">Custom component inside table cell</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n     <a class=\"nav-link\" routerLink=\"/drilldown\" routerLinkActive=\"active\">Drilldown</a>\r\n  </li>\r\n</ul>\r\n<h5>Column settings</h5>\r\n<ul class=\"navbar-nav\">\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/column-settings-component\" routerLinkActive=\"active\">Column settings component</a>\r\n  </li>\r\n</ul>\r\n"
 
 /***/ }),
 
@@ -9372,7 +9715,7 @@ var _a;
 /***/ "../../../../../src/app/rest/rest.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Advanced</h2>\r\n<p>Fetch data using REST-service, expand rows and display a custom component, use custom functions for rendering, sorting and exporting. Apply predefined filter and simple function for adding new random data to table. To control columns we use the <code><a routerLink=\"/column-settings-component\">ColumnSettingsComponent</a></code>. This example also utilizes column stacking on tablets and mobile devices so resize the browser and see what happens with the layout on smaller screens.</p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"restExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','#myTable','ngModel','[ngClass]','#columnSettings','gtEvent']\" [source]=\"'child'\" [target]=\"restExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'rest.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/rest/rest.component.ts'\r\n  }]\">\r\n    <form class=\"form form-inline mb-4\">\r\n      <label for=\"rows\" class=\"form-control-label mr-sm-2\">Rows</label>\r\n      <select id=\"rows\" class=\"form-control form-control-sm mr-sm-2 mb-3 mb-sm-0\" #rowLength (change)=\"myTable.changeRowLength(rowLength.value)\">\r\n        <option value=10>10</option>\r\n        <option value=25>25</option>\r\n        <option value=50>50</option>\r\n        <option value=100>100</option>\r\n      </select>\r\n      <input class=\"form-control form-control-sm mr-sm-2 mb-3 mb-sm-0\" #search (keyup)=\"myTable.gtSearch(search.value)\" placeholder=\"Search\"/>\r\n      <div ngbDropdown class=\"col-12 col-sm-auto mr-sm-3 mb-3 mb-sm-0 p-0\">\r\n        <button class=\"btn btn-sm btn-primary w-100\" id=\"actions\" ngbDropdownToggle>Actions</button>\r\n        <div ngbDropdownMenu aria-labelledby=\"actions\">\r\n          <button class=\"dropdown-item\" (click)=\"applyFilter();\">Apply predefined filter</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.gtClearFilter()\">Remove filter</button>\r\n          <button class=\"dropdown-item\" (click)=\"addData()\">Add data</button>\r\n          <button class=\"dropdown-item\" (click)=\"showColumnControls = !showColumnControls\">Toggle columns</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.exportCSV()\">Export to CSV</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.selectAllRows()\">Select all</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.deselectAllRows()\">Deselect all</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.expandAllRows()\">Expand all</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.collapseAllRows()\">Collapse all</button>\r\n          <!--<button class=\"dropdown-item\" (click)=\"getData()\">Refresh data</button>-->\r\n        </div>\r\n      </div>\r\n      <small class=\"form-text text-muted col-12 col-xl-auto mb-2 mt-lg-2 my-xl-auto row\"><gt-table-info [genericTable]=\"myTable\"></gt-table-info> Number of selected rows: {{selectedRows}}</small>\r\n      <div *ngIf=\"showColumnControls\" class=\"col-12 row mt-xl-2\">\r\n        <label class=\"form-control-label mr-sm-2\">Visible columns:</label>\r\n        <div class=\"form-check form-check-inline ml-0 ml-sm-2\" *ngFor=\"let column of configObject.settings\">\r\n          <label class=\"form-check-label\">\r\n            <input type=\"checkbox\" name=\"{{column.objectKey}}\" class=\"form-check-input\" [(ngModel)]=\"column.visible\" (change)=\"myTable.redraw()\">\r\n            {{configObject.fields | gtProperty:column.objectKey:'name'}}\r\n          </label>\r\n        </div>\r\n      </div>\r\n    </form>\r\n    <button class=\"btn-link\" (click)=\"columnSettings.toggleColumnSettings()\"> {{columnSettings.active ? 'Hide column settings':'Show column settings'}}</button>\r\n    <gt-column-settings [genericTable]=\"myTable\" #columnSettings>\r\n      <div class=\"table-responsive\">\r\n        <generic-table [gtClasses]=\"'table-hover'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\" [gtRowComponent]=\"expandedRow\" [gtOptions]=\"{stack:true, highlightSearch:true, rowSelection:true}\" (gtEvent)=\"trigger($event)\"></generic-table>\r\n      </div>\r\n      <div class=\"text-center\">\r\n        <gt-pagination [gtClasses]=\"'justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n      </div>\r\n    </gt-column-settings>\r\n  </div>\r\n  <div class=\"card-footer\" #restExample>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<h2>Advanced</h2>\r\n<p>Fetch data using REST-service, expand rows and display a custom component, use custom functions for rendering, sorting and exporting. Apply predefined filter and simple function for adding new random data to table. To control columns we use the <code><a routerLink=\"/column-settings-component\">ColumnSettingsComponent</a></code>. This example also utilizes column stacking on tablets and mobile devices so resize the browser and see what happens with the layout on smaller screens.</p>\r\n<div class=\"alert alert-info\">A little word of advice regarding number of rows to display. Although the table supports displaying all rows at once by setting <code>[gtOptions]=\"{{ '{' }}numberOfRows:0{{ '}' }}\"</code> or by passing <code>'all'</code> to the <code>changeRowLength</code> method like in the example below, generic table still needs to render a lot of rows which currently makes it a bit unresponsive. Hopefully this will be improved in future releases but in the meantime it's recommended to limit the number of rendered rows and use pagination as it allows you to \"display\" hundreds of thousands rows.</div>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"restExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','#myTable','ngModel','[ngClass]','#columnSettings','gtEvent']\" [source]=\"'child'\" [target]=\"restExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'rest.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/rest/rest.component.ts'\r\n  },{\r\n    name:'custom-row.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular-generic-table/master/src/app/custom-row/custom-row.component.ts'\r\n  }]\">\r\n    <form class=\"form form-inline mb-4\">\r\n      <label for=\"rows\" class=\"form-control-label mr-sm-2\">Rows</label>\r\n      <select id=\"rows\" class=\"form-control form-control-sm mr-sm-2 mb-3 mb-sm-0\" #rowLength (change)=\"myTable.changeRowLength(rowLength.value)\">\r\n        <option value=10>10</option>\r\n        <option value=25>25</option>\r\n        <option value=50>50</option>\r\n        <option value=100>100</option>\r\n        <option value=all>All</option>\r\n      </select>\r\n      <input class=\"form-control form-control-sm mr-sm-2 mb-3 mb-sm-0\" #search (keyup)=\"myTable.gtSearch(search.value)\" placeholder=\"Search\"/>\r\n      <div ngbDropdown class=\"col-12 col-sm-auto mr-sm-3 mb-3 mb-sm-0 p-0\">\r\n        <button class=\"btn btn-sm btn-primary w-100\" id=\"actions\" ngbDropdownToggle>Actions</button>\r\n        <div ngbDropdownMenu aria-labelledby=\"actions\">\r\n          <button class=\"dropdown-item\" (click)=\"applyFilter();\">Apply predefined filter</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.gtClearFilter()\">Remove filter</button>\r\n          <button class=\"dropdown-item\" (click)=\"addData()\">Add data</button>\r\n          <button class=\"dropdown-item\" (click)=\"showColumnControls = !showColumnControls\">Toggle columns</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.exportCSV()\">Export to CSV</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.selectAllRows()\">Select all</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.deselectAllRows()\">Deselect all</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.expandAllRows()\">Expand all</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.collapseAllRows()\">Collapse all</button>\r\n          <!--<button class=\"dropdown-item\" (click)=\"getData()\">Refresh data</button>-->\r\n        </div>\r\n      </div>\r\n      <small class=\"form-text text-muted col-12 col-xl-auto mb-2 mt-lg-2 my-xl-auto row\"><gt-table-info [genericTable]=\"myTable\"></gt-table-info> Number of selected rows: {{selectedRows}}</small>\r\n      <div *ngIf=\"showColumnControls\" class=\"col-12 row mt-xl-2\">\r\n        <label class=\"form-control-label mr-sm-2\">Visible columns:</label>\r\n        <div class=\"form-check form-check-inline ml-0 ml-sm-2\" *ngFor=\"let column of configObject.settings\">\r\n          <label class=\"form-check-label\">\r\n            <input type=\"checkbox\" name=\"{{column.objectKey}}\" class=\"form-check-input\" [(ngModel)]=\"column.visible\" (change)=\"myTable.redraw()\">\r\n            {{configObject.fields | gtProperty:column.objectKey:'name'}}\r\n          </label>\r\n        </div>\r\n      </div>\r\n    </form>\r\n    <button class=\"btn-link\" (click)=\"columnSettings.toggleColumnSettings()\"> {{columnSettings.active ? 'Hide column settings':'Show column settings'}}</button>\r\n    <gt-column-settings [genericTable]=\"myTable\" #columnSettings>\r\n      <div class=\"table-responsive\">\r\n        <generic-table [gtClasses]=\"'table-hover'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\" [gtOptions]=\"{stack:true, highlightSearch:true, rowSelection:true}\" (gtEvent)=\"trigger($event)\"></generic-table>\r\n      </div>\r\n      <div class=\"text-center\">\r\n        <gt-pagination [gtClasses]=\"'justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n      </div>\r\n    </gt-column-settings>\r\n  </div>\r\n  <div class=\"card-footer\" #restExample>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -9405,7 +9748,6 @@ var RestComponent = (function () {
     function RestComponent(http) {
         this.http = http;
         this.data = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
-        this.expandedRow = __WEBPACK_IMPORTED_MODULE_2__custom_row_custom_row_component__["a" /* CustomRowComponent */];
         this.showColumnControls = false;
         this.selectedRows = 0;
         this.url = 'https://private-730c61-generictable.apiary-mock.com/data'; // apiary end point
@@ -9492,7 +9834,9 @@ var RestComponent = (function () {
                     name: 'Id',
                     objectKey: 'id',
                     columnClass: 'clickable sort-numeric',
-                    expand: true
+                    expand: {
+                        component: __WEBPACK_IMPORTED_MODULE_2__custom_row_custom_row_component__["a" /* CustomRowComponent */]
+                    }
                 }, {
                     name: 'Name',
                     objectKey: 'name',
@@ -9547,7 +9891,7 @@ var _a, _b;
 /***/ "../../../../../src/app/styling/styling.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Styling</h2>\n<strong>Columns and rows</strong>\n<p>Since generic table uses standard html elements like <code>tr, td, th</code> etc. you can style it like you normally would style a table. In addition generic table supports conditional classes for both rows (tr elements) and individual columns (td elements).</p>\n<p>Pass either a function or a string to <code>rowClass</code> and/or <code>columnClass</code> in field declaration to add custom classes to rows and/or columns.</p>\n<p>The example below is not intended to be realistic or beautiful, it's just meant to show some of the things you can do with <code>rowClass</code> and <code>columnClass</code>. Note that <code>th</code> is passed as row property for the table header and <code>total</code> for total rows, something that's handy if you just want to apply styles to data rows.</p>\n<strong>Table element</strong>\n<p>Use <code>gtClasses</code> input to append class names to the table element.</p>\n<div class=\"alert alert-info my-4\">\n  <h4 class=\"alert-heading\">Using Bootstrap?</h4>\n  Bootstrap has a couple of pretty useful utility classes which works great with generic table, for example add the class <code>text-right</code> to <code>columnClass</code> to align the content of the column to the right, or maybe <code>d-none d-md-table-cell</code> to hide a column on small screens.</div>\n<div class=\"card mb-5\">\n  <div class=\"card-header\">Example</div>\n  <div class=\"card-body\" exemplify=\"stylingExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']\" [source]=\"'child'\" [target]=\"stylingExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\n    name:'app.module.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\n  },{\n    name:'styling.component.ts',\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/styling/styling.component.ts'\n  }]\">\n    <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtSettings]=\"configObject.settings\" [gtTotals]=\"configObject.totals\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\"></generic-table>\n    <div class=\"text-center\">\n      <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\n      <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\n    </div>\n  </div>\n  <div class=\"card-footer\" #stylingExample></div>\n</div>\n"
+module.exports = "<h2>Styling</h2>\r\n<strong>Columns and rows</strong>\r\n<p>Since generic table uses standard html elements like <code>tr, td, th</code> etc. you can style it like you normally would style a table. In addition generic table supports conditional classes for both rows (tr elements) and individual columns (td elements).</p>\r\n<p>Pass either a function or a string to <code>rowClass</code> and/or <code>columnClass</code> in field declaration to add custom classes to rows and/or columns.</p>\r\n<p>The example below is not intended to be realistic or beautiful, it's just meant to show some of the things you can do with <code>rowClass</code> and <code>columnClass</code>. Note that <code>th</code> is passed as row property for the table header and <code>total</code> for total rows, something that's handy if you just want to apply styles to data rows.</p>\r\n<strong>Table element</strong>\r\n<p>Use <code>gtClasses</code> input to append class names to the table element.</p>\r\n<div class=\"alert alert-info my-4\">\r\n  <h4 class=\"alert-heading\">Using Bootstrap?</h4>\r\n  Bootstrap has a couple of pretty useful utility classes which works great with generic table, for example add the class <code>text-right</code> to <code>columnClass</code> to align the content of the column to the right, or maybe <code>d-none d-md-table-cell</code> to hide a column on small screens.</div>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"stylingExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']\" [source]=\"'child'\" [target]=\"stylingExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'styling.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/styling/styling.component.ts'\r\n  }]\">\r\n    <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtSettings]=\"configObject.settings\" [gtTotals]=\"configObject.totals\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\"></generic-table>\r\n    <div class=\"text-center\">\r\n      <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\r\n      <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n    </div>\r\n  </div>\r\n  <div class=\"card-footer\" #stylingExample></div>\r\n</div>\r\n"
 
 /***/ }),
 
