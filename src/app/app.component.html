@@ -1,4 +1,4 @@
-<div class="hidden-md-up fixed-top container-fluid mobile-menu px-3 py-2">
+<div class="d-md-none fixed-top container-fluid mobile-menu px-3 py-2">
     <div class="menu-icon float-right" [ngClass]="{'active':showMenu}" (click)="showMenu = !showMenu"><div></div></div>
     <menu *ngIf="showMenu" class="mt-4 p-0 text-white"></menu>
 </div>
@@ -19,7 +19,7 @@
             <router-outlet></router-outlet>
         </div>
     </div>
-    <div class="col col-auto side hidden-sm-down">
+    <div class="col col-auto side d-none d-md-block">
         <menu class="p-0"></menu>
     </div>
 </div>

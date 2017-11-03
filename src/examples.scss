@@ -2,6 +2,12 @@
 @import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
 @import '~bootstrap/scss/bootstrap.scss';
 
+div.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+}
+
 .side {
   width:300px;
 }

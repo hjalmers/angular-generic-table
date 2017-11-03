@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {GtConfig} from '@angular-generic-table/core';
 
-export interface rowData {
+export interface RowData {
   id: number;
   name: string;
   language?: string;
@@ -13,14 +13,14 @@ export interface rowData {
 })
 export class InlineEditingComponent {
 
-  public data: Array<rowData> = [];
-  public configObject: GtConfig<rowData>;
-  public languages:Array<string> = ['Albanian','Amharic','Aymara','Bulgarian','Dhivehi','Estonian','Indonesian','Kannada','Lao','Latvian','Marathi','Persian','Pisin','Punjabi','Somali','Tamil','Tok' ,'Tsonga', 'Tswana','Zulu'];
+  public data: Array<RowData> = [];
+  public configObject: GtConfig<RowData>;
+  public languages: Array<string> = ['Albanian', 'Amharic', 'Aymara', 'Bulgarian', 'Dhivehi', 'Estonian', 'Indonesian', 'Kannada', 'Lao', 'Latvian', 'Marathi', 'Persian', 'Pisin', 'Punjabi', 'Somali', 'Tamil', 'Tok' , 'Tsonga', 'Tswana', 'Zulu'];
 
   updatedRow: {
-    newValue: rowData,
-    oldValue: rowData,
-    originalValue: rowData
+    newValue: RowData,
+    oldValue: RowData,
+    originalValue: RowData
   };
 
   constructor() {
@@ -48,7 +48,8 @@ export class InlineEditingComponent {
       }, {
         name: 'Name',
         objectKey: 'name',
-        inlineEdit: true
+        inlineEdit: true,
+          sort: (row) => {return row.name.substring(1, 5); }
       }, {
         name: 'Language',
         objectKey: 'language',

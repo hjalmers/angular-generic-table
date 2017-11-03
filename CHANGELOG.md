@@ -3,10 +3,44 @@ Release History
 
 ## [Unreleased]
 
+# [4.7.0] - 2017-10-10
+### Added
+- Drilldown component, see [example](https://hjalmers.github.io/angular-generic-table/drilldown), (issue #137).
+- Support for displaying all rows, (issue #139).
+
+### Deprecated
+- Input `GtRowComponent` has been deprecated and support will be removed in a future release, see issue #34 for more info.
+
+### Improved
+- Minor improvement for row rendering
+
+# [4.6.0] - 2017-08-29
+### Added
+- Support for conditional row classes, see [example](https://hjalmers.github.io/angular-generic-table/styling) (issue #120).
+- Support for conditional column classes, see [example](https://hjalmers.github.io/angular-generic-table/styling) (issue #118).
+
+### Deprecated
+- Field setting `classNames` have been deprecated in favor for `columnClass` and will be removed in a future release.
+
+# [4.5.0] - 2017-08-25
+### Added
+- Method for checking if a row is selected, see [methods](https://github.com/hjalmers/angular-generic-table/wiki/Methods) in wiki for more info.
+- Method for removing a row, see [methods](https://github.com/hjalmers/angular-generic-table/wiki/Methods) in wiki for more info.
+- Methods for accepting (saving) and rejecting (canceling) inline edits as well has checking if table has pending inline edits, see [methods](https://github.com/hjalmers/angular-generic-table/wiki/Methods) in wiki for more info.
+- Complex example with custom components for adding, removing and inline editing of rows (including data validation), see example [here](https://hjalmers.github.io/angular-generic-table/add-remove-edit).
+
+### Fixed
+- Inline edit listens to global keydown events ie. it's now possible update multiple rows with the enter key without the input needing to have focus (see issue #115). 
+- Improved row id generation
+- If `gtRowComponent` is passed to the table `row-expandable` class will be added to rows (see issue #119).
+- Support for Bootstrap 4 beta (see issue #117).
+
+# [4.4.1] - 2017-08-01
 ### Fixed
 - Sorting of boolean values (see issue #106).
 - Added check for undefined fields (see issue #107).
-- Initialize sort table when settings change (see issue #108). 
+- Check sorting when settings change (see issue #108).
+- Safeguard against undefined values on input properties (see issue #109).
 
 # [4.4.0] - 2017-07-20
 ### Added

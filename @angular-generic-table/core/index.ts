@@ -2,6 +2,7 @@ export {GtExpandingRowComponent, GtExpandedRow} from './components/gt-expanding-
 export {GenericTableComponent} from './components/generic-table.component';
 export {GtTableInfoComponent} from './components/gt-table-info.component';
 export {GtPaginationComponent} from './components/gt-pagination.component';
+export {GtDrilldownComponent} from './components/gt-drilldown.component';
 export {GenericTableModule} from './core.module';
 export {GtConfig} from './interfaces/gt-config';
 export {GtConfigField} from './interfaces/gt-config-field';

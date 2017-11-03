@@ -218,7 +218,7 @@ export class CustomColumnComponent {
     fields: [{
       objectKey: 'edit', name: '',
       value: () => '',
-      render: () => '<button type="button" class="btn btn-secondary btn-sm">Edit</button>',
+      render: () => '<button type="button" class="btn btn-outline-primary btn-sm">Edit</button>',
       click: (row) => this.editService.click(row.id)
     }, {
       objectKey: 'id',
@@ -239,7 +239,7 @@ export class CustomColumnComponent {
       objectKey: 'save',
       name: '',
       value: () => '',
-      classNames: 'text-right',
+      columnClass: 'text-right',
       render: () => '<button type="button" class="btn btn-primary btn-sm">Save</button>',
       click: (row) => this.stateService.states
         .take(1)

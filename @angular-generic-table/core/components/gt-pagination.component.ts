@@ -21,7 +21,7 @@ export class GtPaginationComponent {
   @Input()set genericTable(value: GenericTableComponent<any, any>) {
     if (value) {
       value.gtEvent.subscribe((res: any) => {
-        if (res.name === 'gt-info' && res.value.pageTotal > 0){
+        if (res.name === 'gt-info' && res.value.pageTotal > 0) {
           this.ready = true;
         }
       });
@@ -83,10 +83,10 @@ export class PaginationPipe implements PipeTransform {
     // check if last page is included in pagination...
     if (pagination.indexOf(totalPages) === -1) {
 
-      //...if not, page next to last should either show ellipsis or actual page number for the page
+      // ...if not, page next to last should either show ellipsis or actual page number for the page
       pagination[pagination.length - 1] = pagination[pagination.length - 1] === totalPages - 1 ? totalPages - 1 : true;
 
-      //...add last page to pagination
+      // ...add last page to pagination
       pagination.push(totalPages);
     }
 

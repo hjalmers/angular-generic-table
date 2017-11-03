@@ -1,0 +1,19 @@
+<h2>Basic</h2>
+<p>Table with static data and simple pagination.</p>
+<div class="card mb-5">
+  <div class="card-header">Example</div>
+  <div class="card-body" exemplify="basicExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']" [source]="'child'" [target]="basicExample" [navStyle]="'tabs'" [externalSources]="[{
+    name:'app.module.ts',
+    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
+  },{
+    name:'record-selection.component.ts',
+    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/record-selection/record-selection.component.ts'
+  }]">
+    <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtOptions]="{rowSelection:true}"></generic-table>
+    <div class="text-center">
+      <small><gt-table-info class="form-text text-muted mb-2" [genericTable]="myTable"></gt-table-info></small>
+      <gt-pagination [gtClasses]="'pagination-sm justify-content-center'" [genericTable]="myTable"></gt-pagination>
+    </div>
+  </div>
+  <div class="card-footer" #basicExample></div>
+</div>

@@ -3,13 +3,17 @@
 <div class="alert alert-info">Please note that this example only persists changes in memory so the data will be reset when component is reinitialized e.g when route changes or page is refreshed.</div>
 <div class="card mb-5">
   <div class="card-header">Example</div>
-  <div class="card-block" exemplify="inlineEditExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']" [source]="'child'" [target]="inlineEditExample" [navStyle]="'tabs'" [externalSources]="[{
+  <div class="card-body" exemplify="inlineEditExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']" [source]="'child'" [target]="inlineEditExample" [navStyle]="'tabs'" [externalSources]="[{
     name:'app.module.ts',
     src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
   },{
     name:'inline-editing.component.ts',
     src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/inline-editing/inline-editing.component.ts'
   }]">
+    <ng-container *ngIf="myTable.hasEdits">
+      <button class="btn btn-sm btn-outline-primary mb-3" (click)="myTable.inlineEditCancel()">Cancel edit</button>
+      <button class="btn btn-sm btn-primary mb-3" (click)="myTable.inlineEditUpdate()">Save changes</button>
+    </ng-container>
     <div class="table-responsive">
       <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data" (gtEvent)="trigger($event)"></generic-table>
     </div>

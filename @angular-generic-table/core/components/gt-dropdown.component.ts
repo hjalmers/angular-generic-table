@@ -7,7 +7,7 @@ import * as Tether from 'tether';
   template: `
     <div class="dropdown gt-dropdown" [ngClass]="{'show':active}">
       <div class="dropdown-toggle" (click)="toggleDropdown()" [attr.aria-expanded]="active">{{selected}}</div>
-      <div class="gt-dropdown-menu dropdown-menu" *ngIf="active">
+      <div class="gt-dropdown-menu dropdown-menu" *ngIf="active" [ngClass]="{'show':active}">
         <button *ngFor="let option of options;" class="dropdown-item" (click)="select(option)" [ngClass]="{'active':option === selected}">{{option}}</button>
       </div>
     </div>
@@ -44,7 +44,7 @@ export class GtDropdownComponent implements OnInit, OnDestroy {
 
   constructor(private renderer: Renderer2) { }
 
-  select(option:any) {
+  select(option: any) {
     this.active = false;
     this.state.next(this.active);
     if (this._selected !== option) {
@@ -73,7 +73,7 @@ export class GtDropdownComponent implements OnInit, OnDestroy {
           targetAttachment: 'bottom left',
           constraints: [{
             to: 'window',
-            attachment:'together'
+            attachment: 'together'
           }]
         });
 

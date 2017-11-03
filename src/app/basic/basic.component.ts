@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {GtConfig} from '@angular-generic-table/core';
 
-export interface rowData {
+export interface RowData {
   id: number;
   name: string;
   lucky_number: number;
@@ -13,8 +13,8 @@ export interface rowData {
 })
 export class BasicComponent {
 
-  public data: Array<rowData> = [];
-  public configObject: GtConfig<rowData>;
+  public data: Array<RowData> = [];
+  public configObject: GtConfig<RowData>;
 
   constructor() {
 

@@ -1,5 +1,6 @@
 import {Component, Output, EventEmitter, ViewChild, OnInit} from '@angular/core';
-import {Response, Http } from '@angular/http';
+import {Response } from '@angular/http';
+import {HttpClient} from '@angular/common/http';
 import {CustomRowComponent} from '../custom-row/custom-row.component';
 import {GenericTableComponent, GtConfig} from '@angular-generic-table/core';
 import 'rxjs/add/operator/map';
@@ -16,12 +17,11 @@ export class RestComponent implements OnInit {
 
   @ViewChild(GenericTableComponent)
   private myTable: GenericTableComponent<any, CustomRowComponent>;
-  public expandedRow = CustomRowComponent;
   public showColumnControls = false;
   public selectedRows = 0;
   private url = 'https://private-730c61-generictable.apiary-mock.com/data'; // apiary end point
 
-  constructor(private http: Http) {
+  constructor(private http: HttpClient) {
 
     this.configObject = {
       settings: [{
@@ -63,27 +63,29 @@ export class RestComponent implements OnInit {
       fields: [{
         name: 'Id',
         objectKey: 'id',
-        classNames: 'clickable sort-numeric',
-        expand: true
+        columnClass: 'clickable sort-numeric',
+        expand: {
+          component: CustomRowComponent
+        }
       }, {
         name: 'Name',
         objectKey: 'name',
-        classNames: 'sort-string',
+        columnClass: 'sort-string',
         value: function(row){return row.first_name + ' ' + row.last_name; },
         render: function(row){return '<div>' + row.first_name + ' ' + row.last_name + '</div>'; }
       }, {
         name: 'Favorite color',
         objectKey: 'favorite_color',
-        classNames: 'text-xs-right',
+        columnClass: 'text-right',
         render: function(row){return '<div style="float:right;width:15px;height:15px;border-radius:50%;background: ' + row.favorite_color + '"></div>'; },
         click: (row) => {return console.log(row.first_name + '\'s favorite color is: ' + row.favorite_color ); }
       }, {
         name: 'Gender',
-        classNames: 'sort-string',
+        columnClass: 'sort-string',
         objectKey: 'gender'
       }, {
         name: 'Email',
-        classNames: 'sort-string',
+        columnClass: 'sort-string',
         objectKey: 'email',
         render: function(row){return '<a href="mailto:' + row.email + '">' + row.email + '</a>'; }
       }],
@@ -94,10 +96,10 @@ export class RestComponent implements OnInit {
   public getData = function() {
 
     // tell generic table instance that we're loading data
-    this.myTable ? this.myTable.loading = true:'';
+    this.myTable ? this.myTable.loading = true : '';
 
     this.http.get(this.url)
-        .map((res: Response) => res.json())
+        //.map((res: Response) => res.json())
         .subscribe(res => {
           this.configObject.data = res.data;
         });

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {GtConfig} from '@angular-generic-table/core';
 
-export interface rowData {
+export interface RowData {
   'id': number;
   'first_name': string;
   'last_name': string;
@@ -26,8 +26,8 @@ export interface rowData {
 
 export class ChangeColumnSettingsComponent {
 
-  public firstConfigObject: GtConfig<rowData>;
-  public secondConfigObject: GtConfig<rowData>;
+  public firstConfigObject: GtConfig<RowData>;
+  public secondConfigObject: GtConfig<RowData>;
 
   public getBaseSettings() {
     return [{
@@ -125,7 +125,7 @@ export class ChangeColumnSettingsComponent {
     }];
   };
 
-  public data: Array<rowData>;
+  public data: Array<RowData>;
 
   constructor() {
 
