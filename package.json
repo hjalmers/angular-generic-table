@@ -1,6 +1,6 @@
 {
   "name": "angular-generic-table",
-  "version": "4.7.0",
+  "version": "4.7.1",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -61,7 +61,7 @@
     "angular-exemplify": "^2.0.1",
     "autoprefixer": "^7.1.2",
     "bootstrap": "^4.0.0-beta",
-    "clean-css": "^4.1.7",
+    "clean-css-cli": "^4.1.10",
     "codelyzer": "~3.1.2",
     "copyfiles": "^1.0.0",
     "core-js": "^2.5.0",

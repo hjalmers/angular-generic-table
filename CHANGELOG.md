@@ -2,6 +2,8 @@ Release History
 ---------------
 
 ## [Unreleased]
+# [4.7.1] - 2017-11-13
+- Fixed #149 for angular 5 support
 
 # [4.7.0] - 2017-10-10
 ### Added
