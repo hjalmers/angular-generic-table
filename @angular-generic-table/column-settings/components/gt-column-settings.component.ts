@@ -50,7 +50,7 @@ export class GtColumnPipe implements PipeTransform {
                 </div>
                 <div class="gt-column-settings-item-wrapper" [ngClass]="gtWrapperClasses" [dragula]='bagId'  data-visible="true" [style.max-height]="'calc(100% - '+heightAdjust+')'">
                     <div class="gt-column-settings-item pr-0 pr-sm-4" *ngFor="let i = index;let column of genericTable.gtSettings | gtColumn" [attr.data-object-key]="column.objectKey">
-                        <ng-template [ngTemplateOutlet]="gtColumnItem ? gtColumnItem:columnItem" [ngOutletContext]="{$implicit: column,index: this.reordered ? column.columnOrder+1:i+1, name: (genericTable.gtFields | gtProperty:column.objectKey:'name')}"></ng-template>
+                        <ng-template [ngTemplateOutlet]="gtColumnItem ? gtColumnItem:columnItem" [ngTemplateOutletContext]="{$implicit: column,index: this.reordered ? column.columnOrder+1:i+1, name: (genericTable.gtFields | gtProperty:column.objectKey:'name')}"></ng-template>
                     </div>
                 </div>
                 <div class="gt-overlay" *ngIf="active && overlay" (click)="toggleColumnSettings()" [style.height]="'calc(100% - -'+offset+')'"></div>
