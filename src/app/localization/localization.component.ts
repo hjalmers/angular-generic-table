@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {GtConfig, GtTexts} from '@angular-generic-table/core';
 import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
+import {GenericTableComponent} from '@angular-generic-table/core';
 
 @Component({
   selector: 'app-localization',
@@ -10,6 +11,8 @@ export class LocalizationComponent {
 
   public configObject: GtConfig<any>;
   public translations: GtTexts;
+  @ViewChild(GenericTableComponent)
+  private myTable: GenericTableComponent<any, any>;
 
   public data: Array<{
     id: number,
@@ -471,7 +474,8 @@ export class LocalizationComponent {
     }, {
       name: this.translate.instant('TRANSLATIONS.NAME_HEADING'),
       objectKey: 'name',
-      render: (row) => {return this.translate.instant('TRANSLATIONS.NAME_DATA', {name: row.name}); }
+      render: (row) => {return this.translate.instant('TRANSLATIONS.NAME_DATA', {name: row.name}); },
+      export: (row) => {return this.translate.instant('TRANSLATIONS.NAME_DATA', {name: row.name}); }
     }, {
       name: this.translate.instant('TRANSLATIONS.LUCKY_NUMBER_HEADING'),
       objectKey: 'lucky_number',

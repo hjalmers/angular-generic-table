@@ -14,6 +14,7 @@
       <select id="language" class="form-control form-control-sm mb-2 mr-sm-2 mb-lg-0" #langSelect (change)="translate.use(langSelect.value)">
         <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">{{ lang }}</option>
       </select>
+      <button class="btn btn-sm btn-outline-primary" (click)="myTable.exportCSV('custom-export', true)">Export CSV</button>
     </form>
     <ng-template [ngIf]="configObject">
       <generic-table [gtClasses]="'table-sm'" #myTable [gtTexts]="translations" [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"></generic-table>
