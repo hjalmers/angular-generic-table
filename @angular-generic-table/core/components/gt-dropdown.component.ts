@@ -5,9 +5,9 @@ import * as Tether from 'tether';
 @Component({
   selector: 'gt-dropdown',
   template: `
-    <div class="dropdown gt-dropdown" [ngClass]="{'show':active}">
+    <div class="dropdown gt-dropdown" [ngClass]="{'show':active}" [attr.id]="id">
       <div class="dropdown-toggle" (click)="toggleDropdown()" [attr.aria-expanded]="active">{{selected}}</div>
-      <div class="gt-dropdown-menu dropdown-menu" *ngIf="active" [ngClass]="{'show':active}">
+      <div class="gt-dropdown-menu dropdown-menu" *ngIf="active" [ngClass]="{'show':active}" [attr.id]="id+'_menu'">
         <button *ngFor="let option of options;" class="dropdown-item" (click)="select(option)" [ngClass]="{'active':option === selected}">{{option}}</button>
       </div>
     </div>
@@ -36,6 +36,7 @@ export class GtDropdownComponent implements OnInit, OnDestroy {
     this._selected = selection;
   }
   @Input() options: Array<any>;
+  @Input() id: string;
   @Output() selectedChange: EventEmitter<any> = new EventEmitter();
 
   active = false; // is dropdown active or not
@@ -61,14 +62,12 @@ export class GtDropdownComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
-
     this.state.subscribe((state) => {
       if (state) {
 
         this.tether = new Tether({
-          element: '.dropdown-menu',
-          target: '.dropdown.gt-dropdown.show',
+          element: '#'+ this.id + '_menu',
+          target: '#'+ this.id,
           attachment: 'top left',
           targetAttachment: 'bottom left',
           constraints: [{

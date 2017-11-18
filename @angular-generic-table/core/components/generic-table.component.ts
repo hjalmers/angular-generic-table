@@ -84,6 +84,7 @@ import {GtRenderField} from '../interfaces/gt-render-field';
                         <gt-dropdown
                                 *ngIf="!column.columnComponent && (gtFields | gtProperty:column.objectKey:'inlineEdit') && (gtFields | gtProperty:column.objectKey:'inlineEdit').length > 0"
                                 [options]="gtFields | gtProperty:column.objectKey:'inlineEdit'"
+                                [id]="'_' + row.$$gtRowId + '_' + column.objectKey"
                                 [(selected)]="column.renderValue" (selectedChange)="gtDropdownSelect(row, column)">Add
                             inline editing module
                         </gt-dropdown>
