@@ -1120,10 +1120,12 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /** Export data as CSV
      * @param {string} fileName - optional file name (overrides default file name).
+     * @param {boolean} useBOM - use BOM (byte order marker).
      */
-    public exportCSV(fileName?: string) {
+    public exportCSV(fileName?: string, useBOM: boolean = false) {
         const data = this.data.exportData;
         let csv = '';
+        const BOM = '\uFEFF';
 
         // csv export headers
         for (let i = 0; i < this._gtSettings.length; i++) {
@@ -1160,24 +1162,24 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
             }
         });
 
-        const blob = new Blob([csv], {
-            type: 'text/csv;charset=utf-8;'
+        const blob = new Blob([(useBOM ? BOM:'') + csv], {
+            type: 'text/csv;charset=utf-8'
         });
 
         if (window.navigator.msSaveOrOpenBlob) {
-            navigator.msSaveOrOpenBlob(blob, fileName ? fileName : this.gtTexts.csvDownload + '.csv');
+            navigator.msSaveOrOpenBlob(blob, fileName ? fileName + '.csv' : this.gtTexts.csvDownload + '.csv');
         } else {
             const link = document.createElement('a');
             link.style.display = 'none';
             document.body.appendChild(link);
             if (link.download !== undefined) {
-                link.setAttribute('href', URL.createObjectURL(blob));
-                link.setAttribute('download', fileName ? fileName : this.gtTexts.csvDownload + '.csv');
+                link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent((useBOM ? BOM:'')+csv)); //URL.createObjectURL(blob));
+                link.setAttribute('download', fileName ? fileName + '.csv' : this.gtTexts.csvDownload + '.csv');
                 document.body.appendChild(link);
                 link.click();
             } else {
-                csv = 'data:text/csv;charset=utf-8,' + csv;
-                window.open(encodeURI(csv));
+                csv = 'data:text/csv;charset=utf-8,' + (useBOM ? BOM:'')+csv;
+                window.open(encodeURIComponent(csv));
             }
             document.body.removeChild(link);
         }
