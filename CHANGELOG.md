@@ -3,6 +3,10 @@ Release History
 
 ## [Unreleased]
 
+# [4.8.0] - 2017-11-23
+### Added
+- Support for input type for inline edit use `password`, `number`, `email` or `true` for type text (issue #159).
+
 # [4.7.2] - 2017-11-18
 ### Fixed
 - Placement of dropdown for inline edit (issue #153).

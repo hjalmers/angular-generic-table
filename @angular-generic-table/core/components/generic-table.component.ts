@@ -76,13 +76,13 @@ import {GtRenderField} from '../interfaces/gt-render-field';
                               class="gt-row-content" [innerHTML]="column.renderValue"
                               (click)="column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row, column.expand):''"></span>
                         <ng-template
-                                [ngIf]="!column.columnComponent && (gtFields | gtProperty:column.objectKey:'inlineEdit') === true">
-                            <input class="inline-edit" type="text" [(ngModel)]="column.renderValue"
+                                [ngIf]="!column.columnComponent && [true,'email','number','password'].indexOf(gtFields | gtProperty:column.objectKey:'inlineEdit') !== -1">
+                            <input class="inline-edit" [attr.type]="(gtFields | gtProperty:column.objectKey:'inlineEdit') === true ? 'text':(gtFields | gtProperty:column.objectKey:'inlineEdit')" [(ngModel)]="column.renderValue"
                                    (keyup)="gtUpdateColumn($event,row, column)">
                             <span class="gt-inline-edit-notice">{{gtTexts.inlineEditEdited}}</span>
                         </ng-template>
                         <gt-dropdown
-                                *ngIf="!column.columnComponent && (gtFields | gtProperty:column.objectKey:'inlineEdit') && (gtFields | gtProperty:column.objectKey:'inlineEdit').length > 0"
+                                *ngIf="!column.columnComponent && (gtFields | gtProperty:column.objectKey:'inlineEdit') && [true,'email','number','password'].indexOf(gtFields | gtProperty:column.objectKey:'inlineEdit') === -1"
                                 [options]="gtFields | gtProperty:column.objectKey:'inlineEdit'"
                                 [id]="'_' + row.$$gtRowId + '_' + column.objectKey"
                                 [(selected)]="column.renderValue" (selectedChange)="gtDropdownSelect(row, column)">Add
