@@ -11,7 +11,7 @@ Release History
 - Checkbox row selection (issue #96)
 
 ### Fixed
-- rxjs import reference (issue #65)
+- rxjs import reference (issue #165)
 
 # [4.8.0] - 2017-11-23
 ### Added
