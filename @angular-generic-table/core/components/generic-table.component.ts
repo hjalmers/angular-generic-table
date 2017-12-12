@@ -8,7 +8,6 @@ import {
     Type,
     SimpleChanges, Renderer2, OnDestroy
 } from '@angular/core';
-import 'rxjs/Rx';
 import { GtConfig } from '../interfaces/gt-config';
 import { GtConfigField } from '../interfaces/gt-config-field';
 import { GtConfigSetting } from '../interfaces/gt-config-setting';
