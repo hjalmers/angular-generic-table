@@ -3,10 +3,16 @@ Release History
 
 ## [Unreleased]
 
+# [4.9.0] - 2017-12-11
+### Added
 - Support for setting initial state for selected rows (issue #112)
 - Support for setting initial state for expanded/open rows (issue #112)
 - Support for custom component in table header (issue #158)
 - Checkbox row selection (issue #96)
+
+### Fixed
+- rxjs import reference (issue #65)
+
 # [4.8.0] - 2017-11-23
 ### Added
 - Support for input type for inline edit use `password`, `number`, `email` or `true` for type text (issue #159).
