@@ -44,7 +44,7 @@ import { MenuComponent } from './menu/menu.component';
 import { InlineEditingComponent } from './inline-editing/inline-editing.component';
 import { ColumnClickComponent } from './column-click/column-click.component';
 import { AggregateComponent } from './aggregate/aggregate.component';
-import { RecordSelectionComponent } from './record-selection/record-selection.component';
+import { RowSelectionComponent } from './row-selection/row-selection.component';
 import { StylingComponent } from './styling/styling.component';
 import {DrilldownComponent} from './drilldown/drilldown.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
@@ -74,7 +74,7 @@ import { CustomHeaderComponent, TooltipHeaderComponent } from './custom-header/c
         ColumnClickComponent,
         AggregateComponent,
         AddRemoveEditComponent,
-        RecordSelectionComponent,
+        RowSelectionComponent,
         StylingComponent,
         DrilldownComponent
         CheckboxComponent,

@@ -8,11 +8,11 @@ export interface RowData {
 }
 
 @Component({
-  selector: 'record-selection',
-  templateUrl: './record-selection.component.html',
+  selector: 'row-selection',
+  templateUrl: './row-selection.component.html',
   styles: []
 })
-export class RecordSelectionComponent implements OnInit {
+export class RowSelectionComponent implements OnInit {
 
     public configObject: GtConfig<RowData>;
 
@@ -46,8 +46,7 @@ export class RecordSelectionComponent implements OnInit {
                 objectKey: 'name'
             }, {
                 name: 'Lucky number',
-                objectKey: 'lucky_number',
-                stackedHeading: 'Custom heading'
+                objectKey: 'lucky_number'
             }],
             data: [{
                 'id': 1,

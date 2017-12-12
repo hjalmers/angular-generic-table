@@ -3,6 +3,8 @@ Release History
 
 ## [Unreleased]
 
+- Support for setting initial state for selected rows (issue #112)
+- Support for setting initial state for expanded/open rows (issue #112)
 - Support for custom component in table header (issue #158)
 - Checkbox row selection (issue #96)
 # [4.8.0] - 2017-11-23

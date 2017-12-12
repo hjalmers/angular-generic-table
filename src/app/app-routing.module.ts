@@ -15,7 +15,7 @@ import {InlineEditingComponent} from './inline-editing/inline-editing.component'
 import {ColumnClickComponent} from './column-click/column-click.component';
 import {AggregateComponent} from './aggregate/aggregate.component';
 import {AddRemoveEditComponent} from './add-remove-edit/add-remove-edit.component';
-import {RecordSelectionComponent} from './record-selection/record-selection.component';
+import {RowSelectionComponent} from './row-selection/row-selection.component';
 import {StylingComponent} from './styling/styling.component';
 import {DrilldownComponent} from './drilldown/drilldown.component';
 import {CheckboxComponent} from './checkbox/checkbox.component';
@@ -29,7 +29,7 @@ const routes: Routes = [
   { path: 'basic', component: BasicComponent },
   { path: 'drilldown', component: DrilldownComponent },
   { path: 'styling', component: StylingComponent },
-  { path: 'record-selection', component: RecordSelectionComponent },
+  { path: 'row-selection', component: RowSelectionComponent },
   { path: 'totals', component: AggregateComponent },
   { path: 'custom-column', component: CustomColumnComponent },
   { path: 'column-click', component: ColumnClickComponent },

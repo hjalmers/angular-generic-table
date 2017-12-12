@@ -19,6 +19,7 @@ import { GtRow } from '../interfaces/gt-row';
 import { GtOptions } from '../interfaces/gt-options';
 import {GtRowMeta} from '../interfaces/gt-row-meta';
 import {GtRenderField} from '../interfaces/gt-render-field';
+import {GtMetaPipe} from '../pipes/gt-meta.pipe';
 
 
 @Component({
@@ -59,7 +60,7 @@ import {GtRenderField} from '../interfaces/gt-render-field';
             </ng-template>
             <tbody *ngIf="gtData && gtInfo">
             <ng-template class="table-rows" ngFor let-row let-last="last" [ngForTrackBy]="trackByFn"
-                         [ngForOf]="gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1] | gtMeta:(gtInfo.pageCurrent-1):gtInfo.recordLength) : (gtData | gtMeta:null:null:gtData.length | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data | gtRowClass:gtFields)">
+                         [ngForOf]="gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1]) : (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data | gtRowClass:gtFields)">
                 <tr [ngClass]="{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading, 'row-expandable':gtRowComponent}"
                     class="{{row.$$gtRowClass}}"
                     (click)="gtOptions.rowSelection ? toggleSelect(row):null">
@@ -234,8 +235,38 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         }
         this.restructureSorting();
     }
-    @Input() set gtData(value: Array<any>) {
-        this._gtData = value;
+    @Input() set gtData(data: Array<any>) {
+      if (this.gtOptions.lazyLoad && this.gtInfo) {
+        this.gtMetaPipe.transform(data, (this.gtInfo.pageCurrent - 1), this.gtInfo.recordLength);
+      } else {
+        this.gtMetaPipe.transform(data);
+      }
+      if (this.gtOptions.rowSelectionInitialState) {
+        data.map(row => {
+          const selected = typeof this.gtOptions.rowSelectionInitialState === 'function' ? this.gtOptions.rowSelectionInitialState(row) : this.gtOptions.rowSelectionInitialState;
+          if (selected) {
+            if (typeof this.metaInfo[row.$$gtRowId] === 'undefined') {
+              this.metaInfo[row.$$gtRowId] = { isSelected: true };
+            } else {
+              this.metaInfo[row.$$gtRowId].isSelected = true;
+            }
+            this.selectedRows.push(row);
+          }
+        });
+      }
+      if (this.gtOptions.rowExpandInitialState) {
+        data.map(row => {
+          const expanded = typeof this.gtOptions.rowExpandInitialState === 'function' ? this.gtOptions.rowExpandInitialState(row) : this.gtOptions.rowExpandInitialState;
+          if (expanded) {
+            if (typeof this.metaInfo[row.$$gtRowId] === 'undefined') {
+              this.metaInfo[row.$$gtRowId] = {isOpen: true};
+            } else {
+              this.metaInfo[row.$$gtRowId].isOpen = true;
+            }
+          }
+        });
+      }
+      this._gtData = data;
     }
 
     @Input() set gtRowComponent(value: Type<C>) {

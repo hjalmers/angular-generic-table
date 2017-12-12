@@ -1,13 +1,13 @@
-<h2>Basic</h2>
-<p>Table with static data and simple pagination.</p>
+<h2>Row selection</h2>
+<p>Enable row selection by passing <code>rowSelection:true</code> with <code>gtOptions</code>. By default you'll be able to select multiple rows, disable by passing <code>rowSelectionAllowMultiple:false</code>. Use <code>rowSelectionInitialState</code> to set an initial state for rows, pass <code>true</code> to set all rows to selected when table is initiated. <code>rowSelectionInitialState</code> also supports passing a function to determine initial row state</p>
 <div class="card mb-5">
   <div class="card-header">Example</div>
   <div class="card-body" exemplify="basicExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']" [source]="'child'" [target]="basicExample" [navStyle]="'tabs'" [externalSources]="[{
     name:'app.module.ts',
     src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
   },{
-    name:'record-selection.component.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/record-selection/record-selection.component.ts'
+    name:'row-selection.component.ts',
+    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/row-selection/row-selection.component.ts'
   }]">
     <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtOptions]="{rowSelection:true}"></generic-table>
     <div class="text-center">
