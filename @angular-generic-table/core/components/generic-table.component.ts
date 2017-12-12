@@ -33,7 +33,12 @@ import {GtMetaPipe} from '../pipes/gt-meta.pipe';
                 <th *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe"
                     ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{column.sortEnabled ? 'sort-'+column.sort:''}} {{column.sortEnabled && column.sortOrder >= 0  ? 'sort-order-'+column.sortOrder:''}} {{ gtFields | gtColumnClass:'th':column }}"
                     (click)="column.sortEnabled ? gtSort(column.objectKey,$event):'';">
-                    {{gtFields | gtProperty:column.objectKey:'name'}}
+                    <span *ngIf="!(gtFields | gtProperty:column.objectKey:'header')">{{gtFields | gtProperty:column.objectKey:'name'}}</span>
+                    <gt-custom-component-factory *ngIf="(gtFields | gtProperty:column.objectKey:'header')"
+                                                [type]="(gtFields | gtProperty:column.objectKey:'header')?.type"
+                                                [injector]="(gtFields | gtProperty:column.objectKey:'header')?.injector"
+                                                [column]="gtFields | gtProperty:column.objectKey:'name'"></gt-custom-component-factory>
+                    <gt-checkbox *ngIf="(gtFields | gtProperty:column.objectKey:'columnComponent')?.type === 'checkbox'" [checked]="(selectedRows.length === gtData.length)" (changed)="(selectedRows.length !== gtData.length) ? selectAllRows() : deselectAllRows();"></gt-checkbox>
                 </th>
             </tr>
             </thead>
