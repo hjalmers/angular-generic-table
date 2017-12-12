@@ -19,6 +19,7 @@ import {RecordSelectionComponent} from './record-selection/record-selection.comp
 import {StylingComponent} from './styling/styling.component';
 import {DrilldownComponent} from './drilldown/drilldown.component';
 import {CheckboxComponent} from './checkbox/checkbox.component';
+import {CustomHeaderComponent} from './custom-header/custom-header.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/start', pathMatch: 'full' },
@@ -37,6 +38,7 @@ const routes: Routes = [
   { path: 'add-remove-edit', component: AddRemoveEditComponent },
   { path: 'column-settings-component', component: ChangeColumnSettingsComponent },
   { path: 'checkbox', component: CheckboxComponent },
+  { path: 'custom-header', component: CustomHeaderComponent },
   { path: '**', component: HomeComponent }
 ];
 

@@ -3,6 +3,7 @@ Release History
 
 ## [Unreleased]
 
+- Support for custom component in table header (issue #158)
 - Checkbox row selection (issue #96)
 # [4.8.0] - 2017-11-23
 ### Added

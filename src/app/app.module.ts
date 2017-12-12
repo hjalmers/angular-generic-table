@@ -48,6 +48,7 @@ import { RecordSelectionComponent } from './record-selection/record-selection.co
 import { StylingComponent } from './styling/styling.component';
 import {DrilldownComponent} from './drilldown/drilldown.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
+import { CustomHeaderComponent, TooltipHeaderComponent } from './custom-header/custom-header.component';
 
 @NgModule({
     declarations: [
@@ -77,6 +78,8 @@ import { CheckboxComponent } from './checkbox/checkbox.component';
         StylingComponent,
         DrilldownComponent
         CheckboxComponent,
+        TooltipHeaderComponent,
+        CustomHeaderComponent
     ],
     imports: [
         BrowserModule,
@@ -105,7 +108,8 @@ import { CheckboxComponent } from './checkbox/checkbox.component';
         RequiredNumberComponent,
         EditSaveButtonComponent,
         DeleteDiscardButtonComponent,
-        SelectedCheckboxComponent
+        SelectedCheckboxComponent,
+        TooltipHeaderComponent
     ],
     bootstrap: [AppComponent]
 })

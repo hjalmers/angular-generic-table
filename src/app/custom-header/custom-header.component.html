@@ -1,0 +1,19 @@
+<h2>Custom header</h2>
+<p>Table with custom component in header to leverage tooltips, <a href="https://ng-bootstrap.github.io/#/components/tooltip/examples" target="_blank">ng-bootstrap</a> is used in this example but you could place any component in the header (hover headers to get tooltip).</p>
+<div class="card mb-5">
+  <div class="card-header">Example</div>
+  <div class="card-body" exemplify="headerExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']" [source]="'child'" [target]="headerExample" [navStyle]="'tabs'" [externalSources]="[{
+    name:'app.module.ts',
+    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
+  },{
+    name:'custom-header.component.ts',
+    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/custom-header/custom-header.component.ts'
+  }]">
+    <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"></generic-table>
+    <div class="text-center">
+      <small><gt-table-info class="form-text text-muted mb-2" [genericTable]="myTable"></gt-table-info></small>
+      <gt-pagination [gtClasses]="'pagination-sm justify-content-center'" [genericTable]="myTable"></gt-pagination>
+    </div>
+  </div>
+  <div class="card-footer" #headerExample></div>
+</div>
