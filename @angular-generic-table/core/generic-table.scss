@@ -170,6 +170,10 @@ generic-table {
       }
     }
   }
+  gt-checkbox label {
+    margin: -3px 0 0 0 !important;
+    vertical-align: middle;
+  }
 }
 
 .gt-dropdown-menu.show {

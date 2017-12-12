@@ -35,7 +35,7 @@ export interface GtConfigField<R extends GtRow, C extends GtCustomComponent<any>
   // custom class names for column
   columnClass?: string | GtClassFunc;
   // custom column component and associated injector
-  columnComponent?: { type: Type<C>, injector?: Injector };
+  columnComponent?: { type: Type<C> | 'checkbox', injector?: Injector };
   // custom function for column presentation
   render?: GtRenderFunc<R>;
   // should the field be compiled (false by default)
@@ -53,4 +53,6 @@ export interface GtConfigField<R extends GtRow, C extends GtCustomComponent<any>
   // set to false if field shouldn't be searchable (true by default)
   search?: any;
   inlineEdit?: boolean | Array<any> | 'number' | 'password' | 'email';
+  // custom header
+  header?: { type: Type<C>, injector?: Injector };
 }

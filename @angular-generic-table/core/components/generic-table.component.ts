@@ -73,7 +73,7 @@ import {GtMetaPipe} from '../pipes/gt-meta.pipe';
                         ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{(gtFields | gtProperty:column.objectKey:'inlineEdit') ? 'gt-inline-edit':''}} {{column.edited ? 'gt-edited':''}} {{ gtFields | gtColumnClass:row:column }}">
                         <span class="gt-row-label"
                               *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading') ? (gtFields | gtProperty:column.objectKey:'stackedHeading') : (gtFields | gtProperty:column.objectKey:'name')}}</span>
-                        <gt-custom-component-factory *ngIf="column.columnComponent" class="gt-row-content"
+                        <gt-custom-component-factory *ngIf="column.columnComponent && column.columnComponent.type !== 'checkbox'" class="gt-row-content"
                                                      [type]="column.columnComponent.type"
                                                      [injector]="column.columnComponent.injector" [row]="row"
                                                      [column]="column" (redrawEvent)="redraw($event)"
@@ -94,6 +94,7 @@ import {GtMetaPipe} from '../pipes/gt-meta.pipe';
                                 [(selected)]="column.renderValue" (selectedChange)="gtDropdownSelect(row, column)">Add
                             inline editing module
                         </gt-dropdown>
+                        <gt-checkbox *ngIf="column.columnComponent && column.columnComponent.type === 'checkbox'" [checked]="metaInfo[row.$$gtRowId]?.isSelected" (changed)="toggleSelect(row)"></gt-checkbox>
                     </td>
                 </tr>
                 <tr class="row-expanded" *ngIf="metaInfo[row.$$gtRowId]?.isOpen">

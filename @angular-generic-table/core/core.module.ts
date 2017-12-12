@@ -23,6 +23,7 @@ import {GtRowClassPipe} from './pipes/gt-row-class.pipe';
 import {GtColumnClassPipe} from './pipes/gt-column-class.pipe';
 import {GtColumnWidthDirective} from './directives/gt-column-width.directive';
 import {GtDrilldownComponent} from './components/gt-drilldown.component';
+import {GtCheckboxComponent} from './components/gt-checkbox/gt-checkbox.component';
 
 @NgModule({
     declarations: [
@@ -49,7 +50,8 @@ import {GtDrilldownComponent} from './components/gt-drilldown.component';
         GtColumnClassPipe,
         GtDropdownComponent,
         GtColumnWidthDirective,
-        GtDrilldownComponent
+        GtDrilldownComponent,
+        GtCheckboxComponent
     ],
     imports: [CommonModule, FormsModule],
     exports: [
@@ -59,12 +61,14 @@ import {GtDrilldownComponent} from './components/gt-drilldown.component';
         GtPropertyPipe,
         GtExpandingRowComponent,
         GtDropdownComponent,
-        GtDrilldownComponent
+        GtDrilldownComponent,
+        GtCheckboxComponent
     ],
     entryComponents: [
-        GtDrilldownComponent
+        GtDrilldownComponent,
+        GtCheckboxComponent
     ],
-    providers: [],
+    providers: [GtMetaPipe],
     bootstrap: []
 })
 export class GenericTableModule { }

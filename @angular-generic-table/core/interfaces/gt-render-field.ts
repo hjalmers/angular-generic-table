@@ -9,6 +9,6 @@ export interface GtRenderField<R extends GtRow, C extends GtCustomComponent<any>
     click?: GtClickFunc<R>;
     expand?: boolean | { component: Type<C>, data?: any };
     sortValue: any;
-    columnComponent: { type: Type<any>; injector?: Injector; };
+    columnComponent: { type: Type<C> | 'checkbox'; injector?: Injector; };
     edited?: boolean;
 }
