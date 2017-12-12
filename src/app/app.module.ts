@@ -46,7 +46,7 @@ import { ColumnClickComponent } from './column-click/column-click.component';
 import { AggregateComponent } from './aggregate/aggregate.component';
 import { RowSelectionComponent } from './row-selection/row-selection.component';
 import { StylingComponent } from './styling/styling.component';
-import {DrilldownComponent} from './drilldown/drilldown.component';
+import { DrilldownComponent } from './drilldown/drilldown.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { CustomHeaderComponent, TooltipHeaderComponent } from './custom-header/custom-header.component';
 
@@ -76,7 +76,7 @@ import { CustomHeaderComponent, TooltipHeaderComponent } from './custom-header/c
         AddRemoveEditComponent,
         RowSelectionComponent,
         StylingComponent,
-        DrilldownComponent
+        DrilldownComponent,
         CheckboxComponent,
         TooltipHeaderComponent,
         CustomHeaderComponent

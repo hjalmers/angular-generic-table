@@ -352,7 +352,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     private data: { exportData: Array<any> } = { exportData: [] }; // Store filtered data for export
 
-    constructor(private renderer: Renderer2) {
+    constructor(private renderer: Renderer2, private gtMetaPipe: GtMetaPipe) {
         this.gtEvent.subscribe(($event: any) => {
             if ($event.name === 'gt-info') {
                 this.updateRecordRange();
@@ -1198,7 +1198,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
             }
         });
 
-        const blob = new Blob([(useBOM ? BOM:'') + csv], {
+        const blob = new Blob([(useBOM ? BOM : '') + csv], {
             type: 'text/csv;charset=utf-8'
         });
 
@@ -1209,12 +1209,12 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
             link.style.display = 'none';
             document.body.appendChild(link);
             if (link.download !== undefined) {
-                link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent((useBOM ? BOM:'')+csv)); //URL.createObjectURL(blob));
+                link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent((useBOM ? BOM : '') + csv)); //URL.createObjectURL(blob));
                 link.setAttribute('download', fileName ? fileName + '.csv' : this.gtTexts.csvDownload + '.csv');
                 document.body.appendChild(link);
                 link.click();
             } else {
-                csv = 'data:text/csv;charset=utf-8,' + (useBOM ? BOM:'')+csv;
+                csv = 'data:text/csv;charset=utf-8,' + (useBOM ? BOM : '') + csv;
                 window.open(encodeURIComponent(csv));
             }
             document.body.removeChild(link);

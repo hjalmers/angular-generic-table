@@ -2,7 +2,7 @@ export interface GtConfigSetting {
   objectKey: string;
   visible?: boolean;
   enabled?: boolean;
-  sort?: string;
+  sort?: 'asc' | 'desc' | 'enable'  | 'disable' | string;
   sortEnabled?: boolean;
   sortOrder?: number;
   columnOrder?: number;
