@@ -18,6 +18,7 @@ import {AddRemoveEditComponent} from './add-remove-edit/add-remove-edit.componen
 import {RecordSelectionComponent} from './record-selection/record-selection.component';
 import {StylingComponent} from './styling/styling.component';
 import {DrilldownComponent} from './drilldown/drilldown.component';
+import {CheckboxComponent} from './checkbox/checkbox.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/start', pathMatch: 'full' },
@@ -35,6 +36,7 @@ const routes: Routes = [
   { path: 'inline-editing', component: InlineEditingComponent },
   { path: 'add-remove-edit', component: AddRemoveEditComponent },
   { path: 'column-settings-component', component: ChangeColumnSettingsComponent },
+  { path: 'checkbox', component: CheckboxComponent },
   { path: '**', component: HomeComponent }
 ];
 

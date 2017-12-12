@@ -3,6 +3,7 @@ Release History
 
 ## [Unreleased]
 
+- Checkbox row selection (issue #96)
 # [4.8.0] - 2017-11-23
 ### Added
 - Support for input type for inline edit use `password`, `number`, `email` or `true` for type text (issue #159).

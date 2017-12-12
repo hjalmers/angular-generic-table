@@ -47,6 +47,7 @@ import { AggregateComponent } from './aggregate/aggregate.component';
 import { RecordSelectionComponent } from './record-selection/record-selection.component';
 import { StylingComponent } from './styling/styling.component';
 import {DrilldownComponent} from './drilldown/drilldown.component';
+import { CheckboxComponent } from './checkbox/checkbox.component';
 
 @NgModule({
     declarations: [
@@ -75,6 +76,7 @@ import {DrilldownComponent} from './drilldown/drilldown.component';
         RecordSelectionComponent,
         StylingComponent,
         DrilldownComponent
+        CheckboxComponent,
     ],
     imports: [
         BrowserModule,
