@@ -9,7 +9,7 @@
     name:'row-selection.component.ts',
     src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/row-selection/row-selection.component.ts'
   }]">
-    <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtOptions]="{rowSelection:true}"></generic-table>
+    <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [(gtData)]="configObject.data" [gtOptions]="options"></generic-table>
     <div class="text-center">
       <small><gt-table-info class="form-text text-muted mb-2" [genericTable]="myTable"></gt-table-info></small>
       <gt-pagination [gtClasses]="'pagination-sm justify-content-center'" [genericTable]="myTable"></gt-pagination>
