@@ -17,8 +17,9 @@ export class GtChunkPipe implements PipeTransform {
         for (let i = 0; i < ENTRIES; i += chunkSize) {
             PAGES.push(array.slice(i, i + chunkSize));
         }
+        gtInfo.visibleRecords = !PAGES[page - 1] ? [] : [...PAGES[page - 1]]; // add visible rows
+        gtInfo.pageTotal = PAGES.length; // add number of pages
 
-        gtInfo.pageTotal = PAGES.length;
         setTimeout(() => gtEvent.emit({
             name: 'gt-info',
             value: gtInfo

@@ -3,6 +3,9 @@ Release History
 
 ## [Unreleased]
 
+### Added
+- Visible rows are now emitted on gt-info event (issue #171)
+
 # [4.9.0] - 2017-12-11
 ### Added
 - Support for setting initial state for selected rows (issue #112)

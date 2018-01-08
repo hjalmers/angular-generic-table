@@ -1336,7 +1336,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
             }
 
             // ...store retrieved data in store at store position
-            this.store[storePosition] = this._gtData;
+            this.store[storePosition] = this.gtData;
+            this.gtInfo.visibleRecords = [...this.gtData]; // add visible rows
 
             // replace data with store
             this._gtData = this.store;

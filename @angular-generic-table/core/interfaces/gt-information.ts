@@ -11,4 +11,5 @@ export interface GtInformation {
   recordsAfterFilter: number;
   recordsAfterSearch: number;
   searchTerms?: string;
+  visibleRecords?: any;
 }
