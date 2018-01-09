@@ -1069,12 +1069,57 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     };
 
     /**
+     * Add rows
+     * @param {Array<R extends GtRow>} rows - rows to add
+     * @returns {Array} new data array.
+     */
+    public gtAdd(rows: Array<R>): ReadonlyArray<R> {
+        this.gtData = [...this.gtData, ...rows];
+        return [...this.gtData];
+    };
+
+    /**
+     * Delete row
+     * @param objectKey - object key you want to find match with
+     * @param value - the value that should be deleted
+     * @param {string} match - all: delete all matches, first: delete first match (default)
+     * @returns {Array} new data array.
+     */
+    public gtDelete(objectKey: string, value: string | number, match: 'first' | 'all' = 'first'): ReadonlyArray<R> {
+        if (match === 'first') {
+            for (let i = 0; i < this.gtData.length; i++) {
+                if (this.gtData[i][objectKey] === value) {
+                    if (this.isRowSelected(this.gtData[i])) {
+                        this.toggleSelect(this.gtData[i]);
+                    }
+                    this.gtData.splice(i, 1);
+                    this.gtData = [...this.gtData];
+                    if (match === 'first') {
+                        break;
+                    }
+                }
+            }
+        } else {
+            for (let i = this.gtData.length; i > 0; i--) {
+                if (this.gtData[i - 1][objectKey] === value) {
+                    if (this.isRowSelected(this.gtData[i - 1])) {
+                        this.toggleSelect(this.gtData[i - 1]);
+                    }
+                    this.gtData.splice(i - 1, 1);
+                    this.gtData = [...this.gtData];
+                }
+            }
+        }
+        return [...this.gtData];
+    };
+
+    /**
      * Create store to hold previously loaded records.
      * @param {number} records - total number of records in store.
      * @param {number} perPage - how many records to show per page.
      * @returns {Array} a nested array to hold records per page.
      */
-    private createStore(records: number, perPage: number) {
+    private createStore(records: number, perPage: number): Array<Array<any>> {
         const stores = Math.ceil(records / perPage);
         const store: Array<Array<any>> = [];
         for (let i = 0; i < stores; i++) {
