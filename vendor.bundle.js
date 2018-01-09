@@ -46815,7 +46815,7 @@ function createHostComponentMeta(hostTypeReference, compMeta, hostViewType) {
         template: new CompileTemplateMetadata({
             encapsulation: __WEBPACK_IMPORTED_MODULE_1__angular_core__["ViewEncapsulation"].None,
             template: template,
-            templateUrl: 'vendor.bundle',
+            templateUrl: '',
             styles: [],
             styleUrls: [],
             ngContentSelectors: [],

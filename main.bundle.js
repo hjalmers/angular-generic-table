@@ -287,7 +287,7 @@ __decorate([
 GtColumnSettingsComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'gt-column-settings',
-        template: "\n        <ng-template #columnItem let-column let-index=\"index\">\n            <span class=\"badge badge-secondary\">{{index}}</span>\n            <span (dblclick)=\"toggleColumnVisibility(column)\" class=\"badge\" [ngClass]=\"{'badge-success':column.visible !== false, 'badge-danger':column.visible === false}\">{{genericTable.gtFields | gtProperty:column.objectKey:'name'}}</span>\n        </ng-template>\n        <div class=\"gt-column-settings\">\n            <div class=\"gt-column-settings-panel\"  *ngIf=\"active\" [style.padding-top]=\"offset\" [style.height]=\"'calc(100% - '+offset+')'\">\n                <div #gtColumnSettingsHeader class=\"gt-column-settings-header border-bottom-0\" [ngClass]=\"gtHeaderClasses\">\n                    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"toggleColumnSettings()\">\n                        <span aria-hidden=\"true\">&times;</span>\n                    </button>\n                    <h6 class=\"gt-column-settings-title\" *ngIf=\"gtTexts.title\">{{gtTexts.title}}</h6>\n                    <small class=\"gt-column-settings-help form-text text-muted\" *ngIf=\"gtTexts.help\">{{gtTexts.help}}</small>\n                </div>\n                <div class=\"gt-column-settings-item-wrapper\" [ngClass]=\"gtWrapperClasses\" [dragula]='bagId'  data-visible=\"true\" [style.max-height]=\"'calc(100% - '+heightAdjust+')'\">\n                    <div class=\"gt-column-settings-item pr-0 pr-sm-4\" *ngFor=\"let i = index;let column of genericTable.gtSettings | gtColumn\" [attr.data-object-key]=\"column.objectKey\">\n                        <ng-template [ngTemplateOutlet]=\"gtColumnItem ? gtColumnItem:columnItem\" [ngOutletContext]=\"{$implicit: column,index: this.reordered ? column.columnOrder+1:i+1, name: (genericTable.gtFields | gtProperty:column.objectKey:'name')}\"></ng-template>\n                    </div>\n                </div>\n                <div class=\"gt-overlay\" *ngIf=\"active && overlay\" (click)=\"toggleColumnSettings()\" [style.height]=\"'calc(100% - -'+offset+')'\"></div>\n            </div>\n            <ng-template #genericTableElement [ngIf]=\"genericTable\">\n                <ng-content></ng-content>\n            </ng-template>\n        </div>\n    "
+        template: "\n        <ng-template #columnItem let-column let-index=\"index\">\n            <span class=\"badge badge-secondary\">{{index}}</span>\n            <span (dblclick)=\"toggleColumnVisibility(column)\" class=\"badge\" [ngClass]=\"{'badge-success':column.visible !== false, 'badge-danger':column.visible === false}\">{{genericTable.gtFields | gtProperty:column.objectKey:'name'}}</span>\n        </ng-template>\n        <div class=\"gt-column-settings\">\n            <div class=\"gt-column-settings-panel\"  *ngIf=\"active\" [style.padding-top]=\"offset\" [style.height]=\"'calc(100% - '+offset+')'\">\n                <div #gtColumnSettingsHeader class=\"gt-column-settings-header border-bottom-0\" [ngClass]=\"gtHeaderClasses\">\n                    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"toggleColumnSettings()\">\n                        <span aria-hidden=\"true\">&times;</span>\n                    </button>\n                    <h6 class=\"gt-column-settings-title\" *ngIf=\"gtTexts.title\">{{gtTexts.title}}</h6>\n                    <small class=\"gt-column-settings-help form-text text-muted\" *ngIf=\"gtTexts.help\">{{gtTexts.help}}</small>\n                </div>\n                <div class=\"gt-column-settings-item-wrapper\" [ngClass]=\"gtWrapperClasses\" [dragula]='bagId'  data-visible=\"true\" [style.max-height]=\"'calc(100% - '+heightAdjust+')'\">\n                    <div class=\"gt-column-settings-item pr-0 pr-sm-4\" *ngFor=\"let i = index;let column of genericTable.gtSettings | gtColumn\" [attr.data-object-key]=\"column.objectKey\">\n                        <ng-template [ngTemplateOutlet]=\"gtColumnItem ? gtColumnItem:columnItem\" [ngTemplateOutletContext]=\"{$implicit: column,index: this.reordered ? column.columnOrder+1:i+1, name: (genericTable.gtFields | gtProperty:column.objectKey:'name')}\"></ng-template>\n                    </div>\n                </div>\n                <div class=\"gt-overlay\" *ngIf=\"active && overlay\" (click)=\"toggleColumnSettings()\" [style.height]=\"'calc(100% - -'+offset+')'\"></div>\n            </div>\n            <ng-template #genericTableElement [ngIf]=\"genericTable\">\n                <ng-content></ng-content>\n            </ng-template>\n        </div>\n    "
     }),
     __metadata("design:paramtypes", [typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_2_ng2_dragula__["DragulaService"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2_ng2_dragula__["DragulaService"]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"]) === "function" && _h || Object])
 ], GtColumnSettingsComponent);
@@ -321,14 +321,13 @@ var _a, _b, _c, _d, _e, _f, _g, _h;
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GenericTableComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__ = __webpack_require__("../../../../rxjs/Rx.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Rx__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_gt_texts__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-texts.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_gt_texts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_gt_texts__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_gt_information__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-information.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_gt_information___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_gt_information__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_gt_options__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-options.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__interfaces_gt_options___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__interfaces_gt_options__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_gt_texts__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-texts.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__interfaces_gt_texts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__interfaces_gt_texts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_gt_information__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-information.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__interfaces_gt_information___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__interfaces_gt_information__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_gt_options__ = __webpack_require__("../../../../../@angular-generic-table/core/interfaces/gt-options.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__interfaces_gt_options___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__interfaces_gt_options__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pipes_gt_meta_pipe__ = __webpack_require__("../../../../../@angular-generic-table/core/pipes/gt-meta.pipe.ts");
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -352,9 +351,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var GenericTableComponent = (function () {
-    function GenericTableComponent(renderer) {
+    function GenericTableComponent(renderer, gtMetaPipe) {
         var _this = this;
         this.renderer = renderer;
+        this.gtMetaPipe = gtMetaPipe;
         this.columnWidth = {};
         this.sortOrder = [];
         this.metaInfo = {};
@@ -804,8 +804,42 @@ var GenericTableComponent = (function () {
         get: function () {
             return this._gtData;
         },
-        set: function (value) {
-            this._gtData = value;
+        set: function (data) {
+            var _this = this;
+            if (this.gtOptions.lazyLoad && this.gtInfo) {
+                this.gtMetaPipe.transform(data, (this.gtInfo.pageCurrent - 1), this.gtInfo.recordLength);
+            }
+            else {
+                this.gtMetaPipe.transform(data);
+            }
+            if (this.gtOptions.rowSelectionInitialState) {
+                data.map(function (row) {
+                    var selected = typeof _this.gtOptions.rowSelectionInitialState === 'function' ? _this.gtOptions.rowSelectionInitialState(row) : _this.gtOptions.rowSelectionInitialState;
+                    if (selected) {
+                        if (typeof _this.metaInfo[row.$$gtRowId] === 'undefined') {
+                            _this.metaInfo[row.$$gtRowId] = { isSelected: true };
+                        }
+                        else {
+                            _this.metaInfo[row.$$gtRowId].isSelected = true;
+                        }
+                        _this.selectedRows.push(row);
+                    }
+                });
+            }
+            if (this.gtOptions.rowExpandInitialState) {
+                data.map(function (row) {
+                    var expanded = typeof _this.gtOptions.rowExpandInitialState === 'function' ? _this.gtOptions.rowExpandInitialState(row) : _this.gtOptions.rowExpandInitialState;
+                    if (expanded) {
+                        if (typeof _this.metaInfo[row.$$gtRowId] === 'undefined') {
+                            _this.metaInfo[row.$$gtRowId] = { isOpen: true };
+                        }
+                        else {
+                            _this.metaInfo[row.$$gtRowId].isOpen = true;
+                        }
+                    }
+                });
+            }
+            this._gtData = data;
         },
         enumerable: true,
         configurable: true
@@ -1241,6 +1275,53 @@ var GenericTableComponent = (function () {
     };
     ;
     /**
+     * Add rows
+     * @param {Array<R extends GtRow>} rows - rows to add
+     * @returns {Array} new data array.
+     */
+    GenericTableComponent.prototype.gtAdd = function (rows) {
+        this.gtData = this.gtData.concat(rows);
+        return this.gtData.slice();
+    };
+    ;
+    /**
+     * Delete row
+     * @param objectKey - object key you want to find match with
+     * @param value - the value that should be deleted
+     * @param {string} match - all: delete all matches, first: delete first match (default)
+     * @returns {Array} new data array.
+     */
+    GenericTableComponent.prototype.gtDelete = function (objectKey, value, match) {
+        if (match === void 0) { match = 'first'; }
+        if (match === 'first') {
+            for (var i = 0; i < this.gtData.length; i++) {
+                if (this.gtData[i][objectKey] === value) {
+                    if (this.isRowSelected(this.gtData[i])) {
+                        this.toggleSelect(this.gtData[i]);
+                    }
+                    this.gtData.splice(i, 1);
+                    this.gtData = this.gtData.slice();
+                    if (match === 'first') {
+                        break;
+                    }
+                }
+            }
+        }
+        else {
+            for (var i = this.gtData.length; i > 0; i--) {
+                if (this.gtData[i - 1][objectKey] === value) {
+                    if (this.isRowSelected(this.gtData[i - 1])) {
+                        this.toggleSelect(this.gtData[i - 1]);
+                    }
+                    this.gtData.splice(i - 1, 1);
+                    this.gtData = this.gtData.slice();
+                }
+            }
+        }
+        return this.gtData.slice();
+    };
+    ;
+    /**
      * Create store to hold previously loaded records.
      * @param {number} records - total number of records in store.
      * @param {number} perPage - how many records to show per page.
@@ -1299,11 +1380,14 @@ var GenericTableComponent = (function () {
     ;
     /** Export data as CSV
      * @param {string} fileName - optional file name (overrides default file name).
+     * @param {boolean} useBOM - use BOM (byte order marker).
      */
-    GenericTableComponent.prototype.exportCSV = function (fileName) {
+    GenericTableComponent.prototype.exportCSV = function (fileName, useBOM) {
         var _this = this;
+        if (useBOM === void 0) { useBOM = false; }
         var data = this.data.exportData;
         var csv = '';
+        var BOM = '\uFEFF';
         // csv export headers
         for (var i = 0; i < this._gtSettings.length; i++) {
             if (this._gtSettings[i].export !== false) {
@@ -1333,25 +1417,25 @@ var GenericTableComponent = (function () {
                 }
             }
         });
-        var blob = new Blob([csv], {
-            type: 'text/csv;charset=utf-8;'
+        var blob = new Blob([(useBOM ? BOM : '') + csv], {
+            type: 'text/csv;charset=utf-8'
         });
         if (window.navigator.msSaveOrOpenBlob) {
-            navigator.msSaveOrOpenBlob(blob, fileName ? fileName : this.gtTexts.csvDownload + '.csv');
+            navigator.msSaveOrOpenBlob(blob, fileName ? fileName + '.csv' : this.gtTexts.csvDownload + '.csv');
         }
         else {
             var link = document.createElement('a');
             link.style.display = 'none';
             document.body.appendChild(link);
             if (link.download !== undefined) {
-                link.setAttribute('href', URL.createObjectURL(blob));
-                link.setAttribute('download', fileName ? fileName : this.gtTexts.csvDownload + '.csv');
+                link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent((useBOM ? BOM : '') + csv)); //URL.createObjectURL(blob));
+                link.setAttribute('download', fileName ? fileName + '.csv' : this.gtTexts.csvDownload + '.csv');
                 document.body.appendChild(link);
                 link.click();
             }
             else {
-                csv = 'data:text/csv;charset=utf-8,' + csv;
-                window.open(encodeURI(csv));
+                csv = 'data:text/csv;charset=utf-8,' + (useBOM ? BOM : '') + csv;
+                window.open(encodeURIComponent(csv));
             }
             document.body.removeChild(link);
         }
@@ -1387,7 +1471,8 @@ var GenericTableComponent = (function () {
                 this.store = this.createStore(this.gtInfo.recordsAfterSearch, this.gtInfo.recordLength);
             }
             // ...store retrieved data in store at store position
-            this.store[storePosition] = this._gtData;
+            this.store[storePosition] = this.gtData;
+            this.gtInfo.visibleRecords = this.gtData.slice(); // add visible rows
             // replace data with store
             this._gtData = this.store;
             this.loading = false;
@@ -1418,8 +1503,8 @@ var GenericTableComponent = (function () {
 }());
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_4__interfaces_gt_options__["GtOptions"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__interfaces_gt_options__["GtOptions"]) === "function" && _a || Object),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__interfaces_gt_options__["GtOptions"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__interfaces_gt_options__["GtOptions"]) === "function" && _b || Object])
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__interfaces_gt_options__["GtOptions"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__interfaces_gt_options__["GtOptions"]) === "function" && _a || Object),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__interfaces_gt_options__["GtOptions"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__interfaces_gt_options__["GtOptions"]) === "function" && _b || Object])
 ], GenericTableComponent.prototype, "gtOptions", null);
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
@@ -1448,7 +1533,7 @@ __decorate([
 ], GenericTableComponent.prototype, "gtRowComponent", null);
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_2__interfaces_gt_texts__["GtTexts"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__interfaces_gt_texts__["GtTexts"]) === "function" && _e || Object)
+    __metadata("design:type", typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1__interfaces_gt_texts__["GtTexts"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__interfaces_gt_texts__["GtTexts"]) === "function" && _e || Object)
 ], GenericTableComponent.prototype, "gtTexts", void 0);
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
@@ -1460,18 +1545,96 @@ __decorate([
 ], GenericTableComponent.prototype, "gtEvent", void 0);
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
-    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_3__interfaces_gt_information__["GtInformation"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__interfaces_gt_information__["GtInformation"]) === "function" && _g || Object)
+    __metadata("design:type", typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_2__interfaces_gt_information__["GtInformation"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__interfaces_gt_information__["GtInformation"]) === "function" && _g || Object)
 ], GenericTableComponent.prototype, "gtInfo", void 0);
 GenericTableComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'generic-table',
-        template: "\n        <table class=\"table\" ngClass=\"{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}\"\n               *ngIf=\"gtFields && gtSettings && (gtFields | gtVisible:gtSettings:refreshPipe).length > 0\">\n            <thead>\n            <tr>\n                <th class=\"gt-sort-label\" *ngIf=\"gtOptions.stack\">{{gtTexts.sortLabel}}</th>\n                <th *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe\"\n                    ngClass=\"{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{column.sortEnabled ? 'sort-'+column.sort:''}} {{column.sortEnabled && column.sortOrder >= 0  ? 'sort-order-'+column.sortOrder:''}} {{ gtFields | gtColumnClass:'th':column }}\"\n                    (click)=\"column.sortEnabled ? gtSort(column.objectKey,$event):'';\">\n                    {{gtFields | gtProperty:column.objectKey:'name'}}\n                </th>\n            </tr>\n            </thead>\n            <ng-template\n                    [ngIf]=\"gtTotals && (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length).length > 0\">\n                <thead class=\"gt-totals\">\n                <tr *ngFor=\"let total of gtTotals | gtTotalsPosition\">\n                    <td *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;\"\n                        ngClass=\"{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{ gtFields | gtColumnClass:'total':column }}\">\n                        <span *ngIf=\"i === 0\" class=\"float-left\">{{total.name}}</span><span\n                            [innerHTML]=\"total.fields[column.objectKey] | gtTotals:total.update === false ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals\"></span>\n                    </td>\n                </tr>\n                </thead>\n                <tfoot class=\"gt-totals\">\n                <tr *ngFor=\"let total of gtTotals | gtTotalsPosition:'footer'\">\n                    <td *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;\"\n                        ngClass=\"{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{ gtFields | gtColumnClass:'total':column }}\">\n                        <span *ngIf=\"i === 0\" class=\"float-left\">{{total.name}}</span><span\n                            [innerHTML]=\"total.fields[column.objectKey] | gtTotals:total.update === false ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals\"></span>\n                    </td>\n                </tr>\n                </tfoot>\n            </ng-template>\n            <tbody *ngIf=\"gtData && gtInfo\">\n            <ng-template class=\"table-rows\" ngFor let-row let-last=\"last\" [ngForTrackBy]=\"trackByFn\"\n                         [ngForOf]=\"gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1] | gtMeta:(gtInfo.pageCurrent-1):gtInfo.recordLength) : (gtData | gtMeta:null:null:gtData.length | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data | gtRowClass:gtFields)\">\n                <tr [ngClass]=\"{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading, 'row-expandable':gtRowComponent}\"\n                    class=\"{{row.$$gtRowClass}}\"\n                    (click)=\"gtOptions.rowSelection ? toggleSelect(row):null\">\n                    <td *ngFor=\"let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms;trackBy:trackByColumnFn\"\n                        ngClass=\"{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{(gtFields | gtProperty:column.objectKey:'inlineEdit') ? 'gt-inline-edit':''}} {{column.edited ? 'gt-edited':''}} {{ gtFields | gtColumnClass:row:column }}\">\n                        <span class=\"gt-row-label\"\n                              *ngIf=\"gtOptions.stack\">{{(gtFields | gtProperty:column.objectKey:'stackedHeading') ? (gtFields | gtProperty:column.objectKey:'stackedHeading') : (gtFields | gtProperty:column.objectKey:'name')}}</span>\n                        <gt-custom-component-factory *ngIf=\"column.columnComponent\" class=\"gt-row-content\"\n                                                     [type]=\"column.columnComponent.type\"\n                                                     [injector]=\"column.columnComponent.injector\" [row]=\"row\"\n                                                     [column]=\"column\" (redrawEvent)=\"redraw($event)\"\n                                                     (click)=\"column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row, column.expand):''\"></gt-custom-component-factory>\n                        <span *ngIf=\"!column.columnComponent && !(gtFields | gtProperty:column.objectKey:'inlineEdit')\"\n                              class=\"gt-row-content\" [innerHTML]=\"column.renderValue\"\n                              (click)=\"column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row, column.expand):''\"></span>\n                        <ng-template\n                                [ngIf]=\"!column.columnComponent && (gtFields | gtProperty:column.objectKey:'inlineEdit') === true\">\n                            <input class=\"inline-edit\" type=\"text\" [(ngModel)]=\"column.renderValue\"\n                                   (keyup)=\"gtUpdateColumn($event,row, column)\">\n                            <span class=\"gt-inline-edit-notice\">{{gtTexts.inlineEditEdited}}</span>\n                        </ng-template>\n                        <gt-dropdown\n                                *ngIf=\"!column.columnComponent && (gtFields | gtProperty:column.objectKey:'inlineEdit') && (gtFields | gtProperty:column.objectKey:'inlineEdit').length > 0\"\n                                [options]=\"gtFields | gtProperty:column.objectKey:'inlineEdit'\"\n                                [(selected)]=\"column.renderValue\" (selectedChange)=\"gtDropdownSelect(row, column)\">Add\n                            inline editing module\n                        </gt-dropdown>\n                    </td>\n                </tr>\n                <tr class=\"row-expanded\" *ngIf=\"metaInfo[row.$$gtRowId]?.isOpen\">\n                    <td [attr.colspan]=\"(gtFields | gtVisible:gtSettings:refreshPipe).length\">\n                        <gt-expanding-row [row]=\"row\"\n                                          [type]=\"gtRowComponent ? gtRowComponent:expandedRow.component\"\n                                          [columnWidth]=\"columnWidth\"\n                                          [gtFields]=\"gtFields\"\n                                          [gtOptions]=\"gtOptions\"\n                                          [gtInfo]=\"gtInfo\"\n                                          [gtSettings]=\"gtSettings\"\n                                          [data]=\"expandedRow.data\"\n                                          (redrawEvent)=\"redraw($event)\"\n                                          (toggleRowEvent)=\"toggleCollapse($event)\"></gt-expanding-row>\n                    </td>\n                </tr>\n                <tr *ngIf=\"gtOptions.reportColumnWidth && last\">\n                    <td style=\"padding: 0; border:none;\"\n                        *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe\" gtColumnWidth\n                        [objectKey]=\"column.objectKey\" [widths]=\"columnWidth\"></td>\n                </tr>\n            </ng-template>\n            <tr *ngIf=\"gtInfo.pageTotal === 0 && (gtInfo.searchTerms || gtInfo.filter) && !loading\">\n                <td class=\"gt-no-matching-results\" [attr.colspan]=\"(gtFields | gtVisible:gtSettings).length\">\n                    {{gtTexts.noMatchingData}}\n                </td>\n            </tr>\n            <tr *ngIf=\"gtInfo.pageTotal === 0 && !(gtInfo.searchTerms || gtInfo.filter) && !loading\">\n                <td class=\"gt-no-results\" [attr.colspan]=\"(gtFields | gtVisible:gtSettings).length\">{{gtTexts.noData}}\n                </td>\n            </tr>\n            <tr *ngIf=\"gtInfo.pageTotal === 0 && loading\">\n                <td class=\"gt-loading-data\" [attr.colspan]=\"(gtFields | gtVisible:gtSettings).length\">{{gtTexts.loading}}</td>\n            </tr>\n            </tbody>\n        </table>\n        <table class=\"table\" ngClass=\"{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}\"\n               *ngIf=\"gtFields && gtSettings && (gtFields | gtVisible:gtSettings:refreshPipe).length === 0\">\n            <thead>\n            <tr>\n                <th class=\"gt-no-visible-columns\">{{gtTexts.noVisibleColumnsHeading}}</th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr>\n                <td class=\"gt-no-visible-columns\">{{gtTexts.noVisibleColumns}}</td>\n            </tr>\n            </tbody>\n        </table>\n        <table class=\"table\" ngClass=\"{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}\"\n               *ngIf=\"!gtFields || !gtSettings\">\n            <thead>\n            <tr>\n                <th class=\"gt-loading-config\">&nbsp;</th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr>\n                <td class=\"gt-loading-config\">&nbsp;</td>\n            </tr>\n            </tbody>\n        </table>\n    ",
+        template: "\n        <table class=\"table\" ngClass=\"{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}\"\n               *ngIf=\"gtFields && gtSettings && (gtFields | gtVisible:gtSettings:refreshPipe).length > 0\">\n            <thead>\n            <tr>\n                <th class=\"gt-sort-label\" *ngIf=\"gtOptions.stack\">{{gtTexts.sortLabel}}</th>\n                <th *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe\"\n                    ngClass=\"{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{column.sortEnabled ? 'sort-'+column.sort:''}} {{column.sortEnabled && column.sortOrder >= 0  ? 'sort-order-'+column.sortOrder:''}} {{ gtFields | gtColumnClass:'th':column }}\"\n                    (click)=\"column.sortEnabled ? gtSort(column.objectKey,$event):'';\">\n                    <span *ngIf=\"!(gtFields | gtProperty:column.objectKey:'header')\">{{gtFields | gtProperty:column.objectKey:'name'}}</span>\n                    <gt-custom-component-factory *ngIf=\"(gtFields | gtProperty:column.objectKey:'header')\"\n                                                [type]=\"(gtFields | gtProperty:column.objectKey:'header')?.type\"\n                                                [injector]=\"(gtFields | gtProperty:column.objectKey:'header')?.injector\"\n                                                [column]=\"gtFields | gtProperty:column.objectKey:'name'\"></gt-custom-component-factory>\n                    <gt-checkbox *ngIf=\"(gtFields | gtProperty:column.objectKey:'columnComponent')?.type === 'checkbox'\" [checked]=\"(selectedRows.length === gtData.length)\" (changed)=\"(selectedRows.length !== gtData.length) ? selectAllRows() : deselectAllRows();\"></gt-checkbox>\n                </th>\n            </tr>\n            </thead>\n            <ng-template\n                    [ngIf]=\"gtTotals && (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length).length > 0\">\n                <thead class=\"gt-totals\">\n                <tr *ngFor=\"let total of gtTotals | gtTotalsPosition\">\n                    <td *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;\"\n                        ngClass=\"{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{ gtFields | gtColumnClass:'total':column }}\">\n                        <span *ngIf=\"i === 0\" class=\"float-left\">{{total.name}}</span><span\n                            [innerHTML]=\"total.fields[column.objectKey] | gtTotals:total.update === false ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals\"></span>\n                    </td>\n                </tr>\n                </thead>\n                <tfoot class=\"gt-totals\">\n                <tr *ngFor=\"let total of gtTotals | gtTotalsPosition:'footer'\">\n                    <td *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;\"\n                        ngClass=\"{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{ gtFields | gtColumnClass:'total':column }}\">\n                        <span *ngIf=\"i === 0\" class=\"float-left\">{{total.name}}</span><span\n                            [innerHTML]=\"total.fields[column.objectKey] | gtTotals:total.update === false ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals\"></span>\n                    </td>\n                </tr>\n                </tfoot>\n            </ng-template>\n            <tbody *ngIf=\"gtData && gtInfo\">\n            <ng-template class=\"table-rows\" ngFor let-row let-last=\"last\" [ngForTrackBy]=\"trackByFn\"\n                         [ngForOf]=\"gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1]) : (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data | gtRowClass:gtFields)\">\n                <tr [ngClass]=\"{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading, 'row-expandable':gtRowComponent}\"\n                    class=\"{{row.$$gtRowClass}}\"\n                    (click)=\"gtOptions.rowSelection ? toggleSelect(row):null\">\n                    <td *ngFor=\"let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms;trackBy:trackByColumnFn\"\n                        ngClass=\"{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{(gtFields | gtProperty:column.objectKey:'inlineEdit') ? 'gt-inline-edit':''}} {{column.edited ? 'gt-edited':''}} {{ gtFields | gtColumnClass:row:column }}\">\n                        <span class=\"gt-row-label\"\n                              *ngIf=\"gtOptions.stack\">{{(gtFields | gtProperty:column.objectKey:'stackedHeading') ? (gtFields | gtProperty:column.objectKey:'stackedHeading') : (gtFields | gtProperty:column.objectKey:'name')}}</span>\n                        <gt-custom-component-factory *ngIf=\"column.columnComponent && column.columnComponent.type !== 'checkbox'\" class=\"gt-row-content\"\n                                                     [type]=\"column.columnComponent.type\"\n                                                     [injector]=\"column.columnComponent.injector\" [row]=\"row\"\n                                                     [column]=\"column\" (redrawEvent)=\"redraw($event)\"\n                                                     (click)=\"column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row, column.expand):''\"></gt-custom-component-factory>\n                        <span *ngIf=\"!column.columnComponent && !(gtFields | gtProperty:column.objectKey:'inlineEdit')\"\n                              class=\"gt-row-content\" [innerHTML]=\"column.renderValue\"\n                              (click)=\"column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row, column.expand):''\"></span>\n                        <ng-template\n                                [ngIf]=\"!column.columnComponent && [true,'email','number','password'].indexOf(gtFields | gtProperty:column.objectKey:'inlineEdit') !== -1\">\n                            <input class=\"inline-edit\" [attr.type]=\"(gtFields | gtProperty:column.objectKey:'inlineEdit') === true ? 'text':(gtFields | gtProperty:column.objectKey:'inlineEdit')\" [(ngModel)]=\"column.renderValue\"\n                                   (keyup)=\"gtUpdateColumn($event,row, column)\">\n                            <span class=\"gt-inline-edit-notice\">{{gtTexts.inlineEditEdited}}</span>\n                        </ng-template>\n                        <gt-dropdown\n                                *ngIf=\"!column.columnComponent && (gtFields | gtProperty:column.objectKey:'inlineEdit') && [true,'email','number','password'].indexOf(gtFields | gtProperty:column.objectKey:'inlineEdit') === -1\"\n                                [options]=\"gtFields | gtProperty:column.objectKey:'inlineEdit'\"\n                                [id]=\"'_' + row.$$gtRowId + '_' + column.objectKey\"\n                                [(selected)]=\"column.renderValue\" (selectedChange)=\"gtDropdownSelect(row, column)\">Add\n                            inline editing module\n                        </gt-dropdown>\n                        <gt-checkbox *ngIf=\"column.columnComponent && column.columnComponent.type === 'checkbox'\" [checked]=\"metaInfo[row.$$gtRowId]?.isSelected\" (changed)=\"toggleSelect(row)\"></gt-checkbox>\n                    </td>\n                </tr>\n                <tr class=\"row-expanded\" *ngIf=\"metaInfo[row.$$gtRowId]?.isOpen\">\n                    <td [attr.colspan]=\"(gtFields | gtVisible:gtSettings:refreshPipe).length\">\n                        <gt-expanding-row [row]=\"row\"\n                                          [type]=\"gtRowComponent ? gtRowComponent:expandedRow.component\"\n                                          [columnWidth]=\"columnWidth\"\n                                          [gtFields]=\"gtFields\"\n                                          [gtOptions]=\"gtOptions\"\n                                          [gtInfo]=\"gtInfo\"\n                                          [gtSettings]=\"gtSettings\"\n                                          [data]=\"expandedRow.data\"\n                                          (redrawEvent)=\"redraw($event)\"\n                                          (toggleRowEvent)=\"toggleCollapse($event)\"></gt-expanding-row>\n                    </td>\n                </tr>\n                <tr *ngIf=\"gtOptions.reportColumnWidth && last\">\n                    <td style=\"padding: 0; border:none;\"\n                        *ngFor=\"let column of gtSettings | gtVisible:gtSettings:refreshPipe\" gtColumnWidth\n                        [objectKey]=\"column.objectKey\" [widths]=\"columnWidth\"></td>\n                </tr>\n            </ng-template>\n            <tr *ngIf=\"gtInfo.pageTotal === 0 && (gtInfo.searchTerms || gtInfo.filter) && !loading\">\n                <td class=\"gt-no-matching-results\" [attr.colspan]=\"(gtFields | gtVisible:gtSettings).length\">\n                    {{gtTexts.noMatchingData}}\n                </td>\n            </tr>\n            <tr *ngIf=\"gtInfo.pageTotal === 0 && !(gtInfo.searchTerms || gtInfo.filter) && !loading\">\n                <td class=\"gt-no-results\" [attr.colspan]=\"(gtFields | gtVisible:gtSettings).length\">{{gtTexts.noData}}\n                </td>\n            </tr>\n            <tr *ngIf=\"gtInfo.pageTotal === 0 && loading\">\n                <td class=\"gt-loading-data\" [attr.colspan]=\"(gtFields | gtVisible:gtSettings).length\">{{gtTexts.loading}}</td>\n            </tr>\n            </tbody>\n        </table>\n        <table class=\"table\" ngClass=\"{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}\"\n               *ngIf=\"gtFields && gtSettings && (gtFields | gtVisible:gtSettings:refreshPipe).length === 0\">\n            <thead>\n            <tr>\n                <th class=\"gt-no-visible-columns\">{{gtTexts.noVisibleColumnsHeading}}</th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr>\n                <td class=\"gt-no-visible-columns\">{{gtTexts.noVisibleColumns}}</td>\n            </tr>\n            </tbody>\n        </table>\n        <table class=\"table\" ngClass=\"{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}\"\n               *ngIf=\"!gtFields || !gtSettings\">\n            <thead>\n            <tr>\n                <th class=\"gt-loading-config\">&nbsp;</th>\n            </tr>\n            </thead>\n            <tbody>\n            <tr>\n                <td class=\"gt-loading-config\">&nbsp;</td>\n            </tr>\n            </tbody>\n        </table>\n    ",
     }),
-    __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer2"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer2"]) === "function" && _h || Object])
+    __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer2"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer2"]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_4__pipes_gt_meta_pipe__["a" /* GtMetaPipe */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__pipes_gt_meta_pipe__["a" /* GtMetaPipe */]) === "function" && _j || Object])
 ], GenericTableComponent);
 
-var _a, _b, _c, _d, _e, _f, _g, _h;
+var _a, _b, _c, _d, _e, _f, _g, _h, _j;
 //# sourceMappingURL=generic-table.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../@angular-generic-table/core/components/gt-checkbox/gt-checkbox.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GtCheckboxComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var GtCheckboxComponent = (function () {
+    function GtCheckboxComponent() {
+        this.changed = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+    }
+    Object.defineProperty(GtCheckboxComponent.prototype, "initialValue", {
+        get: function () {
+            return this._initialValue;
+        },
+        set: function (value) {
+            console.log(value);
+            this._initialValue = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(GtCheckboxComponent.prototype, "checked", {
+        get: function () {
+            return this._checked;
+        },
+        set: function (value) {
+            console.log(value);
+            this._checked = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    GtCheckboxComponent.prototype.ngOnInit = function () {
+    };
+    GtCheckboxComponent.prototype.toggle = function (checked) {
+        console.log(checked, checked, this._checked);
+        this.changed.emit(this.checked);
+    };
+    return GtCheckboxComponent;
+}());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean),
+    __metadata("design:paramtypes", [Boolean])
+], GtCheckboxComponent.prototype, "initialValue", null);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", Boolean),
+    __metadata("design:paramtypes", [Boolean])
+], GtCheckboxComponent.prototype, "checked", null);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _a || Object)
+], GtCheckboxComponent.prototype, "changed", void 0);
+GtCheckboxComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'gt-checkbox',
+        template: "    \n    <label class=\"custom-control custom-checkbox\" (click)=\"$event.stopPropagation()\">\n      <input #checkbox type=\"checkbox\" class=\"custom-control-input\" [(checked)]=\"checked\" (change)=\"toggle($event);\">\n      <span class=\"custom-control-indicator\"></span>\n    </label>\n  ",
+        styles: []
+    }),
+    __metadata("design:paramtypes", [])
+], GtCheckboxComponent);
+
+var _a;
+//# sourceMappingURL=gt-checkbox.component.js.map
 
 /***/ }),
 
@@ -1651,8 +1814,8 @@ var GtDropdownComponent = (function () {
         this.state.subscribe(function (state) {
             if (state) {
                 _this.tether = new __WEBPACK_IMPORTED_MODULE_2_tether__({
-                    element: '.dropdown-menu',
-                    target: '.dropdown.gt-dropdown.show',
+                    element: '#' + _this.id + '_menu',
+                    target: '#' + _this.id,
                     attachment: 'top left',
                     targetAttachment: 'bottom left',
                     constraints: [{
@@ -1705,13 +1868,17 @@ __decorate([
     __metadata("design:type", Object)
 ], GtDropdownComponent.prototype, "options", void 0);
 __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+    __metadata("design:type", String)
+], GtDropdownComponent.prototype, "id", void 0);
+__decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
     __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]) === "function" && _a || Object)
 ], GtDropdownComponent.prototype, "selectedChange", void 0);
 GtDropdownComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'gt-dropdown',
-        template: "\n    <div class=\"dropdown gt-dropdown\" [ngClass]=\"{'show':active}\">\n      <div class=\"dropdown-toggle\" (click)=\"toggleDropdown()\" [attr.aria-expanded]=\"active\">{{selected}}</div>\n      <div class=\"gt-dropdown-menu dropdown-menu\" *ngIf=\"active\" [ngClass]=\"{'show':active}\">\n        <button *ngFor=\"let option of options;\" class=\"dropdown-item\" (click)=\"select(option)\" [ngClass]=\"{'active':option === selected}\">{{option}}</button>\n      </div>\n    </div>\n  ",
+        template: "\n    <div class=\"dropdown gt-dropdown\" [ngClass]=\"{'show':active}\" [attr.id]=\"id\">\n      <div class=\"dropdown-toggle\" (click)=\"toggleDropdown()\" [attr.aria-expanded]=\"active\">{{selected}}</div>\n      <div class=\"gt-dropdown-menu dropdown-menu\" *ngIf=\"active\" [ngClass]=\"{'show':active}\" [attr.id]=\"id+'_menu'\">\n        <button *ngFor=\"let option of options;\" class=\"dropdown-item\" (click)=\"select(option)\" [ngClass]=\"{'active':option === selected}\">{{option}}</button>\n      </div>\n    </div>\n  ",
         styles: ["\n    .gt-dropdown .dropdown-toggle {\n      cursor: pointer;\n    }\n    .gt-dropdown .dropdown-toggle::after {\n      transition: opacity 0.4s ease-in-out;\n      opacity: 0;\n    }\n    .gt-dropdown .dropdown-toggle:hover::after {\n      opacity: 1;\n    }\n  "]
     }),
     __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer2"] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer2"]) === "function" && _b || Object])
@@ -2049,12 +2216,14 @@ var _a, _b;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__pipes_gt_column_class_pipe__ = __webpack_require__("../../../../../@angular-generic-table/core/pipes/gt-column-class.pipe.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__directives_gt_column_width_directive__ = __webpack_require__("../../../../../@angular-generic-table/core/directives/gt-column-width.directive.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__components_gt_drilldown_component__ = __webpack_require__("../../../../../@angular-generic-table/core/components/gt-drilldown.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__components_gt_checkbox_gt_checkbox_component__ = __webpack_require__("../../../../../@angular-generic-table/core/components/gt-checkbox/gt-checkbox.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -2111,7 +2280,8 @@ GenericTableModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_22__pipes_gt_column_class_pipe__["a" /* GtColumnClassPipe */],
             __WEBPACK_IMPORTED_MODULE_18__components_gt_dropdown_component__["a" /* GtDropdownComponent */],
             __WEBPACK_IMPORTED_MODULE_23__directives_gt_column_width_directive__["a" /* GtColumnWidthDirective */],
-            __WEBPACK_IMPORTED_MODULE_24__components_gt_drilldown_component__["a" /* GtDrilldownComponent */]
+            __WEBPACK_IMPORTED_MODULE_24__components_gt_drilldown_component__["a" /* GtDrilldownComponent */],
+            __WEBPACK_IMPORTED_MODULE_25__components_gt_checkbox_gt_checkbox_component__["a" /* GtCheckboxComponent */]
         ],
         imports: [__WEBPACK_IMPORTED_MODULE_1__angular_common__["CommonModule"], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */]],
         exports: [
@@ -2121,12 +2291,14 @@ GenericTableModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_7__pipes_gt_property_pipe__["a" /* GtPropertyPipe */],
             __WEBPACK_IMPORTED_MODULE_11__components_gt_expanding_row_component__["b" /* GtExpandingRowComponent */],
             __WEBPACK_IMPORTED_MODULE_18__components_gt_dropdown_component__["a" /* GtDropdownComponent */],
-            __WEBPACK_IMPORTED_MODULE_24__components_gt_drilldown_component__["a" /* GtDrilldownComponent */]
+            __WEBPACK_IMPORTED_MODULE_24__components_gt_drilldown_component__["a" /* GtDrilldownComponent */],
+            __WEBPACK_IMPORTED_MODULE_25__components_gt_checkbox_gt_checkbox_component__["a" /* GtCheckboxComponent */]
         ],
         entryComponents: [
-            __WEBPACK_IMPORTED_MODULE_24__components_gt_drilldown_component__["a" /* GtDrilldownComponent */]
+            __WEBPACK_IMPORTED_MODULE_24__components_gt_drilldown_component__["a" /* GtDrilldownComponent */],
+            __WEBPACK_IMPORTED_MODULE_25__components_gt_checkbox_gt_checkbox_component__["a" /* GtCheckboxComponent */]
         ],
-        providers: [],
+        providers: [__WEBPACK_IMPORTED_MODULE_17__pipes_gt_meta_pipe__["a" /* GtMetaPipe */]],
         bootstrap: []
     })
 ], GenericTableModule);
@@ -4232,7 +4404,8 @@ var GtChunkPipe = (function () {
         for (var i = 0; i < ENTRIES; i += chunkSize) {
             PAGES.push(array.slice(i, i + chunkSize));
         }
-        gtInfo.pageTotal = PAGES.length;
+        gtInfo.visibleRecords = !PAGES[page - 1] ? [] : PAGES[page - 1].slice(); // add visible rows
+        gtInfo.pageTotal = PAGES.length; // add number of pages
         setTimeout(function () { return gtEvent.emit({
             name: 'gt-info',
             value: gtInfo
@@ -4375,7 +4548,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var GtMetaPipe = (function () {
     function GtMetaPipe() {
     }
-    GtMetaPipe.prototype.transform = function (allRows, page, recordLength, dataLength, metaData) {
+    GtMetaPipe.prototype.transform = function (allRows, page, recordLength) {
         for (var i = 0; i < allRows.length; i++) {
             if (!allRows[i].$$gtRowId) {
                 var uniqueRowId = '_' + Math.random().toString(36).substr(2, 16);
@@ -6229,15 +6402,19 @@ AggregateComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__column_click_column_click_component__ = __webpack_require__("../../../../../src/app/column-click/column-click.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__aggregate_aggregate_component__ = __webpack_require__("../../../../../src/app/aggregate/aggregate.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__add_remove_edit_add_remove_edit_component__ = __webpack_require__("../../../../../src/app/add-remove-edit/add-remove-edit.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__record_selection_record_selection_component__ = __webpack_require__("../../../../../src/app/record-selection/record-selection.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__row_selection_row_selection_component__ = __webpack_require__("../../../../../src/app/row-selection/row-selection.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__styling_styling_component__ = __webpack_require__("../../../../../src/app/styling/styling.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__drilldown_drilldown_component__ = __webpack_require__("../../../../../src/app/drilldown/drilldown.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__checkbox_checkbox_component__ = __webpack_require__("../../../../../src/app/checkbox/checkbox.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__custom_header_custom_header_component__ = __webpack_require__("../../../../../src/app/custom-header/custom-header.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -6262,7 +6439,7 @@ var routes = [
     { path: 'basic', component: __WEBPACK_IMPORTED_MODULE_4__basic_basic_component__["a" /* BasicComponent */] },
     { path: 'drilldown', component: __WEBPACK_IMPORTED_MODULE_15__drilldown_drilldown_component__["a" /* DrilldownComponent */] },
     { path: 'styling', component: __WEBPACK_IMPORTED_MODULE_14__styling_styling_component__["a" /* StylingComponent */] },
-    { path: 'record-selection', component: __WEBPACK_IMPORTED_MODULE_13__record_selection_record_selection_component__["a" /* RecordSelectionComponent */] },
+    { path: 'row-selection', component: __WEBPACK_IMPORTED_MODULE_13__row_selection_row_selection_component__["a" /* RowSelectionComponent */] },
     { path: 'totals', component: __WEBPACK_IMPORTED_MODULE_11__aggregate_aggregate_component__["a" /* AggregateComponent */] },
     { path: 'custom-column', component: __WEBPACK_IMPORTED_MODULE_5__custom_column_custom_column_component__["b" /* CustomColumnComponent */] },
     { path: 'column-click', component: __WEBPACK_IMPORTED_MODULE_10__column_click_column_click_component__["a" /* ColumnClickComponent */] },
@@ -6270,6 +6447,8 @@ var routes = [
     { path: 'inline-editing', component: __WEBPACK_IMPORTED_MODULE_9__inline_editing_inline_editing_component__["a" /* InlineEditingComponent */] },
     { path: 'add-remove-edit', component: __WEBPACK_IMPORTED_MODULE_12__add_remove_edit_add_remove_edit_component__["a" /* AddRemoveEditComponent */] },
     { path: 'column-settings-component', component: __WEBPACK_IMPORTED_MODULE_7__change_column_settings_change_column_settings_component__["a" /* ChangeColumnSettingsComponent */] },
+    { path: 'checkbox', component: __WEBPACK_IMPORTED_MODULE_16__checkbox_checkbox_component__["a" /* CheckboxComponent */] },
+    { path: 'custom-header', component: __WEBPACK_IMPORTED_MODULE_17__custom_header_custom_header_component__["a" /* CustomHeaderComponent */] },
     { path: '**', component: __WEBPACK_IMPORTED_MODULE_8__home_home_component__["a" /* HomeComponent */] }
 ];
 var AppRoutingModule = (function () {
@@ -6358,9 +6537,11 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__inline_editing_inline_editing_component__ = __webpack_require__("../../../../../src/app/inline-editing/inline-editing.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__column_click_column_click_component__ = __webpack_require__("../../../../../src/app/column-click/column-click.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__aggregate_aggregate_component__ = __webpack_require__("../../../../../src/app/aggregate/aggregate.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__record_selection_record_selection_component__ = __webpack_require__("../../../../../src/app/record-selection/record-selection.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__row_selection_row_selection_component__ = __webpack_require__("../../../../../src/app/row-selection/row-selection.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__styling_styling_component__ = __webpack_require__("../../../../../src/app/styling/styling.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__drilldown_drilldown_component__ = __webpack_require__("../../../../../src/app/drilldown/drilldown.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__checkbox_checkbox_component__ = __webpack_require__("../../../../../src/app/checkbox/checkbox.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__custom_header_custom_header_component__ = __webpack_require__("../../../../../src/app/custom-header/custom-header.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6403,6 +6584,8 @@ function createTranslateLoader(http) {
 
 
 
+
+
 var AppModule = (function () {
     function AppModule() {
     }
@@ -6433,9 +6616,12 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_24__column_click_column_click_component__["a" /* ColumnClickComponent */],
             __WEBPACK_IMPORTED_MODULE_25__aggregate_aggregate_component__["a" /* AggregateComponent */],
             __WEBPACK_IMPORTED_MODULE_10__add_remove_edit_add_remove_edit_component__["a" /* AddRemoveEditComponent */],
-            __WEBPACK_IMPORTED_MODULE_26__record_selection_record_selection_component__["a" /* RecordSelectionComponent */],
+            __WEBPACK_IMPORTED_MODULE_26__row_selection_row_selection_component__["a" /* RowSelectionComponent */],
             __WEBPACK_IMPORTED_MODULE_27__styling_styling_component__["a" /* StylingComponent */],
-            __WEBPACK_IMPORTED_MODULE_28__drilldown_drilldown_component__["a" /* DrilldownComponent */]
+            __WEBPACK_IMPORTED_MODULE_28__drilldown_drilldown_component__["a" /* DrilldownComponent */],
+            __WEBPACK_IMPORTED_MODULE_29__checkbox_checkbox_component__["a" /* CheckboxComponent */],
+            __WEBPACK_IMPORTED_MODULE_30__custom_header_custom_header_component__["b" /* TooltipHeaderComponent */],
+            __WEBPACK_IMPORTED_MODULE_30__custom_header_custom_header_component__["a" /* CustomHeaderComponent */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -6464,7 +6650,8 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_10__add_remove_edit_add_remove_edit_component__["e" /* RequiredNumberComponent */],
             __WEBPACK_IMPORTED_MODULE_10__add_remove_edit_add_remove_edit_component__["c" /* EditSaveButtonComponent */],
             __WEBPACK_IMPORTED_MODULE_10__add_remove_edit_add_remove_edit_component__["b" /* DeleteDiscardButtonComponent */],
-            __WEBPACK_IMPORTED_MODULE_10__add_remove_edit_add_remove_edit_component__["f" /* SelectedCheckboxComponent */]
+            __WEBPACK_IMPORTED_MODULE_10__add_remove_edit_add_remove_edit_component__["f" /* SelectedCheckboxComponent */],
+            __WEBPACK_IMPORTED_MODULE_30__custom_header_custom_header_component__["b" /* TooltipHeaderComponent */]
         ],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* AppComponent */]]
     })
@@ -7243,6 +7430,499 @@ ChangeColumnSettingsComponent = __decorate([
 
 /***/ }),
 
+/***/ "../../../../../src/app/checkbox/checkbox.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<h2>Checkbox</h2>\r\n<p>Table with checkboxes for row selection, please note that using checkboxes for selection will replace <a routerLink=\"/row-selection\">normal row selection</a> behaviour (just clicking a row to select it). Use <code>rowSelectionInitialState</code> to set an initial state for rows, pass <code>true</code> to set all rows to selected when table is initiated. <code>rowSelectionInitialState</code> also supports passing a function to determine initial row state (see example below for usage).</p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"checkboxExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']\" [source]=\"'child'\" [target]=\"checkboxExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'basic.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/checkbox/checkbox.component.ts'\r\n  }]\">\r\n    <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\" [gtOptions]=\"options\"></generic-table>\r\n    <div class=\"text-center\">\r\n      <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\r\n      <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n    </div>\r\n  </div>\r\n  <div class=\"card-footer\" #checkboxExample></div>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/checkbox/checkbox.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CheckboxComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_generic_table_core_components_generic_table_component__ = __webpack_require__("../../../../../@angular-generic-table/core/components/generic-table.component.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var CheckboxComponent = (function () {
+    function CheckboxComponent() {
+        var _this = this;
+        this.data = [];
+        this.options = {
+            rowSelectionInitialState: function (row) { return row.name === 'Anna'; } // row.lucky_number > 0
+        };
+        this.configObject = {
+            settings: [{
+                    objectKey: 'id',
+                    sort: 'asc',
+                    sortOrder: 1,
+                    columnOrder: 0
+                }, {
+                    objectKey: 'name',
+                    sort: 'asc',
+                    sortOrder: 0,
+                    columnOrder: 1
+                }, {
+                    objectKey: 'lucky_number',
+                    sort: 'enable',
+                    columnOrder: 2
+                }, {
+                    objectKey: 'checkbox',
+                }],
+            fields: [{
+                    name: 'Id',
+                    objectKey: 'id'
+                }, {
+                    name: 'Name',
+                    objectKey: 'name'
+                }, {
+                    name: 'Lucky number',
+                    objectKey: 'lucky_number'
+                }, {
+                    name: '',
+                    objectKey: 'checkbox',
+                    columnClass: 'text-right',
+                    columnComponent: {
+                        type: 'checkbox'
+                    },
+                    value: function (row) { return _this.myTable.isRowSelected(row); }
+                }],
+            data: [{
+                    'id': 1,
+                    'name': 'Anna',
+                    'lucky_number': 63
+                }, {
+                    'id': 2,
+                    'name': 'Julie',
+                    'lucky_number': 8
+                }, {
+                    'id': 3,
+                    'name': 'Lillian',
+                    'lucky_number': 30
+                }, {
+                    'id': 4,
+                    'name': 'Norma',
+                    'lucky_number': 13
+                }, {
+                    'id': 5,
+                    'name': 'Ralph',
+                    'lucky_number': 28
+                }, {
+                    'id': 6,
+                    'name': 'Benjamin',
+                    'lucky_number': 66
+                }, {
+                    'id': 7,
+                    'name': 'George',
+                    'lucky_number': 66
+                }, {
+                    'id': 8,
+                    'name': 'Ryan',
+                    'lucky_number': 65
+                }, {
+                    'id': 9,
+                    'name': 'Martha',
+                    'lucky_number': 57
+                }, {
+                    'id': 10,
+                    'name': 'Todd',
+                    'lucky_number': 65
+                }, {
+                    'id': 11,
+                    'name': 'Norma',
+                    'lucky_number': 73
+                }, {
+                    'id': 12,
+                    'name': 'Frank',
+                    'lucky_number': 27
+                }, {
+                    'id': 13,
+                    'name': 'Kathryn',
+                    'lucky_number': 93
+                }, {
+                    'id': 14,
+                    'name': 'Philip',
+                    'lucky_number': 63
+                }, {
+                    'id': 15,
+                    'name': 'Ronald',
+                    'lucky_number': 89
+                }, {
+                    'id': 16,
+                    'name': 'Joshua',
+                    'lucky_number': 18
+                }, {
+                    'id': 17,
+                    'name': 'Phillip',
+                    'lucky_number': 16
+                }, {
+                    'id': 18,
+                    'name': 'Susan',
+                    'lucky_number': 6
+                }, {
+                    'id': 19,
+                    'name': 'Louise',
+                    'lucky_number': 52
+                }, {
+                    'id': 20,
+                    'name': 'Gary',
+                    'lucky_number': 18
+                }, {
+                    'id': 21,
+                    'name': 'Laura',
+                    'lucky_number': 9
+                }, {
+                    'id': 22,
+                    'name': 'Tina',
+                    'lucky_number': 70
+                }, {
+                    'id': 23,
+                    'name': 'Jesse',
+                    'lucky_number': 2
+                }, {
+                    'id': 24,
+                    'name': 'Jessica',
+                    'lucky_number': 15
+                }, {
+                    'id': 25,
+                    'name': 'Scott',
+                    'lucky_number': 38
+                }, {
+                    'id': 26,
+                    'name': 'Michael',
+                    'lucky_number': 23
+                }, {
+                    'id': 27,
+                    'name': 'Harold',
+                    'lucky_number': 66
+                }, {
+                    'id': 28,
+                    'name': 'William',
+                    'lucky_number': 57
+                }, {
+                    'id': 29,
+                    'name': 'Harry',
+                    'lucky_number': 14
+                }, {
+                    'id': 30,
+                    'name': 'Dennis',
+                    'lucky_number': 9
+                }, {
+                    'id': 31,
+                    'name': 'Sara',
+                    'lucky_number': 9
+                }, {
+                    'id': 32,
+                    'name': 'David',
+                    'lucky_number': 31
+                }, {
+                    'id': 33,
+                    'name': 'Antonio',
+                    'lucky_number': 2
+                }, {
+                    'id': 34,
+                    'name': 'Anna',
+                    'lucky_number': 85
+                }, {
+                    'id': 35,
+                    'name': 'Earl',
+                    'lucky_number': 98
+                }, {
+                    'id': 36,
+                    'name': 'Melissa',
+                    'lucky_number': 70
+                }, {
+                    'id': 37,
+                    'name': 'Eric',
+                    'lucky_number': 94
+                }, {
+                    'id': 38,
+                    'name': 'Joe',
+                    'lucky_number': 42
+                }, {
+                    'id': 39,
+                    'name': 'Andrea',
+                    'lucky_number': 39
+                }, {
+                    'id': 40,
+                    'name': 'Michael',
+                    'lucky_number': 44
+                }, {
+                    'id': 41,
+                    'name': 'Lillian',
+                    'lucky_number': 10
+                }, {
+                    'id': 42,
+                    'name': 'Elizabeth',
+                    'lucky_number': 24
+                }, {
+                    'id': 43,
+                    'name': 'Ryan',
+                    'lucky_number': 78
+                }, {
+                    'id': 44,
+                    'name': 'Phillip',
+                    'lucky_number': 86
+                }, {
+                    'id': 45,
+                    'name': 'Patrick',
+                    'lucky_number': 64
+                }, {
+                    'id': 46,
+                    'name': 'Barbara',
+                    'lucky_number': 54
+                }, {
+                    'id': 47,
+                    'name': 'Patricia',
+                    'lucky_number': 9
+                }, {
+                    'id': 48,
+                    'name': 'Brenda',
+                    'lucky_number': 18
+                }, {
+                    'id': 49,
+                    'name': 'Sara',
+                    'lucky_number': 12
+                }, {
+                    'id': 50,
+                    'name': 'Steven',
+                    'lucky_number': 50
+                }, {
+                    'id': 51,
+                    'name': 'Steven',
+                    'lucky_number': 44
+                }, {
+                    'id': 52,
+                    'name': 'Paul',
+                    'lucky_number': 88
+                }, {
+                    'id': 53,
+                    'name': 'Ann',
+                    'lucky_number': 51
+                }, {
+                    'id': 54,
+                    'name': 'Frank',
+                    'lucky_number': 3
+                }, {
+                    'id': 55,
+                    'name': 'Beverly',
+                    'lucky_number': 10
+                }, {
+                    'id': 56,
+                    'name': 'Elizabeth',
+                    'lucky_number': 52
+                }, {
+                    'id': 57,
+                    'name': 'Patrick',
+                    'lucky_number': 96
+                }, {
+                    'id': 58,
+                    'name': 'Susan',
+                    'lucky_number': 92
+                }, {
+                    'id': 59,
+                    'name': 'Lawrence',
+                    'lucky_number': 53
+                }, {
+                    'id': 60,
+                    'name': 'Denise',
+                    'lucky_number': 65
+                }, {
+                    'id': 61,
+                    'name': 'Carol',
+                    'lucky_number': 33
+                }, {
+                    'id': 62,
+                    'name': 'Larry',
+                    'lucky_number': 95
+                }, {
+                    'id': 63,
+                    'name': 'Martha',
+                    'lucky_number': 32
+                }, {
+                    'id': 64,
+                    'name': 'Steve',
+                    'lucky_number': 69
+                }, {
+                    'id': 65,
+                    'name': 'Timothy',
+                    'lucky_number': 16
+                }, {
+                    'id': 66,
+                    'name': 'Jose',
+                    'lucky_number': 16
+                }, {
+                    'id': 67,
+                    'name': 'Jennifer',
+                    'lucky_number': 96
+                }, {
+                    'id': 68,
+                    'name': 'Benjamin',
+                    'lucky_number': 20
+                }, {
+                    'id': 69,
+                    'name': 'Christine',
+                    'lucky_number': 8
+                }, {
+                    'id': 70,
+                    'name': 'Timothy',
+                    'lucky_number': 93
+                }, {
+                    'id': 71,
+                    'name': 'Patricia',
+                    'lucky_number': 17
+                }, {
+                    'id': 72,
+                    'name': 'Craig',
+                    'lucky_number': 48
+                }, {
+                    'id': 73,
+                    'name': 'Philip',
+                    'lucky_number': 88
+                }, {
+                    'id': 74,
+                    'name': 'Lori',
+                    'lucky_number': 56
+                }, {
+                    'id': 75,
+                    'name': 'Janet',
+                    'lucky_number': 4
+                }, {
+                    'id': 76,
+                    'name': 'Denise',
+                    'lucky_number': 30
+                }, {
+                    'id': 77,
+                    'name': 'Elizabeth',
+                    'lucky_number': 44
+                }, {
+                    'id': 78,
+                    'name': 'Thomas',
+                    'lucky_number': 95
+                }, {
+                    'id': 79,
+                    'name': 'Shirley',
+                    'lucky_number': 24
+                }, {
+                    'id': 80,
+                    'name': 'Helen',
+                    'lucky_number': 9
+                }, {
+                    'id': 81,
+                    'name': 'Wanda',
+                    'lucky_number': 98
+                }, {
+                    'id': 82,
+                    'name': 'Ernest',
+                    'lucky_number': 35
+                }, {
+                    'id': 83,
+                    'name': 'Steven',
+                    'lucky_number': 9
+                }, {
+                    'id': 84,
+                    'name': 'Jose',
+                    'lucky_number': 27
+                }, {
+                    'id': 85,
+                    'name': 'Kimberly',
+                    'lucky_number': 52
+                }, {
+                    'id': 86,
+                    'name': 'Nancy',
+                    'lucky_number': 48
+                }, {
+                    'id': 87,
+                    'name': 'Christopher',
+                    'lucky_number': 44
+                }, {
+                    'id': 88,
+                    'name': 'Nancy',
+                    'lucky_number': 40
+                }, {
+                    'id': 89,
+                    'name': 'Philip',
+                    'lucky_number': 34
+                }, {
+                    'id': 90,
+                    'name': 'Bruce',
+                    'lucky_number': 69
+                }, {
+                    'id': 91,
+                    'name': 'Jason',
+                    'lucky_number': 60
+                }, {
+                    'id': 92,
+                    'name': 'Denise',
+                    'lucky_number': 30
+                }, {
+                    'id': 93,
+                    'name': 'Jane',
+                    'lucky_number': 66
+                }, {
+                    'id': 94,
+                    'name': 'Brian',
+                    'lucky_number': 49
+                }, {
+                    'id': 95,
+                    'name': 'Eugene',
+                    'lucky_number': 51
+                }, {
+                    'id': 96,
+                    'name': 'Jack',
+                    'lucky_number': 97
+                }, {
+                    'id': 97,
+                    'name': 'Peter',
+                    'lucky_number': 1
+                }, {
+                    'id': 98,
+                    'name': 'Virginia',
+                    'lucky_number': 20
+                }, {
+                    'id': 99,
+                    'name': 'Walter',
+                    'lucky_number': 63
+                }, {
+                    'id': 100,
+                    'name': 'Virginia',
+                    'lucky_number': 14
+                }]
+        };
+    }
+    CheckboxComponent.prototype.ngOnInit = function () {
+    };
+    return CheckboxComponent;
+}());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_1__angular_generic_table_core_components_generic_table_component__["a" /* GenericTableComponent */]),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_generic_table_core_components_generic_table_component__["a" /* GenericTableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_generic_table_core_components_generic_table_component__["a" /* GenericTableComponent */]) === "function" && _a || Object)
+], CheckboxComponent.prototype, "myTable", void 0);
+CheckboxComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'checkbox',
+        template: __webpack_require__("../../../../../src/app/checkbox/checkbox.component.html"),
+        styles: []
+    }),
+    __metadata("design:paramtypes", [])
+], CheckboxComponent);
+
+var _a;
+//# sourceMappingURL=checkbox.component.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/column-click/column-click.component.html":
 /***/ (function(module, exports) {
 
@@ -7793,6 +8473,514 @@ CustomColumnComponent = __decorate([
 ], CustomColumnComponent);
 
 //# sourceMappingURL=custom-column.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/custom-header/custom-header.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<h2>Custom header</h2>\r\n<p>Table with custom component in header to leverage tooltips, <a href=\"https://ng-bootstrap.github.io/#/components/tooltip/examples\" target=\"_blank\">ng-bootstrap</a> is used in this example but you could place any component in the header (hover headers to get tooltip).</p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"headerExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']\" [source]=\"'child'\" [target]=\"headerExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'custom-header.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/custom-header/custom-header.component.ts'\r\n  }]\">\r\n    <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\"></generic-table>\r\n    <div class=\"text-center\">\r\n      <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\r\n      <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n    </div>\r\n  </div>\r\n  <div class=\"card-footer\" #headerExample></div>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/custom-header/custom-header.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return TooltipHeaderComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CustomHeaderComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_generic_table_core_components_gt_custom_component_factory__ = __webpack_require__("../../../../../@angular-generic-table/core/components/gt-custom-component-factory.ts");
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var TooltipHeaderComponent = (function (_super) {
+    __extends(TooltipHeaderComponent, _super);
+    function TooltipHeaderComponent() {
+        return _super.call(this) || this;
+    }
+    return TooltipHeaderComponent;
+}(__WEBPACK_IMPORTED_MODULE_1__angular_generic_table_core_components_gt_custom_component_factory__["a" /* GtCustomComponent */]));
+TooltipHeaderComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        template: "<span ngbTooltip=\"{{'Some tooltip for '+ column }}\">{{column}}</span>",
+        styles: []
+    }),
+    __metadata("design:paramtypes", [])
+], TooltipHeaderComponent);
+
+var CustomHeaderComponent = (function () {
+    function CustomHeaderComponent() {
+        this.configObject = {
+            settings: [{
+                    objectKey: 'id',
+                    sort: 'asc',
+                    sortOrder: 1,
+                    columnOrder: 0
+                }, {
+                    objectKey: 'name',
+                    sort: 'asc',
+                    sortOrder: 0,
+                    columnOrder: 1
+                }, {
+                    objectKey: 'lucky_number',
+                    sort: 'enable',
+                    columnOrder: 2
+                }],
+            fields: [{
+                    name: 'Id',
+                    objectKey: 'id',
+                    header: {
+                        type: TooltipHeaderComponent
+                    }
+                }, {
+                    name: 'Name',
+                    objectKey: 'name',
+                    header: {
+                        type: TooltipHeaderComponent
+                    }
+                }, {
+                    name: 'Lucky number',
+                    objectKey: 'lucky_number',
+                    header: {
+                        type: TooltipHeaderComponent
+                    }
+                }],
+            data: [{
+                    'id': 1,
+                    'name': 'Anna',
+                    'lucky_number': 63
+                }, {
+                    'id': 2,
+                    'name': 'Julie',
+                    'lucky_number': 8
+                }, {
+                    'id': 3,
+                    'name': 'Lillian',
+                    'lucky_number': 30
+                }, {
+                    'id': 4,
+                    'name': 'Norma',
+                    'lucky_number': 13
+                }, {
+                    'id': 5,
+                    'name': 'Ralph',
+                    'lucky_number': 28
+                }, {
+                    'id': 6,
+                    'name': 'Benjamin',
+                    'lucky_number': 66
+                }, {
+                    'id': 7,
+                    'name': 'George',
+                    'lucky_number': 66
+                }, {
+                    'id': 8,
+                    'name': 'Ryan',
+                    'lucky_number': 65
+                }, {
+                    'id': 9,
+                    'name': 'Martha',
+                    'lucky_number': 57
+                }, {
+                    'id': 10,
+                    'name': 'Todd',
+                    'lucky_number': 65
+                }, {
+                    'id': 11,
+                    'name': 'Norma',
+                    'lucky_number': 73
+                }, {
+                    'id': 12,
+                    'name': 'Frank',
+                    'lucky_number': 27
+                }, {
+                    'id': 13,
+                    'name': 'Kathryn',
+                    'lucky_number': 93
+                }, {
+                    'id': 14,
+                    'name': 'Philip',
+                    'lucky_number': 63
+                }, {
+                    'id': 15,
+                    'name': 'Ronald',
+                    'lucky_number': 89
+                }, {
+                    'id': 16,
+                    'name': 'Joshua',
+                    'lucky_number': 18
+                }, {
+                    'id': 17,
+                    'name': 'Phillip',
+                    'lucky_number': 16
+                }, {
+                    'id': 18,
+                    'name': 'Susan',
+                    'lucky_number': 6
+                }, {
+                    'id': 19,
+                    'name': 'Louise',
+                    'lucky_number': 52
+                }, {
+                    'id': 20,
+                    'name': 'Gary',
+                    'lucky_number': 18
+                }, {
+                    'id': 21,
+                    'name': 'Laura',
+                    'lucky_number': 9
+                }, {
+                    'id': 22,
+                    'name': 'Tina',
+                    'lucky_number': 70
+                }, {
+                    'id': 23,
+                    'name': 'Jesse',
+                    'lucky_number': 2
+                }, {
+                    'id': 24,
+                    'name': 'Jessica',
+                    'lucky_number': 15
+                }, {
+                    'id': 25,
+                    'name': 'Scott',
+                    'lucky_number': 38
+                }, {
+                    'id': 26,
+                    'name': 'Michael',
+                    'lucky_number': 23
+                }, {
+                    'id': 27,
+                    'name': 'Harold',
+                    'lucky_number': 66
+                }, {
+                    'id': 28,
+                    'name': 'William',
+                    'lucky_number': 57
+                }, {
+                    'id': 29,
+                    'name': 'Harry',
+                    'lucky_number': 14
+                }, {
+                    'id': 30,
+                    'name': 'Dennis',
+                    'lucky_number': 9
+                }, {
+                    'id': 31,
+                    'name': 'Sara',
+                    'lucky_number': 9
+                }, {
+                    'id': 32,
+                    'name': 'David',
+                    'lucky_number': 31
+                }, {
+                    'id': 33,
+                    'name': 'Antonio',
+                    'lucky_number': 2
+                }, {
+                    'id': 34,
+                    'name': 'Anna',
+                    'lucky_number': 85
+                }, {
+                    'id': 35,
+                    'name': 'Earl',
+                    'lucky_number': 98
+                }, {
+                    'id': 36,
+                    'name': 'Melissa',
+                    'lucky_number': 70
+                }, {
+                    'id': 37,
+                    'name': 'Eric',
+                    'lucky_number': 94
+                }, {
+                    'id': 38,
+                    'name': 'Joe',
+                    'lucky_number': 42
+                }, {
+                    'id': 39,
+                    'name': 'Andrea',
+                    'lucky_number': 39
+                }, {
+                    'id': 40,
+                    'name': 'Michael',
+                    'lucky_number': 44
+                }, {
+                    'id': 41,
+                    'name': 'Lillian',
+                    'lucky_number': 10
+                }, {
+                    'id': 42,
+                    'name': 'Elizabeth',
+                    'lucky_number': 24
+                }, {
+                    'id': 43,
+                    'name': 'Ryan',
+                    'lucky_number': 78
+                }, {
+                    'id': 44,
+                    'name': 'Phillip',
+                    'lucky_number': 86
+                }, {
+                    'id': 45,
+                    'name': 'Patrick',
+                    'lucky_number': 64
+                }, {
+                    'id': 46,
+                    'name': 'Barbara',
+                    'lucky_number': 54
+                }, {
+                    'id': 47,
+                    'name': 'Patricia',
+                    'lucky_number': 9
+                }, {
+                    'id': 48,
+                    'name': 'Brenda',
+                    'lucky_number': 18
+                }, {
+                    'id': 49,
+                    'name': 'Sara',
+                    'lucky_number': 12
+                }, {
+                    'id': 50,
+                    'name': 'Steven',
+                    'lucky_number': 50
+                }, {
+                    'id': 51,
+                    'name': 'Steven',
+                    'lucky_number': 44
+                }, {
+                    'id': 52,
+                    'name': 'Paul',
+                    'lucky_number': 88
+                }, {
+                    'id': 53,
+                    'name': 'Ann',
+                    'lucky_number': 51
+                }, {
+                    'id': 54,
+                    'name': 'Frank',
+                    'lucky_number': 3
+                }, {
+                    'id': 55,
+                    'name': 'Beverly',
+                    'lucky_number': 10
+                }, {
+                    'id': 56,
+                    'name': 'Elizabeth',
+                    'lucky_number': 52
+                }, {
+                    'id': 57,
+                    'name': 'Patrick',
+                    'lucky_number': 96
+                }, {
+                    'id': 58,
+                    'name': 'Susan',
+                    'lucky_number': 92
+                }, {
+                    'id': 59,
+                    'name': 'Lawrence',
+                    'lucky_number': 53
+                }, {
+                    'id': 60,
+                    'name': 'Denise',
+                    'lucky_number': 65
+                }, {
+                    'id': 61,
+                    'name': 'Carol',
+                    'lucky_number': 33
+                }, {
+                    'id': 62,
+                    'name': 'Larry',
+                    'lucky_number': 95
+                }, {
+                    'id': 63,
+                    'name': 'Martha',
+                    'lucky_number': 32
+                }, {
+                    'id': 64,
+                    'name': 'Steve',
+                    'lucky_number': 69
+                }, {
+                    'id': 65,
+                    'name': 'Timothy',
+                    'lucky_number': 16
+                }, {
+                    'id': 66,
+                    'name': 'Jose',
+                    'lucky_number': 16
+                }, {
+                    'id': 67,
+                    'name': 'Jennifer',
+                    'lucky_number': 96
+                }, {
+                    'id': 68,
+                    'name': 'Benjamin',
+                    'lucky_number': 20
+                }, {
+                    'id': 69,
+                    'name': 'Christine',
+                    'lucky_number': 8
+                }, {
+                    'id': 70,
+                    'name': 'Timothy',
+                    'lucky_number': 93
+                }, {
+                    'id': 71,
+                    'name': 'Patricia',
+                    'lucky_number': 17
+                }, {
+                    'id': 72,
+                    'name': 'Craig',
+                    'lucky_number': 48
+                }, {
+                    'id': 73,
+                    'name': 'Philip',
+                    'lucky_number': 88
+                }, {
+                    'id': 74,
+                    'name': 'Lori',
+                    'lucky_number': 56
+                }, {
+                    'id': 75,
+                    'name': 'Janet',
+                    'lucky_number': 4
+                }, {
+                    'id': 76,
+                    'name': 'Denise',
+                    'lucky_number': 30
+                }, {
+                    'id': 77,
+                    'name': 'Elizabeth',
+                    'lucky_number': 44
+                }, {
+                    'id': 78,
+                    'name': 'Thomas',
+                    'lucky_number': 95
+                }, {
+                    'id': 79,
+                    'name': 'Shirley',
+                    'lucky_number': 24
+                }, {
+                    'id': 80,
+                    'name': 'Helen',
+                    'lucky_number': 9
+                }, {
+                    'id': 81,
+                    'name': 'Wanda',
+                    'lucky_number': 98
+                }, {
+                    'id': 82,
+                    'name': 'Ernest',
+                    'lucky_number': 35
+                }, {
+                    'id': 83,
+                    'name': 'Steven',
+                    'lucky_number': 9
+                }, {
+                    'id': 84,
+                    'name': 'Jose',
+                    'lucky_number': 27
+                }, {
+                    'id': 85,
+                    'name': 'Kimberly',
+                    'lucky_number': 52
+                }, {
+                    'id': 86,
+                    'name': 'Nancy',
+                    'lucky_number': 48
+                }, {
+                    'id': 87,
+                    'name': 'Christopher',
+                    'lucky_number': 44
+                }, {
+                    'id': 88,
+                    'name': 'Nancy',
+                    'lucky_number': 40
+                }, {
+                    'id': 89,
+                    'name': 'Philip',
+                    'lucky_number': 34
+                }, {
+                    'id': 90,
+                    'name': 'Bruce',
+                    'lucky_number': 69
+                }, {
+                    'id': 91,
+                    'name': 'Jason',
+                    'lucky_number': 60
+                }, {
+                    'id': 92,
+                    'name': 'Denise',
+                    'lucky_number': 30
+                }, {
+                    'id': 93,
+                    'name': 'Jane',
+                    'lucky_number': 66
+                }, {
+                    'id': 94,
+                    'name': 'Brian',
+                    'lucky_number': 49
+                }, {
+                    'id': 95,
+                    'name': 'Eugene',
+                    'lucky_number': 51
+                }, {
+                    'id': 96,
+                    'name': 'Jack',
+                    'lucky_number': 97
+                }, {
+                    'id': 97,
+                    'name': 'Peter',
+                    'lucky_number': 1
+                }, {
+                    'id': 98,
+                    'name': 'Virginia',
+                    'lucky_number': 20
+                }, {
+                    'id': 99,
+                    'name': 'Walter',
+                    'lucky_number': 63
+                }, {
+                    'id': 100,
+                    'name': 'Virginia',
+                    'lucky_number': 14
+                }]
+        };
+    }
+    CustomHeaderComponent.prototype.ngOnInit = function () {
+    };
+    return CustomHeaderComponent;
+}());
+CustomHeaderComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'custom-header',
+        template: __webpack_require__("../../../../../src/app/custom-header/custom-header.component.html"),
+        styles: []
+    }),
+    __metadata("design:paramtypes", [])
+], CustomHeaderComponent);
+
+//# sourceMappingURL=custom-header.component.js.map
 
 /***/ }),
 
@@ -8667,7 +9855,7 @@ var _a, _b;
 /***/ "../../../../../src/app/localization/localization.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>{{ 'TRANSLATIONS.TITLE' | translate }}</h2>\r\n<p [innerHTML]=\"'TRANSLATIONS.DESCRIPTION' | translate\"></p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">{{'TRANSLATIONS.EXAMPLE' | translate}}</div>\r\n  <div class=\"card-body\" exemplify=\"localizationExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','[gtTexts]','#langSelect','#myTable']\" [source]=\"'child'\" [target]=\"translationsExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'localization.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/localization/localization.component.ts'\r\n  }]\">\r\n    <form class=\"form form-inline mb-4\">\r\n      <label for=\"language\" class=\"form-control-label mr-sm-2\">{{ 'TRANSLATIONS.SELECT' | translate }}</label>\r\n      <select id=\"language\" class=\"form-control form-control-sm mb-2 mr-sm-2 mb-lg-0\" #langSelect (change)=\"translate.use(langSelect.value)\">\r\n        <option *ngFor=\"let lang of translate.getLangs()\" [value]=\"lang\" [selected]=\"lang === translate.currentLang\">{{ lang }}</option>\r\n      </select>\r\n    </form>\r\n    <ng-template [ngIf]=\"configObject\">\r\n      <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtTexts]=\"translations\" [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\"></generic-table>\r\n      <div class=\"text-center\">\r\n        <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\r\n        <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n      </div>\r\n    </ng-template>\r\n  </div>\r\n  <div class=\"card-footer\" #translationsExample></div>\r\n</div>\r\n"
+module.exports = "<h2>{{ 'TRANSLATIONS.TITLE' | translate }}</h2>\r\n<p [innerHTML]=\"'TRANSLATIONS.DESCRIPTION' | translate\"></p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">{{'TRANSLATIONS.EXAMPLE' | translate}}</div>\r\n  <div class=\"card-body\" exemplify=\"localizationExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','[gtTexts]','#langSelect','#myTable']\" [source]=\"'child'\" [target]=\"translationsExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'localization.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/localization/localization.component.ts'\r\n  }]\">\r\n    <form class=\"form form-inline mb-4\">\r\n      <label for=\"language\" class=\"form-control-label mr-sm-2\">{{ 'TRANSLATIONS.SELECT' | translate }}</label>\r\n      <select id=\"language\" class=\"form-control form-control-sm mb-2 mr-sm-2 mb-lg-0\" #langSelect (change)=\"translate.use(langSelect.value)\">\r\n        <option *ngFor=\"let lang of translate.getLangs()\" [value]=\"lang\" [selected]=\"lang === translate.currentLang\">{{ lang }}</option>\r\n      </select>\r\n      <button class=\"btn btn-sm btn-outline-primary\" (click)=\"myTable.exportCSV('custom-export', true)\">Export CSV</button>\r\n    </form>\r\n    <ng-template [ngIf]=\"configObject\">\r\n      <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtTexts]=\"translations\" [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\"></generic-table>\r\n      <div class=\"text-center\">\r\n        <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\r\n        <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n      </div>\r\n    </ng-template>\r\n  </div>\r\n  <div class=\"card-footer\" #translationsExample></div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -8678,6 +9866,7 @@ module.exports = "<h2>{{ 'TRANSLATIONS.TITLE' | translate }}</h2>\r\n<p [innerHT
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LocalizationComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ngx_translate_core__ = __webpack_require__("../../../../@ngx-translate/core/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_generic_table_core__ = __webpack_require__("../../../../../@angular-generic-table/core/index.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8687,6 +9876,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 var LocalizationComponent = (function () {
@@ -9145,7 +10335,8 @@ var LocalizationComponent = (function () {
             }, {
                 name: this.translate.instant('TRANSLATIONS.NAME_HEADING'),
                 objectKey: 'name',
-                render: function (row) { return _this.translate.instant('TRANSLATIONS.NAME_DATA', { name: row.name }); }
+                render: function (row) { return _this.translate.instant('TRANSLATIONS.NAME_DATA', { name: row.name }); },
+                export: function (row) { return _this.translate.instant('TRANSLATIONS.NAME_DATA', { name: row.name }); }
             }, {
                 name: this.translate.instant('TRANSLATIONS.LUCKY_NUMBER_HEADING'),
                 objectKey: 'lucky_number',
@@ -9154,15 +10345,19 @@ var LocalizationComponent = (function () {
     };
     return LocalizationComponent;
 }());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_2__angular_generic_table_core__["a" /* GenericTableComponent */]),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_generic_table_core__["a" /* GenericTableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_generic_table_core__["a" /* GenericTableComponent */]) === "function" && _a || Object)
+], LocalizationComponent.prototype, "myTable", void 0);
 LocalizationComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'app-localization',
         template: __webpack_require__("../../../../../src/app/localization/localization.component.html")
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__ngx_translate_core__["c" /* TranslateService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__ngx_translate_core__["c" /* TranslateService */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__ngx_translate_core__["c" /* TranslateService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__ngx_translate_core__["c" /* TranslateService */]) === "function" && _b || Object])
 ], LocalizationComponent);
 
-var _a;
+var _a, _b;
 //# sourceMappingURL=localization.component.js.map
 
 /***/ }),
@@ -9170,7 +10365,7 @@ var _a;
 /***/ "../../../../../src/app/menu/menu.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h5>Angular generic table</h5>\r\n<ul class=\"navbar-nav mb-4\">\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/start\" routerLinkActive=\"active\">Getting started</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" href=\"https://github.com/hjalmers/angular-generic-table/releases\" target=\"_blank\">Release notes</a>\r\n  </li>\r\n</ul>\r\n<h5>Core</h5>\r\n<ul class=\"navbar-nav mb-4\">\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/basic\" routerLinkActive=\"active\">Basic example</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/advanced\" routerLinkActive=\"active\">Advanced example</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/styling\" routerLinkActive=\"active\">Styling</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/column-click\" routerLinkActive=\"active\">Column click example</a>\r\n  </li>\r\n  <!--<li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/record-selection\" routerLinkActive=\"active\">Record selection</a>\r\n  </li>-->\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/totals\" routerLinkActive=\"active\">Totals example</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/localization\" routerLinkActive=\"active\">Localization</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/lazy\" routerLinkActive=\"active\">Lazy loading</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/inline-editing\" routerLinkActive=\"active\">Inline editing</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/add-remove-edit\" routerLinkActive=\"active\">Add, remove and edit rows</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n     <a class=\"nav-link\" routerLink=\"/custom-column\" routerLinkActive=\"active\">Custom component inside table cell</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n     <a class=\"nav-link\" routerLink=\"/drilldown\" routerLinkActive=\"active\">Drilldown</a>\r\n  </li>\r\n</ul>\r\n<h5>Column settings</h5>\r\n<ul class=\"navbar-nav\">\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/column-settings-component\" routerLinkActive=\"active\">Column settings component</a>\r\n  </li>\r\n</ul>\r\n"
+module.exports = "<h5>Angular generic table</h5>\r\n<ul class=\"navbar-nav mb-4\">\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/start\" routerLinkActive=\"active\">Getting started</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" href=\"https://github.com/hjalmers/angular-generic-table/releases\" target=\"_blank\">Release notes</a>\r\n  </li>\r\n</ul>\r\n<h5>Core</h5>\r\n<ul class=\"navbar-nav mb-4\">\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/basic\" routerLinkActive=\"active\">Basic example</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/advanced\" routerLinkActive=\"active\">Advanced example</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/styling\" routerLinkActive=\"active\">Styling</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/column-click\" routerLinkActive=\"active\">Column click example</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/row-selection\" routerLinkActive=\"active\">Row selection</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/checkbox\" routerLinkActive=\"active\">Checkbox selection</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/totals\" routerLinkActive=\"active\">Totals example</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/localization\" routerLinkActive=\"active\">Localization</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/lazy\" routerLinkActive=\"active\">Lazy loading</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/inline-editing\" routerLinkActive=\"active\">Inline editing</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/add-remove-edit\" routerLinkActive=\"active\">Add, remove and edit rows</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n     <a class=\"nav-link\" routerLink=\"/custom-column\" routerLinkActive=\"active\">Custom component inside table cell</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n     <a class=\"nav-link\" routerLink=\"/custom-header\" routerLinkActive=\"active\">Custom component inside table header</a>\r\n  </li>\r\n  <li class=\"nav-item\">\r\n     <a class=\"nav-link\" routerLink=\"/drilldown\" routerLinkActive=\"active\">Drilldown</a>\r\n  </li>\r\n</ul>\r\n<h5>Column settings</h5>\r\n<ul class=\"navbar-nav\">\r\n  <li class=\"nav-item\">\r\n    <a class=\"nav-link\" routerLink=\"/column-settings-component\" routerLinkActive=\"active\">Column settings component</a>\r\n  </li>\r\n</ul>\r\n"
 
 /***/ }),
 
@@ -9228,18 +10423,199 @@ MenuComponent = __decorate([
 
 /***/ }),
 
-/***/ "../../../../../src/app/record-selection/record-selection.component.html":
+/***/ "../../../../../src/app/rest/rest.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h2>Basic</h2>\r\n<p>Table with static data and simple pagination.</p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"basicExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']\" [source]=\"'child'\" [target]=\"basicExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'record-selection.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/record-selection/record-selection.component.ts'\r\n  }]\">\r\n    <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [(gtData)]=\"configObject.data\" [gtOptions]=\"{rowSelection:true}\"></generic-table>\r\n    <div class=\"text-center\">\r\n      <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\r\n      <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n    </div>\r\n  </div>\r\n  <div class=\"card-footer\" #basicExample></div>\r\n</div>\r\n"
+module.exports = "<h2>Advanced</h2>\r\n<p>Fetch data using REST-service, expand rows and display a custom component, use custom functions for rendering, sorting and exporting. Apply predefined filter and simple function for adding new random data to table. To control columns we use the <code><a routerLink=\"/column-settings-component\">ColumnSettingsComponent</a></code>. This example also utilizes column stacking on tablets and mobile devices so resize the browser and see what happens with the layout on smaller screens.</p>\r\n<div class=\"alert alert-info\">A little word of advice regarding number of rows to display. Although the table supports displaying all rows at once by setting <code>[gtOptions]=\"{{ '{' }}numberOfRows:0{{ '}' }}\"</code> or by passing <code>'all'</code> to the <code>changeRowLength</code> method like in the example below, generic table still needs to render a lot of rows which currently makes it a bit unresponsive. Hopefully this will be improved in future releases but in the meantime it's recommended to limit the number of rendered rows and use pagination as it allows you to \"display\" hundreds of thousands rows.</div>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"restExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','#myTable','ngModel','[ngClass]','#columnSettings','gtEvent']\" [source]=\"'child'\" [target]=\"restExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'rest.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/rest/rest.component.ts'\r\n  },{\r\n    name:'custom-row.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular-generic-table/master/src/app/custom-row/custom-row.component.ts'\r\n  }]\">\r\n    <form class=\"form form-inline mb-4\">\r\n      <label for=\"rows\" class=\"form-control-label mr-sm-2\">Rows</label>\r\n      <select id=\"rows\" class=\"form-control form-control-sm mr-sm-2 mb-3 mb-sm-0\" #rowLength (change)=\"myTable.changeRowLength(rowLength.value)\">\r\n        <option value=10>10</option>\r\n        <option value=25>25</option>\r\n        <option value=50>50</option>\r\n        <option value=100>100</option>\r\n        <option value=all>All</option>\r\n      </select>\r\n      <input class=\"form-control form-control-sm mr-sm-2 mb-3 mb-sm-0\" #search (keyup)=\"myTable.gtSearch(search.value)\" placeholder=\"Search\"/>\r\n      <div ngbDropdown class=\"col-12 col-sm-auto mr-sm-3 mb-3 mb-sm-0 p-0\">\r\n        <button class=\"btn btn-sm btn-primary w-100\" id=\"actions\" ngbDropdownToggle>Actions</button>\r\n        <div ngbDropdownMenu aria-labelledby=\"actions\">\r\n          <button class=\"dropdown-item\" (click)=\"applyFilter();\">Apply predefined filter</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.gtClearFilter()\">Remove filter</button>\r\n          <button class=\"dropdown-item\" (click)=\"addData()\">Add data</button>\r\n          <button class=\"dropdown-item\" (click)=\"deleteData()\">Delete first row</button>\r\n          <button class=\"dropdown-item\" (click)=\"deleteAll()\">Delete rows where gender = male</button>\r\n          <button class=\"dropdown-item\" (click)=\"showColumnControls = !showColumnControls\">Toggle columns</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.exportCSV()\">Export to CSV</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.selectAllRows()\">Select all</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.deselectAllRows()\">Deselect all</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.expandAllRows()\">Expand all</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.collapseAllRows()\">Collapse all</button>\r\n          <!--<button class=\"dropdown-item\" (click)=\"getData()\">Refresh data</button>-->\r\n        </div>\r\n      </div>\r\n      <small class=\"form-text text-muted col-12 col-xl-auto mb-2 mt-lg-2 my-xl-auto row\"><gt-table-info [genericTable]=\"myTable\"></gt-table-info> Number of selected rows: {{selectedRows}}</small>\r\n      <div *ngIf=\"showColumnControls\" class=\"col-12 row mt-xl-2\">\r\n        <label class=\"form-control-label mr-sm-2\">Visible columns:</label>\r\n        <div class=\"form-check form-check-inline ml-0 ml-sm-2\" *ngFor=\"let column of configObject.settings\">\r\n          <label class=\"form-check-label\">\r\n            <input type=\"checkbox\" name=\"{{column.objectKey}}\" class=\"form-check-input\" [(ngModel)]=\"column.visible\" (change)=\"myTable.redraw()\">\r\n            {{configObject.fields | gtProperty:column.objectKey:'name'}}\r\n          </label>\r\n        </div>\r\n      </div>\r\n    </form>\r\n    <button class=\"btn-link\" (click)=\"columnSettings.toggleColumnSettings()\"> {{columnSettings.active ? 'Hide column settings':'Show column settings'}}</button>\r\n    <gt-column-settings [genericTable]=\"myTable\" #columnSettings>\r\n      <div class=\"table-responsive\">\r\n        <generic-table [gtClasses]=\"'table-hover'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\" [gtOptions]=\"{stack:true, highlightSearch:true, rowSelection:true}\" (gtEvent)=\"trigger($event)\"></generic-table>\r\n      </div>\r\n      <div class=\"text-center\">\r\n        <gt-pagination [gtClasses]=\"'justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n      </div>\r\n    </gt-column-settings>\r\n  </div>\r\n  <div class=\"card-footer\" #restExample>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
-/***/ "../../../../../src/app/record-selection/record-selection.component.ts":
+/***/ "../../../../../src/app/rest/rest.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RecordSelectionComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RestComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/@angular/common/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__custom_row_custom_row_component__ = __webpack_require__("../../../../../src/app/custom-row/custom-row.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_generic_table_core__ = __webpack_require__("../../../../../@angular-generic-table/core/index.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var RestComponent = (function () {
+    function RestComponent(http) {
+        this.http = http;
+        this.data = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.showColumnControls = false;
+        this.selectedRows = 0;
+        this.url = 'https://private-730c61-generictable.apiary-mock.com/data'; // apiary end point
+        this.getData = function () {
+            var _this = this;
+            // tell generic table instance that we're loading data
+            this.myTable ? this.myTable.loading = true : '';
+            this.http.get(this.url)
+                .subscribe(function (res) {
+                _this.configObject.data = res.data;
+            });
+        };
+        this.addData = function () {
+            // create mock data
+            var random = Math.floor(Math.random() * this.configObject.data.length - 1) + 1;
+            var firstName = this.configObject.data[random].first_name;
+            var lastName = this.configObject.data[Math.floor(Math.random() * this.configObject.data.length - 1) + 1].last_name;
+            var gender = this.configObject.data[random].gender;
+            var favoriteColor = this.configObject.data[Math.floor(Math.random() * this.configObject.data.length - 1) + 1].favorite_color;
+            // add data to table (could be swapped to a method for persisting the data to a database i.e. should go through server first).
+            // gtAdd method returns new data array with added records, which we reassign to this.configObject.data
+            this.configObject.data = this.myTable.gtAdd([{
+                    'id': this.configObject.data.length + 1,
+                    'first_name': firstName,
+                    'last_name': lastName,
+                    'email': firstName + '.' + lastName + '@some_email_address.xyz',
+                    'gender': gender,
+                    'favorite_color': favoriteColor
+                }]);
+        };
+        this.deleteData = function () {
+            this.configObject.data = this.myTable.gtDelete('id', this.configObject.data[0].id);
+        };
+        this.deleteAll = function () {
+            this.configObject.data = this.myTable.gtDelete('gender', 'Male', 'all');
+        };
+        /** Apply predefined filter using first_name.
+         * */
+        this.applyFilter = function () {
+            this.myTable.gtApplyFilter({
+                first_name: ['Victor', 'Joe', 'Carol']
+            });
+        };
+        /** Listen for events
+         * */
+        this.trigger = function ($event) {
+            console.log($event);
+            if ($event.value && $event.value.selectedRows) {
+                this.selectedRows = $event.value.selectedRows.length;
+            }
+        };
+        this.configObject = {
+            settings: [{
+                    objectKey: 'id',
+                    visible: true,
+                    sort: 'desc',
+                    columnOrder: 0,
+                    enabled: true
+                }, {
+                    objectKey: 'name',
+                    visible: true,
+                    sort: 'enable',
+                    columnOrder: 1
+                }, {
+                    objectKey: 'email',
+                    visible: true,
+                    enabled: true,
+                    sort: 'enable',
+                    sortOrder: 0,
+                    columnOrder: 2
+                }, {
+                    objectKey: 'gender',
+                    visible: true,
+                    enabled: true,
+                    sort: 'enable',
+                    sortOrder: 0,
+                    columnOrder: 3,
+                    search: false
+                }, {
+                    objectKey: 'favorite_color',
+                    visible: true,
+                    enabled: true,
+                    sort: 'disable',
+                    sortOrder: 0,
+                    columnOrder: 4,
+                    search: false
+                }],
+            fields: [{
+                    name: 'Id',
+                    objectKey: 'id',
+                    columnClass: 'clickable sort-numeric',
+                    expand: {
+                        component: __WEBPACK_IMPORTED_MODULE_2__custom_row_custom_row_component__["a" /* CustomRowComponent */]
+                    }
+                }, {
+                    name: 'Name',
+                    objectKey: 'name',
+                    columnClass: 'sort-string',
+                    value: function (row) { return row.first_name + ' ' + row.last_name; },
+                    render: function (row) { return '<div>' + row.first_name + ' ' + row.last_name + '</div>'; }
+                }, {
+                    name: 'Favorite color',
+                    objectKey: 'favorite_color',
+                    columnClass: 'text-right',
+                    render: function (row) { return '<div style="float:right;width:15px;height:15px;border-radius:50%;background: ' + row.favorite_color + '"></div>'; },
+                    click: function (row) { return console.log(row.first_name + '\'s favorite color is: ' + row.favorite_color); }
+                }, {
+                    name: 'Gender',
+                    columnClass: 'sort-string',
+                    objectKey: 'gender'
+                }, {
+                    name: 'Email',
+                    columnClass: 'sort-string',
+                    objectKey: 'email',
+                    render: function (row) { return '<a href="mailto:' + row.email + '">' + row.email + '</a>'; }
+                }],
+            data: []
+        };
+    }
+    RestComponent.prototype.ngOnInit = function () {
+        this.getData();
+    };
+    return RestComponent;
+}());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
+    __metadata("design:type", Object)
+], RestComponent.prototype, "data", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_3__angular_generic_table_core__["a" /* GenericTableComponent */]),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__angular_generic_table_core__["a" /* GenericTableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_generic_table_core__["a" /* GenericTableComponent */]) === "function" && _a || Object)
+], RestComponent.prototype, "myTable", void 0);
+RestComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'app-rest',
+        template: __webpack_require__("../../../../../src/app/rest/rest.component.html")
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]) === "function" && _b || Object])
+], RestComponent);
+
+var _a, _b;
+//# sourceMappingURL=rest.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/row-selection/row-selection.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<h2>Row selection</h2>\r\n<p>Enable row selection by passing <code>rowSelection:true</code> with <code>gtOptions</code>. By default you'll be able to select multiple rows, disable by passing <code>rowSelectionAllowMultiple:false</code>. Use <code>rowSelectionInitialState</code> to set an initial state for rows, pass <code>true</code> to set all rows to selected when table is initiated. <code>rowSelectionInitialState</code> also supports passing a function to determine initial row state</p>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"basicExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']\" [source]=\"'child'\" [target]=\"basicExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'row-selection.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/row-selection/row-selection.component.ts'\r\n  }]\">\r\n    <generic-table [gtClasses]=\"'table-sm'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [(gtData)]=\"configObject.data\" [gtOptions]=\"options\"></generic-table>\r\n    <div class=\"text-center\">\r\n      <small><gt-table-info class=\"form-text text-muted mb-2\" [genericTable]=\"myTable\"></gt-table-info></small>\r\n      <gt-pagination [gtClasses]=\"'pagination-sm justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n    </div>\r\n  </div>\r\n  <div class=\"card-footer\" #basicExample></div>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/row-selection/row-selection.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RowSelectionComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_generic_table_core__ = __webpack_require__("../../../../../@angular-generic-table/core/index.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -9253,8 +10629,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
-var RecordSelectionComponent = (function () {
-    function RecordSelectionComponent() {
+var RowSelectionComponent = (function () {
+    function RowSelectionComponent() {
+        this.options = {
+            rowSelection: true,
+            rowSelectionInitialState: function (row) { return row.name === 'Ann'; } // set to true to select all rows
+        };
         this.configObject = {
             settings: [{
                     objectKey: 'id',
@@ -9280,8 +10660,7 @@ var RecordSelectionComponent = (function () {
                     objectKey: 'name'
                 }, {
                     name: 'Lucky number',
-                    objectKey: 'lucky_number',
-                    stackedHeading: 'Custom heading'
+                    objectKey: 'lucky_number'
                 }],
             data: [{
                     'id': 1,
@@ -9686,205 +11065,24 @@ var RecordSelectionComponent = (function () {
                 }]
         };
     }
-    RecordSelectionComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        setTimeout(function () {
-            _this.myTable.toggleSelect(_this.configObject.data[1]);
-        }, 0);
-    };
-    return RecordSelectionComponent;
+    RowSelectionComponent.prototype.ngOnInit = function () { };
+    return RowSelectionComponent;
 }());
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_1__angular_generic_table_core__["a" /* GenericTableComponent */]),
     __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_generic_table_core__["a" /* GenericTableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_generic_table_core__["a" /* GenericTableComponent */]) === "function" && _a || Object)
-], RecordSelectionComponent.prototype, "myTable", void 0);
-RecordSelectionComponent = __decorate([
+], RowSelectionComponent.prototype, "myTable", void 0);
+RowSelectionComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'record-selection',
-        template: __webpack_require__("../../../../../src/app/record-selection/record-selection.component.html"),
+        selector: 'row-selection',
+        template: __webpack_require__("../../../../../src/app/row-selection/row-selection.component.html"),
         styles: []
     }),
     __metadata("design:paramtypes", [])
-], RecordSelectionComponent);
+], RowSelectionComponent);
 
 var _a;
-//# sourceMappingURL=record-selection.component.js.map
-
-/***/ }),
-
-/***/ "../../../../../src/app/rest/rest.component.html":
-/***/ (function(module, exports) {
-
-module.exports = "<h2>Advanced</h2>\r\n<p>Fetch data using REST-service, expand rows and display a custom component, use custom functions for rendering, sorting and exporting. Apply predefined filter and simple function for adding new random data to table. To control columns we use the <code><a routerLink=\"/column-settings-component\">ColumnSettingsComponent</a></code>. This example also utilizes column stacking on tablets and mobile devices so resize the browser and see what happens with the layout on smaller screens.</p>\r\n<div class=\"alert alert-info\">A little word of advice regarding number of rows to display. Although the table supports displaying all rows at once by setting <code>[gtOptions]=\"{{ '{' }}numberOfRows:0{{ '}' }}\"</code> or by passing <code>'all'</code> to the <code>changeRowLength</code> method like in the example below, generic table still needs to render a lot of rows which currently makes it a bit unresponsive. Hopefully this will be improved in future releases but in the meantime it's recommended to limit the number of rendered rows and use pagination as it allows you to \"display\" hundreds of thousands rows.</div>\r\n<div class=\"card mb-5\">\r\n  <div class=\"card-header\">Example</div>\r\n  <div class=\"card-body\" exemplify=\"restExample\" [context]=\"this\" [escapeStrings]=\"['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','#myTable','ngModel','[ngClass]','#columnSettings','gtEvent']\" [source]=\"'child'\" [target]=\"restExample\" [navStyle]=\"'tabs'\" [externalSources]=\"[{\r\n    name:'app.module.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'\r\n  },{\r\n    name:'rest.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/rest/rest.component.ts'\r\n  },{\r\n    name:'custom-row.component.ts',\r\n    src:'https://raw.githubusercontent.com/hjalmers/angular-generic-table/master/src/app/custom-row/custom-row.component.ts'\r\n  }]\">\r\n    <form class=\"form form-inline mb-4\">\r\n      <label for=\"rows\" class=\"form-control-label mr-sm-2\">Rows</label>\r\n      <select id=\"rows\" class=\"form-control form-control-sm mr-sm-2 mb-3 mb-sm-0\" #rowLength (change)=\"myTable.changeRowLength(rowLength.value)\">\r\n        <option value=10>10</option>\r\n        <option value=25>25</option>\r\n        <option value=50>50</option>\r\n        <option value=100>100</option>\r\n        <option value=all>All</option>\r\n      </select>\r\n      <input class=\"form-control form-control-sm mr-sm-2 mb-3 mb-sm-0\" #search (keyup)=\"myTable.gtSearch(search.value)\" placeholder=\"Search\"/>\r\n      <div ngbDropdown class=\"col-12 col-sm-auto mr-sm-3 mb-3 mb-sm-0 p-0\">\r\n        <button class=\"btn btn-sm btn-primary w-100\" id=\"actions\" ngbDropdownToggle>Actions</button>\r\n        <div ngbDropdownMenu aria-labelledby=\"actions\">\r\n          <button class=\"dropdown-item\" (click)=\"applyFilter();\">Apply predefined filter</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.gtClearFilter()\">Remove filter</button>\r\n          <button class=\"dropdown-item\" (click)=\"addData()\">Add data</button>\r\n          <button class=\"dropdown-item\" (click)=\"showColumnControls = !showColumnControls\">Toggle columns</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.exportCSV()\">Export to CSV</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.selectAllRows()\">Select all</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.deselectAllRows()\">Deselect all</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.expandAllRows()\">Expand all</button>\r\n          <button class=\"dropdown-item\" (click)=\"myTable.collapseAllRows()\">Collapse all</button>\r\n          <!--<button class=\"dropdown-item\" (click)=\"getData()\">Refresh data</button>-->\r\n        </div>\r\n      </div>\r\n      <small class=\"form-text text-muted col-12 col-xl-auto mb-2 mt-lg-2 my-xl-auto row\"><gt-table-info [genericTable]=\"myTable\"></gt-table-info> Number of selected rows: {{selectedRows}}</small>\r\n      <div *ngIf=\"showColumnControls\" class=\"col-12 row mt-xl-2\">\r\n        <label class=\"form-control-label mr-sm-2\">Visible columns:</label>\r\n        <div class=\"form-check form-check-inline ml-0 ml-sm-2\" *ngFor=\"let column of configObject.settings\">\r\n          <label class=\"form-check-label\">\r\n            <input type=\"checkbox\" name=\"{{column.objectKey}}\" class=\"form-check-input\" [(ngModel)]=\"column.visible\" (change)=\"myTable.redraw()\">\r\n            {{configObject.fields | gtProperty:column.objectKey:'name'}}\r\n          </label>\r\n        </div>\r\n      </div>\r\n    </form>\r\n    <button class=\"btn-link\" (click)=\"columnSettings.toggleColumnSettings()\"> {{columnSettings.active ? 'Hide column settings':'Show column settings'}}</button>\r\n    <gt-column-settings [genericTable]=\"myTable\" #columnSettings>\r\n      <div class=\"table-responsive\">\r\n        <generic-table [gtClasses]=\"'table-hover'\" #myTable [gtSettings]=\"configObject.settings\" [gtFields]=\"configObject.fields\" [gtData]=\"configObject.data\" [gtOptions]=\"{stack:true, highlightSearch:true, rowSelection:true}\" (gtEvent)=\"trigger($event)\"></generic-table>\r\n      </div>\r\n      <div class=\"text-center\">\r\n        <gt-pagination [gtClasses]=\"'justify-content-center'\" [genericTable]=\"myTable\"></gt-pagination>\r\n      </div>\r\n    </gt-column-settings>\r\n  </div>\r\n  <div class=\"card-footer\" #restExample>\r\n  </div>\r\n</div>\r\n"
-
-/***/ }),
-
-/***/ "../../../../../src/app/rest/rest.component.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RestComponent; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/@angular/common/http.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__custom_row_custom_row_component__ = __webpack_require__("../../../../../src/app/custom-row/custom-row.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_generic_table_core__ = __webpack_require__("../../../../../@angular-generic-table/core/index.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-var RestComponent = (function () {
-    function RestComponent(http) {
-        this.http = http;
-        this.data = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
-        this.showColumnControls = false;
-        this.selectedRows = 0;
-        this.url = 'https://private-730c61-generictable.apiary-mock.com/data'; // apiary end point
-        this.getData = function () {
-            var _this = this;
-            // tell generic table instance that we're loading data
-            this.myTable ? this.myTable.loading = true : '';
-            this.http.get(this.url)
-                .subscribe(function (res) {
-                _this.configObject.data = res.data;
-            });
-        };
-        this.addData = function () {
-            // create mock data
-            var random = Math.floor(Math.random() * this.configObject.data.length - 1) + 1;
-            var firstName = this.configObject.data[random].first_name;
-            var lastName = this.configObject.data[Math.floor(Math.random() * this.configObject.data.length - 1) + 1].last_name;
-            var gender = this.configObject.data[random].gender;
-            var favoriteColor = this.configObject.data[Math.floor(Math.random() * this.configObject.data.length - 1) + 1].favorite_color;
-            var birthday = this.configObject.data[Math.floor(Math.random() * this.configObject.data.length - 1) + 1].birthday;
-            // push data to data array (could be swapped to a method for persisting the data to a database).
-            this.configObject.data.push({
-                'id': this.configObject.data.length + 1,
-                'first_name': firstName,
-                'last_name': lastName,
-                'email': firstName + '.' + lastName + '@some_email_address.xyz',
-                'gender': gender,
-                'favorite_color': favoriteColor,
-                'birthday': birthday
-            });
-        };
-        /** Apply predefined filter using first_name.
-         * */
-        this.applyFilter = function () {
-            this.myTable.gtApplyFilter({
-                first_name: ['Victor', 'Joe', 'Carol']
-            });
-        };
-        /** Listen for events
-         * */
-        this.trigger = function ($event) {
-            console.log($event);
-            if ($event.value && $event.value.selectedRows) {
-                this.selectedRows = $event.value.selectedRows.length;
-            }
-        };
-        this.configObject = {
-            settings: [{
-                    objectKey: 'id',
-                    visible: true,
-                    sort: 'desc',
-                    columnOrder: 0,
-                    enabled: true
-                }, {
-                    objectKey: 'name',
-                    visible: true,
-                    sort: 'enable',
-                    columnOrder: 1
-                }, {
-                    objectKey: 'email',
-                    visible: true,
-                    enabled: true,
-                    sort: 'enable',
-                    sortOrder: 0,
-                    columnOrder: 2
-                }, {
-                    objectKey: 'gender',
-                    visible: true,
-                    enabled: true,
-                    sort: 'enable',
-                    sortOrder: 0,
-                    columnOrder: 3,
-                    search: false
-                }, {
-                    objectKey: 'favorite_color',
-                    visible: true,
-                    enabled: true,
-                    sort: 'disable',
-                    sortOrder: 0,
-                    columnOrder: 4,
-                    search: false
-                }],
-            fields: [{
-                    name: 'Id',
-                    objectKey: 'id',
-                    columnClass: 'clickable sort-numeric',
-                    expand: {
-                        component: __WEBPACK_IMPORTED_MODULE_2__custom_row_custom_row_component__["a" /* CustomRowComponent */]
-                    }
-                }, {
-                    name: 'Name',
-                    objectKey: 'name',
-                    columnClass: 'sort-string',
-                    value: function (row) { return row.first_name + ' ' + row.last_name; },
-                    render: function (row) { return '<div>' + row.first_name + ' ' + row.last_name + '</div>'; }
-                }, {
-                    name: 'Favorite color',
-                    objectKey: 'favorite_color',
-                    columnClass: 'text-right',
-                    render: function (row) { return '<div style="float:right;width:15px;height:15px;border-radius:50%;background: ' + row.favorite_color + '"></div>'; },
-                    click: function (row) { return console.log(row.first_name + '\'s favorite color is: ' + row.favorite_color); }
-                }, {
-                    name: 'Gender',
-                    columnClass: 'sort-string',
-                    objectKey: 'gender'
-                }, {
-                    name: 'Email',
-                    columnClass: 'sort-string',
-                    objectKey: 'email',
-                    render: function (row) { return '<a href="mailto:' + row.email + '">' + row.email + '</a>'; }
-                }],
-            data: []
-        };
-    }
-    RestComponent.prototype.ngOnInit = function () {
-        this.getData();
-    };
-    return RestComponent;
-}());
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"])(),
-    __metadata("design:type", Object)
-], RestComponent.prototype, "data", void 0);
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_3__angular_generic_table_core__["a" /* GenericTableComponent */]),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__angular_generic_table_core__["a" /* GenericTableComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_generic_table_core__["a" /* GenericTableComponent */]) === "function" && _a || Object)
-], RestComponent.prototype, "myTable", void 0);
-RestComponent = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'app-rest',
-        template: __webpack_require__("../../../../../src/app/rest/rest.component.html")
-    }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]) === "function" && _b || Object])
-], RestComponent);
-
-var _a, _b;
-//# sourceMappingURL=rest.component.js.map
+//# sourceMappingURL=row-selection.component.js.map
 
 /***/ }),
 
