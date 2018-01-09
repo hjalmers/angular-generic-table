@@ -29,6 +29,8 @@
           <button class="dropdown-item" (click)="applyFilter();">Apply predefined filter</button>
           <button class="dropdown-item" (click)="myTable.gtClearFilter()">Remove filter</button>
           <button class="dropdown-item" (click)="addData()">Add data</button>
+          <button class="dropdown-item" (click)="deleteData()">Delete first row</button>
+          <button class="dropdown-item" (click)="deleteAll()">Delete rows where gender = male</button>
           <button class="dropdown-item" (click)="showColumnControls = !showColumnControls">Toggle columns</button>
           <button class="dropdown-item" (click)="myTable.exportCSV()">Export to CSV</button>
           <button class="dropdown-item" (click)="myTable.selectAllRows()">Select all</button>
