@@ -3,8 +3,10 @@ Release History
 
 ## [Unreleased]
 
+# [4.10.0] - 2018-01-09
 ### Added
 - Visible rows are now emitted on gt-info event (issue #171)
+- Add and delete method (issue #169)
 
 # [4.9.0] - 2017-12-11
 ### Added
