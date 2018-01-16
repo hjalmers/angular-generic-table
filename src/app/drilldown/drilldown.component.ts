@@ -1,7 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
-import {GtConfig, GenericTableComponent} from '@angular-generic-table/core';
-import {GtDrilldownComponent} from '../../../@angular-generic-table/core/components/gt-drilldown.component';
-import {CustomRowComponent} from '../custom-row/custom-row.component';
+import {Component} from '@angular/core';
+import {GtConfig, GenericTableComponent, GtDrilldownComponent} from '@angular-generic-table/core';
 
 export interface RowData {
     name: string;
