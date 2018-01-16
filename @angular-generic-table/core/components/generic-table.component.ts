@@ -99,7 +99,7 @@ import {GtMetaPipe} from '../pipes/gt-meta.pipe';
                 <tr class="row-expanded" *ngIf="metaInfo[row.$$gtRowId]?.isOpen">
                     <td [attr.colspan]="(gtFields | gtVisible:gtSettings:refreshPipe).length">
                         <gt-expanding-row [row]="row"
-                                          [type]="gtRowComponent ? gtRowComponent:expandedRow.component"
+                                          [type]="expandedRow.component ? expandedRow.component:gtRowComponent"
                                           [columnWidth]="columnWidth"
                                           [gtFields]="gtFields"
                                           [gtOptions]="gtOptions"
@@ -292,7 +292,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     private _gtRowComponent: Type<C>;
     public expandedRow: {
         component: Type<C>;
-        data: Array<any>;
+        data?: Array<any>;
     };
     public gtDefaultTexts: GtTexts = {
         loading: 'Loading...',
@@ -619,8 +619,10 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Expand all rows.
+     * @param {{ component: Type<C>, data?: any}} expandedRow - component to render when rows are expanded.
      */
-    public expandAllRows(): void {
+    public expandAllRows(expandedRow: { component: Type<C>, data?: any }): void {
+        this.expandedRow = expandedRow;
         this._toggleAllRowProperty('isOpen', true);
     }
 
@@ -648,9 +650,9 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     /**
      * Toggle row collapsed state ie. expanded/open or collapsed/closed.
      * @param {GtRow} row - row object that should be expanded/collapsed.
-     * @param {Type<C>} component - component to render when row is expanded.
+     * @param {{ component: Type<C>, data?: any}} expandedRow - component to render when row is expanded.
      */
-    public toggleCollapse(row: GtRow, expandedRow?: { component: Type<C>, data: any }) {
+    public toggleCollapse(row: GtRow, expandedRow?: { component: Type<C>, data?: any }) {
         if (expandedRow) {
             this.expandedRow = expandedRow;
         }
