@@ -1,6 +1,6 @@
 {
   "name": "@angular-generic-table/column-settings",
-  "version": "4.10.0",
+  "version": "4.11.0",
   "description": "angular-generic-table extension that makes it easy to toggle column visibility and reoder columns.",
   "main": "index.js",
   "scripts": {

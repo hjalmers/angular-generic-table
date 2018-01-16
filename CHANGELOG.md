@@ -2,6 +2,13 @@ Release History
 ---------------
 
 ## [Unreleased]
+# [4.11.0] - 2018-01-16
+
+### Added
+- Events for `gt-column-order-change` and `gt-column-visibility-change` (emitted by gt-column-settings component, see wiki and [events](https://github.com/hjalmers/angular-generic-table/wiki/Events) for more info) (issue #173)
+
+### Fixed
+- Expand/collapse all rows function (issue #175)
 
 # [4.10.0] - 2018-01-09
 ### Added
