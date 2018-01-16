@@ -159,6 +159,14 @@ export class RestComponent implements OnInit {
         }
     };
 
+    public expandAllRows() {
+        this.myTable.expandAllRows({component: CustomRowComponent});
+    }
+
+    public collapseAllRows() {
+        this.myTable.collapseAllRows();
+    }
+
     ngOnInit() {
         this.getData();
     }
