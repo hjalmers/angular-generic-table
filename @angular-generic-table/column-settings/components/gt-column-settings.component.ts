@@ -1,6 +1,6 @@
 import {
     Component, Input, ViewChild, TemplateRef, ElementRef, Pipe, PipeTransform, OnInit,
-    ChangeDetectorRef, HostListener
+    ChangeDetectorRef, HostListener, Output, EventEmitter
 } from '@angular/core';
 import {GenericTableComponent, GtRow, GtConfigSetting } from '@angular-generic-table/core';
 import {DragulaService} from 'ng2-dragula';
@@ -85,6 +85,8 @@ export class GtColumnSettingsComponent implements OnInit{
     };
     @Input() gtTexts: GtColumnSettingsTexts = this.gtDefaultTexts;
 
+    @Output() public gtEvent: EventEmitter<any> = new EventEmitter<any>();
+
     public active = false;
     public offset: string;
     public heightAdjust: string;
@@ -157,6 +159,11 @@ export class GtColumnSettingsComponent implements OnInit{
 
         // redraw table
         this._genericTable.redraw();
+        this.gtEvent.emit({
+          name: 'gt-column-order-change',
+          column: column,
+          settings: this._genericTable.gtSettings
+        });
 
         // check and reset offset
         setTimeout(() => {
@@ -184,6 +191,10 @@ export class GtColumnSettingsComponent implements OnInit{
         this.changeDetectorRef.markForCheck();
 
         this._genericTable.redraw();
+        this.gtEvent.emit({
+          name: 'gt-column-order-change',
+          settings: this._genericTable.gtSettings
+        });
     }
 
     /**
