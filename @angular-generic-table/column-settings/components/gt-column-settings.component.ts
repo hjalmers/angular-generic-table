@@ -159,10 +159,14 @@ export class GtColumnSettingsComponent implements OnInit{
 
         // redraw table
         this._genericTable.redraw();
+
+        // emit event
         this.gtEvent.emit({
-          name: 'gt-column-order-change',
-          column: column,
-          settings: this._genericTable.gtSettings
+          name: 'gt-column-visibility-change',
+          value: {
+            column: {...column},
+            settings: [...this._genericTable.gtSettings]
+          }
         });
 
         // check and reset offset
@@ -193,7 +197,9 @@ export class GtColumnSettingsComponent implements OnInit{
         this._genericTable.redraw();
         this.gtEvent.emit({
           name: 'gt-column-order-change',
-          settings: this._genericTable.gtSettings
+          value: {
+              settings: [...this._genericTable.gtSettings]
+            }
         });
     }
 
