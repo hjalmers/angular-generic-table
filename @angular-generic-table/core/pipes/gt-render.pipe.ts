@@ -109,7 +109,7 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
 
     for (let i = 0; i < fields.length; i++) {
       //console.log(!row[fields[i].objectKey]);
-      if (fields[i].value && typeof fields[i].value === 'function' && !row[fields[i].objectKey]) {
+      if (fields[i].value && typeof fields[i].value === 'function' && !row.hasOwnProperty(fields[i].objectKey)) {
         row[fields[i].objectKey] = loading ? '' : fields[i].value(row);
       }
     }
