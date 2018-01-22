@@ -23,7 +23,7 @@ export class GtColumnPipe implements PipeTransform {
 
     /** return enabled columns */
     private getEnabled(column: GtConfigSetting) {
-        return column.enabled !== false ? column : null;
+        return column.enabled !== false && column.settingsEditable !== false ? column : null;
     }
 
     transform(settings: Array<GtConfigSetting>): Array<GtConfigSetting> {

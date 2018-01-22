@@ -7,5 +7,6 @@ export interface GtConfigSetting {
   sortOrder?: number;
   columnOrder?: number;
   export?: boolean; // should column be exported to CSV (OPTIONAL)
-  search?: boolean; // should we include this column when using global search (OPTIONAL)
+  search?: boolean; // should we include this column when using global search (OPTIONAL),
+  settingsEditable?: boolean; // default to true (OPTIONAL)
 }
