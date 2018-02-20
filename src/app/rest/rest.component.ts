@@ -2,7 +2,7 @@ import {Component, Output, EventEmitter, ViewChild, OnInit} from '@angular/core'
 import {Response } from '@angular/http';
 import {HttpClient} from '@angular/common/http';
 import {CustomRowComponent} from '../custom-row/custom-row.component';
-import {GenericTableComponent, GtConfig} from '@angular-generic-table/core';
+import {GenericTableComponent, GtConfig, GtCustomComponent} from '@angular-generic-table/core';
 import 'rxjs/add/operator/map';
 
 export interface RowData {
@@ -11,6 +11,15 @@ export interface RowData {
     email: string;
     gender: string;
     favorite_color: string;
+}
+@Component({
+    template: `<span ngbTooltip="{{'Some tooltip for '+ row.first_name + ' ' + row.last_name }}" [innerHTML]="(row.first_name + ' ' + row.last_name) | gtHighlight:searchTerms"></span>`,
+    styles: []
+})
+export class TooltipComponent extends GtCustomComponent<any> {
+    constructor() {
+        super();
+    }
 }
 
 @Component({
@@ -80,7 +89,9 @@ export class RestComponent implements OnInit {
                 objectKey: 'name',
                 columnClass: 'sort-string',
                 value: function(row){return row.first_name + ' ' + row.last_name; },
-                render: function(row){return '<div>' + row.first_name + ' ' + row.last_name + '</div>'; }
+                columnComponent: {
+                    type: TooltipComponent
+                }
             }, {
                 name: 'Favorite color',
                 objectKey: 'favorite_color',

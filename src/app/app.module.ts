@@ -8,7 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 /** Components used in example */
 import { AppComponent } from './app.component';
 import { LazyComponent } from './lazy/lazy.component';
-import { RestComponent } from './rest/rest.component';
+import {RestComponent, TooltipComponent} from './rest/rest.component';
 import { CustomRowComponent } from './custom-row/custom-row.component';
 import { BasicComponent } from './basic/basic.component';
 import {
@@ -79,6 +79,7 @@ import { CustomHeaderComponent, TooltipHeaderComponent } from './custom-header/c
         DrilldownComponent,
         CheckboxComponent,
         TooltipHeaderComponent,
+        TooltipComponent,
         CustomHeaderComponent
     ],
     imports: [
@@ -109,7 +110,8 @@ import { CustomHeaderComponent, TooltipHeaderComponent } from './custom-header/c
         EditSaveButtonComponent,
         DeleteDiscardButtonComponent,
         SelectedCheckboxComponent,
-        TooltipHeaderComponent
+        TooltipHeaderComponent,
+        TooltipComponent
     ],
     bootstrap: [AppComponent]
 })
