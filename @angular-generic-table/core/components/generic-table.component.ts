@@ -558,13 +558,13 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /** Go to next page. */
     public nextPage = function () {
-        const page = this.gtInfo.pageCurrent === this.gtInfo.pageTotal ? this.gtInfo.pageTotal : this.gtInfo.pageCurrent += 1;
+        const page = this.gtInfo.pageCurrent === this.gtInfo.pageTotal ? this.gtInfo.pageTotal : this.gtInfo.pageCurrent + 1;
         this.goToPage(page);
     };
 
     /** Go to previous page. */
     public previousPage = function () {
-        const page = this.gtInfo.pageCurrent === 1 ? 1 : this.gtInfo.pageCurrent -= 1;
+        const page = this.gtInfo.pageCurrent === 1 ? 1 : this.gtInfo.pageCurrent - 1;
         this.goToPage(page);
     };
 
@@ -582,7 +582,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
      * @param {number} page - page number.
      */
     public goToPage = function (page: number) {
-
+        const previousPage = this.gtInfo.pageCurrent;
         this.gtInfo.pageCurrent = page;
         this.inlineEditCancel(); // cancel inline edit
 
@@ -609,10 +609,12 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         // this.updateRecordRange();
 
         // ...emit page change event
+        if (previousPage !== page) {
         this.gtEvent.emit({
             name: 'gt-page-changed',
-            value: { pageCurrent: this.gtInfo.pageCurrent, recordLength: this.gtInfo.recordLength }
+                value: {pageCurrent: this.gtInfo.pageCurrent, pagePrevious: previousPage, recordLength: this.gtInfo.recordLength}
         });
+        }
     };
 
     /**
