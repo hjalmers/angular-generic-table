@@ -14,16 +14,14 @@ export class GtColumnPipe implements PipeTransform {
     // TODO: move to helper functions
     /** Sort by column order */
     private getColumnOrder(a: any, b: any) {
-        if (a.columnOrder < b.columnOrder)
-            return -1;
-        if (a.columnOrder > b.columnOrder || typeof a.columnOrder === 'undefined')
-            return 1;
+        if (a.columnOrder < b.columnOrder) { return -1; }
+        if (a.columnOrder > b.columnOrder || typeof a.columnOrder === 'undefined') { return 1; }
         return 0;
     };
 
-    /** return enabled columns */
+    /** return enabled columns that are not locked for editing */
     private getEnabled(column: GtConfigSetting) {
-        return column.enabled !== false && column.settingsEditable !== false ? column : null;
+        return column.enabled !== false && column.lockSettings !== true ? column : null;
     }
 
     transform(settings: Array<GtConfigSetting>): Array<GtConfigSetting> {
@@ -61,7 +59,7 @@ export class GtColumnPipe implements PipeTransform {
         </div>
     `
 })
-export class GtColumnSettingsComponent implements OnInit{
+export class GtColumnSettingsComponent implements OnInit {
     get genericTable(): GenericTableComponent<any, any> {
         return this._genericTable;
     }

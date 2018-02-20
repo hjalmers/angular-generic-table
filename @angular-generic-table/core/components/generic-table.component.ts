@@ -239,8 +239,11 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
                 this._gtSettings[i].columnOrder = this._gtSettings[i - 1] ? this._gtSettings[i - 1].columnOrder + 1 : 0;
             }
 
-            if (typeof this._gtSettings[i].settingsEditable === 'undefined' && this._gtSettings[i].enabled !== false) {
-              this._gtSettings[i].settingsEditable = true;
+            // check if column lock settings are undefined...
+            if (typeof this._gtSettings[i].lockSettings === 'undefined') {
+
+                // ...if so, set lock settings to false unless field is disabled (enable === false)
+                this._gtSettings[i].lockSettings = this._gtSettings[i].enabled === false || false;
             }
         }
         this.restructureSorting();
@@ -610,10 +613,10 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
         // ...emit page change event
         if (previousPage !== page) {
-        this.gtEvent.emit({
-            name: 'gt-page-changed',
+            this.gtEvent.emit({
+                name: 'gt-page-changed',
                 value: {pageCurrent: this.gtInfo.pageCurrent, pagePrevious: previousPage, recordLength: this.gtInfo.recordLength}
-        });
+            });
         }
     };
 

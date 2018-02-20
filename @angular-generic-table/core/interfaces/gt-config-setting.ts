@@ -8,5 +8,5 @@ export interface GtConfigSetting {
   columnOrder?: number;
   export?: boolean; // should column be exported to CSV (OPTIONAL)
   search?: boolean; // should we include this column when using global search (OPTIONAL),
-  settingsEditable?: boolean; // default to true (OPTIONAL)
+  lockSettings?: boolean; // should settings be locked for editing default to false (OPTIONAL)
 }

@@ -4,6 +4,7 @@ Release History
 ## [Unreleased]
 
 ### Added
+- Support for locking settings #181
 - Highlight pipe for use in custom components #196
 
 ### Fixed
