@@ -2,6 +2,10 @@ Release History
 ---------------
 
 ## [Unreleased]
+
+### Added
+- Highlight pipe for use in custom components #196
+
 # [4.11.1] - 2018-01-19
 ### Fixed
 - Condition check in gt render pipe for 0, null, '' and false values #178

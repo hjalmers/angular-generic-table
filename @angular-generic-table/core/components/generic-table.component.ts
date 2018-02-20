@@ -76,6 +76,7 @@ import {GtMetaPipe} from '../pipes/gt-meta.pipe';
                                                      [type]="column.columnComponent.type"
                                                      [injector]="column.columnComponent.injector" [row]="row"
                                                      [column]="column" (redrawEvent)="redraw($event)"
+                                                     [searchTerms]="gtInfo.searchTerms"  (searchEvent)="redraw($event)"
                                                      (click)="column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row, column.expand):''"></gt-custom-component-factory>
                         <span *ngIf="!column.columnComponent && !(gtFields | gtProperty:column.objectKey:'inlineEdit')"
                               class="gt-row-content" [innerHTML]="column.renderValue"

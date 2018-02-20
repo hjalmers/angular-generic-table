@@ -4,15 +4,14 @@ import { GtConfigField } from '../interfaces/gt-config-field';
 import { DomSanitizer } from '@angular/platform-browser';
 import { GtRow } from '../interfaces/gt-row';
 import { GtRenderField } from '../interfaces/gt-render-field';
+import {GtHighlightPipe} from './gt-highlight.pipe';
 
 @Pipe({
   name: 'gtRender'
 })
 export class GtRenderPipe<R extends GtRow> implements PipeTransform {
 
-  constructor(private sanitizer: DomSanitizer) {
-    this.sanitizer = sanitizer;
-  }
+  constructor(private sanitizer: DomSanitizer, private gtHighlightPipe: GtHighlightPipe) {}
 
   // TODO: move to helper functions
   /** Sort by column order */
@@ -36,62 +35,6 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
         return array[i];
       }
     }
-  };
-
-  private highlight(haystack: any, needles: string) {
-
-    const haystackAlwaysString = haystack + '';
-    let highlightedText = haystackAlwaysString; // fallback
-
-    let searchPattern;
-    try {
-
-      searchPattern = new RegExp(
-        '(' +
-        needles.toLowerCase()
-          .match(/".*?"|[^ ]+/g) // extract words
-          .map(
-            needle => needle.replace(/"(.*?)"/, '$1') // strip away '"'
-          )
-          .join('|') + // combine words
-        ')', 'ig'
-      );
-
-    } catch (error) {
-
-      return this.sanitizer
-        .bypassSecurityTrustHtml(highlightedText);
-
-    }
-
-    const containsTagPattern = /(<.*?>)(.*)(<\/.*?>)/ig;
-    const containsTagMatches = containsTagPattern.exec(haystackAlwaysString);
-
-    if (containsTagMatches) { // tag exists in haystack
-
-      highlightedText =
-        containsTagMatches[1] +
-        containsTagMatches[2]
-          .replace(
-            searchPattern,
-            '<span class="gt-highlight-search">$1</span>'
-          ) +
-        containsTagMatches[3];
-
-    } else {
-
-      highlightedText =
-        haystackAlwaysString
-          .replace(
-            searchPattern,
-            '<span class="gt-highlight-search">$1</span>'
-          );
-
-    }
-
-    return this.sanitizer
-      .bypassSecurityTrustHtml(highlightedText);
-
   };
 
   transform(row: any, settings: Array<GtConfigSetting>, fields: Array<GtConfigField<R, any>>, updated: boolean, loading: boolean, highlight: boolean = false, searchString?: string): Array<Object> {
@@ -135,7 +78,7 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
         if (loading) {
           columnObject.renderValue = row[key] !== null ? row[key] : '';
         } else if (highlight && searchString && this.getProperty(settings, key).search !== false) {
-          columnObject.renderValue = fieldSetting.render && typeof fieldSetting.render === 'function' ? this.highlight(fieldSetting.render(row), searchString) : this.highlight(row[key] !== null ? row[key] : '', searchString);
+          columnObject.renderValue = fieldSetting.render && typeof fieldSetting.render === 'function' ? this.gtHighlightPipe.transform(fieldSetting.render(row), searchString) : this.gtHighlightPipe.transform(row[key] !== null ? row[key] : '', searchString);
         } else {
           columnObject.renderValue = fieldSetting.render && typeof fieldSetting.render === 'function' ? this.sanitizer.bypassSecurityTrustHtml(fieldSetting.render(row)) : row[key] !== null ? row[key] : '';
         }
