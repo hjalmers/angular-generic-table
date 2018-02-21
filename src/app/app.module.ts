@@ -49,6 +49,7 @@ import { StylingComponent } from './styling/styling.component';
 import { DrilldownComponent } from './drilldown/drilldown.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { CustomHeaderComponent, TooltipHeaderComponent } from './custom-header/custom-header.component';
+import {RowClickComponent, RowClickExpandedComponent} from './row-click/row-click.component';
 
 @NgModule({
     declarations: [
@@ -80,7 +81,9 @@ import { CustomHeaderComponent, TooltipHeaderComponent } from './custom-header/c
         CheckboxComponent,
         TooltipHeaderComponent,
         TooltipComponent,
-        CustomHeaderComponent
+        CustomHeaderComponent,
+        RowClickComponent,
+        RowClickExpandedComponent
     ],
     imports: [
         BrowserModule,
@@ -111,7 +114,8 @@ import { CustomHeaderComponent, TooltipHeaderComponent } from './custom-header/c
         DeleteDiscardButtonComponent,
         SelectedCheckboxComponent,
         TooltipHeaderComponent,
-        TooltipComponent
+        TooltipComponent,
+        RowClickExpandedComponent
     ],
     bootstrap: [AppComponent]
 })

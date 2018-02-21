@@ -20,6 +20,7 @@ import {StylingComponent} from './styling/styling.component';
 import {DrilldownComponent} from './drilldown/drilldown.component';
 import {CheckboxComponent} from './checkbox/checkbox.component';
 import {CustomHeaderComponent} from './custom-header/custom-header.component';
+import {RowClickComponent} from './row-click/row-click.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/start', pathMatch: 'full' },
@@ -39,6 +40,7 @@ const routes: Routes = [
   { path: 'column-settings-component', component: ChangeColumnSettingsComponent },
   { path: 'checkbox', component: CheckboxComponent },
   { path: 'custom-header', component: CustomHeaderComponent },
+  { path: 'row-click', component: RowClickComponent },
   { path: '**', component: HomeComponent }
 ];
 

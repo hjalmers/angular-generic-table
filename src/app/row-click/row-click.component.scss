@@ -1,0 +1,8 @@
+::ng-deep table tbody {
+  tr:not(.row-expanded) td:hover {
+    cursor: pointer;
+  }
+  tr.row-expanded, tr.row-open {
+    background: #eff6fd;
+  }
+}
