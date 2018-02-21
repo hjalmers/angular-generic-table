@@ -19,6 +19,7 @@ import { GtOptions } from '../interfaces/gt-options';
 import {GtRowMeta} from '../interfaces/gt-row-meta';
 import {GtRenderField} from '../interfaces/gt-render-field';
 import {GtMetaPipe} from '../pipes/gt-meta.pipe';
+import {GtEvent} from '../interfaces/gt-event';
 
 
 @Component({
@@ -67,7 +68,7 @@ import {GtMetaPipe} from '../pipes/gt-meta.pipe';
                          [ngForOf]="gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1]) : (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data | gtRowClass:gtFields)">
                 <tr [ngClass]="{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading, 'row-expandable':gtRowComponent}"
                     class="{{row.$$gtRowClass}}"
-                    (click)="gtOptions.rowSelection ? toggleSelect(row):null">
+                    (click)="gtOptions.rowSelection ? toggleSelect(row):rowClick(row, $event)">
                     <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms;trackBy:trackByColumnFn"
                         ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{(gtFields | gtProperty:column.objectKey:'inlineEdit') ? 'gt-inline-edit':''}} {{column.edited ? 'gt-edited':''}} {{ gtFields | gtColumnClass:row:column }}">
                         <span class="gt-row-label"
@@ -318,7 +319,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     };
     @Input() gtTexts: GtTexts = this.gtDefaultTexts;
     @Input() gtClasses: string;
-    @Output() gtEvent: EventEmitter<any> = new EventEmitter();
+    @Output() gtEvent: EventEmitter<GtEvent> = new EventEmitter();
     public gtDefaultOptions: GtOptions = {
         csvDelimiter: ';',
         stack: false,
@@ -361,7 +362,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     private data: { exportData: Array<any> } = { exportData: [] }; // Store filtered data for export
 
     constructor(private renderer: Renderer2, private gtMetaPipe: GtMetaPipe) {
-        this.gtEvent.subscribe(($event: any) => {
+        this.gtEvent.subscribe(($event: GtEvent) => {
             if ($event.name === 'gt-info') {
                 this.updateRecordRange();
             }
@@ -675,6 +676,13 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
      */
     public toggleSelect(row: GtRow) {
         this._toggleRowProperty(row, 'isSelected');
+    }
+
+    public rowClick(row: GtRow, $event: MouseEvent) {
+      this.gtEvent.emit({
+        name: 'gt-row-clicked',
+        value: { row: row, event: $event }
+      });
     }
 
     /**

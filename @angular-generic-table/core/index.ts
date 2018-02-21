@@ -13,3 +13,4 @@ export {GtTexts} from './interfaces/gt-texts';
 export {GtOptions} from './interfaces/gt-options';
 export {GtCustomComponent} from './components/gt-custom-component-factory';
 export {GtHighlightPipe} from './pipes/gt-highlight.pipe';
+export {GtEvent} from './interfaces/gt-event';

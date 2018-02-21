@@ -6,6 +6,7 @@ Release History
 ### Added
 - Support for locking settings #181
 - Highlight pipe for use in custom components #196
+- Support for row click #177, #186
 
 ### Fixed
 - Page change event only emitted when page has actually changed #200
