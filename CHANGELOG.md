@@ -3,6 +3,7 @@ Release History
 
 ## [Unreleased]
 
+# [4.12.0] - 2018-02-21
 ### Added
 - Support for locking settings #181
 - Highlight pipe for use in custom components #196
