@@ -43,13 +43,13 @@ import {GtEvent} from '../interfaces/gt-event';
             </tr>
             </thead>
             <ng-template
-                    [ngIf]="gtTotals && (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length).length > 0">
+                    [ngIf]="gtTotals && (gtOptions.lazyLoad === false ? (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length).length > 0 : gtData.length > 0)">
                 <thead class="gt-totals">
                 <tr *ngFor="let total of gtTotals | gtTotalsPosition">
                     <td *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;"
                         ngClass="{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{ gtFields | gtColumnClass:'total':column }}">
                         <span *ngIf="i === 0" class="float-left">{{total.name}}</span><span
-                            [innerHTML]="total.fields[column.objectKey] | gtTotals:total.update === false ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals"></span>
+                            [innerHTML]="total.fields[column.objectKey] | gtTotals:(total.update === false || gtOptions.lazyLoad === true) ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals"></span>
                     </td>
                 </tr>
                 </thead>
@@ -58,7 +58,7 @@ import {GtEvent} from '../interfaces/gt-event';
                     <td *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;"
                         ngClass="{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{ gtFields | gtColumnClass:'total':column }}">
                         <span *ngIf="i === 0" class="float-left">{{total.name}}</span><span
-                            [innerHTML]="total.fields[column.objectKey] | gtTotals:total.update === false ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals"></span>
+                            [innerHTML]="total.fields[column.objectKey] | gtTotals:(total.update === false || gtOptions.lazyLoad === true) ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals"></span>
                     </td>
                 </tr>
                 </tfoot>
