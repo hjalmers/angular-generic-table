@@ -25,6 +25,8 @@ import {GtColumnWidthDirective} from './directives/gt-column-width.directive';
 import {GtDrilldownComponent} from './components/gt-drilldown.component';
 import {GtCheckboxComponent} from './components/gt-checkbox/gt-checkbox.component';
 import {GtHighlightPipe} from './pipes/gt-highlight.pipe';
+import {GtIsObservablePipe} from './pipes/gt-is-observable.pipe';
+import {GtIsEditablePipe} from './pipes/gt-is-editable.pipe';
 
 @NgModule({
     declarations: [
@@ -50,6 +52,8 @@ import {GtHighlightPipe} from './pipes/gt-highlight.pipe';
         GtRowClassPipe,
         GtColumnClassPipe,
         GtHighlightPipe,
+        GtIsObservablePipe,
+        GtIsEditablePipe,
         GtDropdownComponent,
         GtColumnWidthDirective,
         GtDrilldownComponent,

@@ -79,22 +79,39 @@ import {GtEvent} from '../interfaces/gt-event';
                                                      [column]="column" (redrawEvent)="redraw($event)"
                                                      [searchTerms]="gtInfo.searchTerms"  (searchEvent)="redraw($event)"
                                                      (click)="column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row, column.expand):''"></gt-custom-component-factory>
-                        <span *ngIf="!column.columnComponent && !(gtFields | gtProperty:column.objectKey:'inlineEdit')"
+                        <span *ngIf="!column.columnComponent && (!(gtFields | gtProperty:column.objectKey:'inlineEdit') || ((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active | gtIsObservable) && !((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active | async) || (!((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active | gtIsObservable) && !((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active | gtIsEditable:row:refreshPipe)))"
                               class="gt-row-content" [innerHTML]="column.renderValue"
                               (click)="column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row, column.expand):''"></span>
                         <ng-template
-                                [ngIf]="!column.columnComponent && [true,'email','number','password'].indexOf(gtFields | gtProperty:column.objectKey:'inlineEdit') !== -1">
+                          [ngIf]="!column.columnComponent && (((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active | gtIsObservable) && ((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active | async) || ((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active | gtIsEditable:row:refreshPipe))">
+                          <ng-template [ngIf]="([true,'email','number','password', 'text'].indexOf((gtFields | gtProperty:column.objectKey:'inlineEdit').type) !== -1) || !(gtFields | gtProperty:column.objectKey:'inlineEdit').type">
+                            <input class="inline-edit" [attr.type]="!(gtFields | gtProperty:column.objectKey:'inlineEdit').type ? 'text' : !((gtFields | gtProperty:column.objectKey:'inlineEdit').type | gtIsObservable) ? (gtFields | gtProperty:column.objectKey:'inlineEdit').type:(gtFields | gtProperty:column.objectKey:'inlineEdit').type | async" [(ngModel)]="column.renderValue"
+                                 (keyup)="gtUpdateColumn($event,row, column)">
+                            <span class="gt-inline-edit-notice">{{gtTexts.inlineEditEdited}}</span>
+                          </ng-template>
+                          <gt-dropdown
+                            *ngIf="(((gtFields | gtProperty:column.objectKey:'inlineEdit').type) && ((gtFields | gtProperty:column.objectKey:'inlineEdit').type).length > 0) || ((gtFields | gtProperty:column.objectKey:'inlineEdit').type | gtIsObservable)"
+                            [options]="!((gtFields | gtProperty:column.objectKey:'inlineEdit').type | gtIsObservable) ? (gtFields | gtProperty:column.objectKey:'inlineEdit').type : (gtFields | gtProperty:column.objectKey:'inlineEdit').type | async"
+                            [id]="'_' + row.$$gtRowId + '_' + column.objectKey"
+                            [(selected)]="column.renderValue" (selectedChange)="gtDropdownSelect(row, column)">Add
+                            inline editing module
+                          </gt-dropdown>
+                        </ng-template>
+                        <ng-template [ngIf]="!column.columnComponent && !((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active) ">
+                          <ng-template
+                                [ngIf]="[true,'email','number','password'].indexOf(gtFields | gtProperty:column.objectKey:'inlineEdit') !== -1">
                             <input class="inline-edit" [attr.type]="(gtFields | gtProperty:column.objectKey:'inlineEdit') === true ? 'text':(gtFields | gtProperty:column.objectKey:'inlineEdit')" [(ngModel)]="column.renderValue"
                                    (keyup)="gtUpdateColumn($event,row, column)">
                             <span class="gt-inline-edit-notice">{{gtTexts.inlineEditEdited}}</span>
+                          </ng-template>
+                          <gt-dropdown
+                                  *ngIf="(gtFields | gtProperty:column.objectKey:'inlineEdit') && [true,'email','number','password'].indexOf(gtFields | gtProperty:column.objectKey:'inlineEdit') === -1"
+                                  [options]="gtFields | gtProperty:column.objectKey:'inlineEdit'"
+                                  [id]="'_' + row.$$gtRowId + '_' + column.objectKey"
+                                  [(selected)]="column.renderValue" (selectedChange)="gtDropdownSelect(row, column)">Add
+                              inline editing module
+                          </gt-dropdown>
                         </ng-template>
-                        <gt-dropdown
-                                *ngIf="!column.columnComponent && (gtFields | gtProperty:column.objectKey:'inlineEdit') && [true,'email','number','password'].indexOf(gtFields | gtProperty:column.objectKey:'inlineEdit') === -1"
-                                [options]="gtFields | gtProperty:column.objectKey:'inlineEdit'"
-                                [id]="'_' + row.$$gtRowId + '_' + column.objectKey"
-                                [(selected)]="column.renderValue" (selectedChange)="gtDropdownSelect(row, column)">Add
-                            inline editing module
-                        </gt-dropdown>
                         <gt-checkbox *ngIf="column.columnComponent && column.columnComponent.type === 'checkbox'" [checked]="metaInfo[row.$$gtRowId]?.isSelected" (changed)="toggleSelect(row)"></gt-checkbox>
                     </td>
                 </tr>
@@ -920,6 +937,9 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
                         this.metaInfo[row.$$gtRowId][property].newValue = row;
                     }
                     eventValue = this.metaInfo[row.$$gtRowId][property];
+                    this.redraw();
+                    this.inlineEditCancel(row);
+                    //this.gtData = [...this.gtData.map((r) => { return{...r}; })];
                     break;
             }
             this.gtEvent.emit({
@@ -1032,7 +1052,14 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     /**
      * Inline edit cancel - cancel and reset inline edits.
      */
-    public inlineEditCancel() {
+    public inlineEditCancel(row?: GtRow) {
+        if (row) {
+          delete this.editedRows[row.$$gtRowId];
+          // remove listener
+          this._stopListeningForKeydownEvent();
+          return;
+        }
+
         // loop through rows that have been edited
         Object.keys(this.editedRows).map((key) => {
             const ROW = this.editedRows[key].row; // row to update

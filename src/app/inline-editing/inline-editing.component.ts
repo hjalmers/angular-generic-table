@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import {GtConfig} from '@angular-generic-table/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {GtConfig, GenericTableComponent} from '@angular-generic-table/core';
+import {ReplaySubject} from 'rxjs/ReplaySubject';
+import {HttpClient} from '@angular/common/http';
 
 export interface RowData {
   id: number;
@@ -11,20 +13,37 @@ export interface RowData {
   selector: 'inline-editing',
   templateUrl: './inline-editing.component.html'
 })
-export class InlineEditingComponent {
+export class InlineEditingComponent implements OnInit {
 
   public data: Array<RowData> = [];
   public configObject: GtConfig<RowData>;
-  public languages: Array<string> = ['Albanian', 'Amharic', 'Aymara', 'Bulgarian', 'Dhivehi', 'Estonian', 'Indonesian', 'Kannada', 'Lao', 'Latvian', 'Marathi', 'Persian', 'Pisin', 'Punjabi', 'Somali', 'Tamil', 'Tok' , 'Tsonga', 'Tswana', 'Zulu'];
+  public conditionalConfigObject: GtConfig<RowData>;
+  public inlineEditState = true;
+  public inlineEdit: ReplaySubject<boolean> = new ReplaySubject(1);
+  public languages: ReplaySubject<Array<string>> = new ReplaySubject(1);
+  public staticLanguages: Array<string> = ['Albanian', 'Amharic', 'Aymara', 'Bulgarian', 'Dhivehi', 'Estonian', 'Indonesian', 'Kannada', 'Lao', 'Latvian', 'Marathi', 'Persian', 'Pisin', 'Punjabi', 'Somali', 'Tamil', 'Tok' , 'Tsonga', 'Tswana', 'Zulu'];
+
+  @ViewChild(GenericTableComponent)
+  private myTable: GenericTableComponent<RowData, any>;
 
   updatedRow: {
     newValue: RowData,
     oldValue: RowData,
     originalValue: RowData
   };
+  conditionalUpdatedRow: {
+    newValue: RowData,
+    oldValue: RowData,
+    originalValue: RowData
+  };
 
-  constructor() {
+  constructor(private http: HttpClient) {
+    this.inlineEdit.next(this.inlineEditState);
+    this.http.get('https://private-730c61-generictable.apiary-mock.com/options')
+      .subscribe((res: Array<string>) => this.languages.next(res));
+  }
 
+  ngOnInit() {
     this.configObject = {
       settings: [{
         objectKey: 'id',
@@ -48,15 +67,14 @@ export class InlineEditingComponent {
       }, {
         name: 'Name',
         objectKey: 'name',
-        inlineEdit: true,
-          sort: (row) => {return row.name.substring(1, 5); }
+        inlineEdit: { active: this.inlineEdit } // set to true, if you don't want to use observable for inline edit
       }, {
         name: 'Language',
         objectKey: 'language',
-        inlineEdit: this.languages,
+        inlineEdit: { active: this.inlineEdit, type: this.languages }, // set to options array (this.staticLanguages), if you don't want to use observable for inline edit
         value: () => {
-          const langId = Math.floor(Math.random() * this.languages.length);
-          return this.languages[langId];
+          const langId = Math.floor(Math.random() * this.staticLanguages.length);
+          return this.staticLanguages[langId];
         }
       }],
       data: [{
@@ -361,7 +379,102 @@ export class InlineEditingComponent {
         'name': 'Virginia'
       }]
     };
+    this.conditionalConfigObject = {
+      settings: [{
+        objectKey: 'id',
+        sort: 'asc',
+        sortOrder: 1,
+        columnOrder: 0
+      }, {
+        objectKey: 'name',
+        sort: 'asc',
+        sortOrder: 0,
+        columnOrder: 1
+      }, {
+        objectKey: 'editable',
+        sort: 'enable',
+        columnOrder: 3,
+        visible: true
+      }],
+      fields: [{
+        name: 'Id',
+        objectKey: 'id'
+      }, {
+        name: 'Name',
+        objectKey: 'name',
+        inlineEdit: { active: (row) => row.editable === 'true'}
+      }, {
+        name: 'Editable',
+        objectKey: 'editable',
+        inlineEdit: { active: this.inlineEdit, type: ['true', 'false'] },
+        value: () => {
+          return Math.random() > 0.5 ? 'true' : 'false';
+        }
+      }],
+      data: [{
+        'id': 1,
+        'name': 'Anna'
+      }, {
+        'id': 2,
+        'name': 'Julie'
+      }, {
+        'id': 3,
+        'name': 'Lillian'
+      }, {
+        'id': 4,
+        'name': 'Norma'
+      }, {
+        'id': 5,
+        'name': 'Ralph'
+      }, {
+        'id': 6,
+        'name': 'Benjamin'
+      }, {
+        'id': 7,
+        'name': 'George'
+      }, {
+        'id': 8,
+        'name': 'Ryan'
+      }, {
+        'id': 9,
+        'name': 'Martha'
+      }, {
+        'id': 10,
+        'name': 'Todd'
+      }, {
+        'id': 11,
+        'name': 'Norma'
+      }, {
+        'id': 12,
+        'name': 'Frank'
+      }, {
+        'id': 13,
+        'name': 'Kathryn'
+      }, {
+        'id': 14,
+        'name': 'Philip'
+      }, {
+        'id': 15,
+        'name': 'Ronald'
+      }, {
+        'id': 16,
+        'name': 'Joshua'
+      }, {
+        'id': 17,
+        'name': 'Phillip'
+      }, {
+        'id': 18,
+        'name': 'Susan'
+      }, {
+        'id': 19,
+        'name': 'Louise'
+      }, {
+        'id': 20,
+        'name': 'Gary'
+      }]
+    };
   }
+
   logData() {
     console.log(this.configObject.data);
   }
@@ -370,12 +483,29 @@ export class InlineEditingComponent {
    * */
   public trigger = function($event){
     console.log($event);
-
-
     if ($event.value && $event.name === 'gt-row-updated') {
       this.updatedRow = $event.value;
     }
   };
 
+  /** Listen for events
+   * */
+  public conditionalTrigger = function($event){
+    console.log($event);
+    if ($event.value && $event.name === 'gt-row-updated') {
+      this.conditionalUpdatedRow = $event.value;
+    }
+  };
+
+  /* toggle state for inline edit */
+  public toggleInlineEdit() {
+    // check if table has unsaved changes...
+    if (this.myTable.hasEdits) {
+      // ...if so, discard changes (could be used to warn user before discarding changes)
+      this.myTable.inlineEditCancel();
+    }
+    this.inlineEditState = !this.inlineEditState;
+    this.inlineEdit.next(this.inlineEditState);
+  }
 
 }

@@ -4,6 +4,7 @@ import {
   Injector
 } from '@angular/core';
 import { GtCustomComponent } from '../components/gt-custom-component-factory';
+import {Observable} from 'rxjs/Observable';
 
 export interface GtRenderFunc<R extends GtRow> {
   (row: R): string;
@@ -18,6 +19,10 @@ export interface GtClickFunc<R extends GtRow> {
 }
 export interface GtClassFunc {
     (row: any, col: any): string;
+}
+
+export interface GtInlineEditFunc<R extends GtRow> {
+    (row: any, col: any): boolean;
 }
 
 export interface GtConfigField<R extends GtRow, C extends GtCustomComponent<any>> {
@@ -52,7 +57,10 @@ export interface GtConfigField<R extends GtRow, C extends GtCustomComponent<any>
   // custom function for search value,
   // set to false if field shouldn't be searchable (true by default)
   search?: any;
-  inlineEdit?: boolean | Array<any> | 'number' | 'password' | 'email';
+  inlineEdit?: {
+    active: Observable<boolean> | GtInlineEditFunc<R>,
+    type?: Observable<any> | Array<any> | 'text' | 'number' | 'password' | 'email'
+  } | boolean | Array<any> | 'number' | 'password' | 'email';
   // custom header
   header?: { type: Type<C>, injector?: Injector };
 }

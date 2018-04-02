@@ -3,6 +3,13 @@ Release History
 
 ## [Unreleased]
 
+### Added
+- Support for conditional inline edit #122
+- Support for toggling inline edit and using observable for options #141 
+
+### Fixed
+- Fixed table info when lazy loading and totals are enabled #203
+
 # [4.12.0] - 2018-02-21
 ### Added
 - Support for locking settings #181
