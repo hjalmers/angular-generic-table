@@ -9,6 +9,7 @@ Release History
 
 ### Fixed
 - Fixed table info when lazy loading and totals are enabled #203
+- Table sort order #206
 
 # [4.12.0] - 2018-02-21
 ### Added

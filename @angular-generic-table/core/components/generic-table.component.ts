@@ -434,6 +434,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
         // if ctrl key or meta key is press together with sort...
         if (ctrlKey) {
+            if (this.sortOrder[this.sortOrder.length - 1] === '$$gtRowId') { this.sortOrder.pop(); }
             switch (pos) {
                 // ...and property is not sorted before...
                 case -1:
@@ -498,6 +499,9 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
         // refresh sorting pipe
         this.refreshSorting = !this.refreshSorting;
         this.refreshPageArray = !this.refreshPageArray;
+
+        // sort by row id as last resort
+        this.sortOrder.push('$$gtRowId');
 
         // emit sort event
         this.gtEvent.emit({
