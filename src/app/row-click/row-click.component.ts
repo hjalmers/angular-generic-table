@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {GenericTableComponent, GtConfig, GtEvent} from '@angular-generic-table/core';
+import {GenericTableComponent, GtConfig, GtEvent, GtRow} from '@angular-generic-table/core';
 import {CustomRowComponent} from '../custom-row/custom-row.component';
 import {GtExpandedRow} from '../../../@angular-generic-table/core/components/gt-expanding-row.component';
 
-export interface RowData {
+export interface RowData extends GtRow {
   id: number;
   name: string;
   lucky_number: number;

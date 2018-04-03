@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import {GenericTableComponent, GtConfig} from '@angular-generic-table/core';
+import {GenericTableComponent, GtConfig, GtRow} from '@angular-generic-table/core';
 
-export interface RowData {
+export interface RowData extends GtRow {
   order: number;
   name: string;
   lucky_number: number;

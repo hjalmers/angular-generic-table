@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {GtConfig, GenericTableComponent, GtDrilldownComponent} from '@angular-generic-table/core';
+import {GtConfig, GenericTableComponent, GtDrilldownComponent, GtRow} from '@angular-generic-table/core';
 
-export interface RowData {
+export interface RowData extends GtRow {
     name: string;
     color: string;
     qty: number;

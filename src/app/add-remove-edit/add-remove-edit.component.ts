@@ -7,7 +7,7 @@ import { Subject } from 'rxjs/Subject';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 
-export interface Row {
+export interface Row extends GtRow {
   id: number;
   name: string;
   lucky_number: number;

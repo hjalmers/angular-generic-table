@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {GtConfig} from '@angular-generic-table/core';
-export interface RowData {
+import {GtConfig, GtRow} from '@angular-generic-table/core';
+export interface RowData extends GtRow {
   id: number;
   name: string;
   sales: number;

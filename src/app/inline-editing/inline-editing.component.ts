@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {GtConfig, GenericTableComponent} from '@angular-generic-table/core';
+import {GtConfig, GenericTableComponent, GtRow} from '@angular-generic-table/core';
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 import {HttpClient} from '@angular/common/http';
 
-export interface RowData {
+export interface RowData extends GtRow {
   id: number;
   name: string;
   language?: string;

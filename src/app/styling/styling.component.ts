@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {GtConfig} from '@angular-generic-table/core';
+import {GtConfig, GtRow} from '@angular-generic-table/core';
 
-export interface RowData {
+export interface RowData extends GtRow {
     id: number;
     name: string;
     lucky_number: number;

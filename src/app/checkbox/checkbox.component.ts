@@ -1,12 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {GtConfig} from '@angular-generic-table/core';
+import {GtConfig, GtRow} from '@angular-generic-table/core';
 import {GtCheckboxComponent} from '../../../@angular-generic-table/core/components/gt-checkbox/gt-checkbox.component';
 import {GtOptions} from '../../../@angular-generic-table/core/interfaces/gt-options';
 import {CustomRowComponent} from '../custom-row/custom-row.component';
 import {GenericTableComponent} from '../../../@angular-generic-table/core/components/generic-table.component';
 
 
-export interface RowData {
+export interface RowData extends GtRow {
   id: number;
   name: string;
   lucky_number: number;

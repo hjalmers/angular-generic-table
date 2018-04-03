@@ -2,10 +2,10 @@ import {Component, Output, EventEmitter, ViewChild, OnInit} from '@angular/core'
 import {Response } from '@angular/http';
 import {HttpClient} from '@angular/common/http';
 import {CustomRowComponent} from '../custom-row/custom-row.component';
-import {GenericTableComponent, GtConfig, GtCustomComponent} from '@angular-generic-table/core';
+import {GenericTableComponent, GtConfig, GtCustomComponent, GtRow} from '@angular-generic-table/core';
 import 'rxjs/add/operator/map';
 
-export interface RowData {
+export interface RowData extends GtRow {
     id: number;
     name: string;
     email: string;
