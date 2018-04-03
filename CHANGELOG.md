@@ -3,6 +3,7 @@ Release History
 
 ## [Unreleased]
 
+# [4.13.0] - 2018-04-03
 ### Added
 - Support for conditional inline edit #122
 - Support for toggling inline edit and using observable for options #141 
@@ -10,6 +11,7 @@ Release History
 ### Fixed
 - Fixed table info when lazy loading and totals are enabled #203
 - Table sort order #206
+- Use ng-packagr for bundling #207
 
 # [4.12.0] - 2018-02-21
 ### Added
