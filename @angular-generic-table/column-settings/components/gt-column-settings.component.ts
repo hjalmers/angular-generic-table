@@ -148,7 +148,7 @@ export class GtColumnSettingsComponent implements OnInit {
 
     /**
      * Toggle column visibility.
-     * @param {object} column - column object.
+     * @param column - column object.
      */
     public toggleColumnVisibility(column: any) {
 
@@ -175,7 +175,7 @@ export class GtColumnSettingsComponent implements OnInit {
 
     /**
      * Order table by object key.
-     * @param {string} args - name of key to sort on.
+     * @param args - name of key to sort on.
      */
     private _onDrop(args: Array<any>) {
         this.reordered = true;
@@ -203,7 +203,7 @@ export class GtColumnSettingsComponent implements OnInit {
 
     /**
      * Get height of table head element ie. first row containing table headers.
-     * @returns {string} offset height for table header in px.
+     * @returns offset height for table header in px.
      */
     private _getTableHeadHeight(): string {
         try{
@@ -221,7 +221,7 @@ export class GtColumnSettingsComponent implements OnInit {
 
     /**
      * Get height of table head element ie. first row containing table headers.
-     * @returns {string} offset height for table header in px.
+     * @returns offset height for table header in px.
      */
     private _getColumnSettingsHeaderHeight(): string {
         try{

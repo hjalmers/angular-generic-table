@@ -391,8 +391,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Sort table by object key.
-     * @param {string} objectKey - name of key to sort on.
-     * @param {any} event - such as key press during sorting.
+     * @param objectKey - name of key to sort on.
+     * @param event - such as key press during sorting.
      */
     private gtSort = function (objectKey: string, event: any) {
 
@@ -512,8 +512,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Change number of rows to be displayed.
-     * @param {string} rowLength - total number of rows.
-     * @param {boolean} reset - should page be reset to first page.
+     * @param rowLength - total number of rows.
+     * @param reset - should page be reset to first page.
      */
     public changeRowLength = function (rowLength: any, reset?: boolean) {
 
@@ -604,7 +604,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Go to specific page.
-     * @param {number} page - page number.
+     * @param page - page number.
      */
     public goToPage = function (page: number) {
         const previousPage = this.gtInfo.pageCurrent;
@@ -651,7 +651,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Expand all rows.
-     * @param {{ component: Type<C>, data?: any}} expandedRow - component to render when rows are expanded.
+     * @param expandedRow - component to render when rows are expanded.
      */
     public expandAllRows(expandedRow: { component: Type<C>, data?: any }): void {
         this.expandedRow = expandedRow;
@@ -681,8 +681,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Toggle row collapsed state ie. expanded/open or collapsed/closed.
-     * @param {GtRow} row - row object that should be expanded/collapsed.
-     * @param {{ component: Type<C>, data?: any}} expandedRow - component to render when row is expanded.
+     * @param row - row object that should be expanded/collapsed.
+     * @param expandedRow - component to render when row is expanded.
      */
     public toggleCollapse(row: GtRow, expandedRow?: { component: Type<C>, data?: any }) {
         if (expandedRow) {
@@ -693,7 +693,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Toggle row selected state ie. selected or not.
-     * @param {GtRow} row - row object that should be selected/deselected.
+     * @param row - row object that should be selected/deselected.
      */
     public toggleSelect(row: GtRow) {
         this._toggleRowProperty(row, 'isSelected');
@@ -708,8 +708,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Update row data.
-     * @param {GtRow} row - row object that has been edited.
-     * @param {GtRow} oldValue - row object before edit.
+     * @param row - row object that has been edited.
+     * @param oldValue - row object before edit.
      */
     public updateRow(row: GtRow, oldValue: GtRow) {
         this._toggleRowProperty(row, 'isUpdated', oldValue);
@@ -717,7 +717,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * removes a row from the table
-     * @param {any} row - the row object to remove
+     * @param row - the row object to remove
      */
     public removeRow(row: GtRow) {
         if (this.isRowSelected(row)) {
@@ -729,7 +729,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * check if a row is selected
-     * @param {any} row - row object
+     * @param row - row object
      */
     public isRowSelected(row: GtRow): boolean {
         return this.metaInfo[row.$$gtRowId] && this.metaInfo[row.$$gtRowId].isSelected;
@@ -737,10 +737,10 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Update meta info for all rows, ie. isSelected, isOpen.
-     * @param {Array} array - array that holds rows that need to be updated.
-     * @param {string} property - name of property that should be changed/toggled.
-     * @param {boolean} active - should rows be expanded/open, selected.
-     * @param {GtRow} exception - update all rows except this one.
+     * @param array - array that holds rows that need to be updated.
+     * @param property - name of property that should be changed/toggled.
+     * @param active - should rows be expanded/open, selected.
+     * @param exception - update all rows except this one.
      */
     private _updateMetaInfo(array: Array<GtRow>, property: string, active: boolean, exception?: GtRow) {
         for (let i = 0; i < array.length; i++) {
@@ -756,9 +756,9 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Push selected/expanded lazy loaded rows to array with meta data.
-     * @param {Array} target - array to which rows should be added.
-     * @param {Array} source - array that holds rows that should be added.
-     * @returns {Array} array with added rows.
+     * @param target - array to which rows should be added.
+     * @param source - array that holds rows that should be added.
+     * @returns array with added rows.
      */
     private _pushLazyRows(target: Array<GtRow>, source: Array<GtRow>): Array<GtRow> {
         for (let i = 0; i < source.length; i ++) {
@@ -769,8 +769,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Toggle meta info for all rows, ie. isSelected, isOpen.
-     * @param {string} property - name of property that should be changed/toggled.
-     * @param {boolean} active - should rows be expanded/open, selected.
+     * @param property - name of property that should be changed/toggled.
+     * @param active - should rows be expanded/open, selected.
      */
     private _toggleAllRowProperty(property: string, active: boolean) {
         let eventName: string;
@@ -830,9 +830,9 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Toggle meta info for row, ie. isSelected, isOpen.
-     * @param {Object} row - row object.
-     * @param {string} property - name of property that should be changed/toggled.
-     * @param {any} propertyValues - optional property values that can be passed.
+     * @param row - row object.
+     * @param property - name of property that should be changed/toggled.
+     * @param propertyValues - optional property values that can be passed.
      */
     private _toggleRowProperty(row: GtRow, property: string, propertyValues?: any) {
 
@@ -960,9 +960,9 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Update column.
-     * @param {Object} $event - key up event.
-     * @param {GtRow} row - row object.
-     * @param {GtRenderField} column - column object.
+     * @param $event - key up event.
+     * @param row - row object.
+     * @param column - column object.
      */
     public gtUpdateColumn($event: KeyboardEvent, row: GtRow, column: GtRenderField<any, any>) {
         this._editRow(row, column);
@@ -970,8 +970,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Dropdown select.
-     * @param {GtRow} row - row object.
-     * @param {GtRenderField} column - column object.
+     * @param row - row object.
+     * @param column - column object.
      */
     public gtDropdownSelect(row: GtRow, column: GtRenderField<any, any>) {
         const oldValue = {...row};
@@ -1092,7 +1092,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Apply filter(s).
-     * @param {Object} filter - object containing key value pairs, where value should be array of values.
+     * @param filter - object containing key value pairs, where value should be array of values.
      */
     public gtApplyFilter(filter: Object) {
         this.gtInfo.filter = filter;
@@ -1110,7 +1110,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Search
-     * @param {string} value - string containing one or more words
+     * @param value - string containing one or more words
      */
     public gtSearch(value: string) {
         this.gtInfo.searchTerms = value;
@@ -1121,8 +1121,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Add rows
-     * @param {Array<R extends GtRow>} rows - rows to add
-     * @returns {Array} new data array.
+     * @param rows - rows to add
+     * @returns new data array.
      */
     public gtAdd(rows: Array<R>): ReadonlyArray<R> {
         this.gtData = [...this.gtData, ...rows];
@@ -1133,8 +1133,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
      * Delete row
      * @param objectKey - object key you want to find match with
      * @param value - the value that should be deleted
-     * @param {string} match - all: delete all matches, first: delete first match (default)
-     * @returns {Array} new data array.
+     * @param match - all: delete all matches, first: delete first match (default)
+     * @returns new data array.
      */
     public gtDelete(objectKey: string, value: string | number, match: 'first' | 'all' = 'first'): ReadonlyArray<R> {
         if (match === 'first') {
@@ -1166,9 +1166,9 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Create store to hold previously loaded records.
-     * @param {number} records - total number of records in store.
-     * @param {number} perPage - how many records to show per page.
-     * @returns {Array} a nested array to hold records per page.
+     * @param records - total number of records in store.
+     * @param perPage - how many records to show per page.
+     * @returns a nested array to hold records per page.
      */
     private createStore(records: number, perPage: number): Array<Array<any>> {
         const stores = Math.ceil(records / perPage);
@@ -1182,8 +1182,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
 
     /**
      * Create placeholders for rows while loading data from back-end.
-     * @param {number} perPage - how many records to show per page.
-     * @returns {Array} an array containing empty records to be presented while fetching real data.
+     * @param perPage - how many records to show per page.
+     * @returns an array containing empty records to be presented while fetching real data.
      */
     private loadingContent(perPage: number) {
 
@@ -1251,8 +1251,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
     };
 
     /** Export data as CSV
-     * @param {string} fileName - optional file name (overrides default file name).
-     * @param {boolean} useBOM - use BOM (byte order marker).
+     * @param fileName - optional file name (overrides default file name).
+     * @param useBOM - use BOM (byte order marker).
      */
     public exportCSV(fileName?: string, useBOM: boolean = false) {
         const data = this.data.exportData;

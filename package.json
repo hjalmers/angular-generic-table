@@ -20,6 +20,8 @@
     "compile:css": "npm run build:css && npm run autoprefix:css && npm run minify:css",
     "rename:css": "renamer --find \"generic-table-prebuild\" --replace \"generic-table\" generic-table/css/*",
     "copy:scss": "copyfiles -f src/generic-table/generic-table.scss generic-table/scss",
+    "copy:core-meta": "copyfiles -f LICENSE README.md CHANGELOG.md README.md dist/@angular-generic-table/core",
+    "copy:column-settings-meta": "copyfiles -f LICENSE README.md CHANGELOG.md README.md dist/@angular-generic-table/column-settings",
     "clean": "rimraf generic-table \"index.@(js|js.map|d.ts|metadata.json|ngsummary.json)\"",
     "clean:factory": "rimraf \"generic-table/**/*.ngfactory.ts\"",
     "prebuild": "npm run -s clean",
@@ -30,7 +32,11 @@
     "publish:core": "onpm  ./@angular-generic-table/core run publish-package",
     "publish:column-settings": "onpm  ./@angular-generic-table/column-settings run publish-package",
     "publish:all": "npm run publish:core && npm run publish:column-settings",
-    "build:all": "onpm ./@angular-generic-table/core run build && onpm ./@angular-generic-table/column-settings run build"
+    "build:all": "onpm ./@angular-generic-table/core run build && onpm ./@angular-generic-table/column-settings run build",
+    "build:core": "ng-packagr -p @angular-generic-table/core/ng-package.json",
+    "build:column-settings": "ng-packagr -p @angular-generic-table/column-settings/ng-package.json",
+    "build:new": "rimraf dist/@angular-generic-table && npm run build:core && copyfiles -f @angular-generic-table/core/generic-table.scss dist/@angular-generic-table/core/scss/ && copyfiles -u 1 dist/@angular-generic-table/core/**/* @angular-generic-table/column-settings/node_modules/ && npm run build:column-settings && copyfiles -f @angular-generic-table/column-settings/column-settings.scss dist/@angular-generic-table/column-settings/scss/ && npm run copy:core-meta && npm run copy:column-settings-meta",
+    "publish:new": "npm publish dist/@angular-generic-table/core && npm publish dist/@angular-generic-table/column-settings"
   },
   "private": false,
   "publishConfig": {
@@ -44,8 +50,8 @@
   "devDependencies": {
     "@angular/cli": "^1.3.2",
     "@angular/common": "^4.3.5",
-    "@angular/compiler": "^4.3.5",
-    "@angular/compiler-cli": "^4.3.5",
+    "@angular/compiler": "^5.0.0",
+    "@angular/compiler-cli": "^5.0.0",
     "@angular/core": "^4.3.5",
     "@angular/forms": "^4.3.5",
     "@angular/http": "^4.3.5",
@@ -73,6 +79,7 @@
     "karma-coverage-istanbul-reporter": "^0.2.0",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "ng-packagr": "^2.0.0-rc.13",
     "ng2-dragula": "^1.5.0",
     "node-sass": "^4.3.0",
     "othernpm": "^1.1.0",
@@ -84,8 +91,9 @@
     "rxjs": "^5.4.3",
     "ts-helpers": "^1.1.1",
     "ts-node": "~2.0.0",
+    "tsickle": "^0.27.2",
     "tslint": "~4.5.0",
-    "typescript": "~2.2.0",
+    "typescript": "^2.4.2",
     "zone.js": "^0.8.16"
   }
 }
