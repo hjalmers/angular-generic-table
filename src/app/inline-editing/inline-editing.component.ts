@@ -19,8 +19,8 @@ export class InlineEditingComponent implements OnInit {
   public configObject: GtConfig<RowData>;
   public conditionalConfigObject: GtConfig<RowData>;
   public inlineEditState = true;
-  public inlineEdit: ReplaySubject<boolean> = new ReplaySubject(1);
-  public languages: ReplaySubject<Array<string>> = new ReplaySubject(1);
+  public $inlineEdit: ReplaySubject<boolean> = new ReplaySubject(1);
+  public $languages: ReplaySubject<Array<string>> = new ReplaySubject(1);
   public staticLanguages: Array<string> = ['Albanian', 'Amharic', 'Aymara', 'Bulgarian', 'Dhivehi', 'Estonian', 'Indonesian', 'Kannada', 'Lao', 'Latvian', 'Marathi', 'Persian', 'Pisin', 'Punjabi', 'Somali', 'Tamil', 'Tok' , 'Tsonga', 'Tswana', 'Zulu'];
 
   @ViewChild(GenericTableComponent)
@@ -38,9 +38,9 @@ export class InlineEditingComponent implements OnInit {
   };
 
   constructor(private http: HttpClient) {
-    this.inlineEdit.next(this.inlineEditState);
+    this.$inlineEdit.next(this.inlineEditState);
     this.http.get('https://private-730c61-generictable.apiary-mock.com/options')
-      .subscribe((res: Array<string>) => this.languages.next(res));
+      .subscribe((res: Array<string>) => this.$languages.next(res));
   }
 
   ngOnInit() {
@@ -67,11 +67,11 @@ export class InlineEditingComponent implements OnInit {
       }, {
         name: 'Name',
         objectKey: 'name',
-        inlineEdit: { active: this.inlineEdit } // set to true, if you don't want to use observable for inline edit
+        inlineEdit: { active: this.$inlineEdit } // set to true, if you don't want to use observable for inline edit
       }, {
         name: 'Language',
         objectKey: 'language',
-        inlineEdit: { active: this.inlineEdit, type: this.languages }, // set to options array (this.staticLanguages), if you don't want to use observable for inline edit
+        inlineEdit: { active: this.$inlineEdit, type: this.$languages }, // set to options array (this.staticLanguages), if you don't want to use observable for inline edit
         value: () => {
           const langId = Math.floor(Math.random() * this.staticLanguages.length);
           return this.staticLanguages[langId];
@@ -406,7 +406,7 @@ export class InlineEditingComponent implements OnInit {
       }, {
         name: 'Editable',
         objectKey: 'editable',
-        inlineEdit: { active: this.inlineEdit, type: ['true', 'false'] },
+        inlineEdit: { active: this.$inlineEdit, type: ['true', 'false'] },
         value: () => {
           return Math.random() > 0.5 ? 'true' : 'false';
         }
@@ -505,7 +505,7 @@ export class InlineEditingComponent implements OnInit {
       this.myTable.inlineEditCancel();
     }
     this.inlineEditState = !this.inlineEditState;
-    this.inlineEdit.next(this.inlineEditState);
+    this.$inlineEdit.next(this.inlineEditState);
   }
 
 }
