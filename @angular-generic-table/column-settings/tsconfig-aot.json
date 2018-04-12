@@ -12,9 +12,6 @@
     "moduleResolution": "node",
     "newLine": "lf",
     "outDir": "../packages/column-settings",
-    "paths": {
-      "@angular-generic-table/core":["../packages/core"]
-    },
     "pretty": true,
     "rootDir": "./",
     "sourceMap": true,
