@@ -32,9 +32,6 @@
   "peerDependencies": {
     "@angular/core": "^4.0.0",
     "@angular/common": "^4.0.0",
-    "tether": "^1.4.0"
-  },
-  "dependencies": {
     "@types/tether": "^1.4.2",
     "tether": "^1.4.0"
   },
