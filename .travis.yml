@@ -3,4 +3,4 @@ node_js:
   - "lts/*"
   - "node"
 script:
-  - npm run build:all
+  - npm run build:new
