@@ -6,7 +6,16 @@ export interface GtConfigSetting {
   sortEnabled?: boolean;
   sortOrder?: number;
   columnOrder?: number;
-  export?: boolean; // should column be exported to CSV (OPTIONAL)
-  search?: boolean; // should we include this column when using global search (OPTIONAL),
-  lockSettings?: boolean; // should settings be locked for editing default to false (OPTIONAL)
+  /**
+   * should column be exported to CSV?
+   */
+  export?: boolean;
+  /**
+   * should we include this column when using global search?
+   */
+  search?: boolean;
+  /**
+   * should settings be locked for editing? (default is false)
+   */
+  lockSettings?: boolean;
 }
