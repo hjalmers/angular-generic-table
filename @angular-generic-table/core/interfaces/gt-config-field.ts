@@ -26,41 +26,71 @@ export interface GtInlineEditFunc<R extends GtRow> {
 }
 
 export interface GtConfigField<R extends GtRow, C extends GtCustomComponent<any>> {
-  // name or label of field
-  // (will be displayed as heading for column)
+  /**
+   * name or label of field
+   * (will be displayed as heading for column)
+   */
   name: string;
-  // heading used when columns are stacked (overrides name)
+  /**
+   * heading used when columns are stacked (overrides name)
+   */
   stackedHeading?: string;
-  // key for mapping column to settings and data
+  /**
+   * key for mapping column to settings and data
+   */
   objectKey: string;
-  // custom class names for column
+  /**
+   * custom class names for column
+   */
   classNames?: string;
-  // custom class names for row
+  /**
+   * custom class names for row
+   */
   rowClass?: string | GtClassFunc;
-  // custom class names for column
+  /**
+   * custom class names for column
+   */
   columnClass?: string | GtClassFunc;
-  // custom column component and associated injector
+  /**
+   * custom column component and associated injector
+   */
   columnComponent?: { type: Type<C> | 'checkbox', injector?: Injector };
-  // custom function for column presentation
+  /**
+   * custom function for column presentation
+   */
   render?: GtRenderFunc<R>;
-  // should the field be compiled (false by default)
+  /**
+   * compiled (false by default)
+   */
   compile?: boolean;
-  // custom function for column value
+  /**
+   * custom function for column value
+   */
   value?: GtValueFunc<R>;
-  // custom click callback
+  /**
+   * custom click callback
+   */
   click?: GtClickFunc<R>;
-  // should row open or close (expand) when clicked
+  /**
+   * close (expand) when clicked
+   */
   expand?: boolean | { component: Type<C>, data?: any };
-  // custom function for export presentation
+  /**
+   * custom function for export presentation
+   */
   export?: GtValueFunc<R>;
   sort?: GtValueFunc<R>;
-  // custom function for search value,
-  // set to false if field shouldn't be searchable (true by default)
+  /**
+   * custom function for search value,
+   * set to false if field shouldn't be searchable (true by default)
+   */
   search?: any;
   inlineEdit?: {
     active: Observable<boolean> | GtInlineEditFunc<R>,
     type?: Observable<any> | Array<any> | 'text' | 'number' | 'password' | 'email'
   } | boolean | Array<any> | 'number' | 'password' | 'email';
-  // custom header
+  /**
+   * custom header
+   */
   header?: { type: Type<C>, injector?: Injector };
 }
