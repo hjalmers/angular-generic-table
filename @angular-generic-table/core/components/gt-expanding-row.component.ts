@@ -8,6 +8,7 @@ import {
 import { GtRow } from '../interfaces/gt-row';
 import {GtConfigField} from '../interfaces/gt-config-field';
 import {GtConfigSetting} from '../interfaces/gt-config-setting';
+import {GtEvent} from '@angular-generic-table/core';
 
 export class GtExpandedRow<R extends GtRow> {
     row: R;
@@ -17,6 +18,7 @@ export class GtExpandedRow<R extends GtRow> {
     gtOptions: any;
     gtInfo: any;
     data: any;
+    gtEvent: EventEmitter<GtEvent>;
     redrawEvent = new EventEmitter<R>();
     toggleRowEvent = new EventEmitter<R>();
 
@@ -26,6 +28,13 @@ export class GtExpandedRow<R extends GtRow> {
 
     protected $redraw(): void {
         this.redrawEvent.emit(this.row);
+    }
+
+    protected $rowClick(row: GtRow, $event: MouseEvent) {
+        this.gtEvent.emit({
+            name: 'gt-row-clicked',
+            value: { row: row, event: $event }
+        });
     }
 
 }
@@ -44,6 +53,7 @@ export class GtExpandingRowComponent<R extends GtRow, C extends GtExpandedRow<R>
     @Input() gtSettings: Array<GtConfigSetting>;
     @Input() gtFields: Array<GtConfigField<R, any>>;
     @Input() gtOptions: any;
+    @Input() gtEvent: any;
     @Input() gtInfo: any;
     @Input() data: any;
 
@@ -56,6 +66,7 @@ export class GtExpandingRowComponent<R extends GtRow, C extends GtExpandedRow<R>
         instance.gtSettings = this.gtSettings;
         instance.gtFields = this.gtFields;
         instance.gtOptions = this.gtOptions;
+        instance.gtEvent = this.gtEvent;
         instance.gtInfo = this.gtInfo;
         instance.data = typeof this.data === 'function' ? this.data(this.row) : this.data;
         instance.redrawEvent.subscribe(this.redrawEvent);

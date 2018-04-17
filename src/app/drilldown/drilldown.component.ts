@@ -1,5 +1,7 @@
-import {Component} from '@angular/core';
-import {GtConfig, GenericTableComponent, GtDrilldownComponent, GtRow} from '@angular-generic-table/core';
+import {Component, ViewChild} from '@angular/core';
+import {GtConfig, GenericTableComponent, GtDrilldownComponent, GtRow, GtEvent} from '@angular-generic-table/core';
+import {CustomRowComponent} from '../custom-row/custom-row.component';
+import {RowClickExpandedComponent} from '../row-click/row-click.component';
 
 export interface RowData extends GtRow {
     name: string;
@@ -45,7 +47,16 @@ export interface RowData extends GtRow {
     `]
 })
 export class DrilldownComponent {
-
+    public options = {
+        reportColumnWidth: true,
+        rowExpandInitialState: (row) => { return row.name === 'vegetables'; },
+        rowExpandInitialComponent: {
+            component: CustomRowComponent,
+            data: (row) => row.drilldown
+        }
+    };
+    @ViewChild(GenericTableComponent)
+    private myTable: GenericTableComponent<RowData, any>;
     public data = [{
         name: 'banana',
         type: 'fruit',
@@ -154,6 +165,12 @@ export class DrilldownComponent {
         }
         return prev;
       }, []);
+    }
+
+    eventListener($event: GtEvent) {
+        if ($event.name === 'gt-row-clicked') {
+            console.log($event.value);
+        }
     }
 
 }

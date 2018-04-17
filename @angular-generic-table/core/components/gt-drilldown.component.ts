@@ -5,7 +5,7 @@ import {GtExpandedRow} from './gt-expanding-row.component';
   selector: 'gt-drilldown',
   template: `
       <table class="table">
-          <tr *ngFor="let row of data">
+          <tr *ngFor="let row of data" (click)="$rowClick(row, $event)">
               <!--<td *ngFor="let column of gtSettings" [style.width]="columnWidth[column.objectKey]">{{column.objectKey}}</td>-->
               <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms;"
                   ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{(gtFields | gtProperty:column.objectKey:'inlineEdit') ? 'gt-inline-edit':''}} {{column.edited ? 'gt-edited':''}} {{ gtFields | gtColumnClass:row:column }}" [style.width]="columnWidth[column.objectKey]" [style.max-width]="columnWidth[column.objectKey]">

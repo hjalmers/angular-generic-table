@@ -122,9 +122,10 @@ import {GtEvent} from '../interfaces/gt-event';
                                           [columnWidth]="columnWidth"
                                           [gtFields]="gtFields"
                                           [gtOptions]="gtOptions"
+                                          [gtEvent]="gtEvent"
                                           [gtInfo]="gtInfo"
                                           [gtSettings]="gtSettings"
-                                          [data]="expandedRow.data"
+                                          [data]="expandedRow.data ? expandedRow.data:row"
                                           (redrawEvent)="redraw($event)"
                                           (toggleRowEvent)="toggleCollapse($event)"></gt-expanding-row>
                     </td>
@@ -290,7 +291,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>> 
             const expanded = typeof this.gtOptions.rowExpandInitialState === 'function' ? this.gtOptions.rowExpandInitialState(row) : this.gtOptions.rowExpandInitialState;
             this.expandedRow = this.gtOptions.rowExpandInitialComponent;
 
-          if (expanded) {
+            if (expanded) {
             if (typeof this.metaInfo[row.$$gtRowId] === 'undefined') {
               this.metaInfo[row.$$gtRowId] = {isOpen: true};
             } else {
