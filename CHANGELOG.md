@@ -2,6 +2,9 @@ Release History
 ---------------
 
 ## [Unreleased]
+### Added
+- Support for row click events from drilldown component #218
+- Support for setting initial state for expanding row #217
 
 # [4.13.0] - 2018-04-03
 ### Added
