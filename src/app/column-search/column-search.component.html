@@ -1,3 +1,14 @@
-<p>
-  column-search works!
-</p>
+<h2>Column Search</h2>
+<p>Filter the table by searching in a specific column. This is different from
+  <a routerLink="/advanced">global search</a> search in that each header has a search field.</p>
+<div class="card mb-5">
+  <div class="card-header">Example</div>
+  <div class="card-body">
+    <generic-table #myTable
+      [gtClasses]="'table-sm'"
+      [gtSettings]="configObject.settings"
+      [gtFields]="configObject.fields"
+      [(gtData)]="configObject.data">
+    </generic-table>
+  </div>
+</div>
