@@ -16,6 +16,7 @@ import { StylingComponent } from './styling/styling.component';
 import { DrilldownComponent } from './drilldown/drilldown.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { CustomHeaderComponent } from './custom-header/custom-header.component';
+import { ColumnSearchComponent } from './column-search/column-search.component';
 import { RowClickComponent } from './row-click/row-click.component';
 import { DemoWrapperComponent } from './shared/components/demo-wrapper/demo-wrapper.component';
 import { ExampleResolver } from './shared/resolvers/example.resolver';
@@ -42,6 +43,7 @@ const routes: Routes = [
 	{ path: 'checkbox', component: CheckboxComponent },
 	{ path: 'custom-header', component: CustomHeaderComponent },
 	{ path: 'row-click', component: RowClickComponent },*/
+	{ path: 'column-search', component: ColumnSearchComponent },
 	{
 		path: 'loading-data',
 		component: DemoWrapperComponent,

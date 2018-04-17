@@ -57,6 +57,7 @@ import {
 	RowClickComponent,
 	RowClickExpandedComponent
 } from './row-click/row-click.component';
+import { ColumnSearchComponent } from './column-search/column-search.component';
 import { BasicDemoModule } from './demos/basic-demo/basic-demo.module';
 import { DemoWrapperComponent } from './shared/components/demo-wrapper/demo-wrapper.component';
 import { CodeHighlightService } from './shared/services/code-highlight.service';
@@ -99,7 +100,8 @@ import { SortModule } from './demos/sort/sort.module';
 		RowClickComponent,
 		RowClickExpandedComponent,
 		CodeHighlightComponent,
-		DemoWrapperComponent
+		DemoWrapperComponent,
+		ColumnSearchComponent
 	],
 	imports: [
 		BrowserModule,
