@@ -1,3 +1,5 @@
+import {Type} from '@angular/core';
+
 export interface InitialStateFunc {
   (row: any): boolean;
 }
@@ -14,6 +16,7 @@ export interface GtOptions {
   rowSelectionInitialState?: boolean | InitialStateFunc;
   rowExpandAllowMultiple?: boolean;
   rowExpandInitialState?: boolean | InitialStateFunc;
+  rowExpandInitialComponent?: { component: Type<any>, data?: Array<any> };
   numberOfRows?: number;
   reportColumnWidth?: boolean;
 }
