@@ -3,16 +3,7 @@
 <div class="alert alert-info">A little word of advice regarding number of rows to display. Although the table supports displaying all rows at once by setting <code>[gtOptions]="{{ '{' }}numberOfRows:0{{ '}' }}"</code> or by passing <code>'all'</code> to the <code>changeRowLength</code> method like in the example below, generic table still needs to render a lot of rows which currently makes it a bit unresponsive. Hopefully this will be improved in future releases but in the meantime it's recommended to limit the number of rendered rows and use pagination as it allows you to "display" hundreds of thousands rows.</div>
 <div class="card mb-5">
   <div class="card-header">Example</div>
-  <div class="card-body" exemplify="restExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','#myTable','ngModel','[ngClass]','#columnSettings','gtEvent']" [source]="'child'" [target]="restExample" [navStyle]="'tabs'" [externalSources]="[{
-    name:'app.module.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
-  },{
-    name:'rest.component.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/rest/rest.component.ts'
-  },{
-    name:'custom-row.component.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular-generic-table/master/src/app/custom-row/custom-row.component.ts'
-  }]">
+  <div class="card-body">
     <form class="form form-inline mb-4">
       <label for="rows" class="form-control-label mr-sm-2">Rows</label>
       <select id="rows" class="form-control form-control-sm mr-sm-2 mb-3 mb-sm-0" #rowLength (change)="myTable.changeRowLength(rowLength.value)">

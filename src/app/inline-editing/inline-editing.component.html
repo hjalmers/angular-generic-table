@@ -3,13 +3,7 @@
 <div class="alert alert-info">Please note that examples below only persists changes in memory so the data will be reset when component is reinitialized e.g when route changes or page is refreshed.</div>
 <div class="card mb-5">
   <div class="card-header">Example</div>
-  <div class="card-body" exemplify="inlineEditExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']" [source]="'child'" [target]="inlineEditExample" [navStyle]="'tabs'" [externalSources]="[{
-    name:'app.module.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
-  },{
-    name:'inline-editing.component.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/inline-editing/inline-editing.component.ts'
-  }]">
+  <div class="card-body">
     <button class="btn btn-sm btn-outline-primary mb-3" (click)="toggleInlineEdit()">{{inlineEditState ? 'Disable inline edit' : 'Enable inline edit'}}</button>
     <ng-container *ngIf="myTable.hasEdits">
       <button class="btn btn-sm btn-outline-primary mb-3" (click)="myTable.inlineEditCancel()">Discard changes<i class="fa fa-times ml-2"></i></button>
@@ -35,13 +29,7 @@
 <p>Enable inline edit if a certain condition is meet, eg. row value equals a specific value.</p>
 <div class="card mb-5">
   <div class="card-header">Example</div>
-  <div class="card-body" exemplify="conditionalInlineEditExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']" [source]="'child'" [target]="conditionalInlineEditExample" [navStyle]="'tabs'" [externalSources]="[{
-    name:'app.module.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
-  },{
-    name:'inline-editing.component.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/inline-editing/inline-editing.component.ts'
-  }]">
+  <div class="card-body">
     <div class="table-responsive">
       <generic-table [gtClasses]="'table-sm'" #conditionalTable [gtSettings]="conditionalConfigObject.settings" [gtFields]="conditionalConfigObject.fields" [gtData]="conditionalConfigObject.data" (gtEvent)="conditionalTrigger($event)"></generic-table>
     </div>

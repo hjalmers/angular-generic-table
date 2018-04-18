@@ -2,13 +2,7 @@
 <p>Table with checkboxes for row selection, please note that using checkboxes for selection will replace <a routerLink="/row-selection">normal row selection</a> behaviour (just clicking a row to select it). Use <code>rowSelectionInitialState</code> to set an initial state for rows, pass <code>true</code> to set all rows to selected when table is initiated. <code>rowSelectionInitialState</code> also supports passing a function to determine initial row state (see example below for usage).</p>
 <div class="card mb-5">
   <div class="card-header">Example</div>
-  <div class="card-body" exemplify="checkboxExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']" [source]="'child'" [target]="checkboxExample" [navStyle]="'tabs'" [externalSources]="[{
-    name:'app.module.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
-  },{
-    name:'basic.component.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/checkbox/checkbox.component.ts'
-  }]">
+  <div class="card-body">
     <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data" [gtOptions]="options"></generic-table>
     <div class="text-center">
       <small><gt-table-info class="form-text text-muted mb-2" [genericTable]="myTable"></gt-table-info></small>
