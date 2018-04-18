@@ -22,39 +22,46 @@ import { EmployeeTableComponent } from './demos/basic-demo/employee-table/employ
 import { DemoWrapperComponent } from './shared/components/demo-wrapper/demo-wrapper.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/start', pathMatch: 'full' },
-  { path: 'start', component: HomeComponent },
-  { path: 'lazy', component: LazyComponent },
-  { path: 'advanced', component: RestComponent },
-  { path: 'basic', component: BasicComponent },
-  { path: 'drilldown', component: DrilldownComponent },
-  { path: 'styling', component: StylingComponent },
-  { path: 'row-selection', component: RowSelectionComponent },
-  { path: 'totals', component: AggregateComponent },
-  { path: 'custom-column', component: CustomColumnComponent },
-  { path: 'column-click', component: ColumnClickComponent },
-  { path: 'localization', component: LocalizationComponent },
-  { path: 'inline-editing', component: InlineEditingComponent },
-  { path: 'add-remove-edit', component: AddRemoveEditComponent },
-  { path: 'column-settings-component', component: ChangeColumnSettingsComponent },
-  { path: 'checkbox', component: CheckboxComponent },
-  { path: 'custom-header', component: CustomHeaderComponent },
-  { path: 'row-click', component: RowClickComponent },
-  {
-    path: 'demo',
-    component: DemoWrapperComponent,
-    children: [
-      {
-        path: 'basic',
-        component: EmployeeTableComponent
-      }
-    ]
-  },
-  { path: '**', component: HomeComponent }
+	{ path: '', redirectTo: '/start', pathMatch: 'full' },
+	{ path: 'start', component: HomeComponent },
+	{ path: 'lazy', component: LazyComponent },
+	{ path: 'advanced', component: RestComponent },
+	{ path: 'basic', component: BasicComponent },
+	{ path: 'drilldown', component: DrilldownComponent },
+	{ path: 'styling', component: StylingComponent },
+	{ path: 'row-selection', component: RowSelectionComponent },
+	{ path: 'totals', component: AggregateComponent },
+	{ path: 'custom-column', component: CustomColumnComponent },
+	{ path: 'column-click', component: ColumnClickComponent },
+	{ path: 'localization', component: LocalizationComponent },
+	{ path: 'inline-editing', component: InlineEditingComponent },
+	{ path: 'add-remove-edit', component: AddRemoveEditComponent },
+	{
+		path: 'column-settings-component',
+		component: ChangeColumnSettingsComponent
+	},
+	{ path: 'checkbox', component: CheckboxComponent },
+	{ path: 'custom-header', component: CustomHeaderComponent },
+	{ path: 'row-click', component: RowClickComponent },
+	{
+		path: 'demo',
+		component: DemoWrapperComponent,
+		children: [
+			{
+				path: '',
+				redirectTo: 'basic',
+				pathMatch: 'full'
+			},
+			{
+				path: 'basic',
+				component: EmployeeTableComponent
+			}
+		]
+	},
+	{ path: '**', component: HomeComponent }
 ];
-
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+	imports: [RouterModule.forRoot(routes)],
+	exports: [RouterModule]
 })
 export class AppRoutingModule {}
