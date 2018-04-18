@@ -1,0 +1,13 @@
+<div [innerHTML]="demoContentService.getExampleDescription(example)"></div>
+<div class="card">
+  <div class="card-body">
+    <router-outlet></router-outlet>
+  </div>
+  <ngb-tabset type="tabs">
+    <ngb-tab [title]="codeExample.title" *ngFor="let codeExample of demoContentService.getCodeExamples(example)">
+      <ng-template ngbTabContent>
+        <code-highlight [code]="codeExample.code" [lang]="codeExample.lang"></code-highlight>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div>

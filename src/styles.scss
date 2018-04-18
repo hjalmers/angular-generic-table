@@ -1,7 +1,7 @@
 // generic table base styles
-@import "../@angular-generic-table/core/generic-table";
-@import "../@angular-generic-table/column-settings/column-settings";
-
+@import '../@angular-generic-table/core/generic-table';
+@import '../@angular-generic-table/column-settings/column-settings';
+@import '~prismjs/themes/prism-coy.css';
 
 // custom css for examples
 @import 'examples';

@@ -1,26 +1,25 @@
 import { NgModule } from '@angular/core';
-import {
-  RouterModule,
-  Routes
-} from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { ExamplesComponent } from './examples/examples.component';
 import { LazyComponent } from './lazy/lazy.component';
 import { RestComponent } from './rest/rest.component';
 import { BasicComponent } from './basic/basic.component';
 import { CustomColumnComponent } from './custom-column/custom-column.component';
 import { LocalizationComponent } from './localization/localization.component';
-import {ChangeColumnSettingsComponent} from './change-column-settings/change-column-settings.component';
-import {HomeComponent} from './home/home.component';
-import {InlineEditingComponent} from './inline-editing/inline-editing.component';
-import {ColumnClickComponent} from './column-click/column-click.component';
-import {AggregateComponent} from './aggregate/aggregate.component';
-import {AddRemoveEditComponent} from './add-remove-edit/add-remove-edit.component';
-import {RowSelectionComponent} from './row-selection/row-selection.component';
-import {StylingComponent} from './styling/styling.component';
-import {DrilldownComponent} from './drilldown/drilldown.component';
-import {CheckboxComponent} from './checkbox/checkbox.component';
-import {CustomHeaderComponent} from './custom-header/custom-header.component';
-import {RowClickComponent} from './row-click/row-click.component';
+import { ChangeColumnSettingsComponent } from './change-column-settings/change-column-settings.component';
+import { HomeComponent } from './home/home.component';
+import { InlineEditingComponent } from './inline-editing/inline-editing.component';
+import { ColumnClickComponent } from './column-click/column-click.component';
+import { AggregateComponent } from './aggregate/aggregate.component';
+import { AddRemoveEditComponent } from './add-remove-edit/add-remove-edit.component';
+import { RowSelectionComponent } from './row-selection/row-selection.component';
+import { StylingComponent } from './styling/styling.component';
+import { DrilldownComponent } from './drilldown/drilldown.component';
+import { CheckboxComponent } from './checkbox/checkbox.component';
+import { CustomHeaderComponent } from './custom-header/custom-header.component';
+import { RowClickComponent } from './row-click/row-click.component';
+import { EmployeeTableComponent } from './demos/basic-demo/employee-table/employee-table.component';
+import { DemoWrapperComponent } from './shared/components/demo-wrapper/demo-wrapper.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/start', pathMatch: 'full' },
@@ -41,6 +40,16 @@ const routes: Routes = [
   { path: 'checkbox', component: CheckboxComponent },
   { path: 'custom-header', component: CustomHeaderComponent },
   { path: 'row-click', component: RowClickComponent },
+  {
+    path: 'demo',
+    component: DemoWrapperComponent,
+    children: [
+      {
+        path: 'basic',
+        component: EmployeeTableComponent
+      }
+    ]
+  },
   { path: '**', component: HomeComponent }
 ];
 
@@ -48,5 +57,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}
