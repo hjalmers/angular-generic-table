@@ -3,14 +3,8 @@
 <p class="alert alert-info">Note that you need to set  <code>[gtOptions]="{{ '{' }}reportColumnWidth:true{{ '}' }}"</code> to use the drilldown component.</p>
 <div class="card mb-5">
   <div class="card-header">Example</div>
-  <div class="card-body" exemplify="drilldownExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']" [source]="'child'" [target]="drilldownExample" [navStyle]="'tabs'" [externalSources]="[{
-    name:'app.module.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
-  },{
-    name:'drilldown.component.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/drilldown/drilldown.component.ts'
-  }]">
-    <generic-table (gtEvent)="eventListener($event)" [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"  [gtOptions]="options"></generic-table>
+  <div class="card-body">
+    <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"  [gtOptions]="{reportColumnWidth:true}"></generic-table>
     <div class="text-center">
       <small><gt-table-info class="form-text text-muted mb-2" [genericTable]="myTable"></gt-table-info></small>
       <gt-pagination [gtClasses]="'pagination-sm justify-content-center'" [genericTable]="myTable"></gt-pagination>

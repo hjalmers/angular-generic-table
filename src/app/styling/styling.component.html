@@ -10,13 +10,7 @@
   Bootstrap has a couple of pretty useful utility classes which works great with generic table, for example add the class <code>text-right</code> to <code>columnClass</code> to align the content of the column to the right, or maybe <code>d-none d-md-table-cell</code> to hide a column on small screens.</div>
 <div class="card mb-5">
   <div class="card-header">Example</div>
-  <div class="card-body" exemplify="stylingExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']" [source]="'child'" [target]="stylingExample" [navStyle]="'tabs'" [externalSources]="[{
-    name:'app.module.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
-  },{
-    name:'styling.component.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/styling/styling.component.ts'
-  }]">
+  <div class="card-body">
     <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtTotals]="configObject.totals" [gtFields]="configObject.fields" [gtData]="configObject.data"></generic-table>
     <div class="text-center">
       <small><gt-table-info class="form-text text-muted mb-2" [genericTable]="myTable"></gt-table-info></small>

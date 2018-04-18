@@ -2,16 +2,7 @@
 <p>Table using two custom column widgets, as well as external state tracking.</p>
 <div class="card mb-5">
   <div class="card-header">Example</div>
-  <div class="card-body" exemplify="customColumnsExample" [context]="this"
-       [escapeStrings]="['gtSettings','gtFields','gtData','gtClasses']"
-       [source]="'child'" [target]="customColumnsExample" [navStyle]="'tabs'" [externalSources]="[{
-    name: 'app.module.ts',
-    src: 'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
-  },
-  {
-    name: 'custom-column.component.ts',
-    src: 'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/custom-column/custom-column.component.ts'
-  }]">
+  <div class="card-body">
     <generic-table [gtSettings]="gtConfig.settings"
                    [gtFields]="gtConfig.fields"
                    [gtData]="gtConfig.data"

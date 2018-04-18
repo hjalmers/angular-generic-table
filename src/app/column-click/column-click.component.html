@@ -2,13 +2,7 @@
 <p>This examples uses column click function to re-order rows, but you could call any function you like and apply your own style if you want something else than a regular button.</p>
 <div class="card mb-5">
   <div class="card-header">Example</div>
-  <div class="card-body" exemplify="columnClickExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','#myTable','ngModel','[ngClass]','#columnSettings','gtEvent']" [source]="'child'" [target]="columnClickExample" [navStyle]="'tabs'" [externalSources]="[{
-    name:'app.module.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
-  },{
-    name:'column-click.component.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/column-click/column-click.component.ts'
-  }]">
+  <div class="card-body">
     <div class="table-responsive">
       <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"></generic-table>
     </div>
