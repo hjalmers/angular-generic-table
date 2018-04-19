@@ -4,7 +4,7 @@ import { GenericTableComponent, GtConfig } from '@angular-generic-table/core';
 import { Person, PEOPLE } from './person';
 
 @Component({
-	selector: 'column-search',
+	selector: 'gt-column-search',
 	templateUrl: './column-search.component.html',
 	styleUrls: ['./column-search.component.scss']
 })
