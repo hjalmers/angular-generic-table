@@ -41,6 +41,11 @@ import { GtMetaPipe } from '../pipes/gt-meta.pipe';
                                                 [type]="(gtFields | gtProperty:column.objectKey:'header')?.type"
                                                 [injector]="(gtFields | gtProperty:column.objectKey:'header')?.injector"
                                                 [column]="gtFields | gtProperty:column.objectKey:'name'"></gt-custom-component-factory>
+                    <!-- don't trigger a sort when clicking on the search box -->
+                    <input *ngIf="gtSettings | gtProperty:column.objectKey:'searchBox'"
+                      (click)="$event.stopPropagation()"
+                      type="text"
+                      placeholder="Filter by {{gtFields | gtProperty:column.objectKey:'name' | lowercase}}" />
                     <gt-checkbox *ngIf="(gtFields | gtProperty:column.objectKey:'columnComponent')?.type === 'checkbox'" [checked]="(selectedRows.length === gtData.length)" (changed)="(selectedRows.length !== gtData.length) ? selectAllRows() : deselectAllRows();"></gt-checkbox>
                 </th>
             </tr>

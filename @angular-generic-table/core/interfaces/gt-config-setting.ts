@@ -15,6 +15,10 @@ export interface GtConfigSetting {
 	 */
 	search?: boolean;
 	/**
+	 * should there be a search box in the column header for this field?
+	 */
+	searchBox?: boolean;
+	/**
 	 * should settings be locked for editing? (default is false)
 	 */
 	lockSettings?: boolean;
