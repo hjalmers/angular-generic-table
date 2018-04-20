@@ -1,6 +1,10 @@
 export interface GtColumnSearch {
 	/**
-	 * Column name with its search value.
+	 * objectKey for the column.
 	 */
-	[columnName: string]: string;
+	id: string;
+	/**
+	 * column-specific search value.
+	 */
+	value: string;
 }

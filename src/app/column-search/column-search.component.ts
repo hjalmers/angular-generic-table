@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { GenericTableComponent, GtConfig } from '@angular-generic-table/core';
+import {
+	GenericTableComponent,
+	GtConfig,
+	GtOptions
+} from '@angular-generic-table/core';
 
 import { Person, PEOPLE } from './person';
 
@@ -10,6 +14,10 @@ import { Person, PEOPLE } from './person';
 })
 export class ColumnSearchComponent implements OnInit {
 	public configObject: GtConfig<Person>;
+
+	public options: GtOptions = {
+		highlightSearch: true
+	};
 
 	constructor() {
 		this.configObject = {

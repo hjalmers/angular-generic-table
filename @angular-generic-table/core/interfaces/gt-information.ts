@@ -13,6 +13,5 @@ export interface GtInformation {
 	recordsAfterFilter: number;
 	recordsAfterSearch: number;
 	searchTerms?: string;
-	columnSearchTerms?: GtColumnSearch;
 	visibleRecords?: any;
 }

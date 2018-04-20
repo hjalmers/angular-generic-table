@@ -4,9 +4,13 @@
 <div class="card mb-5">
   <div class="card-header">Example</div>
   <div class="card-body">
+    <input #globalSearch
+      class="form-control form-control-sm mr-sm-2 mb-3 mb-sm-0"
+      type="text" placeholder="Search" (keyup)="myTable.gtSearch(globalSearch.value)" />
     <generic-table #myTable
       [gtClasses]="'table-sm'"
       [gtSettings]="configObject.settings"
+      [gtOptions]="options"
       [gtFields]="configObject.fields"
       [(gtData)]="configObject.data">
     </generic-table>

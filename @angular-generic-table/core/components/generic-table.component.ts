@@ -21,7 +21,8 @@ import {
 	GtOptions,
 	GtRowMeta,
 	GtRenderField,
-	GtEvent
+	GtEvent,
+	GtColumnSearch
 } from '..';
 import { GtMetaPipe } from '../pipes/gt-meta.pipe';
 
@@ -74,7 +75,7 @@ import { GtMetaPipe } from '../pipes/gt-meta.pipe';
             </ng-template>
             <tbody *ngIf="gtData && gtInfo">
             <ng-template class="table-rows" ngFor let-row let-last="last" [ngForTrackBy]="trackByFn"
-                         [ngForOf]="gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1]) : (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data | gtRowClass:gtFields)">
+                         [ngForOf]="gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1]) : (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtColumnSearch:gtColumnSearchTerms:gtInfo:gtSettings:gtFields | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data | gtRowClass:gtFields)">
                 <tr [ngClass]="{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading, 'row-expandable':gtRowComponent}"
                     class="{{row.$$gtRowClass}}"
                     (click)="gtOptions.rowSelection ? toggleSelect(row):rowClick(row, $event)">
@@ -256,10 +257,11 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 			);
 		}
 
-		this._gtFields.forEach(field => {
-			this.gtInfo.columnSearchTerms[field.objectKey] = '';
+		value.forEach(column => {
+			this.gtColumnSearchTerms.push({ id: column.objectKey, value: '' });
 		});
 	}
+	public gtColumnSearchTerms: GtColumnSearch[] = [];
 	@Input()
 	set gtSettings(value: GtConfigSetting[]) {
 		this._gtSettings = value;
@@ -418,8 +420,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		recordLength: this.gtOptions.numberOfRows,
 		recordsAll: 0,
 		recordsAfterFilter: 0,
-		recordsAfterSearch: 0,
-		columnSearchTerms: {}
+		recordsAfterSearch: 0
 	};
 
 	public refreshPipe = false;
@@ -1253,9 +1254,12 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		this.updateTotals();
 	}
 
-	public gtColumnSearch(objectKey: number, value: string) {
+	public gtColumnSearch(objectKey: string, value: string) {
 		// map the column search value to its column
-		this.gtInfo.columnSearchTerms[objectKey] = value;
+		console.debug(this.gtColumnSearchTerms);
+		this.gtColumnSearchTerms.find(x => x.id === objectKey).value = value;
+		this.goToPage(1);
+		this.updateTotals();
 	}
 
 	/**
