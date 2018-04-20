@@ -42,8 +42,9 @@ import { GtMetaPipe } from '../pipes/gt-meta.pipe';
                                                 [injector]="(gtFields | gtProperty:column.objectKey:'header')?.injector"
                                                 [column]="gtFields | gtProperty:column.objectKey:'name'"></gt-custom-component-factory>
                     <!-- don't trigger a sort when clicking on the search box -->
-                    <input *ngIf="gtSettings | gtProperty:column.objectKey:'searchBox'"
+                    <input #columnSearch *ngIf="gtSettings | gtProperty:column.objectKey:'searchBox'"
                       (click)="$event.stopPropagation()"
+                      (keyup)="gtColumnSearch(column.objectKey, columnSearch.value)"
                       type="text"
                       placeholder="Filter by {{gtFields | gtProperty:column.objectKey:'name' | lowercase}}" />
                     <gt-checkbox *ngIf="(gtFields | gtProperty:column.objectKey:'columnComponent')?.type === 'checkbox'" [checked]="(selectedRows.length === gtData.length)" (changed)="(selectedRows.length !== gtData.length) ? selectAllRows() : deselectAllRows();"></gt-checkbox>
@@ -254,6 +255,10 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 					COLUMNS_WITH_CLASS_NAMES[0].objectKey
 			);
 		}
+
+		this._gtFields.forEach(field => {
+			this.gtInfo.columnSearchTerms[field.objectKey] = '';
+		});
 	}
 	@Input()
 	set gtSettings(value: GtConfigSetting[]) {
@@ -413,7 +418,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		recordLength: this.gtOptions.numberOfRows,
 		recordsAll: 0,
 		recordsAfterFilter: 0,
-		recordsAfterSearch: 0
+		recordsAfterSearch: 0,
+		columnSearchTerms: {}
 	};
 
 	public refreshPipe = false;
@@ -1245,6 +1251,11 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		// always go to first page when searching
 		this.goToPage(1);
 		this.updateTotals();
+	}
+
+	public gtColumnSearch(objectKey: number, value: string) {
+		// map the column search value to its column
+		this.gtInfo.columnSearchTerms[objectKey] = value;
 	}
 
 	/**

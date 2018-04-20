@@ -1,3 +1,5 @@
+import { GtColumnSearch } from '../interfaces/gt-column-search';
+
 export interface GtInformation {
 	filter?: Object;
 	pageCurrent: number;
@@ -11,5 +13,6 @@ export interface GtInformation {
 	recordsAfterFilter: number;
 	recordsAfterSearch: number;
 	searchTerms?: string;
+	columnSearchTerms?: GtColumnSearch;
 	visibleRecords?: any;
 }
