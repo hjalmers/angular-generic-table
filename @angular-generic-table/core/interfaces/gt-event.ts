@@ -1,4 +1,4 @@
 export interface GtEvent {
-  name: string;
-  value: any;
+	name: string;
+	value: any;
 }

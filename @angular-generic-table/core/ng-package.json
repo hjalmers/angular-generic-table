@@ -1,10 +1,10 @@
 {
-  "$schema": "../../node_modules/ng-packagr/package.schema.json",
-  "lib": {
-    "umdModuleIds": {
-      "tether": "Tether"
-    },
-    "entryFile": "index.ts"
-  },
-  "dest": "../../dist/@angular-generic-table/core"
+	"$schema": "../../node_modules/ng-packagr/package.schema.json",
+	"lib": {
+		"umdModuleIds": {
+			"tether": "Tether"
+		},
+		"entryFile": "index.ts"
+	},
+	"dest": "../../dist/@angular-generic-table/core"
 }

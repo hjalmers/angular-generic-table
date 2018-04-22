@@ -4,13 +4,7 @@
 <p>Apply your custom style using <code>.gt-totals</code> class or use the one provided by generic table (shown below). See docs for more info!</p>
 <div class="card mb-5">
   <div class="card-header">Example</div>
-  <div class="card-body" exemplify="basicExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','#myTable']" [source]="'child'" [target]="basicExample" [navStyle]="'tabs'" [externalSources]="[{
-    name:'app.module.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
-  },{
-    name:'aggregate.component.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/aggregate/aggregate.component.ts'
-  }]">
+  <div class="card-body">
     <form class="form form-inline mb-4">
       <label for="search" class="form-control-label mr-sm-2">Search</label>
     <input name="search" id="search" class="form-control form-control-sm mb-2 mr-sm-2 mb-lg-0" #search (keyup)="myTable.gtSearch(search.value)" placeholder="Search"/>

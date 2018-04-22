@@ -9,13 +9,7 @@
 <p>This how the <code>ColumnSettingsComponent</code> looks and behaves by default but feel free to customize it using css or by passing predefined classes. You can also define your own template for the columns.</p>
 <div class="card mb-5">
   <div class="card-header">Example</div>
-  <div class="card-body" exemplify="columnSettingsExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','#myTable','#columnSettings']" [source]="'child'" [target]="columnSettingsExample" [navStyle]="'tabs'" [externalSources]="[{
-    name:'app.module.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
-  },{
-    name:'change-column-settings.component.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/change-column-settings/change-column-settings.component.ts'
-  }]">
+  <div class="card-body">
     <button class="btn-link" (click)="columnSettings.toggleColumnSettings()"> {{columnSettings.active ? 'Hide column settings':'Show column settings'}}</button>
     <gt-column-settings [genericTable]="myTable" #columnSettings>
       <div class="table-responsive">
@@ -34,13 +28,7 @@
 <p>Pass your own template for columns and change texts and css/classes for a custom look and feel.</p>
 <div class="card mb-5">
   <div class="card-header">Example</div>
-  <div class="card-body" exemplify="columnSettingsTemplateExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','gtData','[gtRowComponent]','[gtOptions]','[genericTable]','#rowLength','gtColumnItem','#myCustomTable','[ngClass]','#customColumnSettings','gtTexts','gtHeaderClasses','gtWrapperClasses']" [source]="'child'" [target]="columnSettingsTemplateExample" [navStyle]="'tabs'" [externalSources]="[{
-    name:'app.module.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
-  },{
-    name:'change-column-settings.component.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/change-column-settings/change-column-settings.component.ts'
-  }]">
+  <div class="card-body">
     <ng-template #gtColumnItem let-column let-index="index" let-name="name">
       <div class="btn-group btn-group-sm mb-1 col-12 p-0" role="group">
         <button type="button" class="btn w-100" [ngClass]="{'btn-primary':column.visible !== false, 'btn-secondary':column.visible === false}" style="cursor: move;">{{index}}: {{name}}</button>

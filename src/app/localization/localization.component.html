@@ -2,13 +2,7 @@
 <p [innerHTML]="'TRANSLATIONS.DESCRIPTION' | translate"></p>
 <div class="card mb-5">
   <div class="card-header">{{'TRANSLATIONS.EXAMPLE' | translate}}</div>
-  <div class="card-body" exemplify="localizationExample" [context]="this" [escapeStrings]="['[gtClasses]','[gtSettings]','[gtFields]','[(gtData)]','[gtRowComponent]','[gtOptions]','[genericTable]','[gtTexts]','#langSelect','#myTable']" [source]="'child'" [target]="translationsExample" [navStyle]="'tabs'" [externalSources]="[{
-    name:'app.module.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/app.module.ts'
-  },{
-    name:'localization.component.ts',
-    src:'https://raw.githubusercontent.com/hjalmers/angular2-generic-table/master/src/app/localization/localization.component.ts'
-  }]">
+  <div class="card-body">
     <form class="form form-inline mb-4">
       <label for="language" class="form-control-label mr-sm-2">{{ 'TRANSLATIONS.SELECT' | translate }}</label>
       <select id="language" class="form-control form-control-sm mb-2 mr-sm-2 mb-lg-0" #langSelect (change)="translate.use(langSelect.value)">

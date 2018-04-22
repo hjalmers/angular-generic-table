@@ -1,0 +1,16 @@
+<div #someVar [innerHTML]="(demoContent | async).lead" class="mb-5"></div>
+<ng-container *ngFor="let section of (demoContent | async).sections">
+  <div [innerHTML]="section.description" class="mt-3"></div>
+  <div class="card mb-5">
+    <div class="card-body">
+      <ng-container *ngComponentOutlet="section.component"></ng-container>
+    </div>
+    <ngb-tabset type="tabs">
+      <ngb-tab [title]="example.title" *ngFor="let example of section.examples">
+        <ng-template ngbTabContent>
+          <code-highlight [code]="example.code" [lang]="example.lang"></code-highlight>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</ng-container>

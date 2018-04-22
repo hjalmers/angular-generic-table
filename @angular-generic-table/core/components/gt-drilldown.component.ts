@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {GtExpandedRow} from './gt-expanding-row.component';
+import { GtExpandedRow } from './gt-expanding-row.component';
 
 @Component({
-  selector: 'gt-drilldown',
-  template: `
+	selector: 'gt-drilldown',
+	template: `
       <table class="table">
           <tr *ngFor="let row of data" (click)="$rowClick(row, $event)">
               <!--<td *ngFor="let column of gtSettings" [style.width]="columnWidth[column.objectKey]">{{column.objectKey}}</td>-->
@@ -24,15 +24,12 @@ import {GtExpandedRow} from './gt-expanding-row.component';
           </tr>
       </table>
   `,
-  styles: []
+	styles: []
 })
 export class GtDrilldownComponent extends GtExpandedRow<any> implements OnInit {
+	constructor() {
+		super();
+	}
 
-  constructor() {
-    super();
-  }
-
-  ngOnInit() {
-  }
-
+	ngOnInit() {}
 }

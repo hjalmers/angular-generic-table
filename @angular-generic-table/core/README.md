@@ -3,15 +3,16 @@
 A generic table for Angular 2+. This project is a re-write of [this](https://github.com/hjalmers/angularjs-generic-table) project for AngularJS, the idea is to have support for the same features and that the configuration should be the same. Generic table uses standard markup for tables ie. table, tr and td elements etc. and has support for expanding rows, search, filters, sorting, pagination, export to CSV, column clicks, custom column rendering, custom export values. [View demo](https://hjalmers.github.io/angular-generic-table/)
 
 ## Features
-- Uses standard HTML tables (no divs etc.)
-- Markup uses Twitter bootstrap class names
-- Client and server-side pagination, sorting and filtering
-- Lazy-loading of data from server
-- Expanding rows with custom component
-- Use custom functions for sorting, exporting and rendering of data
-- Configure table using json object (add columns etc.)
-- Toggle column visibility
-- Export to CSV
+
+* Uses standard HTML tables (no divs etc.)
+* Markup uses Twitter bootstrap class names
+* Client and server-side pagination, sorting and filtering
+* Lazy-loading of data from server
+* Expanding rows with custom component
+* Use custom functions for sorting, exporting and rendering of data
+* Configure table using json object (add columns etc.)
+* Toggle column visibility
+* Export to CSV
 
 ## Installation and usage
 
@@ -20,6 +21,7 @@ Run `npm install @angular-generic-table/core --save`
 Include generic table module in your project, for example if you want to add it to your app module:
 
 **App Module**
+
 ```TypeScript
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
@@ -42,6 +44,7 @@ export class AppModule { }
 Configure the table in your component, in this case we're adding a basic example with static data to a component called StaticComponent.
 
 **Static Component**
+
 ```TypeScript
 import { Component } from '@angular/core';
 import { GtConfig } from '@angular-generic-table/core';
@@ -133,6 +136,7 @@ export class StaticComponent {
 ```
 
 **Usage**
+
 ```Html
 <generic-table [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"></generic-table>
 ```

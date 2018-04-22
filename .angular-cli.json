@@ -1,31 +1,22 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "project": {
-    "name": "angular2-generic-table"
+    "name": "@angular-generic-table"
   },
   "apps": [
     {
       "root": "src",
       "outDir": "dist",
-      "assets": [
-        "assets",
-        "favicon.ico"
-      ],
+      "assets": ["assets", "favicon.ico"],
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
       "test": "test.ts",
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
-      "prefix": "",
-      "styles": [
-        "../node_modules/prismjs/themes/prism-coy.css",
-        "../node_modules/angular-exemplify/exemplify/css/exemplify.css",
-        "styles.scss"
-      ],
-      "scripts": [
-        "../node_modules/prismjs/prism.js"
-      ],
+      "prefix": "gt",
+      "styles": ["styles.scss"],
+      "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
