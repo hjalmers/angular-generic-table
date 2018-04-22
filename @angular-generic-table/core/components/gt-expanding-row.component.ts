@@ -13,6 +13,7 @@ export class GtExpandedRow<R extends GtRow> {
 	gtInfo: any;
 	data: any;
 	redrawEvent = new EventEmitter<R>();
+	gtEvent: EventEmitter<GtEvent>;
 	toggleRowEvent = new EventEmitter<R>();
 
 	public $hide(): void {
