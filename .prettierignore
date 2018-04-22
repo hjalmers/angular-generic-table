@@ -1,3 +1,10 @@
-package.json;
-src/assets/**/*.json
-*.html
+package.json
+package-lock.json
+dist
+node_modules
+**/*.html
+.prettierignore
+.angular-cli.json
+tslint.json
+e2e
+*.spec.json
