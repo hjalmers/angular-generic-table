@@ -1,17 +1,23 @@
-import {Component} from '@angular/core';
-import {GtConfig, GenericTableComponent, GtDrilldownComponent, GtRow} from '@angular-generic-table/core';
+import { Component } from '@angular/core';
+import {
+	GtConfig,
+	GenericTableComponent,
+	GtDrilldownComponent,
+	GtRow
+} from '@angular-generic-table/core';
 
 export interface RowData extends GtRow {
-    name: string;
-    color: string;
-    qty: number;
-    drilldown?: Array<any>;
+	name: string;
+	color: string;
+	qty: number;
+	drilldown?: Array<any>;
 }
 
 @Component({
-    selector: 'app-drilldown',
-    templateUrl: './drilldown.component.html',
-    styles: [`
+	selector: 'app-drilldown',
+	templateUrl: './drilldown.component.html',
+	styles: [
+		`
         :host ::ng-deep tr > td.name-column .gt-row-content::before {
             display: inline-block;
             content: "\\f078";
@@ -42,119 +48,142 @@ export interface RowData extends GtRow {
             margin: 0;
             border-bottom: solid 1px #e9ecef;
         }
-    `]
+    `
+	]
 })
 export class DrilldownComponent {
+	public data = [
+		{
+			name: 'banana',
+			type: 'fruit',
+			qty: 15,
+			color: '#ffd10d'
+		},
+		{
+			name: 'pear',
+			type: 'fruit',
+			qty: 5,
+			color: '#36850a'
+		},
+		{
+			name: 'apple',
+			type: 'fruit',
+			qty: 6,
+			color: '#a3ff17'
+		},
+		{
+			name: 'orange',
+			type: 'fruit',
+			qty: 26,
+			color: '#ff8e09'
+		},
+		{
+			name: 'kiwi',
+			type: 'fruit',
+			qty: 2,
+			color: '#586e37'
+		},
+		{
+			name: 'potato',
+			type: 'vegetable',
+			qty: 23,
+			color: '#c3a14f'
+		},
+		{
+			name: 'pepper',
+			type: 'vegetable',
+			qty: 7,
+			color: '#c3130d'
+		},
+		{
+			name: 'broccoli',
+			type: 'vegetable',
+			qty: 5,
+			color: '#357400'
+		},
+		{
+			name: 'garlic',
+			type: 'vegetable',
+			qty: 4,
+			color: '#d9d9d9'
+		}
+	];
+	public configObject: GtConfig<RowData>;
 
-    public data = [{
-        name: 'banana',
-        type: 'fruit',
-        qty: 15,
-        color: '#ffd10d'
-    }, {
-        name: 'pear',
-        type: 'fruit',
-        qty: 5,
-        color: '#36850a'
-    }, {
-        name: 'apple',
-        type: 'fruit',
-        qty: 6,
-        color: '#a3ff17'
-    }, {
-        name: 'orange',
-        type: 'fruit',
-        qty: 26,
-        color: '#ff8e09'
-    }, {
-        name: 'kiwi',
-        type: 'fruit',
-        qty: 2,
-        color: '#586e37'
-    }, {
-        name: 'potato',
-        type: 'vegetable',
-        qty: 23,
-        color: '#c3a14f'
-    }, {
-        name: 'pepper',
-        type: 'vegetable',
-        qty: 7,
-        color: '#c3130d'
-    }, {
-        name: 'broccoli',
-        type: 'vegetable',
-        qty: 5,
-        color: '#357400'
-    }, {
-        name: 'garlic',
-        type: 'vegetable',
-        qty: 4,
-        color: '#d9d9d9'
-    }];
-    public configObject: GtConfig<RowData>;
+	constructor() {
+		this.configObject = {
+			settings: [
+				{
+					objectKey: 'name',
+					columnOrder: 0
+				},
+				{
+					objectKey: 'qty',
+					columnOrder: 1
+				},
+				{
+					objectKey: 'color',
+					columnOrder: 3,
+					search: false
+				},
+				{
+					objectKey: 'variants',
+					columnOrder: 2,
+					search: false
+				}
+			],
+			fields: [
+				{
+					name: 'Name',
+					objectKey: 'name',
+					render: row => row.name.charAt(0).toUpperCase() + row.name.slice(1),
+					expand: {
+						component: GtDrilldownComponent,
+						data: row => row.drilldown
+					}
+				},
+				{
+					name: 'Quantity',
+					objectKey: 'qty',
+					columnClass: 'text-right'
+				},
+				{
+					name: 'Color',
+					objectKey: 'color',
+					columnClass: 'text-right',
+					render: row =>
+						row.color
+							? '<div class="d-inline-block" style="width:15px;height:15px;border-radius:50%;background: ' +
+							  row.color +
+							  '"></div>'
+							: 'n/a'
+				},
+				{
+					name: 'Variants',
+					objectKey: 'variants',
+					columnClass: 'text-right',
+					value: row => (row.drilldown ? row.drilldown.length : 1)
+				}
+			],
+			data: this.groupData(this.data)
+		};
+	}
 
-    constructor() {
-        this.configObject = {
-            settings: [{
-                objectKey: 'name',
-                columnOrder: 0
-            }, {
-                objectKey: 'qty',
-                columnOrder: 1
-            }, {
-                objectKey: 'color',
-                columnOrder: 3,
-                search: false
-            }, {
-                objectKey: 'variants',
-                columnOrder: 2,
-                search: false
-            }],
-            fields: [{
-                name: 'Name',
-                objectKey: 'name',
-                render: (row) => row.name.charAt(0).toUpperCase() + row.name.slice(1),
-                expand: {
-                    component: GtDrilldownComponent,
-                    data: (row) => row.drilldown
-                }
-            }, {
-                name: 'Quantity',
-                objectKey: 'qty',
-                columnClass: 'text-right'
-            }, {
-                name: 'Color',
-                objectKey: 'color',
-                columnClass: 'text-right',
-                render: (row) => row.color ? '<div class="d-inline-block" style="width:15px;height:15px;border-radius:50%;background: ' + row.color + '"></div>' : 'n/a'
-            }, {
-                name: 'Variants',
-                objectKey: 'variants',
-                columnClass: 'text-right',
-                value: (row) => row.drilldown ? row.drilldown.length : 1,
-            }],
-            data: this.groupData(this.data)
-        };
-    }
-
-    // group fruits and vegetables by type
-    groupData(array) {
-      return array.reduce((prev, el) => {
-        if (prev.map(i => i.type).indexOf( el.type) === -1) {
-          const GROUP: any = {...el}; // create a copy of our element (fruit or vegetable)
-          GROUP.name = el.type + 's'; // make plural
-          GROUP.color = null; // color not applicable for group
-          GROUP.drilldown = [el]; // add element to drilldown array
-            prev.push(GROUP); // push group to array
-        } else {
-          const INDEX = prev.map(i => i.type).indexOf( el.type); // get index of type in array
-          prev[INDEX].qty += el.qty; // add to quantity
-          prev[INDEX].drilldown.push(el); // push element to drilldown array
-        }
-        return prev;
-      }, []);
-    }
-
+	// group fruits and vegetables by type
+	groupData(array) {
+		return array.reduce((prev, el) => {
+			if (prev.map(i => i.type).indexOf(el.type) === -1) {
+				const GROUP: any = { ...el }; // create a copy of our element (fruit or vegetable)
+				GROUP.name = el.type + 's'; // make plural
+				GROUP.color = null; // color not applicable for group
+				GROUP.drilldown = [el]; // add element to drilldown array
+				prev.push(GROUP); // push group to array
+			} else {
+				const INDEX = prev.map(i => i.type).indexOf(el.type); // get index of type in array
+				prev[INDEX].qty += el.qty; // add to quantity
+				prev[INDEX].drilldown.push(el); // push element to drilldown array
+			}
+			return prev;
+		}, []);
+	}
 }
-

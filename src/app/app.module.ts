@@ -65,7 +65,6 @@ import { CodeHighlightService } from './shared/services/code-highlight.service';
 import { DemoContentService } from './shared/services/demo-content.service';
 import { CodeHighlightComponent } from './shared/components/code-highlight/code-highlight.component';
 import { LoadingDataModule } from './demos/loading-data/loading-data.module';
-import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
 	declarations: [
@@ -108,7 +107,6 @@ import { MarkdownModule } from 'ngx-markdown';
 		HttpClientModule,
 		FormsModule,
 		BasicDemoModule,
-		//MarkdownModule.forRoot(),
 		NgbModule.forRoot(),
 		LoadingDataModule,
 		GenericTableModule /** ADD THIS LINE TO YOUR APP MODULE! */,

@@ -1,27 +1,19 @@
 {
-  "compilerOptions": {
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "lib": [
-      "es2016",
-      "dom"
-    ],
-    "outDir": "../out-tsc/app",
-    "target": "es5",
-    "module": "es2015",
-    "baseUrl": ".",
-    "paths": {
-      "@angular-generic-table/*": [
-        "../@angular-generic-table/*"
-      ]
-    },
-    "types": []
-  },
-  "exclude": [
-    "test.ts",
-    "**/*.spec.ts"
-  ]
+	"compilerOptions": {
+		"sourceMap": true,
+		"declaration": false,
+		"moduleResolution": "node",
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"lib": ["es2016", "dom"],
+		"outDir": "../out-tsc/app",
+		"target": "es5",
+		"module": "es2015",
+		"baseUrl": ".",
+		"paths": {
+			"@angular-generic-table/*": ["../@angular-generic-table/*"]
+		},
+		"types": []
+	},
+	"exclude": ["test.ts", "**/*.spec.ts"]
 }

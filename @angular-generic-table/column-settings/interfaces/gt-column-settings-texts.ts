@@ -1,4 +1,4 @@
 export interface GtColumnSettingsTexts {
-  title: string;
-  help: string;
+	title: string;
+	help: string;
 }

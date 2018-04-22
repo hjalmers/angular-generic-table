@@ -1,21 +1,24 @@
 {
-  "TRANSLATIONS": {
-    "TITLE":"Localization",
-    "DESCRIPTION": "Angular Generic Table with <a href='https://github.com/ngx-translate/core' target='_blank'>ngx-translate</a>!",
-    "SELECT": "Change language",
-    "EXAMPLE":"Example",
-    "NAME_DATA": "Hi, my name is {{name}}",
-    "NAME_HEADING": "Name",
-    "ID_HEADING": "Id",
-    "LUCKY_NUMBER_HEADING":"Lucky number",
-    "LOADING": "Loading...",
-    "NO_DATA": "No data",
-    "NO_MATCHING_DATA": "No data matching results found",
-    "NO_VISIBLE_COLUMNS_HEADING": "No visible columns",
-    "NO_VISIBLE_COLUMNS": "Please select at least one column to be visible.",
-    "TABLE_INFO": "Showing #recordFrom to #recordTo of #recordsAfterSearch entries.",
-    "TABLE_INFO_AFTER_SEARCH": "Showing  #recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries).",
-    "CSV_DOWNLOAD": "download",
-    "SORT_LABEL": "Sort:"
-  }
+	"TRANSLATIONS": {
+		"TITLE": "Localization",
+		"DESCRIPTION":
+			"Angular Generic Table with <a href='https://github.com/ngx-translate/core' target='_blank'>ngx-translate</a>!",
+		"SELECT": "Change language",
+		"EXAMPLE": "Example",
+		"NAME_DATA": "Hi, my name is {{name}}",
+		"NAME_HEADING": "Name",
+		"ID_HEADING": "Id",
+		"LUCKY_NUMBER_HEADING": "Lucky number",
+		"LOADING": "Loading...",
+		"NO_DATA": "No data",
+		"NO_MATCHING_DATA": "No data matching results found",
+		"NO_VISIBLE_COLUMNS_HEADING": "No visible columns",
+		"NO_VISIBLE_COLUMNS": "Please select at least one column to be visible.",
+		"TABLE_INFO":
+			"Showing #recordFrom to #recordTo of #recordsAfterSearch entries.",
+		"TABLE_INFO_AFTER_SEARCH":
+			"Showing  #recordFrom to #recordTo of #recordsAfterSearch entries (filtered from a total of #recordsAll entries).",
+		"CSV_DOWNLOAD": "download",
+		"SORT_LABEL": "Sort:"
+	}
 }

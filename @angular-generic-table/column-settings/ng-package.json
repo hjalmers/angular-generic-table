@@ -1,11 +1,11 @@
 {
-  "$schema": "../../node_modules/ng-packagr/package.schema.json",
-  "lib": {
-    "umdModuleIds": {
-      "@angular-generic-table/core": "GenericTableModule",
-      "ng2-dragula": "DragulaModule"
-    },
-    "entryFile": "index.ts"
-  },
-  "dest": "../../dist/@angular-generic-table/column-settings"
+	"$schema": "../../node_modules/ng-packagr/package.schema.json",
+	"lib": {
+		"umdModuleIds": {
+			"@angular-generic-table/core": "GenericTableModule",
+			"ng2-dragula": "DragulaModule"
+		},
+		"entryFile": "index.ts"
+	},
+	"dest": "../../dist/@angular-generic-table/column-settings"
 }
