@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-examples',
-  templateUrl: './examples.component.html',
+	selector: 'app-examples',
+	templateUrl: './examples.component.html'
 })
 export class ExamplesComponent implements OnInit {
+	constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+	ngOnInit() {}
 }

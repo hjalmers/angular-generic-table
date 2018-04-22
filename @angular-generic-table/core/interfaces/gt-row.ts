@@ -1,5 +1,5 @@
 export interface GtRow {
-  isOpen?: boolean;
-  $$gtRowId?: any;
-  $$gtRowClass?: string;
+	isOpen?: boolean;
+	$$gtRowId?: any;
+	$$gtRowClass?: string;
 }

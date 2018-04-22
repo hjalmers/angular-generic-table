@@ -1,38 +1,56 @@
 import {
-    Component, Input, ViewChild, TemplateRef, ElementRef, Pipe, PipeTransform, OnInit,
-    ChangeDetectorRef, HostListener, Output, EventEmitter
+	Component,
+	Input,
+	ViewChild,
+	TemplateRef,
+	ElementRef,
+	Pipe,
+	PipeTransform,
+	OnInit,
+	ChangeDetectorRef,
+	HostListener,
+	Output,
+	EventEmitter
 } from '@angular/core';
-import {GenericTableComponent, GtRow, GtConfigSetting } from '@angular-generic-table/core';
-import {DragulaService} from 'ng2-dragula';
-import {GtColumnSettingsTexts} from '../interfaces/gt-column-settings-texts';
+import {
+	GenericTableComponent,
+	GtRow,
+	GtConfigSetting
+} from '@angular-generic-table/core';
+import { DragulaService } from 'ng2-dragula';
+import { GtColumnSettingsTexts } from '../interfaces/gt-column-settings-texts';
 
 @Pipe({
-    name: 'gtColumn'
+	name: 'gtColumn'
 })
 export class GtColumnPipe implements PipeTransform {
+	// TODO: move to helper functions
+	/** Sort by column order */
+	private getColumnOrder(a: any, b: any) {
+		if (a.columnOrder < b.columnOrder) {
+			return -1;
+		}
+		if (a.columnOrder > b.columnOrder || typeof a.columnOrder === 'undefined') {
+			return 1;
+		}
+		return 0;
+	}
 
-    // TODO: move to helper functions
-    /** Sort by column order */
-    private getColumnOrder(a: any, b: any) {
-        if (a.columnOrder < b.columnOrder) { return -1; }
-        if (a.columnOrder > b.columnOrder || typeof a.columnOrder === 'undefined') { return 1; }
-        return 0;
-    };
+	/** return enabled columns that are not locked for editing */
+	private getEnabled(column: GtConfigSetting) {
+		return column.enabled !== false && column.lockSettings !== true
+			? column
+			: null;
+	}
 
-    /** return enabled columns that are not locked for editing */
-    private getEnabled(column: GtConfigSetting) {
-        return column.enabled !== false && column.lockSettings !== true ? column : null;
-    }
-
-    transform(settings: Array<GtConfigSetting>): Array<GtConfigSetting> {
-
-        return settings.filter(this.getEnabled).sort(this.getColumnOrder);
-    }
+	transform(settings: Array<GtConfigSetting>): Array<GtConfigSetting> {
+		return settings.filter(this.getEnabled).sort(this.getColumnOrder);
+	}
 }
 
 @Component({
-    selector: 'gt-column-settings',
-    template: `
+	selector: 'gt-column-settings',
+	template: `
         <ng-template #columnItem let-column let-index="index">
             <span class="badge badge-secondary">{{index}}</span>
             <span (dblclick)="toggleColumnVisibility(column)" class="badge" [ngClass]="{'badge-success':column.visible !== false, 'badge-danger':column.visible === false}">{{genericTable.gtFields | gtProperty:column.objectKey:'name'}}</span>
@@ -60,185 +78,203 @@ export class GtColumnPipe implements PipeTransform {
     `
 })
 export class GtColumnSettingsComponent implements OnInit {
-    get genericTable(): GenericTableComponent<any, any> {
-        return this._genericTable;
-    }
+	get genericTable(): GenericTableComponent<any, any> {
+		return this._genericTable;
+	}
 
+	@Input()
+	set genericTable(value: GenericTableComponent<any, any>) {
+		this._genericTable = value;
+	}
 
-    @Input() set genericTable(value: GenericTableComponent<any, any>) {
-        this._genericTable = value;
-    }
+	@ViewChild('genericTableElement') elementView: TemplateRef<ElementRef>;
+	@ViewChild('gtColumnSettingsHeader') gtColumnSettingsHeader: ElementRef;
 
-    @ViewChild('genericTableElement') elementView: TemplateRef<ElementRef>;
-    @ViewChild('gtColumnSettingsHeader') gtColumnSettingsHeader: ElementRef;
+	private _genericTable: GenericTableComponent<GtRow, any>;
+	@Input()
+	gtHeaderClasses = 'px-3 pt-3 pb-2 table-bordered border-left-0 border-right-0 border-bottom-0 alert-info';
+	@Input()
+	gtWrapperClasses = 'px-3 pb-3 table-bordered border-left-0 border-right-0 border-top-0 alert-info';
+	@Input() overlay = true;
+	@Input() gtColumnItem: TemplateRef<ElementRef>;
+	public gtDefaultTexts: GtColumnSettingsTexts = {
+		title: 'Columns',
+		help: 'Double click to toggle visibility, drag and drop to reorder.'
+	};
+	@Input() gtTexts: GtColumnSettingsTexts = this.gtDefaultTexts;
 
-    private _genericTable: GenericTableComponent<GtRow, any>;
-    @Input() gtHeaderClasses = 'px-3 pt-3 pb-2 table-bordered border-left-0 border-right-0 border-bottom-0 alert-info';
-    @Input() gtWrapperClasses = 'px-3 pb-3 table-bordered border-left-0 border-right-0 border-top-0 alert-info';
-    @Input() overlay = true;
-    @Input() gtColumnItem: TemplateRef<ElementRef>;
-    public gtDefaultTexts: GtColumnSettingsTexts = {
-        title: 'Columns',
-        help: 'Double click to toggle visibility, drag and drop to reorder.'
-    };
-    @Input() gtTexts: GtColumnSettingsTexts = this.gtDefaultTexts;
+	@Output() public gtEvent: EventEmitter<any> = new EventEmitter<any>();
 
-    @Output() public gtEvent: EventEmitter<any> = new EventEmitter<any>();
+	public active = false;
+	public offset: string;
+	public heightAdjust: string;
+	public reordered = false;
+	public bagId: string;
 
-    public active = false;
-    public offset: string;
-    public heightAdjust: string;
-    public reordered = false;
-    public bagId: string;
+	/**
+	 * Check offset height on window resize.
+	 */
+	@HostListener('window:resize', [])
+	public onResize() {
+		this.offset = this._getTableHeadHeight();
+		this.heightAdjust = this._getColumnSettingsHeaderHeight();
+	}
 
-    /**
-     * Check offset height on window resize.
-     */
-    @HostListener('window:resize', [])
-    public onResize() {
-        this.offset = this._getTableHeadHeight();
-        this.heightAdjust = this._getColumnSettingsHeaderHeight();
-    }
+	constructor(
+		private dragulaService: DragulaService,
+		private changeDetectorRef: ChangeDetectorRef
+	) {
+		dragulaService.drop.subscribe((value: Array<any>) => {
+			if (value[0] === this.bagId) {
+				this._onDrop(value.slice(1));
+			}
+		});
+	}
 
-    constructor(private dragulaService: DragulaService, private changeDetectorRef: ChangeDetectorRef) {
-        dragulaService.drop.subscribe((value: Array<any>) => {
-            if (value[0] === this.bagId) {
-                this._onDrop(value.slice(1));
-            }
-        });
-    }
+	ngOnInit() {
+		this.bagId = this.generateId();
+		// setup texts
+		this.gtTexts = <GtColumnSettingsTexts>this.extend(
+			this.gtDefaultTexts,
+			this.gtTexts
+		);
+	}
 
-    ngOnInit() {
+	/**
+	 *  Extend object function.
+	 */
+	private extend = function(a: Object, b: Object) {
+		for (const key in b) {
+			if (b.hasOwnProperty(key)) {
+				a[key] = b[key];
+			}
+		}
+		return a;
+	};
 
-        this.bagId = this.generateId();
-        // setup texts
-        this.gtTexts = <GtColumnSettingsTexts>this.extend(this.gtDefaultTexts, this.gtTexts);
+	/**
+	 * Toggle column settings visibility.
+	 */
+	public toggleColumnSettings() {
+		this.active = !this.active;
 
+		if (this.active) {
+			this.offset = this._getTableHeadHeight();
 
-    }
+			// check and adjust height offset
+			setTimeout(() => {
+				this.heightAdjust = this._getColumnSettingsHeaderHeight();
+			}, 0);
+		}
+	}
 
-    /**
-     *  Extend object function.
-     */
-    private extend = function (a: Object, b: Object) {
-        for (const key in b) {
-          if (b.hasOwnProperty(key)) {
-            a[key] = b[key];
-          }
-        }
-        return a;
-    };
+	/**
+	 * Toggle column visibility.
+	 * @param column - column object.
+	 */
+	public toggleColumnVisibility(column: any) {
+		// toggle column visibility
+		column.visible =
+			typeof column.visible === 'undefined' ? false : !column.visible;
 
-    /**
-     * Toggle column settings visibility.
-     */
-    public toggleColumnSettings() {
+		// redraw table
+		this._genericTable.redraw();
 
-        this.active = !this.active;
+		// emit event
+		this.gtEvent.emit({
+			name: 'gt-column-visibility-change',
+			value: {
+				column: { ...column },
+				settings: [...this._genericTable.gtSettings]
+			}
+		});
 
-        if (this.active) {
-            this.offset = this._getTableHeadHeight();
+		// check and reset offset
+		setTimeout(() => {
+			this.offset = this._getTableHeadHeight();
+		}, 0);
+	}
 
-            // check and adjust height offset
-            setTimeout(() => {
-                this.heightAdjust = this._getColumnSettingsHeaderHeight();
-            }, 0);
-        }
-    }
+	/**
+	 * Order table by object key.
+	 * @param args - name of key to sort on.
+	 */
+	private _onDrop(args: Array<any>) {
+		this.reordered = true;
+		const [e, target] = args;
+		const order = {};
+		for (let i = 0; i < target.children.length; i++) {
+			order[target.children[i].getAttribute('data-object-key')] = i;
+		}
+		for (let i = 0; i < this._genericTable.gtSettings.length; i++) {
+			this._genericTable.gtSettings[i].columnOrder =
+				order[this._genericTable.gtSettings[i].objectKey];
+		}
 
-    /**
-     * Toggle column visibility.
-     * @param column - column object.
-     */
-    public toggleColumnVisibility(column: any) {
+		// reset array to trigger change detection
+		this._genericTable.gtSettings = [...this._genericTable.gtSettings];
+		this.changeDetectorRef.markForCheck();
 
-        // toggle column visibility
-        column.visible = typeof column.visible === 'undefined' ? false : !column.visible;
+		this._genericTable.redraw();
+		this.gtEvent.emit({
+			name: 'gt-column-order-change',
+			value: {
+				settings: [...this._genericTable.gtSettings]
+			}
+		});
+	}
 
-        // redraw table
-        this._genericTable.redraw();
+	/**
+	 * Get height of table head element ie. first row containing table headers.
+	 * @returns offset height for table header in px.
+	 */
+	private _getTableHeadHeight(): string {
+		try {
+			if (
+				this.elementView.elementRef.nativeElement.nextElementSibling
+					.firstElementChild.firstElementChild.tagName === 'THEAD'
+			) {
+				return (
+					this.elementView.elementRef.nativeElement.nextElementSibling
+						.firstElementChild.firstElementChild.offsetHeight + 'px'
+				);
+			}
+			if (
+				this.elementView.elementRef.nativeElement.nextElementSibling
+					.firstElementChild.firstElementChild.firstElementChild.tagName ===
+				'THEAD'
+			) {
+				return (
+					this.elementView.elementRef.nativeElement.nextElementSibling
+						.firstElementChild.firstElementChild.firstElementChild
+						.offsetHeight + 'px'
+				);
+			}
+			return '0px';
+		} catch (error) {
+			return '0px';
+		}
+	}
 
-        // emit event
-        this.gtEvent.emit({
-          name: 'gt-column-visibility-change',
-          value: {
-            column: {...column},
-            settings: [...this._genericTable.gtSettings]
-          }
-        });
+	/**
+	 * Get height of table head element ie. first row containing table headers.
+	 * @returns offset height for table header in px.
+	 */
+	private _getColumnSettingsHeaderHeight(): string {
+		try {
+			return this.gtColumnSettingsHeader.nativeElement.offsetHeight + 'px';
+		} catch (error) {
+			return '0px';
+		}
+	}
 
-        // check and reset offset
-        setTimeout(() => {
-            this.offset = this._getTableHeadHeight();
-        }, 0);
-    }
-
-    /**
-     * Order table by object key.
-     * @param args - name of key to sort on.
-     */
-    private _onDrop(args: Array<any>) {
-        this.reordered = true;
-        const [e, target] = args;
-        const order = {};
-        for (let i = 0; i < target.children.length; i++) {
-            order[target.children[i].getAttribute('data-object-key')] = i;
-        }
-        for (let i = 0; i < this._genericTable.gtSettings.length; i++ ) {
-            this._genericTable.gtSettings[i].columnOrder = order[this._genericTable.gtSettings[i].objectKey];
-        }
-
-        // reset array to trigger change detection
-        this._genericTable.gtSettings = [...this._genericTable.gtSettings];
-        this.changeDetectorRef.markForCheck();
-
-        this._genericTable.redraw();
-        this.gtEvent.emit({
-          name: 'gt-column-order-change',
-          value: {
-              settings: [...this._genericTable.gtSettings]
-            }
-        });
-    }
-
-    /**
-     * Get height of table head element ie. first row containing table headers.
-     * @returns offset height for table header in px.
-     */
-    private _getTableHeadHeight(): string {
-        try{
-            if (this.elementView.elementRef.nativeElement.nextElementSibling.firstElementChild.firstElementChild.tagName === 'THEAD') {
-                return this.elementView.elementRef.nativeElement.nextElementSibling.firstElementChild.firstElementChild.offsetHeight + 'px';
-            }
-            if (this.elementView.elementRef.nativeElement.nextElementSibling.firstElementChild.firstElementChild.firstElementChild.tagName === 'THEAD'){
-                return this.elementView.elementRef.nativeElement.nextElementSibling.firstElementChild.firstElementChild.firstElementChild.offsetHeight + 'px';
-            }
-            return '0px';
-        } catch (error) {
-            return '0px';
-        }
-    }
-
-    /**
-     * Get height of table head element ie. first row containing table headers.
-     * @returns offset height for table header in px.
-     */
-    private _getColumnSettingsHeaderHeight(): string {
-        try{
-            return this.gtColumnSettingsHeader.nativeElement.offsetHeight + 'px';
-        } catch (error) {
-            return '0px';
-        }
-    }
-
-    /** generate a unique id for dragula instance i.e. a unique bag name*/
-    private generateId() {
-        let d = new Date().getTime();
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            const r = (d + Math.random() * 16) % 16 | 0;
-            d = Math.floor(d / 16);
-            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-        });
-    }
-
+	/** generate a unique id for dragula instance i.e. a unique bag name*/
+	private generateId() {
+		let d = new Date().getTime();
+		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+			const r = ((d + Math.random() * 16) % 16) | 0;
+			d = Math.floor(d / 16);
+			return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+		});
+	}
 }
