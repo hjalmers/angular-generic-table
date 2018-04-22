@@ -38,7 +38,9 @@
     "prebuild:new": "npm run link-lib",
     "build:new": "rimraf dist/@angular-generic-table && npm run build:core && copyfiles -f @angular-generic-table/core/generic-table.scss dist/@angular-generic-table/core/scss/ && copyfiles -u 1 dist/@angular-generic-table/core/**/* @angular-generic-table/column-settings/node_modules/ && npm run build:column-settings && copyfiles -f @angular-generic-table/column-settings/column-settings.scss dist/@angular-generic-table/column-settings/scss/ && npm run copy:core-meta && npm run copy:column-settings-meta",
     "publish:new": "npm publish dist/@angular-generic-table/core && npm publish dist/@angular-generic-table/column-settings",
-    "link-lib": "cd @angular-generic-table/core && npm link && cd ../../ && npm link @angular-generic-table/core"
+    "link-lib": "cd @angular-generic-table/core && npm link && cd ../../ && npm link @angular-generic-table/core",
+    "prettier": "prettier --list-different --write '**/*.{ts,json,scss,md}'",
+    "tslint-check": "tslint-config-prettier-check ./tslint.json"
   },
   "private": false,
   "publishConfig": {
@@ -100,6 +102,7 @@
     "ts-node": "~2.0.0",
     "tsickle": "^0.27.2",
     "tslint": "~5.9.1",
+    "tslint-config-prettier": "^1.12.0",
     "typescript": "^2.4.2",
     "zone.js": "^0.8.26"
   }
