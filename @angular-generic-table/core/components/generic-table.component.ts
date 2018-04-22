@@ -313,12 +313,17 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 				}
 			});
 		}
-		if (this.gtOptions.rowExpandInitialState) {
+		if (
+			this.gtOptions.rowExpandInitialState &&
+			this.gtOptions.rowExpandInitialComponent
+		) {
 			data.map(row => {
 				const expanded =
 					typeof this.gtOptions.rowExpandInitialState === 'function'
 						? this.gtOptions.rowExpandInitialState(row)
 						: this.gtOptions.rowExpandInitialState;
+				this.expandedRow = this.gtOptions.rowExpandInitialComponent;
+
 				if (expanded) {
 					if (typeof this.metaInfo[row.$$gtRowId] === 'undefined') {
 						this.metaInfo[row.$$gtRowId] = { isOpen: true };
