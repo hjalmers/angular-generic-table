@@ -4,7 +4,7 @@
 <div class="card mb-5">
   <div class="card-header">Example</div>
   <div class="card-body">
-    <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"  [gtOptions]="{reportColumnWidth:true}"></generic-table>
+    <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"  [gtOptions]="options" (gtEvent)="eventListener($event)"></generic-table>
     <div class="text-center">
       <small><gt-table-info class="form-text text-muted mb-2" [genericTable]="myTable"></gt-table-info></small>
       <gt-pagination [gtClasses]="'pagination-sm justify-content-center'" [genericTable]="myTable"></gt-pagination>
