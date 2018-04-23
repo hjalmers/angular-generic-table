@@ -32,7 +32,11 @@ export class DemoWrapperComponent {
 				if (tree.fragment) {
 					const element = document.querySelector('#' + tree.fragment);
 					if (element) {
-						element.scrollIntoView(true);
+						element.scrollIntoView({
+							behavior: 'smooth',
+							block: 'start',
+							inline: 'nearest'
+						});
 					}
 				}
 			});
