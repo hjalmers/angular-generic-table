@@ -18,14 +18,12 @@ import { DrilldownComponent } from './drilldown/drilldown.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { CustomHeaderComponent } from './custom-header/custom-header.component';
 import { RowClickComponent } from './row-click/row-click.component';
-import { EmployeeTableComponent } from './demos/loading-data/in-memory-array/employee-table.component';
 import { DemoWrapperComponent } from './shared/components/demo-wrapper/demo-wrapper.component';
-import { RestExampleComponent } from './demos/loading-data/using-rest-api/rest-example.component';
 
 const routes: Routes = [
 	{ path: '', redirectTo: '/start', pathMatch: 'full' },
 	{ path: 'start', component: HomeComponent },
-	{ path: 'lazy', component: LazyComponent },
+	/*{ path: 'lazy', component: LazyComponent },
 	{ path: 'advanced', component: RestComponent },
 	{ path: 'basic', component: BasicComponent },
 	{ path: 'drilldown', component: DrilldownComponent },
@@ -43,7 +41,7 @@ const routes: Routes = [
 	},
 	{ path: 'checkbox', component: CheckboxComponent },
 	{ path: 'custom-header', component: CustomHeaderComponent },
-	{ path: 'row-click', component: RowClickComponent },
+	{ path: 'row-click', component: RowClickComponent },*/
 	{
 		path: 'loading-data',
 		component: DemoWrapperComponent
