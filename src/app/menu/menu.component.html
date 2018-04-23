@@ -9,7 +9,7 @@
 </ul>
 <h5>Core</h5>
 <ul class="navbar-nav mb-4">
-  <li class="nav-item">
+  <!--<li class="nav-item">
     <a class="nav-link" routerLink="/basic" routerLinkActive="active">Basic example</a>
   </li>
   <li class="nav-item">
@@ -54,8 +54,14 @@
   <li class="nav-item">
      <a class="nav-link" routerLink="/drilldown" routerLinkActive="active">Drilldown</a>
   </li><li class="nav-item">
-     <a class="nav-link" routerLink="/loading-data/" routerLinkActive="active">New demo</a>
+     <a class="nav-link" routerLink="/loading-data/" routerLinkActive="active"  fragment="rest">New demo</a>
+  </li>-->
+  <ng-container *ngFor="let section of sections; let i = index">
+    <label class="font-weight-bold">{{section.title}}</label>
+  <li class="nav-item" *ngFor="let example of section.examples">
+    <a class="nav-link pt-0" [routerLink]="'/'+ section.path" routerLinkActive="active"  [fragment]="example.fragment">{{example.title}}</a>
   </li>
+  </ng-container>
 </ul>
 <h5>Column settings</h5>
 <ul class="navbar-nav">
