@@ -96,5 +96,5 @@
 		"component-class-suffix": true,
 		"directive-class-suffix": true
 	},
-	"extends": ["tslint:latest", "codelyzer", "tslint-config-prettier"]
+	"extends": ["codelyzer", "tslint-config-prettier"]
 }
