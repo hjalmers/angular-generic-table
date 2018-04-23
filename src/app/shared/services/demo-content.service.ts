@@ -21,7 +21,8 @@ export interface DemoContent {
 	lead: string;
 	sections: Array<{
 		component: Type<any>;
-		fragment: string;
+		title: string;
+		fragment?: string;
 		description: string;
 		examples: Array<{
 			title: string;
@@ -38,7 +39,7 @@ export class DemoContentService {
 			sections: [
 				{
 					component: EmployeeTableComponent,
-					fragment: 'inMemory',
+					title: 'In memory',
 					description: inMemoryDescription,
 					examples: [
 						{
@@ -60,7 +61,7 @@ export class DemoContentService {
 				},
 				{
 					component: RestExampleComponent,
-					fragment: 'rest',
+					title: 'Using REST',
 					description: restDescription,
 					examples: [
 						{
@@ -103,16 +104,24 @@ export class DemoContentService {
 		const PARSED_CONFIRGURATION = {
 			lead: MD.parse(CONFIGURATION.lead),
 			sections: CONFIGURATION.sections.map(section => {
+				console.log(this.toCamelCase(section.title));
 				return {
 					...section,
-					...{ description: MD.parse(section.description) }
+					...{
+						description: MD.parse(section.description),
+						title: section.title,
+						fragment: this.toCamelCase(section.title)
+					}
 				};
 			})
 		};
+		console.log(PARSED_CONFIRGURATION);
 		return PARSED_CONFIRGURATION;
 	}
 
 	toCamelCase(string: string): string {
-		return string.replace(/-([a-z])/g, g => g[1].toUpperCase());
+		return string
+			.toLowerCase()
+			.replace(/[\s-]([a-z])/g, g => g[1].toUpperCase());
 	}
 }
