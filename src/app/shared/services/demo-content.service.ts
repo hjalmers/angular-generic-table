@@ -21,6 +21,7 @@ export interface DemoContent {
 	lead: string;
 	sections: Array<{
 		component: Type<any>;
+		fragment: string;
 		description: string;
 		examples: Array<{
 			title: string;
@@ -37,6 +38,7 @@ export class DemoContentService {
 			sections: [
 				{
 					component: EmployeeTableComponent,
+					fragment: 'inMemory',
 					description: inMemoryDescription,
 					examples: [
 						{
@@ -58,6 +60,7 @@ export class DemoContentService {
 				},
 				{
 					component: RestExampleComponent,
+					fragment: 'rest',
 					description: restDescription,
 					examples: [
 						{
