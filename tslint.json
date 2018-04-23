@@ -1,5 +1,8 @@
 {
-	"rulesDirectory": ["node_modules/codelyzer"],
+	"rulesDirectory": [
+		"node_modules/codelyzer",
+		"tslint-plugin-prettier"
+	],
 	"rules": {
 		"arrow-return-shorthand": true,
 		"callable-types": true,
@@ -94,7 +97,8 @@
 		"use-life-cycle-interface": true,
 		"use-pipe-transform-interface": true,
 		"component-class-suffix": true,
-		"directive-class-suffix": true
+		"directive-class-suffix": true,
+		"prettier": true
 	},
 	"extends": ["codelyzer", "tslint-config-prettier"]
 }
