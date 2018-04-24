@@ -1256,8 +1256,12 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 
 	public gtColumnSearch(objectKey: string, value: string) {
 		// map the column search value to its column
-		console.debug(this.gtColumnSearchTerms);
 		this.gtColumnSearchTerms.find(x => x.id === objectKey).value = value;
+
+		// Replace column search terms with a new object. This allows angular to
+		// detect a change in the pipe.
+		this.gtColumnSearchTerms = [...this.gtColumnSearchTerms];
+
 		this.goToPage(1);
 		this.updateTotals();
 	}
