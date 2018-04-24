@@ -17,8 +17,8 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 	 * - [x] skip the columns with search disabled.
 	 * - [ ] assign search or value functions if defined for that field.
 	 * - [ ] map undefined search values to empty strings.
-	 * - [ ] filter each row using each column's search term.
-	 * - [ ] return the filtered rows.
+	 * - [x] filter each row using each column's search term.
+	 * - [x] return the filtered rows.
 	 */
 	// TODO: do we need all of gtInfo, or just columnSearchTerms?
 	transform(
@@ -29,8 +29,8 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 		fields: Array<GtConfigField<R, any>>
 	): any {
 		// filter out any column searches that contain only empty strings.
-		// TODO: why is this needed? `gt-search.pipe.ts` also does this.
 		const columnSearchTerms = gtColumnSearchTerms
+			// TODO: why is this needed? Note that `gt-search.pipe.ts` also does this.
 			.filter(column => column.value.replace(/"/g, '').length !== 0)
 			.filter(
 				column =>
@@ -40,21 +40,27 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 			);
 
 		// if there are no search inputs, nothing needs to be done.
-		// TODO: Is this necessary? The *ngIf in `generic-table.component.ts` should
-		// prevent this from ever being called.
 		if (columnSearchTerms.length === 0) {
 			const length = allRows === null ? 0 : allRows.length;
 			gtInfo.recordsAfterSearch = length;
 			return allRows;
 		}
 
+		// TODO: Give this a type instead of `any`.
 		const filteredRows: Array<any> = [];
 
 		allRows.forEach(row => {
-			filteredRows.push(row);
+			columnSearchTerms.forEach(term => {
+				if (
+					(<string>row[term.id])
+						.toString()
+						.toLowerCase()
+						.includes(term.value.toLowerCase())
+				) {
+					filteredRows.push(row);
+				}
+			});
 		});
-
-		console.warn('gtColumnSearch is currently not filtering anything.');
 
 		return filteredRows;
 	}
