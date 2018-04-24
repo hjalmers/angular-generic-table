@@ -1,4 +1,5 @@
 import { Injectable, Type } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import * as marked from 'marked';
 
 import * as loadDataLead from '!raw-loader!../../demos/loading-data/lead.md';
@@ -14,16 +15,23 @@ import * as restComponent from '!raw-loader!../../demos/loading-data/using-rest-
 import * as restDescription from '!raw-loader!../../demos/loading-data/using-rest-api/description.md';
 import { RestExampleComponent } from '../../demos/loading-data/using-rest-api/rest-example.component';
 
+import * as sortLead from '!raw-loader!../../demos/sort/lead.md';
+import * as enableDisableSortHtml from '!raw-loader!../../demos/sort/enable-disable/enable-disable-sort-example.component.html';
+import * as enableDisableSortModule from '!raw-loader!../../demos/sort/sort.module';
+import * as enableDisableSortComponent from '!raw-loader!../../demos/sort/enable-disable/enable-disable-sort-example.component';
+import * as enableDisableSortDescription from '!raw-loader!../../demos/sort/enable-disable/description.md';
+import { EnableDisableSortExampleComponent } from '../../demos/sort/enable-disable/enable-disable-sort-example.component';
+
 export interface DemoContentStructure {
 	[key: string]: DemoContent;
 }
 export interface DemoContent {
-	lead: string;
+	lead: any;
 	sections: Array<{
 		component: Type<any>;
 		title: string;
 		fragment?: string;
-		description: string;
+		description: any;
 		examples: Array<{
 			title: string;
 			code: string;
@@ -82,9 +90,36 @@ export class DemoContentService {
 					]
 				}
 			]
+		},
+		sort: {
+			lead: sortLead,
+			sections: [
+				{
+					component: EnableDisableSortExampleComponent,
+					title: 'Enable/disable sort',
+					description: enableDisableSortDescription,
+					examples: [
+						{
+							title: 'employee-table.component.html',
+							code: enableDisableSortHtml,
+							lang: 'markup'
+						},
+						{
+							title: 'employee-table.component.ts',
+							code: enableDisableSortComponent,
+							lang: 'typescript'
+						},
+						{
+							title: 'loading-data.module.ts',
+							code: enableDisableSortModule,
+							lang: 'typescript'
+						}
+					]
+				}
+			]
 		}
 	};
-	constructor() {}
+	constructor(private _sanitizer: DomSanitizer) {}
 	getExamples(path: string): DemoContent {
 		// use marked for parsing markdown files
 		const MD = marked.setOptions({});
@@ -100,28 +135,29 @@ export class DemoContentService {
 			};
 		}
 
-		// parse confirguration (parse markdown files in config)
-		const PARSED_CONFIRGURATION = {
-			lead: MD.parse(CONFIGURATION.lead),
+		// prepare configuration for demo wrapper (parse markdown files in config, add fragment for anchor links etc.)
+		return {
+			lead: this._sanitizer.bypassSecurityTrustHtml(
+				MD.parse(CONFIGURATION.lead)
+			),
 			sections: CONFIGURATION.sections.map(section => {
-				console.log(this.toCamelCase(section.title));
 				return {
 					...section,
 					...{
-						description: MD.parse(section.description),
+						description: this._sanitizer.bypassSecurityTrustHtml(
+							MD.parse(section.description)
+						),
 						title: section.title,
 						fragment: this.toCamelCase(section.title)
 					}
 				};
 			})
 		};
-		console.log(PARSED_CONFIRGURATION);
-		return PARSED_CONFIRGURATION;
 	}
 
 	toCamelCase(string: string): string {
 		return string
 			.toLowerCase()
-			.replace(/[\s-]([a-z])/g, g => g[1].toUpperCase());
+			.replace(/[\s-/]([a-z])/g, g => g[1].toUpperCase());
 	}
 }
