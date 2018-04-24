@@ -57,7 +57,7 @@
      <a class="nav-link" routerLink="/loading-data/" routerLinkActive="active"  fragment="rest">New demo</a>
   </li>-->
   <ng-container *ngFor="let section of sections; let i = index">
-    <label class="font-weight-bold">{{section.title}}</label>
+    <label class="font-weight-bold mt-3">{{section.title}}</label>
   <li class="nav-item" *ngFor="let example of section.examples">
     <a class="nav-link pt-0" [routerLink]="'/'+ section.path" routerLinkActive="active"  [fragment]="example.fragment">{{example.title}}</a>
   </li>
