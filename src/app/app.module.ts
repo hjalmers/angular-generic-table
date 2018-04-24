@@ -65,6 +65,8 @@ import { CodeHighlightService } from './shared/services/code-highlight.service';
 import { DemoContentService } from './shared/services/demo-content.service';
 import { CodeHighlightComponent } from './shared/components/code-highlight/code-highlight.component';
 import { LoadingDataModule } from './demos/loading-data/loading-data.module';
+import { ExampleResolver } from './shared/resolvers/example.resolver';
+import { SortModule } from './demos/sort/sort.module';
 
 @NgModule({
 	declarations: [
@@ -109,6 +111,7 @@ import { LoadingDataModule } from './demos/loading-data/loading-data.module';
 		BasicDemoModule,
 		NgbModule.forRoot(),
 		LoadingDataModule,
+		SortModule,
 		GenericTableModule /** ADD THIS LINE TO YOUR APP MODULE! */,
 		ColumnSettingsModule /** ADD THIS LINE TO INCLUDE COLUMN SETTINGS MODULE (OPTIONAL) */,
 		AppRoutingModule /** holds routes used in examples */,
@@ -135,7 +138,7 @@ import { LoadingDataModule } from './demos/loading-data/loading-data.module';
 		TooltipComponent,
 		RowClickExpandedComponent
 	],
-	providers: [CodeHighlightService, DemoContentService],
+	providers: [CodeHighlightService, ExampleResolver, DemoContentService],
 	bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -19,6 +19,7 @@ import { CheckboxComponent } from './checkbox/checkbox.component';
 import { CustomHeaderComponent } from './custom-header/custom-header.component';
 import { RowClickComponent } from './row-click/row-click.component';
 import { DemoWrapperComponent } from './shared/components/demo-wrapper/demo-wrapper.component';
+import { ExampleResolver } from './shared/resolvers/example.resolver';
 
 const routes: Routes = [
 	{ path: '', redirectTo: '/start', pathMatch: 'full' },
@@ -44,11 +45,17 @@ const routes: Routes = [
 	{ path: 'row-click', component: RowClickComponent },*/
 	{
 		path: 'loading-data',
-		component: DemoWrapperComponent
+		component: DemoWrapperComponent,
+		resolve: {
+			example: ExampleResolver
+		}
 	},
 	{
-		path: 'loading-data-test',
-		component: DemoWrapperComponent
+		path: 'sort',
+		component: DemoWrapperComponent,
+		resolve: {
+			example: ExampleResolver
+		}
 	},
 	{ path: '**', component: HomeComponent }
 ];
