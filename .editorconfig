@@ -9,6 +9,10 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+[*.{ts,json,scss,md},!{package{,-lock},.vscode/*}.json]
+indent_style = tab
+max_line_length = 80
+
 [*.md]
 max_line_length = off
 trim_trailing_whitespace = false

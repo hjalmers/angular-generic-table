@@ -8,6 +8,9 @@ cache:
     - node_modules
 install:
   - npm install
+before_script:
+  - npm run tslint-check
 script:
+  - npm run lint:ci
   - npm run build:new
   - npm run ci
