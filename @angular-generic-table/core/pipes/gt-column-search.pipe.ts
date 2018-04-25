@@ -50,16 +50,18 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 		const filteredRows: Array<any> = [];
 
 		allRows.forEach(row => {
-			columnSearchTerms.forEach(term => {
-				if (
-					(<string>row[term.id])
-						.toString()
-						.toLowerCase()
-						.includes(term.value.toLowerCase())
-				) {
-					filteredRows.push(row);
-				}
-			});
+			// Include the row only if all fields match the search strings from each
+			// input. (Empty search strings were excluded from the check earlier).
+			const include = columnSearchTerms.every(term =>
+				(<string>row[term.id])
+					.toString()
+					.toLowerCase()
+					.includes(term.value.toLowerCase())
+			);
+
+			if (include) {
+				filteredRows.push(row);
+			}
 		});
 
 		return filteredRows;
