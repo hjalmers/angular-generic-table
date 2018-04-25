@@ -15,8 +15,8 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 	 * ### To Do List:
 	 * - [x] check that search fields contain values; if not, skip them.
 	 * - [x] skip the columns with search disabled.
-	 * - [ ] assign search or value functions if defined for that field.
-	 * - [ ] map undefined search values to empty strings.
+	 * - [x] assign search or value functions if defined for that field.
+	 * - [x] map undefined search values to empty strings.
 	 * - [x] filter each row using each column's search term.
 	 * - [x] return the filtered rows.
 	 */
@@ -39,6 +39,18 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 						: true
 			);
 
+		const searchFunction: any = {};
+
+		columnSearchTerms.forEach(term => {
+			const field = fields.find(f => f.objectKey === term.id);
+
+			if (typeof field.search === 'function') {
+				searchFunction[term.id] = field.search;
+			} else if (typeof field.value === 'function') {
+				searchFunction[term.id] = field.value;
+			}
+		});
+
 		// if there are no search inputs, nothing needs to be done.
 		if (columnSearchTerms.length === 0) {
 			const length = allRows === null ? 0 : allRows.length;
@@ -52,12 +64,16 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 		allRows.forEach(row => {
 			// Include the row only if all fields match the search strings from each
 			// input. (Empty search strings were excluded from the check earlier).
-			const include = columnSearchTerms.every(term =>
-				(<string>row[term.id])
+			const include = columnSearchTerms.every(term => {
+				row[term.id] = searchFunction[term.id]
+					? searchFunction[term.id](row)
+					: row[term.id];
+
+				return (<string>row[term.id])
 					.toString()
 					.toLowerCase()
-					.includes(term.value.toLowerCase())
-			);
+					.includes(term.value.toLowerCase());
+			});
 
 			if (include) {
 				filteredRows.push(row);
