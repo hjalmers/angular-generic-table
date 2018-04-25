@@ -4,9 +4,19 @@
 <div class="card mb-5">
   <div class="card-header">Example</div>
   <div class="card-body">
-    <input #globalSearch
-      class="form-control form-control-sm mr-sm-2 mb-3 mb-sm-0"
-      type="text" placeholder="Search" (keyup)="myTable.gtSearch(globalSearch.value)" />
+    <form class="form form-inline">
+      <label for="rows" class="form-control-label mr-sm-2">Rows</label>
+      <select id="rows" class="form-control form-control-sm mr-sm-2 mb-3 mb-sm-0" #rowLength (change)="myTable.changeRowLength(rowLength.value)">
+        <option value=10>10</option>
+        <option value=25>25</option>
+        <option value=50>50</option>
+        <option value=100>100</option>
+        <option value=all>All</option>
+      </select>
+      <input #globalSearch
+        class="form-control form-control-sm mr-sm-2 mb-3 mb-sm-0"
+        type="text" placeholder="Search" (keyup)="myTable.gtSearch(globalSearch.value)" />
+    </form>
     <generic-table #myTable
       [gtClasses]="'table-sm'"
       [gtSettings]="configObject.settings"
@@ -14,5 +24,11 @@
       [gtFields]="configObject.fields"
       [(gtData)]="configObject.data">
     </generic-table>
+    <div class="text-center">
+      <small>
+        <gt-table-info class="form-text text-muted mb-2" [genericTable]="myTable"></gt-table-info>
+      </small>
+      <gt-pagination [gtClasses]="'pagination-sm justify-content-center'" [genericTable]="myTable"></gt-pagination>
+    </div>
   </div>
 </div>
