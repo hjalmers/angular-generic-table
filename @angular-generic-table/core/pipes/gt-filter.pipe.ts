@@ -5,7 +5,7 @@ import { GtInformation } from '../interfaces/gt-information';
 	name: 'gtFilter'
 })
 export class GtFilterPipe implements PipeTransform {
-	//@Output() filterInfo = new EventEmitter();
+	// @Output() filterInfo = new EventEmitter();
 
 	transform(
 		allRows: any[],
@@ -14,10 +14,10 @@ export class GtFilterPipe implements PipeTransform {
 		refreshFilter: boolean,
 		refreshData: number
 	): any[] {
-		//console.log(allRows,filterBy);
+		// console.log(allRows,filterBy);
 		gtInfo.recordsAll = allRows.length;
 		if (!Array.isArray(allRows) || !filterBy) {
-			//gtInfo.filtered = false;
+			// gtInfo.filtered = false;
 
 			const length = allRows === null ? 0 : allRows.length;
 			gtInfo.recordsAfterFilter = length;
@@ -31,8 +31,8 @@ export class GtFilterPipe implements PipeTransform {
 
 			for (const property in filterBy) {
 				if (filterBy.hasOwnProperty(property)) {
-					//console.log(property);
-					//console.log(filter[property].indexOf(obj[property]));
+					// console.log(property);
+					// console.log(filter[property].indexOf(obj[property]));
 					if (filterBy[property].indexOf(rowObject[property]) === -1) {
 						match = false;
 					}
@@ -42,7 +42,7 @@ export class GtFilterPipe implements PipeTransform {
 				output.push(rowObject);
 			}
 		}
-		gtInfo.recordsAfterFilter = output.length; //.emit(output.length);
+		gtInfo.recordsAfterFilter = output.length; // .emit(output.length);
 		return output;
 	}
 }

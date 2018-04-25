@@ -52,6 +52,8 @@ export class GtDropdownComponent implements OnInit, OnDestroy {
 	active = false; // is dropdown active or not
 	state: Subject<boolean> = new Subject(); // current state of dropdown
 	tether: any;
+	clickListener: Function;
+	keyupListener: Function;
 
 	constructor(private renderer: Renderer2) {}
 
@@ -62,9 +64,6 @@ export class GtDropdownComponent implements OnInit, OnDestroy {
 			this.selectedChange.emit(option);
 		}
 	}
-
-	clickListener: Function;
-	keyupListener: Function;
 
 	toggleDropdown() {
 		this.active = !this.active;

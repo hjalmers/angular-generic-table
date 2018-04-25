@@ -18,9 +18,12 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
 	// TODO: move to helper functions
 	/** Sort by column order */
 	private getColumnOrder = function(a: GtConfigSetting, b: GtConfigSetting) {
-		if (a.columnOrder < b.columnOrder) return -1;
-		if (a.columnOrder > b.columnOrder || typeof a.columnOrder === 'undefined')
+		if (a.columnOrder < b.columnOrder) {
+			return -1;
+		}
+		if (a.columnOrder > b.columnOrder || typeof a.columnOrder === 'undefined') {
 			return 1;
+		}
 		return 0;
 	};
 
@@ -47,11 +50,11 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
 		highlight: boolean = false,
 		searchString?: string
 	): Array<Object> {
-		//let arr = [{"temp":123,"name":"happy"},{"temp":456,"name":"dfgdfg"},{"temp":789,"name":"asdasd"}];
-		//console.log(arr,arr.map(function(item){return item.temp}));
-		//console.log(settings.map('objectKey'));
+		// let arr = [{"temp":123,"name":"happy"},{"temp":456,"name":"dfgdfg"},{"temp":789,"name":"asdasd"}];
+		// console.log(arr,arr.map(function(item){return item.temp}));
+		// console.log(settings.map('objectKey'));
 
-		//console.log('render');
+		// console.log('render');
 		const columns: Array<string> = [];
 		for (let i = 0; i < settings.length; i++) {
 			if (settings[i].visible !== false && settings[i].enabled !== false) {
@@ -60,7 +63,7 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
 		}
 
 		for (let i = 0; i < fields.length; i++) {
-			//console.log(!row[fields[i].objectKey]);
+			// console.log(!row[fields[i].objectKey]);
 			if (
 				fields[i].value &&
 				typeof fields[i].value === 'function' &&
@@ -69,16 +72,16 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
 				row[fields[i].objectKey] = loading ? '' : fields[i].value(row);
 			}
 		}
-		//console.log(row);
+		// console.log(row);
 		const keys: Array<any> = [];
 		for (const key in row) {
-			//console.log(key);
+			// console.log(key);
 			if (columns.indexOf(key) !== -1) {
 				let fieldSetting;
 				for (let i = 0; i < fields.length; i++) {
 					if (fields[i].objectKey === key) {
 						fieldSetting = fields[i];
-						//console.log(fieldSetting);
+						// console.log(fieldSetting);
 					}
 				}
 

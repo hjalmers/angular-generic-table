@@ -26,9 +26,7 @@ export function deepCopy(dictionary: StateDictionary) {
 	return newDictionary;
 }
 
-export interface UpdateFunction {
-	(dictionary: StateDictionary): StateDictionary;
-}
+export type UpdateFunction = (dictionary: StateDictionary) => StateDictionary;
 
 @Injectable()
 export class StateService {
@@ -178,27 +176,6 @@ export class CustomColumnComponent {
 		private stateService: StateService
 	) {}
 
-	saveAll() {
-		this.stateService.states
-			.take(1)
-			.delay(Math.floor(Math.random() * 2000) + 1000)
-			.subscribe(dictionary => {
-				const newData: Row[] = Object.keys(dictionary).map(key => ({
-					id: parseInt(key),
-					name: dictionary[key].name,
-					age: dictionary[key].age
-				}));
-				newData.forEach(row => {
-					console.log(
-						`Saving name = "${row.name}" and age = ${row.age} for id = ${
-							row.id
-						}`
-					);
-				});
-				this.gtConfig.data = newData;
-			});
-	}
-
 	gtConfig: GtConfig<Row> = {
 		settings: [
 			{
@@ -293,4 +270,25 @@ export class CustomColumnComponent {
 			}
 		]
 	};
+
+	saveAll() {
+		this.stateService.states
+			.take(1)
+			.delay(Math.floor(Math.random() * 2000) + 1000)
+			.subscribe(dictionary => {
+				const newData: Row[] = Object.keys(dictionary).map(key => ({
+					id: parseInt(key, 10),
+					name: dictionary[key].name,
+					age: dictionary[key].age
+				}));
+				newData.forEach(row => {
+					console.log(
+						`Saving name = "${row.name}" and age = ${row.age} for id = ${
+							row.id
+						}`
+					);
+				});
+				this.gtConfig.data = newData;
+			});
+	}
 }

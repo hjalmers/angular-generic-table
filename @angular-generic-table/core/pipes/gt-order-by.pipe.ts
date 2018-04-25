@@ -6,30 +6,6 @@ import { GtRow } from '../interfaces/gt-row';
 	name: 'gtOrderBy'
 })
 export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
-	/** Return property */
-	private getProperty = function(array: Array<any>, key: string) {
-		for (let i = 0; i < array.length; i++) {
-			if (array[i].objectKey === key) {
-				return array[i];
-			}
-		}
-	};
-
-	/** Return sort function */
-	private getSortFunction(field: any) {
-		if (!field) {
-			// console.log('error trying to sort undefined field');
-			return false;
-		}
-		if (typeof field.sort === 'function') {
-			return field.sort;
-		} else if (typeof field.value === 'function') {
-			return field.value;
-		} else {
-			return false;
-		}
-	}
-
 	static _orderByComparator(a: any, b: any): number {
 		// sort boolean values as strings
 		if (typeof a === 'boolean') {
@@ -79,6 +55,30 @@ export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
 		}
 
 		return 0; // equal each other
+	}
+
+	/** Return property */
+	private getProperty = function(array: Array<any>, key: string) {
+		for (let i = 0; i < array.length; i++) {
+			if (array[i].objectKey === key) {
+				return array[i];
+			}
+		}
+	};
+
+	/** Return sort function */
+	private getSortFunction(field: any) {
+		if (!field) {
+			// console.log('error trying to sort undefined field');
+			return false;
+		}
+		if (typeof field.sort === 'function') {
+			return field.sort;
+		} else if (typeof field.value === 'function') {
+			return field.value;
+		} else {
+			return false;
+		}
 	}
 
 	transform(
