@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { DemoContent } from '../../services/demo-content.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
@@ -7,7 +7,7 @@ import { ReplaySubject } from 'rxjs/ReplaySubject';
 	templateUrl: './demo-wrapper.component.html',
 	styleUrls: ['./demo-wrapper.component.scss']
 })
-export class DemoWrapperComponent implements OnDestroy, AfterViewInit {
+export class DemoWrapperComponent implements AfterViewInit {
 	public demoContent: ReplaySubject<DemoContent> = new ReplaySubject<
 		DemoContent
 	>(1);
