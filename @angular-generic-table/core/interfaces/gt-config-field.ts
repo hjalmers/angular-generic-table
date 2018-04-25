@@ -3,24 +3,18 @@ import { Type, Injector } from '@angular/core';
 import { GtCustomComponent } from '../components/gt-custom-component-factory';
 import { Observable } from 'rxjs/Observable';
 
-export interface GtRenderFunc<R extends GtRow> {
-	(row: R): string;
-}
+export type GtRenderFunc<R extends GtRow> = (row: R) => string;
 
-export interface GtValueFunc<R extends GtRow> {
-	(row: R): any;
-}
+export type GtValueFunc<R extends GtRow> = (row: R) => any;
 
-export interface GtClickFunc<R extends GtRow> {
-	(row: R, col: any, event: MouseEvent): void;
-}
-export interface GtClassFunc {
-	(row: any, col: any): string;
-}
+export type GtClickFunc<R extends GtRow> = (
+	row: R,
+	col: any,
+	event: MouseEvent
+) => void;
+export type GtClassFunc = (row: any, col: any) => string;
 
-export interface GtInlineEditFunc<R extends GtRow> {
-	(row: any, col: any): boolean;
-}
+export type GtInlineEditFunc<R extends GtRow> = (row: any, col: any) => boolean;
 
 export interface GtConfigField<
 	R extends GtRow,

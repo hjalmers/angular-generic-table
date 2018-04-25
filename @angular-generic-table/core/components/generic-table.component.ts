@@ -1048,7 +1048,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 					eventValue = this.metaInfo[row.$$gtRowId][property];
 					this.redraw();
 					this.inlineEditCancel(row);
-					//this.gtData = [...this.gtData.map((r) => { return{...r}; })];
+					// this.gtData = [...this.gtData.map((r) => { return{...r}; })];
 					break;
 			}
 			this.gtEvent.emit({
@@ -1440,7 +1440,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 					'href',
 					'data:text/csv;charset=utf-8,' +
 						encodeURIComponent((useBOM ? BOM : '') + csv)
-				); //URL.createObjectURL(blob));
+				); // URL.createObjectURL(blob));
 				link.setAttribute(
 					'download',
 					fileName ? fileName + '.csv' : this.gtTexts.csvDownload + '.csv'

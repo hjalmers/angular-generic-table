@@ -10,9 +10,12 @@ export class GtVisiblePipe<R extends GtRow> implements PipeTransform {
 	// TODO: move to helper functions
 	/** Sort by column order */
 	private getColumnOrder = function(a: any, b: any) {
-		if (a.columnOrder < b.columnOrder) return -1;
-		if (a.columnOrder > b.columnOrder || typeof a.columnOrder === 'undefined')
+		if (a.columnOrder < b.columnOrder) {
+			return -1;
+		}
+		if (a.columnOrder > b.columnOrder || typeof a.columnOrder === 'undefined') {
 			return 1;
+		}
 		return 0;
 	};
 

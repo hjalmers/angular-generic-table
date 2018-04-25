@@ -152,7 +152,7 @@ export class RestComponent implements OnInit {
 
 		this.http
 			.get(this.url)
-			//.map((res: Response) => res.json())
+			// .map((res: Response) => res.json())
 			.subscribe(res => {
 				this.configObject.data = res.data;
 			});
