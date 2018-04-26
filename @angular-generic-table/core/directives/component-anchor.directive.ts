@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 
 @Directive({
-	selector: '[appComponentAnchor]'
+	selector: '[gtComponentAnchor]'
 })
 export class ComponentAnchorDirective<C> implements OnInit {
 	@Input() ctor: Type<C>;

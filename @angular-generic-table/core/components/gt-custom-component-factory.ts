@@ -26,7 +26,7 @@ export abstract class GtCustomComponent<R> implements OnInit {
 
 @Component({
 	selector: 'gt-custom-component-factory',
-	template: `<div appComponentAnchor [ctor]="type"
+	template: `<div gtComponentAnchor [ctor]="type"
                     [injector]="injector"
                     (instance)="instance($event)"></div>`
 })

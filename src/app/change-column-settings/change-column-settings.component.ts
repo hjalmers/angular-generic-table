@@ -26,6 +26,7 @@ export interface RowData extends GtRow {
 export class ChangeColumnSettingsComponent {
 	public firstConfigObject: GtConfig<RowData>;
 	public secondConfigObject: GtConfig<RowData>;
+	public data: Array<RowData>;
 
 	public getBaseSettings() {
 		return [
@@ -154,8 +155,6 @@ export class ChangeColumnSettingsComponent {
 			}
 		];
 	}
-
-	public data: Array<RowData>;
 
 	constructor() {
 		const data = [

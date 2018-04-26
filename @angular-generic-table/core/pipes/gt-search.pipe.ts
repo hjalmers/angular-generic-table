@@ -93,7 +93,7 @@ export class GtSearchPipe<R extends GtRow> implements PipeTransform {
 			}
 		}
 		gtInfo.recordsAfterSearch = filteredRows.length;
-		//gtInfo.refresh(filteredRows.length,gt);
+		// gtInfo.refresh(filteredRows.length,gt);
 		return filteredRows;
 	}
 }

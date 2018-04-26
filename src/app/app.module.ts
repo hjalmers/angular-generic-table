@@ -18,9 +18,7 @@ import {
 	DeleteDiscardButtonComponent,
 	SelectedCheckboxComponent
 } from './add-remove-edit/add-remove-edit.component';
-import { ExamplesComponent } from './examples/examples.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ExemplifyModule } from 'angular-exemplify';
 import { LocalizationComponent } from './localization/localization.component';
 import {
 	CustomColumnComponent,
@@ -81,7 +79,6 @@ import { LoadingDataModule } from './demos/loading-data/loading-data.module';
 		DeleteDiscardButtonComponent,
 		SelectedCheckboxComponent,
 		BasicComponent,
-		ExamplesComponent,
 		LocalizationComponent,
 		ChangeColumnSettingsComponent,
 		HomeComponent,

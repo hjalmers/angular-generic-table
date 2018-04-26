@@ -1,8 +1,6 @@
 import { Type } from '@angular/core';
 
-export interface InitialStateFunc {
-	(row: any): boolean;
-}
+export type InitialStateFunc = (row: any) => boolean;
 
 export interface GtOptions {
 	cache?: boolean;

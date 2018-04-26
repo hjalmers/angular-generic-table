@@ -10,18 +10,20 @@ import {
 	Renderer2,
 	OnDestroy
 } from '@angular/core';
-import { GtConfig } from '../interfaces/gt-config';
-import { GtConfigField } from '../interfaces/gt-config-field';
-import { GtConfigSetting } from '../interfaces/gt-config-setting';
-import { GtTexts } from '../interfaces/gt-texts';
-import { GtInformation } from '../interfaces/gt-information';
-import { GtExpandedRow } from './gt-expanding-row.component';
-import { GtRow } from '../interfaces/gt-row';
-import { GtOptions } from '../interfaces/gt-options';
-import { GtRowMeta } from '../interfaces/gt-row-meta';
-import { GtRenderField } from '../interfaces/gt-render-field';
+import {
+	GtConfig,
+	GtConfigField,
+	GtConfigSetting,
+	GtTexts,
+	GtInformation,
+	GtExpandedRow,
+	GtRow,
+	GtOptions,
+	GtRowMeta,
+	GtRenderField,
+	GtEvent
+} from '..';
 import { GtMetaPipe } from '../pipes/gt-meta.pipe';
-import { GtEvent } from '../interfaces/gt-event';
 
 @Component({
 	selector: 'generic-table',
@@ -412,6 +414,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 	public refreshPipe = false;
 	public refreshTotals = false;
 	public refreshSorting = false;
+	public refreshFilter = false;
+	public refreshPageArray = false;
 	private globalInlineEditListener: Function;
 	public editedRows: {
 		[key: string]: {
@@ -420,7 +424,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		};
 	} = {};
 
-	private data: { exportData: Array<any> } = { exportData: [] }; // Store filtered data for export
+	public data: { exportData: Array<any> } = { exportData: [] }; // Store filtered data for export
 
 	constructor(private renderer: Renderer2, private gtMetaPipe: GtMetaPipe) {
 		this.gtEvent.subscribe(($event: GtEvent) => {
@@ -1048,7 +1052,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 					eventValue = this.metaInfo[row.$$gtRowId][property];
 					this.redraw();
 					this.inlineEditCancel(row);
-					//this.gtData = [...this.gtData.map((r) => { return{...r}; })];
+					// this.gtData = [...this.gtData.map((r) => { return{...r}; })];
 					break;
 			}
 			this.gtEvent.emit({
@@ -1440,7 +1444,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 					'href',
 					'data:text/csv;charset=utf-8,' +
 						encodeURIComponent((useBOM ? BOM : '') + csv)
-				); //URL.createObjectURL(blob));
+				); // URL.createObjectURL(blob));
 				link.setAttribute(
 					'download',
 					fileName ? fileName + '.csv' : this.gtTexts.csvDownload + '.csv'

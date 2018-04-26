@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ExamplesComponent } from './examples/examples.component';
 import { LazyComponent } from './lazy/lazy.component';
 import { RestComponent } from './rest/rest.component';
 import { BasicComponent } from './basic/basic.component';
@@ -18,9 +17,7 @@ import { DrilldownComponent } from './drilldown/drilldown.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { CustomHeaderComponent } from './custom-header/custom-header.component';
 import { RowClickComponent } from './row-click/row-click.component';
-import { EmployeeTableComponent } from './demos/loading-data/in-memory-array/employee-table.component';
 import { DemoWrapperComponent } from './shared/components/demo-wrapper/demo-wrapper.component';
-import { RestExampleComponent } from './demos/loading-data/using-rest-api/rest-example.component';
 
 const routes: Routes = [
 	{ path: '', redirectTo: '/start', pathMatch: 'full' },

@@ -39,9 +39,7 @@ export function deepCopy(dictionary: StateDictionary) {
 	return newDictionary;
 }
 
-export interface UpdateFunction {
-	(dictionary: StateDictionary): StateDictionary;
-}
+export type UpdateFunction = (dictionary: StateDictionary) => StateDictionary;
 
 @Injectable()
 export class StateService {
