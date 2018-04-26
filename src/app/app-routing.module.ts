@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ExamplesComponent } from './examples/examples.component';
 import { LazyComponent } from './lazy/lazy.component';
 import { RestComponent } from './rest/rest.component';
 import { BasicComponent } from './basic/basic.component';
