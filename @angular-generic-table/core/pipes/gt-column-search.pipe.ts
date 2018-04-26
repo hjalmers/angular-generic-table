@@ -65,6 +65,8 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 			// Include the row only if all fields match the search strings from each
 			// input. (Empty search strings were excluded from the check earlier).
 			const include = columnSearchTerms.every(term => {
+				// Map the search/value function to that field if defined, otherwise
+				// return the raw field value.
 				row[term.id] = searchFunction[term.id]
 					? searchFunction[term.id](row)
 					: row[term.id];
