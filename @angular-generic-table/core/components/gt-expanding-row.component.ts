@@ -34,7 +34,7 @@ export class GtExpandedRow<R extends GtRow> {
 @Component({
 	selector: 'gt-expanding-row',
 	template: `
-        <div appComponentAnchor
+        <div gtComponentAnchor
              [ctor]="type" (instance)="newInstance($event)"></div>`
 })
 export class GtExpandingRowComponent<
