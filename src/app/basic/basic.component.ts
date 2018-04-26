@@ -8,7 +8,6 @@ export interface RowData extends GtRow {
 }
 
 @Component({
-	selector: 'app-basic',
 	templateUrl: './basic.component.html'
 })
 export class BasicComponent {

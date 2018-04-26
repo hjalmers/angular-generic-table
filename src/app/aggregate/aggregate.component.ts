@@ -7,7 +7,6 @@ export interface RowData extends GtRow {
 	meetings: number;
 }
 @Component({
-	selector: 'aggregate',
 	templateUrl: './aggregate.component.html',
 	styles: []
 })
