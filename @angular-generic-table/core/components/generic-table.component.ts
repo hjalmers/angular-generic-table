@@ -412,6 +412,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 	public refreshPipe = false;
 	public refreshTotals = false;
 	public refreshSorting = false;
+	public refreshFilter = false;
+	public refreshPageArray = false;
 	private globalInlineEditListener: Function;
 	public editedRows: {
 		[key: string]: {
@@ -420,7 +422,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		};
 	} = {};
 
-	private data: { exportData: Array<any> } = { exportData: [] }; // Store filtered data for export
+	public data: { exportData: Array<any> } = { exportData: [] }; // Store filtered data for export
 
 	constructor(private renderer: Renderer2, private gtMetaPipe: GtMetaPipe) {
 		this.gtEvent.subscribe(($event: GtEvent) => {
