@@ -502,7 +502,11 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 						this.sortOrder[pos] = '-' + objectKey;
 					} else if (this.sortOrder.length > 1) {
 						// ...remove sorting if sorted desc
-						this.sortOrder.splice(pos, 1);
+						if (ctrlKey) {
+							this.sortOrder[pos] = objectKey;
+						} else {
+							this.sortOrder.splice(pos, 1);
+						}
 					} else if (this.sortOrder.length === 1) {
 						// ...set sorting to asc if only sorted property
 						this.sortOrder[pos] = objectKey;
@@ -518,7 +522,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 					break;
 				default:
 					// ...change from desc to asc and vise versa
-					this.sortOrder = match !== -1 ? ['-' + objectKey] : [objectKey];
+					this.sortOrder =
+						match !== -1 ? ['-' + objectKey] : ctrlKey ? [objectKey] : [];
 					break;
 			}
 		}
@@ -536,7 +541,9 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 					case 'desc':
 						// ...change to asc if it's the only sorted property otherwise remove sorting
 						this._gtSettings[i].sort =
-							this.sortOrder.length === 1 && sort.length < 2 ? 'asc' : 'enable';
+							(this.sortOrder.length === 1 && sort.length < 2) || ctrlKey
+								? 'asc'
+								: 'enable';
 						break;
 					// if sorting enabled...
 					case 'enable':
@@ -1502,7 +1509,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 			}
 			// ...if no sorting applied...
 			if (sorting.length === 0) {
-				// ...sort settings by column order
+				sorting.push('$$gtRowId');
+				/*// ...sort settings by column order
 				this._gtSettings.sort(this.getColumnOrder);
 
 				// ...loop through settings
@@ -1515,7 +1523,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 						this.sortOrder = [this._gtSettings[i].objectKey];
 						return;
 					}
-				}
+				}*/
 			}
 		}
 

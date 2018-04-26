@@ -7,6 +7,10 @@
 * Support for row click events from drilldown component #218
 * Support for setting initial state for expanding row #217
 
+### Fixed
+
+* Preserve original order for sort, sort will now go from `ascending` to `descending` and then back to `enabled` instead of just switching between ascending/descending #230
+
 # [4.13.0] - 2018-04-03
 
 ### Added

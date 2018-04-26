@@ -15,21 +15,11 @@ export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
 			b = b.toString();
 		}
 
-		if (
-			isNaN(parseFloat(a)) ||
-			!isFinite(a) ||
-			(isNaN(parseFloat(b)) || !isFinite(b))
-		) {
-			if (
-				b === null ||
-				(typeof b === 'undefined' && (a !== null && typeof a !== 'undefined'))
-			) {
+		if (isNaN(parseFloat(a)) || !isFinite(a) || (isNaN(parseFloat(b)) || !isFinite(b))) {
+			if (b === null || (typeof b === 'undefined' && (a !== null && typeof a !== 'undefined'))) {
 				return 1;
 			}
-			if (
-				a === null ||
-				(typeof a === 'undefined' && (b !== null && typeof b !== 'undefined'))
-			) {
+			if (a === null || (typeof a === 'undefined' && (b !== null && typeof b !== 'undefined'))) {
 				return -1;
 			}
 
@@ -91,50 +81,34 @@ export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
 		if (!Array.isArray(input) || input === null) {
 			return input;
 		}
-		if (
-			!Array.isArray(sortByProperties) ||
-			(Array.isArray(sortByProperties) && sortByProperties.length === 1)
-		) {
+		if (!Array.isArray(sortByProperties) || (Array.isArray(sortByProperties) && sortByProperties.length === 1)) {
 			const propertyToCheck: string = sortByProperties[0];
 			const desc = propertyToCheck.substr(0, 1) === '-';
 
 			// basic array
-			if (
-				!propertyToCheck ||
-				propertyToCheck === '-' ||
-				propertyToCheck === '+'
-			) {
+			if (!propertyToCheck || propertyToCheck === '-' || propertyToCheck === '+') {
 				return !desc ? input.sort() : input.sort().reverse();
 			} else {
 				const property: string =
-					propertyToCheck.substr(0, 1) === '+' ||
-					propertyToCheck.substr(0, 1) === '-'
-						? propertyToCheck.substr(1)
-						: propertyToCheck;
+					propertyToCheck.substr(0, 1) === '+' || propertyToCheck.substr(0, 1) === '-' ? propertyToCheck.substr(1) : propertyToCheck;
 
 				// check if custom sort function is defined
-				const sortFunction: any = this.getSortFunction(
-					this.getProperty(fields, property)
-				);
+				const sortFunction: any = this.getSortFunction(this.getProperty(fields, property));
 
+				// console.log(property);
 				return input.sort(function(a: any, b: any) {
 					// use custom sort function if one is defined
 					const propertyA =
-						sortFunction === false ? a[property] : sortFunction(a);
+						sortFunction === false ? (property === '$$gtRowId' ? +a.$$gtRowId.split('_')[0] : a[property]) : sortFunction(a);
 					const propertyB =
-						sortFunction === false ? b[property] : sortFunction(b);
+						sortFunction === false ? (property === '$$gtRowId' ? +b.$$gtRowId.split('_')[0] : b[property]) : sortFunction(b);
 
 					// if both values are undefined...
-					if (
-						typeof propertyA === 'undefined' &&
-						typeof propertyB === 'undefined'
-					) {
+					if (typeof propertyA === 'undefined' && typeof propertyB === 'undefined') {
 						// ...skip comparison
 						return;
 					}
-					return !desc
-						? GtOrderByPipe._orderByComparator(propertyA, propertyB)
-						: -GtOrderByPipe._orderByComparator(propertyA, propertyB);
+					return !desc ? GtOrderByPipe._orderByComparator(propertyA, propertyB) : -GtOrderByPipe._orderByComparator(propertyA, propertyB);
 				});
 			}
 		} else {
@@ -144,22 +118,19 @@ export class GtOrderByPipe<R extends GtRow> implements PipeTransform {
 				for (let i = 0; i < sortByProperties.length; i++) {
 					const desc = sortByProperties[i].substr(0, 1) === '-';
 					const property =
-						sortByProperties[i].substr(0, 1) === '+' ||
-						sortByProperties[i].substr(0, 1) === '-'
+						sortByProperties[i].substr(0, 1) === '+' || sortByProperties[i].substr(0, 1) === '-'
 							? sortByProperties[i].substr(1)
 							: sortByProperties[i];
 
 					// console.log(property);
 					// check if custom sort function is defined
-					const sortFunction: any = this.getSortFunction(
-						this.getProperty(fields, property)
-					);
+					const sortFunction: any = this.getSortFunction(this.getProperty(fields, property));
 
 					// use custom sort function if one is defined
 					const propertyA =
-						sortFunction === false ? a[property] : sortFunction(a);
+						sortFunction === false ? (property === '$$gtRowId' ? +a.$$gtRowId.split('_')[0] : a[property]) : sortFunction(a);
 					const propertyB =
-						sortFunction === false ? b[property] : sortFunction(b);
+						sortFunction === false ? (property === '$$gtRowId' ? +b.$$gtRowId.split('_')[0] : b[property]) : sortFunction(b);
 
 					const comparison = !desc
 						? GtOrderByPipe._orderByComparator(propertyA, propertyB)
