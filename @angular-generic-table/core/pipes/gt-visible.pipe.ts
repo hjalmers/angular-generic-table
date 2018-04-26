@@ -22,7 +22,7 @@ export class GtVisiblePipe<R extends GtRow> implements PipeTransform {
 	transform(
 		array: Array<GtConfigField<R, any>>,
 		settings: Array<GtConfigSetting>
-	): Array<GtConfigField<R, any>> {
+	): Array<GtConfigField<R, any>> | Array<GtConfigSetting> {
 		const visibleColumns = settings
 			.sort(this.getColumnOrder)
 			.map((setting: GtConfigSetting) => {

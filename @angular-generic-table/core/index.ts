@@ -17,3 +17,6 @@ export { GtOptions } from './interfaces/gt-options';
 export { GtCustomComponent } from './components/gt-custom-component-factory';
 export { GtHighlightPipe } from './pipes/gt-highlight.pipe';
 export { GtEvent } from './interfaces/gt-event';
+export { GtRowMeta } from './interfaces/gt-row-meta';
+export { GtRenderField } from './interfaces/gt-render-field';
+export { GtRenderField } from './interfaces/gt-render-field';
