@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform, EventEmitter } from '@angular/core';
-import { GtInformation } from '../interfaces/gt-information';
+import { GtInformation, GtEvent } from '..';
 
 @Pipe({
 	name: 'gtChunk'
@@ -12,7 +12,7 @@ export class GtChunkPipe implements PipeTransform {
 		page: number,
 		refreshPageArray: boolean,
 		refreshData: number,
-		gtEvent: EventEmitter<any>,
+		gtEvent: EventEmitter<GtEvent>,
 		data: { exportData: Array<any> }
 	): any[] {
 		if (!Array.isArray(array)) {
