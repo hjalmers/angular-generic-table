@@ -1,7 +1,8 @@
 {
   "extends": "../tslint.json",
   "rules": {
-    "directive-selector": [true, "attribute", "generic", "camelCase"],
-    "component-selector": [true, "element", "generic", "kebab-case"]
+    "directive-selector": [true, "attribute", ["generic", "gt"], "camelCase"],
+    "component-selector": [true, "element", ["generic", "gt"], "kebab-case"],
+    "component-class-suffix": [true, "Component", "Factory"]
   }
 }
