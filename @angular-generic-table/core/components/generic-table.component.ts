@@ -10,18 +10,20 @@ import {
 	Renderer2,
 	OnDestroy
 } from '@angular/core';
-import { GtConfig } from '../interfaces/gt-config';
-import { GtConfigField } from '../interfaces/gt-config-field';
-import { GtConfigSetting } from '../interfaces/gt-config-setting';
-import { GtTexts } from '../interfaces/gt-texts';
-import { GtInformation } from '../interfaces/gt-information';
-import { GtExpandedRow } from './gt-expanding-row.component';
-import { GtRow } from '../interfaces/gt-row';
-import { GtOptions } from '../interfaces/gt-options';
-import { GtRowMeta } from '../interfaces/gt-row-meta';
-import { GtRenderField } from '../interfaces/gt-render-field';
+import {
+	GtConfig,
+	GtConfigField,
+	GtConfigSetting,
+	GtTexts,
+	GtInformation,
+	GtExpandedRow,
+	GtRow,
+	GtOptions,
+	GtRowMeta,
+	GtRenderField,
+	GtEvent
+} from '..';
 import { GtMetaPipe } from '../pipes/gt-meta.pipe';
-import { GtEvent } from '../interfaces/gt-event';
 
 @Component({
 	selector: 'generic-table',
