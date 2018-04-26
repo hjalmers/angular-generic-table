@@ -13,7 +13,7 @@ export class DemoWrapperComponent implements AfterViewInit {
 	>(1);
 
 	constructor(private router: Router, private route: ActivatedRoute) {
-		this.demoContent.next(<DemoContent>this.route.snapshot.data.example);
+		this.demoContent.next(this.route.snapshot.data.example as DemoContent);
 
 		this.route.fragment.subscribe(fragment => {
 			this.scrollIntoView(fragment);
