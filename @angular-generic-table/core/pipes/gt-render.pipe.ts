@@ -49,7 +49,7 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
 		loading: boolean,
 		highlight: boolean = false,
 		searchString?: string
-	): Array<Object> {
+	): Array<GtRenderField<R, any>> {
 		// let arr = [{"temp":123,"name":"happy"},{"temp":456,"name":"dfgdfg"},{"temp":789,"name":"asdasd"}];
 		// console.log(arr,arr.map(function(item){return item.temp}));
 		// console.log(settings.map('objectKey'));
@@ -87,9 +87,13 @@ export class GtRenderPipe<R extends GtRow> implements PipeTransform {
 
 				const columnObject: GtRenderField<R, any> = {
 					objectKey: key,
-					sortValue: row[key],
-					columnComponent: fieldSetting.columnComponent
+					sortValue: row[key]
 				};
+
+				// add component if defined
+				if (fieldSetting.columnComponent) {
+					columnObject.columnComponent = fieldSetting.columnComponent;
+				}
 
 				if (loading) {
 					columnObject.renderValue = row[key] !== null ? row[key] : '';
