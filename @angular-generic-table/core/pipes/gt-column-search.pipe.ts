@@ -1,10 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {
-	GtConfigField,
-	GtConfigSetting,
-	GtInformation,
-	GtRow
-} from '@angular-generic-table/core';
+import { GtConfigField } from '../interfaces/gt-config-field';
+import { GtConfigSetting } from '../interfaces/gt-config-setting';
+import { GtInformation } from '../interfaces/gt-information';
+import { GtRow } from '../interfaces/gt-row';
 import { GtColumnSearch } from '../interfaces/gt-column-search';
 
 @Pipe({
