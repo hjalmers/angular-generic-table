@@ -44,7 +44,7 @@ export interface RowData extends GtRow {
 export class RowClickExpandedComponent extends GtExpandedRow<RowData> {}
 
 @Component({
-	selector: 'row-click',
+	selector: 'app-row-click',
 	templateUrl: './row-click.component.html',
 	styleUrls: ['./row-click.component.scss']
 })
