@@ -13,6 +13,12 @@ trim_trailing_whitespace = true
 indent_style = tab
 max_line_length = 80
 
+# YAML files require space indentation
+# (http://yaml.org/spec/1.2/spec.html#id2777534)
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+
 [*.md]
 max_line_length = off
 trim_trailing_whitespace = false
