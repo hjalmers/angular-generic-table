@@ -91,7 +91,7 @@
     "karma-jasmine": "^1.1.1",
     "karma-jasmine-html-reporter": "^0.2.2",
     "marked": "^0.3.19",
-    "ng-packagr": "^2.0.0-rc.13",
+    "ng-packagr": "^3.0.0-rc.2",
     "ng2-dragula": "^1.5.0",
     "node-sass": "^4.8.3",
     "othernpm": "^1.1.0",

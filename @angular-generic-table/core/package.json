@@ -36,8 +36,9 @@
     "tether": "^1.4.0"
   },
   "devDependencies": {
-    "@angular/compiler-cli": "^4.0.2",
-    "bootstrap": "^4.0.0-alpha.6",
+    "@angular/compiler": "^5.0.0",
+    "@angular/compiler-cli": "^5.0.0",
+    "bootstrap": "^4.1.0",
     "node-sass": "^4.5.2",
     "othernpm": "^1.1.0",
     "renamer": "^0.6.1"
