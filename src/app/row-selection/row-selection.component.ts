@@ -13,7 +13,7 @@ export interface RowData extends GtRow {
 }
 
 @Component({
-	selector: 'row-selection',
+	selector: 'app-row-selection',
 	templateUrl: './row-selection.component.html',
 	styles: []
 })

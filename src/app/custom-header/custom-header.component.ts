@@ -20,7 +20,7 @@ export class TooltipHeaderComponent extends GtCustomComponent<any> {
 }
 
 @Component({
-	selector: 'custom-header',
+	selector: 'app-custom-header',
 	templateUrl: './custom-header.component.html',
 	styles: []
 })

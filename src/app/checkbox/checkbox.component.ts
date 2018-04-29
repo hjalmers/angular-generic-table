@@ -15,7 +15,7 @@ export interface RowData extends GtRow {
 }
 
 @Component({
-	selector: 'checkbox',
+	selector: 'app-checkbox',
 	templateUrl: './checkbox.component.html',
 	styles: []
 })

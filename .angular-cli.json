@@ -14,7 +14,7 @@
       "test": "test.ts",
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
-      "prefix": "gt",
+      "prefix": "app",
       "styles": ["styles.scss"],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

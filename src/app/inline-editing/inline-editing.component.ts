@@ -14,7 +14,7 @@ export interface RowData extends GtRow {
 }
 
 @Component({
-	selector: 'inline-editing',
+	selector: 'app-inline-editing',
 	templateUrl: './inline-editing.component.html'
 })
 export class InlineEditingComponent implements OnInit {

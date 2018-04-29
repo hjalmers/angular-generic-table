@@ -8,7 +8,7 @@
     <ngb-tabset type="tabs">
       <ngb-tab [title]="example.title" *ngFor="let example of section.examples">
         <ng-template ngbTabContent>
-          <code-highlight [code]="example.code" [lang]="example.lang"></code-highlight>
+          <app-code-highlight [code]="example.code" [lang]="example.lang"></app-code-highlight>
         </ng-template>
       </ngb-tab>
     </ngb-tabset>

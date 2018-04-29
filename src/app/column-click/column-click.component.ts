@@ -11,7 +11,7 @@ export interface RowData extends GtRow {
 	lucky_number: number;
 }
 @Component({
-	selector: 'column-click',
+	selector: 'app-column-click',
 	templateUrl: './column-click.component.html'
 })
 export class ColumnClickComponent {

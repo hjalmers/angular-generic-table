@@ -7,7 +7,7 @@ export interface Employee extends GtRow {
 	lucky_number: number;
 }
 @Component({
-	selector: 'employee-table',
+	selector: 'app-enable-disable-sort-example',
 	templateUrl: './enable-disable-sort-example.component.html',
 	styles: []
 })
