@@ -7,20 +7,20 @@ import * as inMemoryHtml from '!raw-loader!../../demos/loading-data/in-memory-ar
 import * as inMemoryModule from '!raw-loader!../../demos/loading-data/loading-data.module';
 import * as inMemoryComponent from '!raw-loader!../../demos/loading-data/in-memory-array/employee-table.component';
 import * as inMemoryDescription from '!raw-loader!../../demos/loading-data/in-memory-array/description.md';
-import { EmployeeTableComponent } from '../../demos/loading-data/in-memory-array/employee-table.component';
+import { EmployeeTableComponent } from '../../examples/loading-data/in-memory-array/employee-table.component';
 
 import * as restHtml from '!raw-loader!../../demos/loading-data/using-rest-api/rest-example.component.html';
 import * as restModule from '!raw-loader!../../demos/loading-data/loading-data.module';
 import * as restComponent from '!raw-loader!../../demos/loading-data/using-rest-api/rest-example.component';
 import * as restDescription from '!raw-loader!../../demos/loading-data/using-rest-api/description.md';
-import { RestExampleComponent } from '../../demos/loading-data/using-rest-api/rest-example.component';
+import { RestExampleComponent } from '../../examples/loading-data/using-rest-api/rest-example.component';
 
 import * as sortLead from '!raw-loader!../../demos/sort/lead.md';
 import * as enableDisableSortHtml from '!raw-loader!../../demos/sort/enable-disable/enable-disable-sort-example.component.html';
 import * as enableDisableSortModule from '!raw-loader!../../demos/sort/sort.module';
 import * as enableDisableSortComponent from '!raw-loader!../../demos/sort/enable-disable/enable-disable-sort-example.component';
 import * as enableDisableSortDescription from '!raw-loader!../../demos/sort/enable-disable/description.md';
-import { EnableDisableSortExampleComponent } from '../../demos/sort/enable-disable/enable-disable-sort-example.component';
+import { EnableDisableSortExampleComponent } from '../../examples/sort/enable-disable/enable-disable-sort-example.component';
 
 export interface DemoContentStructure {
 	[key: string]: DemoContent;

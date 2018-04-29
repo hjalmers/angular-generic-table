@@ -57,14 +57,14 @@ import {
 	RowClickComponent,
 	RowClickExpandedComponent
 } from './row-click/row-click.component';
-import { BasicDemoModule } from './demos/basic-demo/basic-demo.module';
+import { BasicDemoModule } from './examples/basic-demo/basic-demo.module';
 import { DemoWrapperComponent } from './shared/components/demo-wrapper/demo-wrapper.component';
 import { CodeHighlightService } from './shared/services/code-highlight.service';
 import { DemoContentService } from './shared/services/demo-content.service';
 import { CodeHighlightComponent } from './shared/components/code-highlight/code-highlight.component';
-import { LoadingDataModule } from './demos/loading-data/loading-data.module';
+import { LoadingDataModule } from './examples/loading-data/loading-data.module';
 import { ExampleResolver } from './shared/resolvers/example.resolver';
-import { SortModule } from './demos/sort/sort.module';
+import { SortModule } from './examples/sort/sort.module';
 
 @NgModule({
 	declarations: [
