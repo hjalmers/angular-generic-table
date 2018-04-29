@@ -1,19 +1,19 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { DemoContent } from '../../services/demo-content.service';
+import { ExampleContent } from '../../services/example-content.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 
 @Component({
-	templateUrl: './demo-wrapper.component.html',
-	styleUrls: ['./demo-wrapper.component.scss']
+	templateUrl: './example-wrapper.component.html',
+	styleUrls: ['./example-wrapper.component.scss']
 })
-export class DemoWrapperComponent implements AfterViewInit {
-	public demoContent: ReplaySubject<DemoContent> = new ReplaySubject<
-		DemoContent
+export class ExampleWrapperComponent implements AfterViewInit {
+	public demoContent: ReplaySubject<ExampleContent> = new ReplaySubject<
+		ExampleContent
 	>(1);
 
 	constructor(private router: Router, private route: ActivatedRoute) {
-		this.demoContent.next(this.route.snapshot.data.example as DemoContent);
+		this.demoContent.next(this.route.snapshot.data.example as ExampleContent);
 
 		this.route.fragment.subscribe(fragment => {
 			this.scrollIntoView(fragment);

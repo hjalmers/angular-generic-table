@@ -1,15 +1,15 @@
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Injectable } from '@angular/core';
 import {
-	DemoContent,
-	DemoContentService
-} from '../services/demo-content.service';
+	ExampleContent,
+	ExampleContentService
+} from '../services/example-content.service';
 
 @Injectable()
-export class ExampleResolver implements Resolve<DemoContent> {
-	constructor(private demoContentService: DemoContentService) {}
+export class ExampleResolver implements Resolve<ExampleContent> {
+	constructor(private demoContentService: ExampleContentService) {}
 
-	resolve(route: ActivatedRouteSnapshot): DemoContent {
+	resolve(route: ActivatedRouteSnapshot): ExampleContent {
 		return this.demoContentService.getExamples(route.url[0].path);
 	}
 }

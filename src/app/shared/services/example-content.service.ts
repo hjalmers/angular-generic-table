@@ -2,30 +2,38 @@ import { Injectable, Type } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as marked from 'marked';
 
-import * as loadDataLead from '!raw-loader!../../demos/loading-data/lead.md';
-import * as inMemoryHtml from '!raw-loader!../../demos/loading-data/in-memory-array/employee-table.component.html';
-import * as inMemoryModule from '!raw-loader!../../demos/loading-data/loading-data.module';
-import * as inMemoryComponent from '!raw-loader!../../demos/loading-data/in-memory-array/employee-table.component';
-import * as inMemoryDescription from '!raw-loader!../../demos/loading-data/in-memory-array/description.md';
+import * as loadDataLead from '!raw-loader!../../examples/loading-data/lead.md';
+import * as loadDataModule from '!raw-loader!../../examples/loading-data/loading-data.module';
+
+import * as inMemoryHtml from '!raw-loader!../../examples/loading-data/in-memory-array/employee-table.component.html';
+import * as inMemoryComponent from '!raw-loader!../../examples/loading-data/in-memory-array/employee-table.component';
+import * as inMemoryDescription from '!raw-loader!../../examples/loading-data/in-memory-array/description.md';
 import { EmployeeTableComponent } from '../../examples/loading-data/in-memory-array/employee-table.component';
 
-import * as restHtml from '!raw-loader!../../demos/loading-data/using-rest-api/rest-example.component.html';
-import * as restModule from '!raw-loader!../../demos/loading-data/loading-data.module';
-import * as restComponent from '!raw-loader!../../demos/loading-data/using-rest-api/rest-example.component';
-import * as restDescription from '!raw-loader!../../demos/loading-data/using-rest-api/description.md';
+import * as restHtml from '!raw-loader!../../examples/loading-data/using-rest-api/rest-example.component.html';
+import * as restComponent from '!raw-loader!../../examples/loading-data/using-rest-api/rest-example.component';
+import * as restDescription from '!raw-loader!../../examples/loading-data/using-rest-api/description.md';
 import { RestExampleComponent } from '../../examples/loading-data/using-rest-api/rest-example.component';
 
-import * as sortLead from '!raw-loader!../../demos/sort/lead.md';
-import * as enableDisableSortHtml from '!raw-loader!../../demos/sort/enable-disable/enable-disable-sort-example.component.html';
-import * as enableDisableSortModule from '!raw-loader!../../demos/sort/sort.module';
-import * as enableDisableSortComponent from '!raw-loader!../../demos/sort/enable-disable/enable-disable-sort-example.component';
-import * as enableDisableSortDescription from '!raw-loader!../../demos/sort/enable-disable/description.md';
+import * as sortLead from '!raw-loader!../../examples/sort/lead.md';
+import * as enableDisableSortHtml from '!raw-loader!../../examples/sort/enable-disable/enable-disable-sort-example.component.html';
+import * as enableDisableSortModule from '!raw-loader!../../examples/sort/sort.module';
+import * as enableDisableSortComponent from '!raw-loader!../../examples/sort/enable-disable/enable-disable-sort-example.component';
+import * as enableDisableSortDescription from '!raw-loader!../../examples/sort/enable-disable/description.md';
 import { EnableDisableSortExampleComponent } from '../../examples/sort/enable-disable/enable-disable-sort-example.component';
 
-export interface DemoContentStructure {
-	[key: string]: DemoContent;
+import * as exampleUsageLead from '!raw-loader!../../examples/example-usage/lead.md';
+
+import * as basicHtml from '!raw-loader!../../examples/example-usage/basic-usage/basic-usage.component.html';
+import * as exampleUsageModule from '!raw-loader!../../examples/example-usage/example-usage.module';
+import * as basicComponent from '!raw-loader!../../examples/example-usage/basic-usage/basic-usage.component';
+import * as basicDescription from '!raw-loader!../../examples/example-usage/basic-usage/description.md';
+import { BasicUsageComponent } from '../../examples/example-usage/basic-usage/basic-usage.component';
+
+export interface ExampleContentStructure {
+	[key: string]: ExampleContent;
 }
-export interface DemoContent {
+export interface ExampleContent {
 	lead: any;
 	sections: Array<{
 		component: Type<any>;
@@ -40,8 +48,35 @@ export interface DemoContent {
 	}>;
 }
 @Injectable()
-export class DemoContentService {
-	private path: DemoContentStructure = {
+export class ExampleContentService {
+	private path: ExampleContentStructure = {
+		exampleUsage: {
+			lead: exampleUsageLead,
+			sections: [
+				{
+					component: BasicUsageComponent,
+					title: 'Basic',
+					description: basicDescription,
+					examples: [
+						{
+							title: 'employee-table.component.html',
+							code: basicHtml,
+							lang: 'markup'
+						},
+						{
+							title: 'employee-table.component.ts',
+							code: basicComponent,
+							lang: 'typescript'
+						},
+						{
+							title: 'example-usage.module.ts',
+							code: exampleUsageModule,
+							lang: 'typescript'
+						}
+					]
+				}
+			]
+		},
 		loadingData: {
 			lead: loadDataLead,
 			sections: [
@@ -62,7 +97,7 @@ export class DemoContentService {
 						},
 						{
 							title: 'loading-data.module.ts',
-							code: inMemoryModule,
+							code: loadDataModule,
 							lang: 'typescript'
 						}
 					]
@@ -84,7 +119,7 @@ export class DemoContentService {
 						},
 						{
 							title: 'loading-data.module.ts',
-							code: restModule,
+							code: loadDataModule,
 							lang: 'typescript'
 						}
 					]
@@ -120,7 +155,7 @@ export class DemoContentService {
 		}
 	};
 	constructor(private _sanitizer: DomSanitizer) {}
-	getExamples(path: string): DemoContent {
+	getExamples(path: string): ExampleContent {
 		// use marked for parsing markdown files
 		const MD = marked.setOptions({});
 

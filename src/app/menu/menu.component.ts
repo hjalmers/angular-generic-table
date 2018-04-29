@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DemoContentService } from '../shared/services/demo-content.service';
+import { ExampleContentService } from '../shared/services/example-content.service';
 
 @Component({
 	selector: 'app-menu',
@@ -11,7 +11,7 @@ export class MenuComponent implements OnInit {
 	sections: Array<any>;
 	constructor(
 		public router: Router,
-		private demoContentService: DemoContentService
+		private demoContentService: ExampleContentService
 	) {}
 	ngOnInit() {
 		this.sections = this.router.config
