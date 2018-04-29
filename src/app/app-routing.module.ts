@@ -17,7 +17,7 @@ import { DrilldownComponent } from './drilldown/drilldown.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
 import { CustomHeaderComponent } from './custom-header/custom-header.component';
 import { RowClickComponent } from './row-click/row-click.component';
-import { DemoWrapperComponent } from './shared/components/demo-wrapper/demo-wrapper.component';
+import { ExampleWrapperComponent } from './shared/components/example-wrapper/example-wrapper.component';
 import { ExampleResolver } from './shared/resolvers/example.resolver';
 
 const routes: Routes = [
@@ -43,15 +43,22 @@ const routes: Routes = [
 	{ path: 'custom-header', component: CustomHeaderComponent },
 	{ path: 'row-click', component: RowClickComponent },*/
 	{
+		path: 'example-usage',
+		component: ExampleWrapperComponent,
+		resolve: {
+			example: ExampleResolver
+		}
+	},
+	{
 		path: 'loading-data',
-		component: DemoWrapperComponent,
+		component: ExampleWrapperComponent,
 		resolve: {
 			example: ExampleResolver
 		}
 	},
 	{
 		path: 'sort',
-		component: DemoWrapperComponent,
+		component: ExampleWrapperComponent,
 		resolve: {
 			example: ExampleResolver
 		}
