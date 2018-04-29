@@ -18,7 +18,7 @@ describe('Basic example', function() {
 	// })
 
 	it('Opens the Basic example page', function() {
-		cy.visit('/basic');
+		cy.visit('/example-usage#basicUsage');
 	});
 
 	it('Contains the headings Id, Name and Lucky number', function() {
