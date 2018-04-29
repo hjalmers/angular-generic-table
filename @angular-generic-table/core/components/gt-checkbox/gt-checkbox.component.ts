@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+	Component,
+	EventEmitter,
+	HostBinding,
+	Input,
+	OnInit,
+	Output
+} from '@angular/core';
 
 @Component({
 	selector: 'gt-checkbox',
@@ -8,13 +15,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
       <span class="custom-control-label"></span>
     </label>
   `,
-	styles: [],
-	host: { class: 'd-flex justify-content-end' }
+	styles: []
 })
 export class GtCheckboxComponent implements OnInit {
 	get initialValue(): boolean {
 		return this._initialValue;
 	}
+
+	@HostBinding('class') class = 'd-flex justify-content-end';
 
 	@Input()
 	set initialValue(value: boolean) {

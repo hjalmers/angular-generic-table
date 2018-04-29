@@ -269,6 +269,7 @@ export class GtColumnSettingsComponent implements OnInit {
 	}
 
 	/** generate a unique id for dragula instance i.e. a unique bag name*/
+	/* tslint:disable */
 	private generateId() {
 		let d = new Date().getTime();
 		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -277,4 +278,5 @@ export class GtColumnSettingsComponent implements OnInit {
 			return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
 		});
 	}
+	/* tslint:enable */
 }
