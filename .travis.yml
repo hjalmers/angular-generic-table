@@ -9,7 +9,7 @@ before_script:
 script:
   - npm run lint:ci
   - npm run build:all
-  - npm run ci
+  - npm run cypress:ci
 matrix:
   fast_finish: true
   allow_failures:
