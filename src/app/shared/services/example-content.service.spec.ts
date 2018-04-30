@@ -1,17 +1,17 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { DemoContentService } from './demo-content.service';
+import { ExampleContentService } from './example-content.service';
 
 describe('DemoContentService', () => {
 	beforeEach(() => {
 		TestBed.configureTestingModule({
-			providers: [DemoContentService]
+			providers: [ExampleContentService]
 		});
 	});
 
 	it(
 		'should be created',
-		inject([DemoContentService], (service: DemoContentService) => {
+		inject([ExampleContentService], (service: ExampleContentService) => {
 			expect(service).toBeTruthy();
 		})
 	);

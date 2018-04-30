@@ -20,7 +20,7 @@ export interface RowData extends GtRow {
 }
 
 @Component({
-	selector: 'change-column-settings',
+	selector: 'app-change-column-settings',
 	templateUrl: './change-column-settings.component.html'
 })
 export class ChangeColumnSettingsComponent {

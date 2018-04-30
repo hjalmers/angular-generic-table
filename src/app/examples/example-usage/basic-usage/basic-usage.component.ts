@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { GtCustomComponent } from '@angular-generic-table/core/components/gt-custom-component-factory';
-import { GtConfig } from '@angular-generic-table/core/interfaces/gt-config';
-import { GtRow } from '@angular-generic-table/core';
+import { Component } from '@angular/core';
+import { GtConfig, GtRow } from '@angular-generic-table/core';
 
 export interface RowData extends GtRow {
 	id: number;
@@ -10,21 +8,11 @@ export interface RowData extends GtRow {
 }
 
 @Component({
-	template: `<span ngbTooltip="{{'Some tooltip for '+ column }}">{{column}}</span>`,
-	styles: []
+	selector: 'app-basic-usage',
+	templateUrl: './basic-usage.component.html'
 })
-export class TooltipHeaderComponent extends GtCustomComponent<any> {
-	constructor() {
-		super();
-	}
-}
-
-@Component({
-	selector: 'app-custom-header',
-	templateUrl: './custom-header.component.html',
-	styles: []
-})
-export class CustomHeaderComponent implements OnInit {
+export class BasicUsageComponent {
+	public data: Array<RowData> = [];
 	public configObject: GtConfig<RowData>;
 
 	constructor() {
@@ -45,30 +33,23 @@ export class CustomHeaderComponent implements OnInit {
 				{
 					objectKey: 'lucky_number',
 					sort: 'enable',
-					columnOrder: 2
+					columnOrder: 2,
+					visible: true
 				}
 			],
 			fields: [
 				{
 					name: 'Id',
-					objectKey: 'id',
-					header: {
-						type: TooltipHeaderComponent
-					}
+					objectKey: 'id'
 				},
 				{
 					name: 'Name',
-					objectKey: 'name',
-					header: {
-						type: TooltipHeaderComponent
-					}
+					objectKey: 'name'
 				},
 				{
 					name: 'Lucky number',
 					objectKey: 'lucky_number',
-					header: {
-						type: TooltipHeaderComponent
-					}
+					stackedHeading: 'Custom heading'
 				}
 			],
 			data: [
@@ -575,6 +556,4 @@ export class CustomHeaderComponent implements OnInit {
 			]
 		};
 	}
-
-	ngOnInit() {}
 }

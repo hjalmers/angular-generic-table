@@ -8,7 +8,7 @@ import {
 import { CodeHighlightService } from '../../services/code-highlight.service';
 
 @Component({
-	selector: 'code-highlight',
+	selector: 'app-code-highlight',
 	template: `<pre class="py-3 m-0 language-{{ lang }}"><code #code class="language-{{ lang }}"></code></pre>`,
 	styles: []
 })

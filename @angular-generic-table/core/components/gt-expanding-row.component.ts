@@ -1,8 +1,5 @@
 import { Component, EventEmitter, Input, Output, Type } from '@angular/core';
-import { GtRow } from '../interfaces/gt-row';
-import { GtConfigField } from '../interfaces/gt-config-field';
-import { GtConfigSetting } from '../interfaces/gt-config-setting';
-import { GtEvent } from '@angular-generic-table/core';
+import { GtRow, GtConfigField, GtConfigSetting, GtEvent } from '..';
 
 export class GtExpandedRow<R extends GtRow> {
 	row: R;

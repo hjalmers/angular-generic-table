@@ -1,20 +1,10 @@
 {
   "name": "@angular-generic-table/core",
-  "version": "4.13.0",
+  "version": "4.14.0",
   "description": "A generic table component for Angular",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build:css": "node-sass --source-map true --include-path scss generic-table.scss ../packages/core/css/generic-table-prebuild.css",
-    "autoprefix:css": "postcss -u autoprefixer -r ../packages/core/css/generic-table-prebuild.css",
-    "minify:css": "cleancss -o ../packages/core/css/generic-table-prebuild.min.css ../packages/core/css/generic-table-prebuild.css --source-map",
-    "compile:css": "npm run build:css && npm run autoprefix:css && npm run minify:css",
-    "rename:css": "renamer --find \"generic-table-prebuild\" --replace \"generic-table\" ../packages/core/css/*",
-    "copy:scss": "copyfiles -f generic-table.scss ../packages/core/scss",
-    "copy:meta": "copyfiles -f ../../LICENSE README.md ../../CHANGELOG.md package.json README.md ../packages/core/",
-    "clean": "rimraf ../packages/core",
-    "build": "npm run clean && ngc -p tsconfig-aot.json && npm run copy:meta && npm run copy:scss && npm run compile:css && npm run rename:css",
-    "publish-package": "npm install && npm run build && onpm ../packages/core publish"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "Angular",
@@ -36,10 +26,8 @@
     "tether": "^1.4.0"
   },
   "devDependencies": {
-    "@angular/compiler-cli": "^4.0.2",
-    "bootstrap": "^4.0.0-alpha.6",
-    "node-sass": "^4.5.2",
-    "othernpm": "^1.1.0",
-    "renamer": "^0.6.1"
+    "@angular/compiler": "^5.0.0",
+    "@angular/compiler-cli": "^5.0.0",
+    "bootstrap": "^4.1.0"
   }
 }

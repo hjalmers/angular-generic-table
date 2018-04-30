@@ -7,7 +7,7 @@ export interface Employee extends GtRow {
 	lucky_number: number;
 }
 @Component({
-	selector: 'employee-table',
+	selector: 'app-employee-table',
 	templateUrl: './employee-table.component.html',
 	styles: []
 })

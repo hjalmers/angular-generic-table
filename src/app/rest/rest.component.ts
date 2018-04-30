@@ -148,7 +148,9 @@ export class RestComponent implements OnInit {
 
 	public getData = function() {
 		// tell generic table instance that we're loading data
+		/* tslint:disable */
 		this.myTable ? (this.myTable.loading = true) : '';
+		/* tslint:enable */
 
 		this.http
 			.get(this.url)

@@ -57,15 +57,16 @@ import {
 	RowClickComponent,
 	RowClickExpandedComponent
 } from './row-click/row-click.component';
+import { ExampleUsageModule } from './examples/example-usage/example-usage.module';
+import { ExampleWrapperComponent } from './shared/components/example-wrapper/example-wrapper.component';
 import { ColumnSearchComponent } from './column-search/column-search.component';
-import { BasicDemoModule } from './demos/basic-demo/basic-demo.module';
-import { DemoWrapperComponent } from './shared/components/demo-wrapper/demo-wrapper.component';
 import { CodeHighlightService } from './shared/services/code-highlight.service';
-import { DemoContentService } from './shared/services/demo-content.service';
+import { ExampleContentService } from './shared/services/example-content.service';
 import { CodeHighlightComponent } from './shared/components/code-highlight/code-highlight.component';
-import { LoadingDataModule } from './demos/loading-data/loading-data.module';
+import { LoadingDataModule } from './examples/loading-data/loading-data.module';
 import { ExampleResolver } from './shared/resolvers/example.resolver';
-import { SortModule } from './demos/sort/sort.module';
+import { SortModule } from './examples/sort/sort.module';
+import { BasicUsageComponent } from './examples/example-usage/basic-usage/basic-usage.component';
 
 @NgModule({
 	declarations: [
@@ -100,14 +101,14 @@ import { SortModule } from './demos/sort/sort.module';
 		RowClickComponent,
 		RowClickExpandedComponent,
 		CodeHighlightComponent,
-		DemoWrapperComponent,
+		ExampleWrapperComponent,
 		ColumnSearchComponent
 	],
 	imports: [
 		BrowserModule,
 		HttpClientModule,
 		FormsModule,
-		BasicDemoModule,
+		ExampleUsageModule,
 		NgbModule.forRoot(),
 		LoadingDataModule,
 		SortModule,
@@ -135,9 +136,10 @@ import { SortModule } from './demos/sort/sort.module';
 		SelectedCheckboxComponent,
 		TooltipHeaderComponent,
 		TooltipComponent,
-		RowClickExpandedComponent
+		RowClickExpandedComponent,
+		BasicUsageComponent
 	],
-	providers: [CodeHighlightService, ExampleResolver, DemoContentService],
+	providers: [CodeHighlightService, ExampleResolver, ExampleContentService],
 	bootstrap: [AppComponent]
 })
 export class AppModule {}

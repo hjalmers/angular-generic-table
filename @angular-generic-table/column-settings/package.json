@@ -1,20 +1,10 @@
 {
   "name": "@angular-generic-table/column-settings",
-  "version": "4.13.0",
+  "version": "4.14.0",
   "description": "angular-generic-table extension that makes it easy to toggle column visibility and reoder columns.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build:css": "node-sass --source-map true --include-path scss column-settings.scss ../packages/column-settings/css/column-settings-prebuild.css",
-    "autoprefix:css": "postcss -u autoprefixer -r ../packages/column-settings/css/column-settings-prebuild.css",
-    "minify:css": "cleancss -o ../packages/column-settings/css/column-settings-prebuild.min.css ../packages/column-settings/css/column-settings-prebuild.css --source-map",
-    "compile:css": "npm run build:css && npm run autoprefix:css && npm run minify:css",
-    "rename:css": "renamer --find \"column-settings-prebuild\" --replace \"column-settings\" ../packages/column-settings/css/*",
-    "copy:scss": "copyfiles -f column-settings.scss ../packages/column-settings/scss",
-    "copy:meta": "copyfiles -f ../../LICENSE README.md ../../CHANGELOG.md package.json README.md ../packages/column-settings/",
-    "clean": "rimraf ../packages/column-settings",
-    "build": "npm run clean && ngc -p tsconfig-aot.json && npm run copy:meta && npm run copy:scss && npm run compile:css && npm run rename:css",
-    "publish-package": "npm install && npm run build && onpm ../packages/column-settings publish"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
     "Angular",
@@ -35,10 +25,8 @@
     "ng2-dragula": "^1.5.0"
   },
   "devDependencies": {
-    "@angular/compiler-cli": "^4.3.5",
-    "bootstrap": "^4.0.0-beta",
-    "node-sass": "^4.5.2",
-    "othernpm": "^1.1.0",
-    "renamer": "^0.6.1"
+    "@angular/compiler": "^5.0.0",
+    "@angular/compiler-cli": "^5.0.0",
+    "bootstrap": "^4.0.0-beta"
   }
 }
