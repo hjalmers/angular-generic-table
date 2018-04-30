@@ -3,19 +3,17 @@ root = true
 
 [*]
 charset = utf-8
-indent_style = space
-indent_size = 2
+indent_style = tab
 end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{ts,json,scss,md},!{package{,-lock},.vscode/*}.json]
-indent_style = tab
+[*.{ts,scss,html}]
 max_line_length = 80
 
-# YAML files require space indentation
+# YAML files require space indentation.
 # (http://yaml.org/spec/1.2/spec.html#id2777534)
-[*.{yml,yaml}]
+[*.{y{,a}ml,json,html}]
 indent_style = space
 indent_size = 2
 
