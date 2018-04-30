@@ -59,9 +59,9 @@ import {
 } from './row-click/row-click.component';
 import { ExampleUsageModule } from './examples/example-usage/example-usage.module';
 import { ExampleWrapperComponent } from './shared/components/example-wrapper/example-wrapper.component';
-import { ColumnSearchComponent } from './column-search/column-search.component';
 import { CodeHighlightService } from './shared/services/code-highlight.service';
 import { ExampleContentService } from './shared/services/example-content.service';
+import { ExampleSearchModule } from './examples/search/example-search.module';
 import { CodeHighlightComponent } from './shared/components/code-highlight/code-highlight.component';
 import { LoadingDataModule } from './examples/loading-data/loading-data.module';
 import { ExampleResolver } from './shared/resolvers/example.resolver';
@@ -101,14 +101,14 @@ import { BasicUsageComponent } from './examples/example-usage/basic-usage/basic-
 		RowClickComponent,
 		RowClickExpandedComponent,
 		CodeHighlightComponent,
-		ExampleWrapperComponent,
-		ColumnSearchComponent
+		ExampleWrapperComponent
 	],
 	imports: [
 		BrowserModule,
 		HttpClientModule,
 		FormsModule,
 		ExampleUsageModule,
+		ExampleSearchModule,
 		NgbModule.forRoot(),
 		LoadingDataModule,
 		SortModule,

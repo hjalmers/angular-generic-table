@@ -30,6 +30,13 @@ import * as basicComponent from '!raw-loader!../../examples/example-usage/basic-
 import * as basicDescription from '!raw-loader!../../examples/example-usage/basic-usage/description.md';
 import { BasicUsageComponent } from '../../examples/example-usage/basic-usage/basic-usage.component';
 
+import * as searchLead from '!raw-loader!../../examples/search/searchLead.md';
+import * as columnSearchDescription from '!raw-loader!../../examples/search/column-search/description.md';
+import * as columnSearchHtml from '!raw-loader!../../examples/search/column-search/column-search.component.html';
+import * as exampleColumnSearchComponent from '!raw-loader!../../examples/search/column-search/column-search.component';
+import * as personInterface from '!raw-loader!../../examples/search/column-search/person';
+import { ColumnSearchComponent } from '../../examples/search/column-search/column-search.component';
+
 export interface ExampleContentStructure {
 	[key: string]: ExampleContent;
 }
@@ -147,6 +154,33 @@ export class ExampleContentService {
 						{
 							title: 'loading-data.module.ts',
 							code: enableDisableSortModule,
+							lang: 'typescript'
+						}
+					]
+				}
+			]
+		},
+		search: {
+			lead: searchLead,
+			sections: [
+				{
+					component: ColumnSearchComponent,
+					title: 'Search by column',
+					description: columnSearchDescription,
+					examples: [
+						{
+							title: 'column-search.component.html',
+							code: columnSearchHtml,
+							lang: 'markup'
+						},
+						{
+							title: 'column-search.component.ts',
+							code: exampleColumnSearchComponent,
+							lang: 'typescript'
+						},
+						{
+							title: 'person.ts',
+							code: personInterface,
 							lang: 'typescript'
 						}
 					]

@@ -8,9 +8,8 @@ import {
 import { Person, PEOPLE } from './person';
 
 @Component({
-	selector: 'gt-column-search',
-	templateUrl: './column-search.component.html',
-	styleUrls: ['./column-search.component.scss']
+	selector: 'app-column-search',
+	templateUrl: './column-search.component.html'
 })
 export class ColumnSearchComponent implements OnInit {
 	public configObject: GtConfig<Person>;
