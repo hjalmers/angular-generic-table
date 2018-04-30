@@ -1,6 +1,7 @@
 ## Release History
 
 ## [Unreleased]
+## [4.14.0]
 
 This release might not include a lot of new features or fixes, but under the hood many of the dependencies have been bumped/removed and a lot things related to packing, linting and code styles have been refactored as a step towards making it easier to contribute (thanks for helping out @mklein994).
 
