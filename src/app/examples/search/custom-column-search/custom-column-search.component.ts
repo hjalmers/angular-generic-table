@@ -5,6 +5,7 @@ import {
 	GtOptions
 } from '@angular-generic-table/core';
 import { Person, PEOPLE } from '../person';
+import { SearchHeaderComponent } from './search-header.component';
 
 @Component({
 	selector: 'app-custom-column-search',
@@ -42,16 +43,19 @@ export class CustomColumnSearchComponent implements OnInit {
 			fields: [
 				{
 					name: 'Id',
-					objectKey: 'id'
+					objectKey: 'id',
+					header: { type: SearchHeaderComponent }
 				},
 				{
 					name: 'Name',
-					objectKey: 'name'
+					objectKey: 'name',
+					header: { type: SearchHeaderComponent }
 				},
 				{
 					name: 'Lucky number',
 					objectKey: 'lucky_number',
-					stackedHeading: 'Custom heading'
+					stackedHeading: 'Custom heading',
+					header: { type: SearchHeaderComponent }
 				}
 			],
 			data: PEOPLE
