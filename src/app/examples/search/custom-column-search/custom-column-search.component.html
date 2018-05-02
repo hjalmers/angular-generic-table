@@ -8,7 +8,7 @@
     <option value=all>All</option>
   </select>
 </form>
-<generic-table #myTable
+<generic-table #myTable (keyup)="searchWithinColumn($event)"
   [gtClasses]="'table-sm'"
   [gtSettings]="configObject.settings"
   [gtOptions]="options"
