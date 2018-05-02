@@ -40,6 +40,7 @@ import { ColumnSearchComponent } from '../../examples/search/column-search/colum
 import * as customColumnSearchDescription from '!raw-loader!../../examples/search/custom-column-search/description.md';
 import * as customColumnSearchHtml from '!raw-loader!../../examples/search/custom-column-search/custom-column-search.component.html';
 import * as exampleCustomColumnSearchComponent from '!raw-loader!../../examples/search/custom-column-search/custom-column-search.component';
+import * as exampleSearchHeaderComponent from '!raw-loader!../../examples/search/custom-column-search/search-header.component';
 import { CustomColumnSearchComponent } from '../../examples/search/custom-column-search/custom-column-search.component';
 
 export interface ExampleContentStructure {
@@ -204,6 +205,11 @@ export class ExampleContentService {
 							title: 'custom-column-search.component.html',
 							code: customColumnSearchHtml,
 							lang: 'markup'
+						},
+						{
+							title: 'search-header.component.ts',
+							code: exampleSearchHeaderComponent,
+							lang: 'typescript'
 						},
 						{
 							title: 'person.ts',
