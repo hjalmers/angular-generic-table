@@ -5,7 +5,7 @@ import {
 	GtOptions
 } from '@angular-generic-table/core';
 
-import { Person, PEOPLE } from './person';
+import { Person, PEOPLE } from '../person';
 
 @Component({
 	selector: 'app-column-search',

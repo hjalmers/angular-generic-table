@@ -34,7 +34,7 @@ import * as searchLead from '!raw-loader!../../examples/search/searchLead.md';
 import * as columnSearchDescription from '!raw-loader!../../examples/search/column-search/description.md';
 import * as columnSearchHtml from '!raw-loader!../../examples/search/column-search/column-search.component.html';
 import * as exampleColumnSearchComponent from '!raw-loader!../../examples/search/column-search/column-search.component';
-import * as personInterface from '!raw-loader!../../examples/search/column-search/person';
+import * as personInterface from '!raw-loader!../../examples/search/person';
 import { ColumnSearchComponent } from '../../examples/search/column-search/column-search.component';
 
 import * as customColumnSearchDescription from '!raw-loader!../../examples/search/custom-column-search/description.md';

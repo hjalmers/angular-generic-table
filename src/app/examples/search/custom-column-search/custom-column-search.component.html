@@ -1,3 +1,17 @@
-<p>
-  It works!
-</p>
+<form class="form form-inline">
+  <label for="rows" class="form-control-label mr-sm-2">Rows</label>
+  <select id="rows" class="form-control form-control-sm mr-sm-2 mb-3 mb-sm-0" #rowLength (change)="myTable.changeRowLength(rowLength.value)">
+    <option value=10>10</option>
+    <option value=25>25</option>
+    <option value=50>50</option>
+    <option value=100>100</option>
+    <option value=all>All</option>
+  </select>
+</form>
+<generic-table #myTable
+  [gtClasses]="'table-sm'"
+  [gtSettings]="configObject.settings"
+  [gtOptions]="options"
+  [gtFields]="configObject.fields"
+  [(gtData)]="configObject.data">
+</generic-table>
