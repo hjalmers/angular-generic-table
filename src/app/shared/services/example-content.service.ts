@@ -37,6 +37,11 @@ import * as exampleColumnSearchComponent from '!raw-loader!../../examples/search
 import * as personInterface from '!raw-loader!../../examples/search/column-search/person';
 import { ColumnSearchComponent } from '../../examples/search/column-search/column-search.component';
 
+import * as customColumnSearchDescription from '!raw-loader!../../examples/search/custom-column-search/description.md';
+import * as customColumnSearchHtml from '!raw-loader!../../examples/search/custom-column-search/custom-column-search.component.html';
+import * as exampleCustomColumnSearchComponent from '!raw-loader!../../examples/search/custom-column-search/custom-column-search.component';
+import { CustomColumnSearchComponent } from '../../examples/search/custom-column-search/custom-column-search.component';
+
 export interface ExampleContentStructure {
 	[key: string]: ExampleContent;
 }
@@ -177,6 +182,28 @@ export class ExampleContentService {
 							title: 'column-search.component.ts',
 							code: exampleColumnSearchComponent,
 							lang: 'typescript'
+						},
+						{
+							title: 'person.ts',
+							code: personInterface,
+							lang: 'typescript'
+						}
+					]
+				},
+				{
+					component: CustomColumnSearchComponent,
+					title: 'Custom search component in header',
+					description: customColumnSearchDescription,
+					examples: [
+						{
+							title: 'custom-column-search.component.ts',
+							code: exampleCustomColumnSearchComponent,
+							lang: 'typescript'
+						},
+						{
+							title: 'custom-column-search.component.html',
+							code: customColumnSearchHtml,
+							lang: 'markup'
 						},
 						{
 							title: 'person.ts',
