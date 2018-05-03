@@ -8,7 +8,7 @@ import { Person } from '../person';
 		<div class="column-name">{{column | titlecase}}</div>
 		<input #inputBox type="text" placeholder="{{column}}"
 			(click)="$event.stopPropagation()"
-			(keyup)="searchWithinColumn($event)"/>
+			(keyup)="searchWithinColumn(inputBox.value)" />
 	`,
 	styleUrls: ['./search-header.component.scss']
 })
@@ -19,8 +19,7 @@ export class SearchHeaderComponent extends GtCustomComponent<Person> {
 		super();
 	}
 
-	searchWithinColumn(event: any): void {
-		const searchTerm: string = event.target.value;
+	searchWithinColumn(searchTerm: string): void {
 		this.columnSearch.emit({
 			id: this.columnObjectKey,
 			value: searchTerm

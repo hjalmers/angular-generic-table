@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
 	GenericTableComponent,
 	GtConfig,
@@ -12,7 +12,6 @@ import { SearchHeaderComponent } from './search-header.component';
 	templateUrl: './custom-column-search.component.html'
 })
 export class CustomColumnSearchComponent implements OnInit {
-	@ViewChild('myTable') myTable: any;
 	public configObject: GtConfig<Person>;
 
 	public options: GtOptions = {
