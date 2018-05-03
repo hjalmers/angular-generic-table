@@ -38,12 +38,13 @@ import { GtMetaPipe } from '../pipes/gt-meta.pipe';
                     ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{column.sortEnabled ? 'sort-'+column.sort:''}} {{column.sortEnabled && column.sortOrder >= 0  ? 'sort-order-'+column.sortOrder:''}} {{ gtFields | gtColumnClass:'th':column }}"
                     (click)="column.sortEnabled ? gtSort(column.objectKey,$event):'';">
                     <span *ngIf="!(gtFields | gtProperty:column.objectKey:'header')">{{gtFields | gtProperty:column.objectKey:'name'}}</span>
-					<gt-custom-component-factory *ngIf="(gtFields | gtProperty:column.objectKey:'header')"
-												[columnObjectKey]="column.objectKey"
-                                                [type]="(gtFields | gtProperty:column.objectKey:'header')?.type"
-                                                [injector]="(gtFields | gtProperty:column.objectKey:'header')?.injector"
-												[column]="gtFields | gtProperty:column.objectKey:'name'"
-												(columnSearch)="handleColumnSearch($event)"></gt-custom-component-factory>
+                    <gt-custom-component-factory *ngIf="(gtFields | gtProperty:column.objectKey:'header')"
+                      [columnObjectKey]="column.objectKey"
+                      [type]="(gtFields | gtProperty:column.objectKey:'header')?.type"
+                      [injector]="(gtFields | gtProperty:column.objectKey:'header')?.injector"
+                      [column]="gtFields | gtProperty:column.objectKey:'name'"
+                      (columnSearch)="handleColumnSearch($event)">
+                    </gt-custom-component-factory>
                     <!-- don't trigger a sort when clicking on the search box -->
                     <input #columnSearch *ngIf="gtSettings | gtProperty:column.objectKey:'searchBox'"
                       (click)="$event.stopPropagation()"
