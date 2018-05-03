@@ -42,7 +42,8 @@ import { GtMetaPipe } from '../pipes/gt-meta.pipe';
 												[columnObjectKey]="column.objectKey"
                                                 [type]="(gtFields | gtProperty:column.objectKey:'header')?.type"
                                                 [injector]="(gtFields | gtProperty:column.objectKey:'header')?.injector"
-                                                [column]="gtFields | gtProperty:column.objectKey:'name'"></gt-custom-component-factory>
+												[column]="gtFields | gtProperty:column.objectKey:'name'"
+												(columnSearch)="handleColumnSearch($event)"></gt-custom-component-factory>
                     <!-- don't trigger a sort when clicking on the search box -->
                     <input #columnSearch *ngIf="gtSettings | gtProperty:column.objectKey:'searchBox'"
                       (click)="$event.stopPropagation()"
@@ -1253,6 +1254,12 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		// always go to first page when searching
 		this.goToPage(1);
 		this.updateTotals();
+	}
+
+	public handleColumnSearch(event: GtColumnSearch) {
+		const columnObjectKey = event.id;
+		const searchTerms = event.value;
+		this.gtColumnSearch(columnObjectKey, searchTerms);
 	}
 
 	public gtColumnSearch(objectKey: string, value: string) {

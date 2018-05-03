@@ -62,10 +62,4 @@ export class CustomColumnSearchComponent implements OnInit {
 			data: PEOPLE
 		};
 	}
-
-	searchWithinColumn(event: any): void {
-		const targetID = event.target.id;
-		const targetValue = event.target.value;
-		this.myTable.gtColumnSearch(targetID, targetValue);
-	}
 }

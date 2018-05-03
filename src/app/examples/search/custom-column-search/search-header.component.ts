@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { GtCustomComponent } from '@angular-generic-table/core';
 import { Person } from '../person';
 
@@ -7,23 +7,23 @@ import { Person } from '../person';
 	template: `
 		<div class="column-name">{{column | titlecase}}</div>
 		<input #inputBox type="text" placeholder="{{column}}"
-			(click)="$event.stopPropagation()" />
+			(click)="$event.stopPropagation()"
+			(keyup)="searchWithinColumn($event)"/>
 	`,
 	styleUrls: ['./search-header.component.scss']
 })
-export class SearchHeaderComponent extends GtCustomComponent<Person>
-	implements OnInit {
+export class SearchHeaderComponent extends GtCustomComponent<Person> {
 	@ViewChild('inputBox') inputElement: ElementRef;
 
 	constructor() {
 		super();
 	}
 
-	ngOnInit(): void {
-		this.setInputElementId();
-	}
-
-	setInputElementId(): void {
-		this.inputElement.nativeElement.id = this.columnObjectKey;
+	searchWithinColumn(event: any): void {
+		const searchTerm: string = event.target.value;
+		this.columnSearch.emit({
+			id: this.columnObjectKey,
+			value: searchTerm
+		});
 	}
 }
