@@ -78,7 +78,7 @@ export interface GtConfigField<
 	 * custom function for search value,
 	 * set to false if field shouldn't be searchable (true by default)
 	 */
-	search?: any;
+	search?: GtValueFunc<R>;
 	inlineEdit?:
 		| {
 				active: Observable<boolean> | GtInlineEditFunc<R>;

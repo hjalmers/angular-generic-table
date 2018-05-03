@@ -4,6 +4,7 @@ import { GtConfigSetting } from '../interfaces/gt-config-setting';
 import { GtInformation } from '../interfaces/gt-information';
 import { GtRow } from '../interfaces/gt-row';
 import { GtColumnSearch } from '../interfaces/gt-column-search';
+import { SearchFunctions } from './search-functions';
 
 @Pipe({
 	name: 'gtColumnSearch'
@@ -37,15 +38,15 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 						: true
 			);
 
-		const searchFunction: any = {};
+		const searchFunctions: SearchFunctions<R> = {};
 
 		columnSearchTerms.forEach(term => {
 			const field = fields.find(f => f.objectKey === term.id);
 
 			if (typeof field.search === 'function') {
-				searchFunction[term.id] = field.search;
+				searchFunctions[term.id] = field.search;
 			} else if (typeof field.value === 'function') {
-				searchFunction[term.id] = field.value;
+				searchFunctions[term.id] = field.value;
 			}
 		});
 
@@ -65,8 +66,8 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 			const include = columnSearchTerms.every(term => {
 				// Map the search/value function to that field if defined, otherwise
 				// return the raw field value.
-				row[term.id] = searchFunction[term.id]
-					? searchFunction[term.id](row)
+				row[term.id] = searchFunctions[term.id]
+					? searchFunctions[term.id](row)
 					: row[term.id];
 
 				return (<string>row[term.id])
