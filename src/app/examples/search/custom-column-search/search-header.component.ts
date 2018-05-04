@@ -13,8 +13,6 @@ import { Person } from '../person';
 	styleUrls: ['./search-header.component.scss']
 })
 export class SearchHeaderComponent extends GtCustomComponent<Person> {
-	@ViewChild('inputBox') inputElement: ElementRef;
-
 	constructor() {
 		super();
 	}
