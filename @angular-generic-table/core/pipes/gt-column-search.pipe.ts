@@ -21,12 +21,12 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 	 */
 	// TODO: do we need all of gtInfo, or just columnSearchTerms?
 	transform(
-		allRows: any,
+		allRows: R[],
 		gtColumnSearchTerms: GtColumnSearch[],
 		gtInfo: GtInformation,
 		settings: Array<GtConfigSetting>,
 		fields: Array<GtConfigField<R, any>>
-	): any {
+	): R[] {
 		// filter out any column searches that contain only empty strings.
 		const columnSearchTerms = gtColumnSearchTerms
 			// TODO: why is this needed? Note that `gt-search.pipe.ts` also does this.
@@ -57,8 +57,7 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 			return allRows;
 		}
 
-		// TODO: Give this a type instead of `any`.
-		const filteredRows: Array<any> = [];
+		const filteredRows: R[] = [];
 
 		allRows.forEach(row => {
 			// Include the row only if all fields match the search strings from each
