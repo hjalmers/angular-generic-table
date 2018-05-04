@@ -11,33 +11,88 @@ import { SearchFunctions } from './search-functions';
 })
 export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 	/**
-	 * ### To Do List:
-	 * - [x] check that search fields contain values; if not, skip them.
-	 * - [x] skip the columns with search disabled.
-	 * - [x] assign search or value functions if defined for that field.
-	 * - [x] map undefined search values to empty strings.
-	 * - [x] filter each row using each column's search term.
-	 * - [x] return the filtered rows.
+	 * Search all rows by one or more columns and return the matching rows.
+	 *
+	 * @param allRows All rows in the table.
+	 * @param gtColumnSearchTerms An array of each column with its id and search string.
+	 * @param gtInfo Table information.
+	 * @param settings Table settings.
+	 * @param fields Field settings.
+	 * @returns Filtered rows.
 	 */
-	// TODO: do we need all of gtInfo, or just columnSearchTerms?
 	transform(
 		allRows: R[],
 		gtColumnSearchTerms: GtColumnSearch[],
 		gtInfo: GtInformation,
-		settings: Array<GtConfigSetting>,
-		fields: Array<GtConfigField<R, any>>
+		settings: GtConfigSetting[],
+		fields: GtConfigField<R, any>[]
 	): R[] {
-		// filter out any column searches that contain only empty strings.
-		const columnSearchTerms = gtColumnSearchTerms
-			// TODO: why is this needed? Note that `gt-search.pipe.ts` also does this.
-			.filter(column => column.value.replace(/"/g, '').length !== 0)
-			.filter(
-				column =>
-					settings.find(x => x.objectKey === column.id).search === false
-						? false
-						: true
-			);
+		const columnSearchTerms = this.findActiveSearchColumns(
+			gtColumnSearchTerms,
+			settings
+		);
 
+		// if there are no search inputs, nothing needs to be done.
+		if (columnSearchTerms.length === 0) {
+			const length = allRows === null ? 0 : allRows.length;
+			gtInfo.recordsAfterSearch = length;
+			return allRows;
+		}
+
+		const searchFunctions = this.getSearchValueMappingFunctions(
+			columnSearchTerms,
+			fields
+		);
+
+		const filteredRows = this.filterRows(
+			allRows,
+			columnSearchTerms,
+			searchFunctions
+		);
+
+		return filteredRows;
+	}
+
+	/**
+	 * Filter out any column searches that contain only empty strings.
+	 *
+	 * @private
+	 * @param {GtColumnSearch[]} searchTerms Search term for each column.
+	 * @param {GtConfigSetting[]} settings Table settings.
+	 * @returns {GtColumnSearch[]} Actively searched column search terms.
+	 * @memberof GtColumnSearchPipe
+	 */
+	private findActiveSearchColumns(
+		searchTerms: GtColumnSearch[],
+		settings: GtConfigSetting[]
+	): GtColumnSearch[] {
+		return (
+			searchTerms
+				// Check that the string is not empty, even if quotes are removed.
+				.filter(column => column.value.replace(/"/g, '').length !== 0)
+				.filter(
+					column =>
+						settings.find(x => x.objectKey === column.id).search === false
+							? false
+							: true
+				)
+		);
+	}
+
+	/**
+	 * If a column is configured to map a value through a function when searching
+	 * or processing, collect those functions.
+	 *
+	 * @private
+	 * @param {GtColumnSearch[]} columnSearchTerms Array of columns with search terms from each.
+	 * @param {GtConfigField<R, any>[]} fields Table field settings
+	 * @returns {SearchFunctions<R>} Search functions for each column, if configured.
+	 * @memberof GtColumnSearchPipe
+	 */
+	private getSearchValueMappingFunctions(
+		columnSearchTerms: GtColumnSearch[],
+		fields: GtConfigField<R, any>[]
+	): SearchFunctions<R> {
 		const searchFunctions: SearchFunctions<R> = {};
 
 		columnSearchTerms.forEach(term => {
@@ -50,13 +105,27 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 			}
 		});
 
-		// if there are no search inputs, nothing needs to be done.
-		if (columnSearchTerms.length === 0) {
-			const length = allRows === null ? 0 : allRows.length;
-			gtInfo.recordsAfterSearch = length;
-			return allRows;
-		}
+		return searchFunctions;
+	}
 
+	/**
+	 * Filter the rows using the search terms.
+	 *
+	 * If a field is configured to map through a function for searching or
+	 * processing, use that before finding a match.
+	 *
+	 * @private
+	 * @param {R[]} allRows All rows in the table.
+	 * @param {GtColumnSearch[]} columnSearchTerms Search terms for each column.
+	 * @param {SearchFunctions<R>} searchFunctions Search or value function for each column, if configured.
+	 * @returns {R[]} Filtered rows.
+	 * @memberof GtColumnSearchPipe
+	 */
+	private filterRows(
+		allRows: R[],
+		columnSearchTerms: GtColumnSearch[],
+		searchFunctions: SearchFunctions<R>
+	): R[] {
 		const filteredRows: R[] = [];
 
 		allRows.forEach(row => {
@@ -69,6 +138,7 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 					? searchFunctions[term.id](row)
 					: row[term.id];
 
+				// TODO: split search string on spaces, grouping terms inside double quotes.
 				return (<string>row[term.id])
 					.toString()
 					.toLowerCase()
