@@ -56,11 +56,9 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 	/**
 	 * Filter out any column searches that contain only empty strings.
 	 *
-	 * @private
-	 * @param {GtColumnSearch[]} searchTerms Search term for each column.
-	 * @param {GtConfigSetting[]} settings Table settings.
-	 * @returns {GtColumnSearch[]} Actively searched column search terms.
-	 * @memberof GtColumnSearchPipe
+	 * @param searchTerms Search term for each column.
+	 * @param settings Table settings.
+	 * @returns Actively searched column search terms.
 	 */
 	private findActiveSearchColumns(
 		searchTerms: GtColumnSearch[],
@@ -83,11 +81,9 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 	 * If a column is configured to map a value through a function when searching
 	 * or processing, collect those functions.
 	 *
-	 * @private
-	 * @param {GtColumnSearch[]} columnSearchTerms Array of columns with search terms from each.
-	 * @param {GtConfigField<R, any>[]} fields Table field settings
-	 * @returns {SearchFunctions<R>} Search functions for each column, if configured.
-	 * @memberof GtColumnSearchPipe
+	 * @param columnSearchTerms Array of columns with search terms from each.
+	 * @param fields Table field settings
+	 * @returns Search functions for each column, if configured.
 	 */
 	private getSearchValueMappingFunctions(
 		columnSearchTerms: GtColumnSearch[],
@@ -114,12 +110,10 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 	 * If a field is configured to map through a function for searching or
 	 * processing, use that before finding a match.
 	 *
-	 * @private
-	 * @param {R[]} allRows All rows in the table.
-	 * @param {GtColumnSearch[]} columnSearchTerms Search terms for each column.
-	 * @param {SearchFunctions<R>} searchFunctions Search or value function for each column, if configured.
-	 * @returns {R[]} Filtered rows.
-	 * @memberof GtColumnSearchPipe
+	 * @param allRows All rows in the table.
+	 * @param columnSearchTerms Search terms for each column.
+	 * @param searchFunctions Search or value function for each column, if configured.
+	 * @returns Filtered rows.
 	 */
 	private filterRows(
 		allRows: R[],
