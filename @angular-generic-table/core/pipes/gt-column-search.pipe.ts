@@ -132,6 +132,11 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 					? searchFunctions[term.id](row)
 					: row[term.id];
 
+				// Filter out null values
+				if (row[term.id] === null) {
+					return false;
+				}
+
 				// TODO: split search string on spaces, grouping terms inside double quotes.
 				return (<string>row[term.id])
 					.toString()
