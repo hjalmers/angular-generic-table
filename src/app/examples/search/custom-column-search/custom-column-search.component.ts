@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-	GenericTableComponent,
-	GtConfig,
-	GtOptions
-} from '@angular-generic-table/core';
+import { GtConfig, GtOptions } from '@angular-generic-table/core';
 import { Person, PEOPLE } from '../person';
 import { SearchHeaderComponent } from './search-header.component';
 

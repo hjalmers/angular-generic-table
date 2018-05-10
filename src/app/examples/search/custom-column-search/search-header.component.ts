@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { GtCustomComponent } from '@angular-generic-table/core';
 import { Person } from '../person';
 
