@@ -4,12 +4,7 @@ import { Person } from '../person';
 
 @Component({
 	selector: 'app-search-header',
-	template: `
-		<div class="column-name">{{column | titlecase}}</div>
-		<input #inputBox type="text" placeholder="{{column}}"
-			(click)="$event.stopPropagation()"
-			(keyup)="searchWithinColumn(inputBox.value, false)" />
-	`,
+	templateUrl: './search-header.component.html',
 	styleUrls: ['./search-header.component.scss']
 })
 export class SearchHeaderComponent extends GtCustomComponent<Person> {
