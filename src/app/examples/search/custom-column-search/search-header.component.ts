@@ -8,7 +8,7 @@ import { Person } from '../person';
 		<div class="column-name">{{column | titlecase}}</div>
 		<input #inputBox type="text" placeholder="{{column}}"
 			(click)="$event.stopPropagation()"
-			(keyup)="searchWithinColumn(inputBox.value)" />
+			(keyup)="searchWithinColumn(inputBox.value, false)" />
 	`,
 	styleUrls: ['./search-header.component.scss']
 })
@@ -17,10 +17,11 @@ export class SearchHeaderComponent extends GtCustomComponent<Person> {
 		super();
 	}
 
-	searchWithinColumn(searchTerm: string): void {
+	searchWithinColumn(searchTerm: string, onlyNull: boolean): void {
 		this.columnSearch.emit({
 			id: this.columnObjectKey,
-			value: searchTerm
+			value: searchTerm,
+			onlyNull: onlyNull
 		});
 	}
 }

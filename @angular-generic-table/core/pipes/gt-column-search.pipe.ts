@@ -67,7 +67,11 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 		return (
 			searchTerms
 				// Check that the string is not empty, even if quotes are removed.
-				.filter(column => column.value.replace(/"/g, '').length !== 0)
+				.filter(
+					column =>
+						column.onlyNull === true ||
+						column.value.replace(/"/g, '').length !== 0
+				)
 				.filter(
 					column =>
 						settings.find(x => x.objectKey === column.id).search === false
@@ -133,7 +137,14 @@ export class GtColumnSearchPipe<R extends GtRow> implements PipeTransform {
 					currentField = searchFunctions[term.id](row);
 				}
 
-				// Filter out null values
+				// Show only null values if requested.
+				if (term.onlyNull) {
+					return currentField === null;
+				}
+
+				// Filter out null values.
+				// Note that an empty search string would get filtered out before it got here,
+				// meaning that this column isn't affected.
 				if (currentField === null) {
 					return false;
 				}

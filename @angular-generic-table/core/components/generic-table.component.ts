@@ -48,7 +48,7 @@ import { GtMetaPipe } from '../pipes/gt-meta.pipe';
                     <!-- don't trigger a sort when clicking on the search box -->
                     <input #columnSearch *ngIf="gtSettings | gtProperty:column.objectKey:'searchBox'"
                       (click)="$event.stopPropagation()"
-                      (keyup)="gtColumnSearch(column.objectKey, columnSearch.value)"
+                      (keyup)="gtColumnSearch(column.objectKey, columnSearch.value, false)"
                       type="text"
                       placeholder="Filter by {{gtFields | gtProperty:column.objectKey:'name' | lowercase}}" />
                     <gt-checkbox *ngIf="(gtFields | gtProperty:column.objectKey:'columnComponent')?.type === 'checkbox'" [checked]="(selectedRows.length === gtData.length)" (changed)="(selectedRows.length !== gtData.length) ? selectAllRows() : deselectAllRows();"></gt-checkbox>
@@ -261,7 +261,11 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		}
 
 		value.forEach(column => {
-			this.gtColumnSearchTerms.push({ id: column.objectKey, value: '' });
+			this.gtColumnSearchTerms.push({
+				id: column.objectKey,
+				value: '',
+				onlyNull: false
+			});
 		});
 	}
 	public gtColumnSearchTerms: GtColumnSearch[] = [];
@@ -1260,12 +1264,18 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 	public handleColumnSearch(event: GtColumnSearch) {
 		const columnObjectKey = event.id;
 		const searchTerms = event.value;
-		this.gtColumnSearch(columnObjectKey, searchTerms);
+		const onlyNull = event.onlyNull;
+		this.gtColumnSearch(columnObjectKey, searchTerms, onlyNull);
 	}
 
-	public gtColumnSearch(objectKey: string, value: string) {
-		// map the column search value to its column
-		this.gtColumnSearchTerms.find(x => x.id === objectKey).value = value;
+	public gtColumnSearch(objectKey: string, value: string, onlyNull: boolean) {
+		// map the column search criteria to its column
+		for (const column of this.gtColumnSearchTerms) {
+			if (column.id === objectKey) {
+				column.value = value;
+				column.onlyNull = onlyNull;
+			}
+		}
 
 		// Replace column search terms with a new object. This allows angular to
 		// detect a change in the pipe.

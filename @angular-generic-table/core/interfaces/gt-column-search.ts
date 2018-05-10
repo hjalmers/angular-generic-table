@@ -7,4 +7,8 @@ export interface GtColumnSearch {
 	 * column-specific search value.
 	 */
 	value: string;
+	/**
+	 * Show only null values.
+	 */
+	onlyNull: boolean;
 }
