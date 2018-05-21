@@ -41,7 +41,7 @@ import { GtMetaPipe } from '../pipes/gt-meta.pipe';
                                                 [type]="(gtFields | gtProperty:column.objectKey:'header')?.type"
                                                 [injector]="(gtFields | gtProperty:column.objectKey:'header')?.injector"
                                                 [column]="gtFields | gtProperty:column.objectKey:'name'"></gt-custom-component-factory>
-                    <gt-checkbox *ngIf="(gtFields | gtProperty:column.objectKey:'columnComponent')?.type === 'checkbox'" [checked]="(selectedRows.length === gtData.length)" (changed)="(selectedRows.length !== gtData.length) ? selectAllRows() : deselectAllRows();"></gt-checkbox>
+                    <gt-checkbox *ngIf="(gtFields | gtProperty:column.objectKey:'columnComponent')?.type === 'checkbox'" [checked]="(selectedRows.length === gtData.length)" (changed)="toggleAllRows()"></gt-checkbox>
                 </th>
             </tr>
             </thead>
@@ -513,8 +513,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 					}
 					break;
 			}
-		} /* if ctrl key or meta key is not press together with sort... */ else {
-			switch (pos) {
+		} else {
+			/* if ctrl key or meta key is not press together with sort... */ switch (pos) {
 				// ...and property is not sorted before...
 				case -1:
 					// ...sort by property
@@ -776,6 +776,16 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 	public deselectAllRows(): void {
 		this._toggleAllRowProperty('isSelected', false);
 	}
+	/**
+	 * Toggle all rows.
+	 */
+	public toggleAllRows(): void {
+		if (this.selectedRows.length !== this.gtData.length) {
+			this.selectAllRows();
+		} else {
+			this.deselectAllRows();
+		}
+	}
 
 	/**
 	 * Toggle row collapsed state ie. expanded/open or collapsed/closed.
@@ -873,7 +883,10 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		source: Array<GtRow>
 	): Array<GtRow> {
 		for (let i = 0; i < source.length; i++) {
-			target.push(source[i]);
+			// only add if not already in list
+			if (target.indexOf(source[i]) === -1) {
+				target.push(source[i]);
+			}
 		}
 		return target;
 	}
@@ -1500,10 +1513,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 				if (setting.sort === 'asc') {
 					// ... add to sorting
 					sorting.push(setting.objectKey);
-				} /* ...else if sorted descending... */ else if (
-					setting.sort === 'desc'
-				) {
-					// ... add to sorting
+				} else if (setting.sort === 'desc') {
+					/* ...else if sorted descending... */ // ... add to sorting
 					sorting.push('-' + setting.objectKey);
 				}
 			}
