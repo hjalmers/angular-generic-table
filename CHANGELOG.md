@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Added
+
+* Ability to use custom row id instead of auto generated one #245
+* Row property for initial order `gtInitialRowIndex`
+
 ### Fixed
 
 * Select/deselect all rows when lazy loading data #244
