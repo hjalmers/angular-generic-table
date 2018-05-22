@@ -293,11 +293,12 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		if (this.gtOptions.lazyLoad && this.gtInfo) {
 			this.gtMetaPipe.transform(
 				data,
+				this.gtOptions.rowIndex,
 				this.gtInfo.pageCurrent - 1,
 				this.gtInfo.recordLength
 			);
 		} else {
-			this.gtMetaPipe.transform(data);
+			this.gtMetaPipe.transform(data, this.gtOptions.rowIndex);
 		}
 		if (this.gtOptions.rowSelectionInitialState) {
 			data.map(row => {
