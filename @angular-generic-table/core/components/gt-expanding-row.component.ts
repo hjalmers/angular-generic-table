@@ -17,10 +17,10 @@ export class GtExpandedRow<R extends GtRow> {
 		this.toggleRowEvent.emit(this.row);
 	}
 
-	protected $redraw(): void {
+	public $redraw($event?: any): void {
 		this.redrawEvent.emit(this.row);
 	}
-	protected $rowClick(row: GtRow, $event: MouseEvent) {
+	public $rowClick(row: GtRow, $event: MouseEvent) {
 		this.gtEvent.emit({
 			name: 'gt-row-clicked',
 			value: { row: row, event: $event }

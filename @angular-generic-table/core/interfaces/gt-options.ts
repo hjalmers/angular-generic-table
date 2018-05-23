@@ -17,4 +17,6 @@ export interface GtOptions {
 	rowExpandInitialComponent?: { component: Type<any>; data?: Array<any> };
 	numberOfRows?: number;
 	reportColumnWidth?: boolean;
+	/** object key containing unique row id */
+	rowIndex?: string;
 }

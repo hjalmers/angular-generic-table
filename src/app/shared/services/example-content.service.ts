@@ -15,6 +15,11 @@ import * as restComponent from '!raw-loader!../../examples/loading-data/using-re
 import * as restDescription from '!raw-loader!../../examples/loading-data/using-rest-api/description.md';
 import { RestExampleComponent } from '../../examples/loading-data/using-rest-api/rest-example.component';
 
+import * as lazyHtml from '!raw-loader!../../examples/loading-data/lazy-load/lazy-load-example.component.html';
+import * as lazyComponent from '!raw-loader!../../examples/loading-data/lazy-load/lazy-load-example.component';
+import * as lazyDescription from '!raw-loader!../../examples/loading-data/lazy-load/description.md';
+import { LazyLoadExampleComponent } from '../../examples/loading-data/lazy-load/lazy-load-example.component';
+
 import * as sortLead from '!raw-loader!../../examples/sort/lead.md';
 import * as enableDisableSortHtml from '!raw-loader!../../examples/sort/enable-disable/enable-disable-sort-example.component.html';
 import * as enableDisableSortModule from '!raw-loader!../../examples/sort/sort.module';
@@ -128,6 +133,28 @@ export class ExampleContentService {
 						{
 							title: 'rest-example.component.ts',
 							code: restComponent,
+							lang: 'typescript'
+						},
+						{
+							title: 'loading-data.module.ts',
+							code: loadDataModule,
+							lang: 'typescript'
+						}
+					]
+				},
+				{
+					component: LazyLoadExampleComponent,
+					title: 'Lazy loading',
+					description: lazyDescription,
+					examples: [
+						{
+							title: 'rest-example.component.html',
+							code: lazyHtml,
+							lang: 'markup'
+						},
+						{
+							title: 'rest-example.component.ts',
+							code: lazyComponent,
 							lang: 'typescript'
 						},
 						{

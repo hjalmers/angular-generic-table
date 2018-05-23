@@ -1,22 +1,3 @@
-## In memory array
+## Lazy loading
 
-Table with static data in memory, sorting enabled (is enabled by default) and simple pagination.
-
-### Markdown example
-
----
-
-This is an **example** where we bind a variable to the `markdown` component that is also bind to a textarea.
-
-#### example.component.ts
-
-```typescript
-public markdown = "# Markdown";
-```
-
-#### example.component.html
-
-```html
-<textarea [(ngModel)]="markdown"></textarea>
-<markdown [data]="markdown"></markdown>
-```
+Use lazy loading to speed things up when working with large data sets and cache data in the table if you want to avoid unnecessary server requests.

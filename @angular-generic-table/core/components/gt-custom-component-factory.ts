@@ -19,7 +19,7 @@ export abstract class GtCustomComponent<R> implements OnInit {
 	searchTerms: string;
 	$searchTerms: ReplaySubject<string> = new ReplaySubject(1);
 
-	protected $redraw() {
+	protected $redraw($event?: any) {
 		this.redrawEvent.emit({ row: this.row, column: this.column });
 	}
 	ngOnInit() {

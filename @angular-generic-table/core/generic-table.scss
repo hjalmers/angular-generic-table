@@ -81,6 +81,9 @@ generic-table {
 						vertical-align: middle;
 					}
 				}
+				&.checkbox-column {
+					min-width: 30px;
+				}
 			}
 		}
 
