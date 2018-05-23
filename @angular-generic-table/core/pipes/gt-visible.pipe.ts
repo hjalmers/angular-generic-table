@@ -20,8 +20,9 @@ export class GtVisiblePipe<R extends GtRow> implements PipeTransform {
 	};
 
 	transform(
-		array: Array<GtConfigField<R, any>>,
-		settings: Array<GtConfigSetting>
+		array: Array<any>,
+		settings: Array<GtConfigSetting>,
+		refreshPipe?: boolean
 	): Array<GtConfigField<R, any>> | Array<GtConfigSetting> {
 		const visibleColumns = settings
 			.sort(this.getColumnOrder)
@@ -32,7 +33,7 @@ export class GtVisiblePipe<R extends GtRow> implements PipeTransform {
 			});
 
 		return array
-			.filter((column: GtConfigField<R, any>) => {
+			.filter((column: any) => {
 				return visibleColumns.indexOf(column.objectKey) !== -1;
 			})
 			.sort(function(a, b) {

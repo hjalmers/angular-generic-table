@@ -291,7 +291,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 	 * @param objectKey - name of key to sort on.
 	 * @param event - such as key press during sorting.
 	 */
-	private gtSort = function(objectKey: string, event: any) {
+	public gtSort = function(objectKey: string, event: any) {
 		this.inlineEditCancel(); // cancel inline editing
 
 		// loop through current settings
@@ -486,7 +486,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 	 * Force a redraw of table rows.
 	 * As the table uses pure pipes, we need to force a redraw if an object in the array is changed to see the changes.
 	 */
-	public redraw = function() {
+	public redraw = function($event?: any) {
 		this.refreshSorting = !this.refreshSorting;
 		this.refreshPageArray = !this.refreshPageArray;
 		this.refreshPipe = !this.refreshPipe;

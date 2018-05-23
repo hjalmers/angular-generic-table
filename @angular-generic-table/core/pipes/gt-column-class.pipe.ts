@@ -8,8 +8,8 @@ import { GtRow } from '../interfaces/gt-row';
 export class GtColumnClassPipe implements PipeTransform {
 	transform(
 		gtFields: Array<GtConfigField<any, any>>,
-		row: GtRow,
-		column: GtConfigField<GtRow, any>
+		column: GtConfigField<GtRow, any>,
+		row?: GtRow
 	): any {
 		// find columns with columnClass property defined
 		const COLUMN_WITH_CLASS = gtFields

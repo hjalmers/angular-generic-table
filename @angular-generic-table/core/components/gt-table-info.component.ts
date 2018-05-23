@@ -8,7 +8,14 @@ import { GenericTableComponent } from './generic-table.component';
 
 @Component({
 	selector: 'gt-table-info',
-	template: `<span *ngIf="genericTable.gtInfo">{{(customText? customText:genericTable.gtTexts) | gtTableInfo:genericTable.gtInfo:genericTable.gtInfo.recordsAfterSearch:genericTable.gtInfo.recordFrom:genericTable.gtInfo.recordTo:genericTable.gtInfo.recordsAll:genericTable.gtTexts.loading:genericTable.gtTexts.tableInfoAfterSearch}}</span>`
+	template: `<span *ngIf="genericTable.gtInfo">{{(customText? customText:genericTable.gtTexts) | gtTableInfo:
+		genericTable.gtInfo:
+		genericTable.gtInfo.recordsAfterSearch:
+		genericTable.gtInfo.recordFrom:
+		genericTable.gtInfo.recordTo:
+		genericTable.gtInfo.recordsAll:
+		genericTable.gtTexts.loading:
+		genericTable.gtTexts.tableInfoAfterSearch}}</span>`
 })
 export class GtTableInfoComponent implements AfterViewChecked {
 	@Input() genericTable: GenericTableComponent<any, any>;
@@ -28,10 +35,19 @@ import { GtTexts } from '../interfaces/gt-texts';
 	name: 'gtTableInfo'
 })
 export class TableInfoPipe implements PipeTransform {
-	transform(texts: GtTexts, keys: GtInformation, refresh: number): string {
-		let text = texts.tableInfo;
+	transform(
+		texts: GtTexts | string,
+		keys: GtInformation,
+		recordsAfterSearch: number,
+		recordFrom: number,
+		recordTo: number,
+		recordsAll: number,
+		loading: string,
+		tableInfoAfterSearch: string
+	): string {
+		let text = typeof texts === 'object' ? texts.tableInfo : '';
 		if (keys.recordsAfterSearch !== keys.recordsAll) {
-			text = texts.tableInfoAfterSearch;
+			text = typeof texts === 'object' ? texts.tableInfoAfterSearch : '';
 		}
 		for (const key in keys) {
 			if (keys.hasOwnProperty(key)) {
