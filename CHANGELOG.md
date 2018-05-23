@@ -10,6 +10,7 @@
 ### Fixed
 
 * Select/deselect all rows when lazy loading data #244
+* Min width for checkbox component
 
 ## [4.14.0] - 2018-04-30
 
