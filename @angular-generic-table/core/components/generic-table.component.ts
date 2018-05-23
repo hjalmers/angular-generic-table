@@ -27,159 +27,7 @@ import { GtMetaPipe } from '../pipes/gt-meta.pipe';
 
 @Component({
 	selector: 'generic-table',
-	template: `
-        <table class="table" ngClass="{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}"
-               *ngIf="gtFields && gtSettings && (gtFields | gtVisible:gtSettings:refreshPipe).length > 0">
-            <thead>
-            <tr>
-                <th class="gt-sort-label" *ngIf="gtOptions.stack">{{gtTexts.sortLabel}}</th>
-                <th *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe"
-                    ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{column.sortEnabled ? 'sort-'+column.sort:''}} {{column.sortEnabled && column.sortOrder >= 0  ? 'sort-order-'+column.sortOrder:''}} {{ gtFields | gtColumnClass:'th':column }}"
-                    (click)="column.sortEnabled ? gtSort(column.objectKey,$event):'';">
-                    <span *ngIf="!(gtFields | gtProperty:column.objectKey:'header')">{{gtFields | gtProperty:column.objectKey:'name'}}</span>
-                    <gt-custom-component-factory *ngIf="(gtFields | gtProperty:column.objectKey:'header')"
-                                                [type]="(gtFields | gtProperty:column.objectKey:'header')?.type"
-                                                [injector]="(gtFields | gtProperty:column.objectKey:'header')?.injector"
-                                                [column]="gtFields | gtProperty:column.objectKey:'name'"></gt-custom-component-factory>
-                    <gt-checkbox *ngIf="(gtFields | gtProperty:column.objectKey:'columnComponent')?.type === 'checkbox'" [checked]="(selectedRows.length === gtData.length)" (changed)="toggleAllRows()"></gt-checkbox>
-                </th>
-            </tr>
-            </thead>
-            <ng-template
-                    [ngIf]="gtTotals && (gtOptions.lazyLoad === false ? (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length).length > 0 : gtData.length > 0)">
-                <thead class="gt-totals">
-                <tr *ngFor="let total of gtTotals | gtTotalsPosition">
-                    <td *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;"
-                        ngClass="{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{ gtFields | gtColumnClass:'total':column }}">
-                        <span *ngIf="i === 0" class="float-left">{{total.name}}</span><span
-                            [innerHTML]="total.fields[column.objectKey] | gtTotals:(total.update === false || gtOptions.lazyLoad === true) ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals"></span>
-                    </td>
-                </tr>
-                </thead>
-                <tfoot class="gt-totals">
-                <tr *ngFor="let total of gtTotals | gtTotalsPosition:'footer'">
-                    <td *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;"
-                        ngClass="{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{ gtFields | gtColumnClass:'total':column }}">
-                        <span *ngIf="i === 0" class="float-left">{{total.name}}</span><span
-                            [innerHTML]="total.fields[column.objectKey] | gtTotals:(total.update === false || gtOptions.lazyLoad === true) ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals"></span>
-                    </td>
-                </tr>
-                </tfoot>
-            </ng-template>
-            <tbody *ngIf="gtData && gtInfo">
-            <ng-template class="table-rows" ngFor let-row let-last="last" [ngForTrackBy]="trackByFn"
-                         [ngForOf]="gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1]) : (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data | gtRowClass:gtFields)">
-                <tr [ngClass]="{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading, 'row-expandable':gtRowComponent}"
-                    class="{{row.$$gtRowClass}}"
-                    (click)="gtOptions.rowSelection ? toggleSelect(row):rowClick(row, $event)">
-                    <td *ngFor="let column of row | gtRender:gtSettings:gtFields:refreshPipe:loading:gtOptions.highlightSearch:gtInfo.searchTerms;trackBy:trackByColumnFn"
-                        ngClass="{{column.objectKey +'-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{(gtFields | gtProperty:column.objectKey:'inlineEdit') ? 'gt-inline-edit':''}} {{column.edited ? 'gt-edited':''}} {{ gtFields | gtColumnClass:row:column }}">
-                        <span class="gt-row-label"
-                              *ngIf="gtOptions.stack">{{(gtFields | gtProperty:column.objectKey:'stackedHeading') ? (gtFields | gtProperty:column.objectKey:'stackedHeading') : (gtFields | gtProperty:column.objectKey:'name')}}</span>
-                        <gt-custom-component-factory *ngIf="column.columnComponent && column.columnComponent.type !== 'checkbox'" class="gt-row-content"
-                                                     [type]="column.columnComponent.type"
-                                                     [injector]="column.columnComponent.injector" [row]="row"
-                                                     [column]="column" (redrawEvent)="redraw($event)"
-                                                     [searchTerms]="gtInfo.searchTerms"  (searchEvent)="redraw($event)"
-                                                     (click)="column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row, column.expand):''"></gt-custom-component-factory>
-                        <span *ngIf="!column.columnComponent && (!(gtFields | gtProperty:column.objectKey:'inlineEdit') || ((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active | gtIsObservable) && !((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active | async) || (!((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active | gtIsObservable) && !((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active | gtIsEditable:row:refreshPipe)))"
-                              class="gt-row-content" [innerHTML]="column.renderValue"
-                              (click)="column.click ? column.click(row,column,$event):'';column.expand ? toggleCollapse(row, column.expand):''"></span>
-                        <ng-template
-                          [ngIf]="!column.columnComponent && (((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active | gtIsObservable) && ((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active | async) || ((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active | gtIsEditable:row:refreshPipe))">
-                          <ng-template [ngIf]="([true,'email','number','password', 'text'].indexOf((gtFields | gtProperty:column.objectKey:'inlineEdit').type) !== -1) || !(gtFields | gtProperty:column.objectKey:'inlineEdit').type">
-                            <input class="inline-edit" [attr.type]="!(gtFields | gtProperty:column.objectKey:'inlineEdit').type ? 'text' : !((gtFields | gtProperty:column.objectKey:'inlineEdit').type | gtIsObservable) ? (gtFields | gtProperty:column.objectKey:'inlineEdit').type:(gtFields | gtProperty:column.objectKey:'inlineEdit').type | async" [(ngModel)]="column.renderValue"
-                                 (keyup)="gtUpdateColumn($event,row, column)">
-                            <span class="gt-inline-edit-notice">{{gtTexts.inlineEditEdited}}</span>
-                          </ng-template>
-                          <gt-dropdown
-                            *ngIf="(((gtFields | gtProperty:column.objectKey:'inlineEdit').type) && ((gtFields | gtProperty:column.objectKey:'inlineEdit').type).length > 0) || ((gtFields | gtProperty:column.objectKey:'inlineEdit').type | gtIsObservable)"
-                            [options]="!((gtFields | gtProperty:column.objectKey:'inlineEdit').type | gtIsObservable) ? (gtFields | gtProperty:column.objectKey:'inlineEdit').type : (gtFields | gtProperty:column.objectKey:'inlineEdit').type | async"
-                            [id]="'_' + row.$$gtRowId + '_' + column.objectKey"
-                            [(selected)]="column.renderValue" (selectedChange)="gtDropdownSelect(row, column)">Add
-                            inline editing module
-                          </gt-dropdown>
-                        </ng-template>
-                        <ng-template [ngIf]="!column.columnComponent && !((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active) ">
-                          <ng-template
-                                [ngIf]="[true,'email','number','password'].indexOf(gtFields | gtProperty:column.objectKey:'inlineEdit') !== -1">
-                            <input class="inline-edit" [attr.type]="(gtFields | gtProperty:column.objectKey:'inlineEdit') === true ? 'text':(gtFields | gtProperty:column.objectKey:'inlineEdit')" [(ngModel)]="column.renderValue"
-                                   (keyup)="gtUpdateColumn($event,row, column)">
-                            <span class="gt-inline-edit-notice">{{gtTexts.inlineEditEdited}}</span>
-                          </ng-template>
-                          <gt-dropdown
-                                  *ngIf="(gtFields | gtProperty:column.objectKey:'inlineEdit') && [true,'email','number','password'].indexOf(gtFields | gtProperty:column.objectKey:'inlineEdit') === -1"
-                                  [options]="gtFields | gtProperty:column.objectKey:'inlineEdit'"
-                                  [id]="'_' + row.$$gtRowId + '_' + column.objectKey"
-                                  [(selected)]="column.renderValue" (selectedChange)="gtDropdownSelect(row, column)">Add
-                              inline editing module
-                          </gt-dropdown>
-                        </ng-template>
-                        <gt-checkbox *ngIf="column.columnComponent && column.columnComponent.type === 'checkbox'" [checked]="metaInfo[row.$$gtRowId]?.isSelected" (changed)="toggleSelect(row)"></gt-checkbox>
-                    </td>
-                </tr>
-                <tr class="row-expanded" *ngIf="metaInfo[row.$$gtRowId]?.isOpen">
-                    <td [attr.colspan]="(gtFields | gtVisible:gtSettings:refreshPipe).length">
-                        <gt-expanding-row [row]="row"
-                                          [type]="expandedRow.component ? expandedRow.component:gtRowComponent"
-                                          [columnWidth]="columnWidth"
-                                          [gtFields]="gtFields"
-                                          [gtOptions]="gtOptions"
-                                          [gtEvent]="gtEvent"
-                                          [gtInfo]="gtInfo"
-                                          [gtSettings]="gtSettings"
-                                          [data]="expandedRow.data ? expandedRow.data:row"
-                                          (redrawEvent)="redraw($event)"
-                                          (toggleRowEvent)="toggleCollapse($event)"></gt-expanding-row>
-                    </td>
-                </tr>
-                <tr *ngIf="gtOptions.reportColumnWidth && last">
-                    <td style="padding: 0; border:none;"
-                        *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe" gtColumnWidth
-                        [objectKey]="column.objectKey" [widths]="columnWidth"></td>
-                </tr>
-            </ng-template>
-            <tr *ngIf="gtInfo.pageTotal === 0 && (gtInfo.searchTerms || gtInfo.filter) && !loading">
-                <td class="gt-no-matching-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">
-                    {{gtTexts.noMatchingData}}
-                </td>
-            </tr>
-            <tr *ngIf="gtInfo.pageTotal === 0 && !(gtInfo.searchTerms || gtInfo.filter) && !loading">
-                <td class="gt-no-results" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.noData}}
-                </td>
-            </tr>
-            <tr *ngIf="gtInfo.pageTotal === 0 && loading">
-                <td class="gt-loading-data" [attr.colspan]="(gtFields | gtVisible:gtSettings).length">{{gtTexts.loading}}</td>
-            </tr>
-            </tbody>
-        </table>
-        <table class="table" ngClass="{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}"
-               *ngIf="gtFields && gtSettings && (gtFields | gtVisible:gtSettings:refreshPipe).length === 0">
-            <thead>
-            <tr>
-                <th class="gt-no-visible-columns">{{gtTexts.noVisibleColumnsHeading}}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td class="gt-no-visible-columns">{{gtTexts.noVisibleColumns}}</td>
-            </tr>
-            </tbody>
-        </table>
-        <table class="table" ngClass="{{gtClasses}} {{gtOptions.stack ? 'table-stacked':''}}"
-               *ngIf="!gtFields || !gtSettings">
-            <thead>
-            <tr>
-                <th class="gt-loading-config">&nbsp;</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td class="gt-loading-config">&nbsp;</td>
-            </tr>
-            </tbody>
-        </table>
-    `
+	templateUrl: './generic-table.component.html'
 })
 export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 	implements OnInit, OnChanges, OnDestroy {
@@ -293,11 +141,12 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		if (this.gtOptions.lazyLoad && this.gtInfo) {
 			this.gtMetaPipe.transform(
 				data,
+				this.gtOptions.rowIndex,
 				this.gtInfo.pageCurrent - 1,
 				this.gtInfo.recordLength
 			);
 		} else {
-			this.gtMetaPipe.transform(data);
+			this.gtMetaPipe.transform(data, this.gtOptions.rowIndex);
 		}
 		if (this.gtOptions.rowSelectionInitialState) {
 			data.map(row => {
@@ -442,7 +291,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 	 * @param objectKey - name of key to sort on.
 	 * @param event - such as key press during sorting.
 	 */
-	private gtSort = function(objectKey: string, event: any) {
+	public gtSort = function(objectKey: string, event: any) {
 		this.inlineEditCancel(); // cancel inline editing
 
 		// loop through current settings
@@ -486,7 +335,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 
 		// if ctrl key or meta key is press together with sort...
 		if (ctrlKey) {
-			if (this.sortOrder[this.sortOrder.length - 1] === '$$gtRowId') {
+			if (this.sortOrder[this.sortOrder.length - 1] === '$$gtInitialRowIndex') {
 				this.sortOrder.pop();
 			}
 			switch (pos) {
@@ -514,7 +363,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 					break;
 			}
 		} else {
-			/* if ctrl key or meta key is not press together with sort... */ switch (pos) {
+			/* if ctrl key or meta key is not press together with sort... */
+			switch (pos) {
 				// ...and property is not sorted before...
 				case -1:
 					// ...sort by property
@@ -572,8 +422,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		this.refreshSorting = !this.refreshSorting;
 		this.refreshPageArray = !this.refreshPageArray;
 
-		// sort by row id as last resort
-		this.sortOrder.push('$$gtRowId');
+		// sort by initial sort order as last resort
+		this.sortOrder.push('$$gtInitialRowIndex');
 
 		// emit sort event
 		this.gtEvent.emit({
@@ -636,7 +486,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 	 * Force a redraw of table rows.
 	 * As the table uses pure pipes, we need to force a redraw if an object in the array is changed to see the changes.
 	 */
-	public redraw = function() {
+	public redraw = function($event?: any) {
 		this.refreshSorting = !this.refreshSorting;
 		this.refreshPageArray = !this.refreshPageArray;
 		this.refreshPipe = !this.refreshPipe;

@@ -13,7 +13,7 @@ import {
 export class GtColumnWidthDirective implements OnInit {
 	@Input() objectKey: string;
 	@Input() widths: Object;
-	@HostListener('window:resize', [])
+	@HostListener('window:resize', ['$event'])
 	public onResize($event: any) {
 		this.checkSize();
 	}

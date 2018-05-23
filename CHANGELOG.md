@@ -2,9 +2,15 @@
 
 ## [Unreleased]
 
+### Added
+
+* Ability to use custom row id instead of auto generated one #245
+* Row property for initial order `gtInitialRowIndex`
+
 ### Fixed
 
 * Select/deselect all rows when lazy loading data #244
+* Min width for checkbox component
 
 ## [4.14.0] - 2018-04-30
 
