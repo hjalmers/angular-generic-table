@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [4.15.0] - 2018-05-28
+
 ### Added
 
 * Ability to use custom row id instead of auto generated one #245
