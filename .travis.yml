@@ -2,8 +2,6 @@ language: node_js
 node_js:
   - "lts/*"
   - "node"
-install:
-  - npm install
 before_script:
   - npm run tslint-check
 script:
