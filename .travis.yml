@@ -8,6 +8,10 @@ script:
   - npm run lint:ci
   - npm run build:all
   - npm run cypress:ci
+# unlink the library projects
+before_cache:
+  - npm remove -g @angular-generic-table/core
+  - npm remove -g @angular-generic-table/column-settings
 cache:
   directories:
     - "$HOME/.npm"
