@@ -2,14 +2,19 @@ language: node_js
 node_js:
   - "lts/*"
   - "node"
-install:
-  - npm install
 before_script:
   - npm run tslint-check
 script:
   - npm run lint:ci
   - npm run build:all
   - npm run cypress:ci
+# unlink the library projects
+before_cache:
+  - npm remove -g @angular-generic-table/core
+  - npm remove -g @angular-generic-table/column-settings
+cache:
+  directories:
+    - "$HOME/.npm"
 matrix:
   fast_finish: true
   allow_failures:
