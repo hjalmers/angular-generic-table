@@ -8,6 +8,8 @@ script:
   - npm run lint:ci
   - npm run build:all
   - npm run cypress:ci
+  - export APPLITOOLS_BATCH_ID=`echo ${TRAVIS_PULL_REQUEST_SHA:=$TRAVIS_COMMIT}`
+  - npm run e2e
 # unlink the library projects
 before_cache:
   - npm remove -g @angular-generic-table/core

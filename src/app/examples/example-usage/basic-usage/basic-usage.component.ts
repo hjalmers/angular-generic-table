@@ -245,7 +245,7 @@ export class BasicUsageComponent {
 				},
 				{
 					id: 39,
-					name: 'Andrea',
+					name: 'Jürgen',
 					lucky_number: 39
 				},
 				{
