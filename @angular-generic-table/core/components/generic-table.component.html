@@ -11,7 +11,7 @@
                                    [type]="(gtFields | gtProperty:column.objectKey:'header')?.type"
                                    [injector]="(gtFields | gtProperty:column.objectKey:'header')?.injector"
                                    [column]="gtFields | gtProperty:column.objectKey:'name'"></gt-custom-component-factory>
-      <gt-checkbox *ngIf="(gtFields | gtProperty:column.objectKey:'columnComponent')?.type === 'checkbox'" [checked]="(selectedRows.length === gtData.length)" (changed)="toggleAllRows()"></gt-checkbox>
+      <gt-checkbox *ngIf="(gtFields | gtProperty:column.objectKey:'columnComponent')?.type === 'checkbox'" [checked]="(gtOptions.lazyLoad ? lazyAllSelected:selectedRows.length === gtData.length)" (changed)="toggleAllRows()"></gt-checkbox>
     </th>
   </tr>
   </thead>
