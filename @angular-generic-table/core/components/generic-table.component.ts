@@ -249,7 +249,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		rowSelectionAllowMultiple: true,
 		rowExpandAllowMultiple: true,
 		numberOfRows: 10,
-		reportColumnWidth: false
+		reportColumnWidth: false,
+		allowUnsorted: true
 	};
 	private _gtOptions: GtOptions = this.gtDefaultOptions;
 	public store: Array<any> = [];
@@ -383,7 +384,11 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 				default:
 					// ...change from desc to asc and vise versa
 					this.sortOrder =
-						match !== -1 ? ['-' + objectKey] : ctrlKey ? [objectKey] : [];
+						match !== -1
+							? ['-' + objectKey]
+							: ctrlKey || !this.gtOptions.allowUnsorted
+								? [objectKey]
+								: [];
 					break;
 			}
 		}
@@ -401,7 +406,9 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 					case 'desc':
 						// ...change to asc if it's the only sorted property otherwise remove sorting
 						this._gtSettings[i].sort =
-							(this.sortOrder.length === 1 && sort.length < 2) || ctrlKey
+							(this.sortOrder.length === 1 && sort.length < 2) ||
+							ctrlKey ||
+							!this.gtOptions.allowUnsorted
 								? 'asc'
 								: 'enable';
 						break;
