@@ -1,8 +1,9 @@
 <div #someVar [innerHTML]="(demoContent | async).lead" class="mb-5"></div>
 <ng-container *ngFor="let section of (demoContent | async).sections">
   <div [innerHTML]="section.description" class="mt-3" attr.id="{{section.fragment}}"></div>
+  <label class="font-weight-bold" attr.for="{{section.fragment + 'Example'}}">Example</label>
   <div class="card mb-5">
-    <div class="card-body">
+    <div class="card-body" attr.id="{{section.fragment + 'Example'}}">
       <ng-container *ngComponentOutlet="section.component"></ng-container>
     </div>
     <ngb-tabset type="tabs">

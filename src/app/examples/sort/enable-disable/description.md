@@ -1,3 +1,21 @@
 ## Enable/disable sort
 
-Table with static data in memory, sorting enabled (is enabled by default) and simple pagination.
+All columns are sortable by default, to disable sorting for a particular column set `sortEnabled` to `false`.
+
+```ts
+configObject = {
+	settings: [
+		{
+			objectKey: 'id',
+			sortEnabled: false
+		},
+		{
+			objectKey: 'name'
+		},
+		{
+			objectKey: 'lucky_number'
+		}
+	]
+	...
+};
+```

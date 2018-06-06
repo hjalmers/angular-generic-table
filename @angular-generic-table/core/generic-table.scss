@@ -60,7 +60,8 @@ generic-table {
 						border-bottom: 5px solid #000;
 						border-radius: 2px;
 						margin-left: 4px;
-						vertical-align: middle;
+						position: absolute;
+						margin-top: 9px;
 					}
 				}
 				&.sort-desc {
@@ -78,7 +79,8 @@ generic-table {
 						border-top: 5px solid #000;
 						border-radius: 2px;
 						margin-left: 4px;
-						vertical-align: middle;
+						position: absolute;
+						margin-top: 9px;
 					}
 				}
 				&.checkbox-column {

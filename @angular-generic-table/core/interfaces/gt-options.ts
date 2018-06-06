@@ -19,4 +19,6 @@ export interface GtOptions {
 	reportColumnWidth?: boolean;
 	/** object key containing unique row id */
 	rowIndex?: string;
+	/** allow table to be unsorted */
+	allowUnsorted?: boolean;
 }
