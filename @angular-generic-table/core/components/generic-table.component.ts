@@ -105,10 +105,13 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		// loop through current settings
 		for (let i = 0; i < this._gtSettings.length; i++) {
 			// set sort enabled/disabled setting
-			this._gtSettings[i].sortEnabled = !(
-				this._gtSettings[i].sort &&
-				this._gtSettings[i].sort.indexOf('disable') !== -1
-			);
+			this._gtSettings[i].sortEnabled =
+				this._gtSettings[i].sortEnabled !== false
+					? (this._gtSettings[i].sortEnabled = !(
+							this._gtSettings[i].sort &&
+							this._gtSettings[i].sort.indexOf('disable') !== -1
+					  ))
+					: false;
 
 			// check if sorting is undefined...
 			if (typeof this._gtSettings[i].sort === 'undefined') {
