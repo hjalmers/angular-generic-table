@@ -15,6 +15,7 @@
     "test": "ng test",
     "pree2e": "webdriver-manager update --standalone false --gecko false",
     "e2e": "ng e2e protractor.conf.js",
+    "e2e-saucelabs": "protractor protractor-saucelabs.conf.js",
     "cypress:ci": "start-server-and-test start http-get://localhost:4200 cypress:run",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --record --key 0d214027-7c50-4108-a444-0ad9d9b58ed7",
