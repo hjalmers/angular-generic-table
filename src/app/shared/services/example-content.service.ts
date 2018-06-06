@@ -21,8 +21,14 @@ import * as lazyDescription from '!raw-loader!../../examples/loading-data/lazy-l
 import { LazyLoadExampleComponent } from '../../examples/loading-data/lazy-load/lazy-load-example.component';
 
 import * as sortLead from '!raw-loader!../../examples/sort/lead.md';
+import * as sortModule from '!raw-loader!../../examples/sort/sort.module';
+
+import * as allowUnsortedSortHtml from '!raw-loader!../../examples/sort/allow-unsorted/allow-unsorted-example.component.html';
+import * as allowUnsortedSortComponent from '!raw-loader!../../examples/sort/allow-unsorted/allow-unsorted-example.component';
+import * as allowUnsortedSortDescription from '!raw-loader!../../examples/sort/allow-unsorted/description.md';
+import { AllowUnsortedExampleComponent } from '../../examples/sort/allow-unsorted/allow-unsorted-example.component';
+
 import * as enableDisableSortHtml from '!raw-loader!../../examples/sort/enable-disable/enable-disable-sort-example.component.html';
-import * as enableDisableSortModule from '!raw-loader!../../examples/sort/sort.module';
 import * as enableDisableSortComponent from '!raw-loader!../../examples/sort/enable-disable/enable-disable-sort-example.component';
 import * as enableDisableSortDescription from '!raw-loader!../../examples/sort/enable-disable/description.md';
 import { EnableDisableSortExampleComponent } from '../../examples/sort/enable-disable/enable-disable-sort-example.component';
@@ -157,6 +163,28 @@ export class ExampleContentService {
 			lead: sortLead,
 			sections: [
 				{
+					component: AllowUnsortedExampleComponent,
+					title: 'Change sort behavior',
+					description: allowUnsortedSortDescription,
+					examples: [
+						{
+							title: 'employee-table.component.html',
+							code: allowUnsortedSortHtml,
+							lang: 'markup'
+						},
+						{
+							title: 'employee-table.component.ts',
+							code: allowUnsortedSortComponent,
+							lang: 'typescript'
+						},
+						{
+							title: 'sort.module.ts',
+							code: sortModule,
+							lang: 'typescript'
+						}
+					]
+				},
+				{
 					component: EnableDisableSortExampleComponent,
 					title: 'Enable/disable sort',
 					description: enableDisableSortDescription,
@@ -172,8 +200,8 @@ export class ExampleContentService {
 							lang: 'typescript'
 						},
 						{
-							title: 'loading-data.module.ts',
-							code: enableDisableSortModule,
+							title: 'sort.module.ts',
+							code: sortModule,
 							lang: 'typescript'
 						}
 					]

@@ -7,13 +7,15 @@ export interface Employee extends GtRow {
 	lucky_number: number;
 }
 @Component({
-	selector: 'app-enable-disable-sort-example',
-	templateUrl: './enable-disable-sort-example.component.html',
+	templateUrl: './allow-unsorted-example.component.html',
 	styles: []
 })
-export class EnableDisableSortExampleComponent implements OnInit {
+export class AllowUnsortedExampleComponent implements OnInit {
 	public employeeData: Array<Employee> = [];
 	public configObject: GtConfig<Employee>;
+	public options: GtOptions = {
+		allowUnsorted: false
+	};
 
 	constructor() {}
 
@@ -21,8 +23,7 @@ export class EnableDisableSortExampleComponent implements OnInit {
 		this.configObject = {
 			settings: [
 				{
-					objectKey: 'id',
-					sortEnabled: false
+					objectKey: 'id'
 				},
 				{
 					objectKey: 'name'
@@ -99,4 +100,11 @@ export class EnableDisableSortExampleComponent implements OnInit {
 			}
 		];
 	}
+
+	changeSortBehavior() {
+		/*const UPDATED_OPTIONS = {
+			allowUnsorted: !this.options.allowUnsorted
+		}*/
+		this.options = {...{allowUnsorted: !this.options.allowUnsorted}}
+
 }
