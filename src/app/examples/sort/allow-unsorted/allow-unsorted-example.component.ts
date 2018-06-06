@@ -105,6 +105,6 @@ export class AllowUnsortedExampleComponent implements OnInit {
 		/*const UPDATED_OPTIONS = {
 			allowUnsorted: !this.options.allowUnsorted
 		}*/
-		this.options = {...{allowUnsorted: !this.options.allowUnsorted}}
-
+		this.options = { ...{ allowUnsorted: !this.options.allowUnsorted } };
+	}
 }
