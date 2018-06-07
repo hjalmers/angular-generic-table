@@ -33,7 +33,6 @@ $gt-table-cell-padding: $table-cell-padding !default;
 $gt-table-cell-padding-sm: $table-cell-padding-sm !default;
 $gt-table-cell-padding-expanded: 0 !default;
 $gt-medium-width: map-get($grid-breakpoints, md) !default;
-
 // basic table styles for sorting and for stacked table layout
 generic-table {
 	table {
@@ -86,7 +85,6 @@ generic-table {
 				}
 			}
 		}
-
 		span.gt-row-label,
 		th.gt-sort-label {
 			display: none;
@@ -97,7 +95,6 @@ generic-table {
 			padding-bottom: 0;
 			width: 1px;
 		}
-
 		tr.row-expanded > td {
 			padding: $gt-table-cell-padding-expanded;
 		}
@@ -152,11 +149,9 @@ generic-table {
 				opacity: 1;
 			}
 		}
-
 		thead.gt-totals {
 			border-bottom: 2px solid $gt-table-border-color;
 		}
-
 		tfoot.gt-totals {
 			border-top: 2px solid $gt-table-border-color;
 		}
@@ -179,12 +174,10 @@ generic-table {
 		vertical-align: middle;
 	}
 }
-
 .gt-dropdown-menu.show {
 	max-height: 320px;
 	overflow: auto;
 }
-
 // get break point for medium devices from bootstrap
 @media (max-width: $gt-medium-width) {
 	generic-table {
@@ -209,7 +202,6 @@ generic-table {
 				& + tr {
 					border-top: 1px solid #ddd;
 				}
-
 				td {
 					display: block;
 					border: none;
@@ -232,12 +224,10 @@ generic-table {
 		}
 	}
 }
-
 @keyframes fade-in {
 	0% {
 		opacity: 0;
 	}
-
 	100% {
 		opacity: 1;
 	}
