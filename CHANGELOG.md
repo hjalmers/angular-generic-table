@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+## [4.16.0] - 2018-06-06
+
+### Added
+
+* Option for sorting behavior #250
+
+### Fixed
+
+* Select/deselect all rows when lazy loading data #251
+* Setting sortEnabled to `false` now properly disables sorting as expected
+* Prevent sort style from changing column width
+
 ## [4.15.0] - 2018-05-28
 
 ### Added

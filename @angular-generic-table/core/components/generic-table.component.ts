@@ -115,10 +115,13 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		// loop through current settings
 		for (let i = 0; i < this._gtSettings.length; i++) {
 			// set sort enabled/disabled setting
-			this._gtSettings[i].sortEnabled = !(
-				this._gtSettings[i].sort &&
-				this._gtSettings[i].sort.indexOf('disable') !== -1
-			);
+			this._gtSettings[i].sortEnabled =
+				this._gtSettings[i].sortEnabled !== false
+					? (this._gtSettings[i].sortEnabled = !(
+							this._gtSettings[i].sort &&
+							this._gtSettings[i].sort.indexOf('disable') !== -1
+					  ))
+					: false;
 
 			// check if sorting is undefined...
 			if (typeof this._gtSettings[i].sort === 'undefined') {
@@ -155,6 +158,15 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 				this.gtInfo.pageCurrent - 1,
 				this.gtInfo.recordLength
 			);
+			if (this.lazyAllSelected) {
+				const UNIQUE_ROWS = this.selectedRows.map(row => row.$$gtRowId);
+				data.map(row => {
+					if (UNIQUE_ROWS.indexOf(row.$$gtRowId) === -1) {
+						this.selectedRows.push(row);
+					}
+				});
+				this._updateMetaInfo(this.selectedRows, 'isSelected', true);
+			}
 		} else {
 			this.gtMetaPipe.transform(data, this.gtOptions.rowIndex);
 		}
@@ -250,13 +262,15 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		rowSelectionAllowMultiple: true,
 		rowExpandAllowMultiple: true,
 		numberOfRows: 10,
-		reportColumnWidth: false
+		reportColumnWidth: false,
+		allowUnsorted: true
 	};
 	private _gtOptions: GtOptions = this.gtDefaultOptions;
 	public store: Array<any> = [];
 	public loading = true;
 	private debounceTimer: void = null;
 	public loadingProperty: string;
+	public lazyAllSelected = false;
 
 	@Input()
 	gtInfo: GtInformation = {
@@ -383,7 +397,11 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 				default:
 					// ...change from desc to asc and vise versa
 					this.sortOrder =
-						match !== -1 ? ['-' + objectKey] : ctrlKey ? [objectKey] : [];
+						match !== -1
+							? ['-' + objectKey]
+							: ctrlKey || !this.gtOptions.allowUnsorted
+								? [objectKey]
+								: [];
 					break;
 			}
 		}
@@ -401,7 +419,9 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 					case 'desc':
 						// ...change to asc if it's the only sorted property otherwise remove sorting
 						this._gtSettings[i].sort =
-							(this.sortOrder.length === 1 && sort.length < 2) || ctrlKey
+							(this.sortOrder.length === 1 && sort.length < 2) ||
+							ctrlKey ||
+							!this.gtOptions.allowUnsorted
 								? 'asc'
 								: 'enable';
 						break;
@@ -640,10 +660,20 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 	 * Toggle all rows.
 	 */
 	public toggleAllRows(): void {
-		if (this.selectedRows.length !== this.gtData.length) {
-			this.selectAllRows();
+		if (this._gtOptions.lazyLoad) {
+			if (!this.lazyAllSelected || this.selectedRows.length === 0) {
+				this.selectAllRows();
+				this.lazyAllSelected = true;
+			} else {
+				this.deselectAllRows();
+				this.lazyAllSelected = false;
+			}
 		} else {
-			this.deselectAllRows();
+			if (this.selectedRows.length !== this.gtData.length) {
+				this.selectAllRows();
+			} else {
+				this.deselectAllRows();
+			}
 		}
 	}
 
@@ -742,9 +772,10 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		target: Array<GtRow>,
 		source: Array<GtRow>
 	): Array<GtRow> {
+		const UNIQUE_ROWS = target.map(row => row.$$gtRowId);
 		for (let i = 0; i < source.length; i++) {
 			// only add if not already in list
-			if (target.indexOf(source[i]) === -1) {
+			if (UNIQUE_ROWS.indexOf(source[i].$$gtRowId) === -1) {
 				target.push(source[i]);
 			}
 		}
@@ -896,6 +927,9 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 						// add row to selected rows
 						this.selectedRows.push(row);
 					} else {
+						if (this.gtOptions.lazyLoad && this.lazyAllSelected) {
+							this.lazyAllSelected = false;
+						}
 						eventName = 'deselect';
 						// loop through selected rows...
 						for (let i = 0; i < this.selectedRows.length; i++) {
