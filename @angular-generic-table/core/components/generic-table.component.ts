@@ -141,7 +141,9 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 	}
 	@Input()
 	set gtData(initialData: Array<any>) {
-		const data = this._gtOptions.mutateData ? [...initialData] : this.cloneDeep(initialData);
+		const data = this._gtOptions.mutateData
+			? [...initialData]
+			: this.cloneDeep(initialData);
 		if (this.gtOptions.lazyLoad && this.gtInfo) {
 			this.gtMetaPipe.transform(
 				data,
@@ -1279,7 +1281,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 
 	// TODO: move to helper functions
 	/** Create a deep copy of data */
-	private cloneDeep = function <T>(o: T): T {
+	private cloneDeep = function(o: any) {
 		return JSON.parse(JSON.stringify(o));
 	};
 
