@@ -59,7 +59,7 @@
           [ngIf]="!column.columnComponent && (((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active | gtIsObservable) && ((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active | async) || ((gtFields | gtProperty:column.objectKey:'inlineEdit')?.active | gtIsEditable:row:refreshPipe))">
           <ng-template [ngIf]="([true,'email','number','password', 'text'].indexOf((gtFields | gtProperty:column.objectKey:'inlineEdit').type) !== -1) || !(gtFields | gtProperty:column.objectKey:'inlineEdit').type">
             <input class="inline-edit" [attr.type]="!(gtFields | gtProperty:column.objectKey:'inlineEdit').type ? 'text' : !((gtFields | gtProperty:column.objectKey:'inlineEdit').type | gtIsObservable) ? (gtFields | gtProperty:column.objectKey:'inlineEdit').type:(gtFields | gtProperty:column.objectKey:'inlineEdit').type | async" [(ngModel)]="column.renderValue"
-                   (keyup)="gtUpdateColumn($event,row, column)">
+                   (input)="gtUpdateColumn($event,row, column)">
             <span class="gt-inline-edit-notice">{{gtTexts.inlineEditEdited}}</span>
           </ng-template>
           <gt-dropdown
@@ -74,7 +74,7 @@
           <ng-template
             [ngIf]="[true,'email','number','password'].indexOf(gtFields | gtProperty:column.objectKey:'inlineEdit') !== -1">
             <input class="inline-edit" [attr.type]="(gtFields | gtProperty:column.objectKey:'inlineEdit') === true ? 'text':(gtFields | gtProperty:column.objectKey:'inlineEdit')" [(ngModel)]="column.renderValue"
-                   (keyup)="gtUpdateColumn($event,row, column)">
+                   (input)="gtUpdateColumn($event,row, column)">
             <span class="gt-inline-edit-notice">{{gtTexts.inlineEditEdited}}</span>
           </ng-template>
           <gt-dropdown
