@@ -1,4 +1,5 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "sourceMap": true,
     "declaration": false,
@@ -10,10 +11,13 @@
     ],
     "outDir": "../dist/out-tsc-e2e",
     "module": "commonjs",
-    "target": "es6",
-    "types":[
+    "target": "es5",
+    "types": [
       "jasmine",
       "node"
+    ],
+    "typeRoots": [
+      "node_modules/@types"
     ]
   }
 }

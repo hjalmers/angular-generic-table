@@ -12,11 +12,11 @@ eyes.setBatch(batchName,batchId,0);
 
 export class Angular2GenericTablePage {
 	navigateToBasicExample() {
-		return browser.get('http://localhost:4200/example-usage#basic');
+		return browser.get('https://hjalmers.github.io/angular-generic-table/basic');
 	}
 
 	navigateToSortExample() {
-		return browser.get('http://localhost:4200/sort#enableDisableSort');
+		return browser.get('https://hjalmers.github.io/angular-generic-table/advanced');
 	}
 
 	getParagraphText() {

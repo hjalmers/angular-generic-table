@@ -1,4 +1,4 @@
-import { Angular2GenericTablePage } from './app.po';
+import { Angular2GenericTablePage } from './app-saucelabs.po';
 
 describe('angular-generic-table App', function() {
 	let page: Angular2GenericTablePage;
@@ -18,7 +18,7 @@ describe('angular-generic-table App', function() {
 	});
 
 	it('should grab a screenshot of the basic example', () => {
-		page.eyesScreenshot("Basic");
+		page.eyesScreenshot("Basic-Saucelabs");
 	});
 
 	it('should open the sort example page', () => {
@@ -26,7 +26,7 @@ describe('angular-generic-table App', function() {
 	});
 
 	it('should grab a screenshot of the sort example', () => {
-		page.eyesScreenshot("Sort");
+		page.eyesScreenshot("Sort-Saucelabs");
 	});
 
 });
