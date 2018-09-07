@@ -150,7 +150,10 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		this.restructureSorting();
 	}
 	@Input()
-	set gtData(data: Array<any>) {
+	set gtData(initialData: Array<any>) {
+		const data = this._gtOptions.mutateData
+			? [...initialData]
+			: this.cloneDeep(initialData);
 		if (this.gtOptions.lazyLoad && this.gtInfo) {
 			this.gtMetaPipe.transform(
 				data,
@@ -263,7 +266,8 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		rowExpandAllowMultiple: true,
 		numberOfRows: 10,
 		reportColumnWidth: false,
-		allowUnsorted: true
+		allowUnsorted: true,
+		mutateData: true
 	};
 	private _gtOptions: GtOptions = this.gtDefaultOptions;
 	public store: Array<any> = [];
@@ -1307,6 +1311,12 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 			return 1;
 		}
 		return 0;
+	};
+
+	// TODO: move to helper functions
+	/** Create a deep copy of data */
+	private cloneDeep = function(o: any) {
+		return JSON.parse(JSON.stringify(o));
 	};
 
 	/** Export data as CSV
