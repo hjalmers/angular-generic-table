@@ -1,6 +1,6 @@
 {
   "name": "angular-generic-table",
-  "version": "4.17.0",
+  "version": "4.17.1",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -18,12 +18,12 @@
     "cypress:ci": "start-server-and-test start http-get://localhost:4200 cypress:run",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run --record --key 0d214027-7c50-4108-a444-0ad9d9b58ed7",
-    "core:compile:css": "node-sass --source-map true --include-path scss dist/@angular-generic-table/core/scss/*.scss dist/@angular-generic-table/core/css/generic-table-prebuild.css",
+    "core:compile:css": "node-sass --source-map true --include-path scss dist/@angular-generic-table/core/scss/generic-table.scss dist/@angular-generic-table/core/css/generic-table-prebuild.css",
     "core:autoprefix:css": "postcss -u autoprefixer -r dist/@angular-generic-table/core/css/generic-table-prebuild.css",
     "core:minify:css": "cleancss -o dist/@angular-generic-table/core/css/generic-table-prebuild.min.css dist/@angular-generic-table/core/css/generic-table-prebuild.css --source-map",
     "core:rename:css": "renamer --find \"generic-table-prebuild\" --replace \"generic-table\" dist/@angular-generic-table/core/css/*",
     "core:build:css": "npm run core:compile:css && npm run core:autoprefix:css && npm run core:minify:css && npm run core:rename:css",
-    "column-settings:compile:css": "node-sass --source-map true --include-path scss dist/@angular-generic-table/column-settings/scss/*.scss dist/@angular-generic-table/column-settings/css/column-settings-prebuild.css",
+    "column-settings:compile:css": "node-sass --source-map true --include-path scss dist/@angular-generic-table/column-settings/scss/column-settings.scss dist/@angular-generic-table/column-settings/css/column-settings-prebuild.css",
     "column-settings:autoprefix:css": "postcss -u autoprefixer -r dist/@angular-generic-table/column-settings/css/column-settings-prebuild.css",
     "column-settings:minify:css": "cleancss -o dist/@angular-generic-table/column-settings/css/column-settings-prebuild.min.css dist/@angular-generic-table/column-settings/css/column-settings-prebuild.css --source-map",
     "column-settings:rename:css": "renamer --find \"column-settings-prebuild\" --replace \"column-settings\" dist/@angular-generic-table/column-settings/css/*",
