@@ -21,4 +21,6 @@ export interface GtOptions {
 	rowIndex?: string;
 	/** allow table to be unsorted */
 	allowUnsorted?: boolean;
+	/** should data be mutated or deep copy to be made */
+	mutateData?: boolean;
 }
