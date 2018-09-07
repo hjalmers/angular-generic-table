@@ -8,21 +8,30 @@
         (click)="column.sortEnabled ? gtSort(column.objectKey,$event):'';">
       <span *ngIf="!(gtFields | gtProperty:column.objectKey:'header')">{{gtFields | gtProperty:column.objectKey:'name'}}</span>
       <gt-custom-component-factory *ngIf="(gtFields | gtProperty:column.objectKey:'header')"
+                                   [columnObjectKey]="column.objectKey"
                                    [type]="(gtFields | gtProperty:column.objectKey:'header')?.type"
                                    [injector]="(gtFields | gtProperty:column.objectKey:'header')?.injector"
-                                   [column]="gtFields | gtProperty:column.objectKey:'name'"></gt-custom-component-factory>
+                                   [column]="gtFields | gtProperty:column.objectKey:'name'"
+                                   (columnSearch)="handleColumnSearch($event)"></gt-custom-component-factory>
+      <!-- don't trigger a sort when clicking on the search box -->
+      <input #columnSearch
+             *ngIf="gtSettings | gtProperty:column.objectKey:'searchBox'"
+             (click)="$event.stopPropagation()"
+             (keyup)="gtColumnSearch(column.objectKey, columnSearch.value, false)"
+             type="text"
+             placeholder="Filter by {{gtFields | gtProperty:column.objectKey:'name' | lowercase}}" />
       <gt-checkbox *ngIf="(gtFields | gtProperty:column.objectKey:'columnComponent')?.type === 'checkbox'" [checked]="(gtOptions.lazyLoad ? lazyAllSelected:selectedRows.length === gtData.length)" (changed)="toggleAllRows()"></gt-checkbox>
     </th>
   </tr>
   </thead>
   <ng-template
-    [ngIf]="gtTotals && (gtOptions.lazyLoad === false ? (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length).length > 0 : gtData.length > 0)">
+    [ngIf]="gtTotals && (gtOptions.lazyLoad === false ? (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtColumnSearch:gtColumnSearchTerms:gtInfo:gtSettings:gtFields).length > 0 : gtData.length > 0)">
     <thead class="gt-totals">
     <tr *ngFor="let total of gtTotals | gtTotalsPosition">
       <td *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;"
           ngClass="{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{ gtFields | gtColumnClass:column }}">
         <span *ngIf="i === 0" class="float-left">{{total.name}}</span><span
-        [innerHTML]="total.fields[column.objectKey] | gtTotals:(total.update === false || gtOptions.lazyLoad === true) ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals"></span>
+        [innerHTML]="total.fields[column.objectKey] | gtTotals:(total.update === false || gtOptions.lazyLoad === true) ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtColumnSearch:gtColumnSearchTerms:gtInfo:gtSettings:gtFields):column.objectKey:refreshTotals"></span>
       </td>
     </tr>
     </thead>
@@ -31,14 +40,14 @@
       <td *ngFor="let column of gtSettings | gtVisible:gtSettings:refreshPipe;let i = index;"
           ngClass="{{column.objectKey +'-totals-column' | dashCase}} {{gtFields | gtProperty:column.objectKey:'classNames'}} {{ gtFields | gtColumnClass:column }}">
         <span *ngIf="i === 0" class="float-left">{{total.name}}</span><span
-        [innerHTML]="total.fields[column.objectKey] | gtTotals:(total.update === false || gtOptions.lazyLoad === true) ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length):column.objectKey:refreshTotals"></span>
+        [innerHTML]="total.fields[column.objectKey] | gtTotals:(total.update === false || gtOptions.lazyLoad === true) ? gtData:(gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtColumnSearch:gtColumnSearchTerms:gtInfo:gtSettings:gtFields):column.objectKey:refreshTotals"></span>
       </td>
     </tr>
     </tfoot>
   </ng-template>
   <tbody *ngIf="gtData && gtInfo">
   <ng-template class="table-rows" ngFor let-row let-last="last" [ngForTrackBy]="trackByFn"
-               [ngForOf]="gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1]) : (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data | gtRowClass:gtFields)">
+               [ngForOf]="gtOptions.lazyLoad && gtInfo ? (gtData[gtInfo.pageCurrent-1]) : (gtData | gtFilter:gtInfo.filter:gtInfo:refreshFilter:gtData.length | gtSearch:gtInfo.searchTerms:gtInfo:gtSettings:gtFields:gtData.length | gtColumnSearch:gtColumnSearchTerms:gtInfo:gtSettings:gtFields | gtOrderBy:sortOrder:gtFields:refreshSorting:gtData.length | gtChunk:gtInfo:gtInfo.recordLength:gtInfo.pageCurrent:refreshPageArray:gtData.length:gtEvent:data | gtRowClass:gtFields)">
     <tr [ngClass]="{'row-selected':metaInfo[row.$$gtRowId]?.isSelected, 'row-open':metaInfo[row.$$gtRowId]?.isOpen, 'row-loading':loading, 'row-expandable':gtRowComponent}"
         class="{{row.$$gtRowClass}}"
         (click)="gtOptions.rowSelection ? toggleSelect(row):rowClick(row, $event)">

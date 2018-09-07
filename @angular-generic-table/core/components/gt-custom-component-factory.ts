@@ -8,11 +8,14 @@ import {
 	Type
 } from '@angular/core';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { GtColumnSearch } from '../interfaces/gt-column-search';
 
 export abstract class GtCustomComponent<R> implements OnInit {
 	row: R;
 	column: any;
 	redrawEvent = new EventEmitter<{ row: R; column: any }>();
+	columnSearch: EventEmitter<GtColumnSearch>;
+	columnObjectKey: string;
 	searchTerms: string;
 	$searchTerms: ReplaySubject<string> = new ReplaySubject(1);
 
@@ -39,13 +42,20 @@ export class GtCustomComponentFactory<R, C extends GtCustomComponent<R>> {
 	@Input() injector: Injector;
 	@Input() row: R;
 	@Input() column: any;
+	@Input() columnObjectKey?: string;
 	$searchTerms: ReplaySubject<string> = new ReplaySubject(1);
 	@Output() redrawEvent = new EventEmitter<{ row: R; column: any }>();
+	@Output() columnSearch = new EventEmitter<GtColumnSearch>();
 
 	instance(instance: C) {
 		instance.row = this.row;
 		instance.column = this.column;
 		instance.$searchTerms = this.$searchTerms;
 		instance.redrawEvent.subscribe(this.redrawEvent);
+		instance.columnSearch = this.columnSearch;
+
+		if (this.columnObjectKey) {
+			instance.columnObjectKey = this.columnObjectKey;
+		}
 	}
 }

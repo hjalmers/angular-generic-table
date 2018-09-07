@@ -11,6 +11,7 @@ import { GtFilterPipe } from './pipes/gt-filter.pipe';
 import { GtOrderByPipe } from './pipes/gt-order-by.pipe';
 import { GtExpandingRowComponent } from './components/gt-expanding-row.component';
 import { GtSearchPipe } from './pipes/gt-search.pipe';
+import { GtColumnSearchPipe } from './pipes/gt-column-search.pipe';
 import { ComponentAnchorDirective } from './directives/component-anchor.directive';
 import {
 	GtPaginationComponent,
@@ -49,6 +50,7 @@ import { GtIsEditablePipe } from './pipes/gt-is-editable.pipe';
 		GtExpandingRowComponent,
 		GtCustomComponentFactory,
 		GtSearchPipe,
+		GtColumnSearchPipe,
 		PaginationPipe,
 		GtTableInfoComponent,
 		TableInfoPipe,

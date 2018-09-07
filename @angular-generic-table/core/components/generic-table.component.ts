@@ -21,7 +21,8 @@ import {
 	GtOptions,
 	GtRowMeta,
 	GtRenderField,
-	GtEvent
+	GtEvent,
+	GtColumnSearch
 } from '..';
 import { GtMetaPipe } from '../pipes/gt-meta.pipe';
 
@@ -97,7 +98,16 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 					COLUMNS_WITH_CLASS_NAMES[0].objectKey
 			);
 		}
+
+		value.forEach(column => {
+			this.gtColumnSearchTerms.push({
+				id: column.objectKey,
+				value: '',
+				onlyNull: false
+			});
+		});
 	}
+	public gtColumnSearchTerms: GtColumnSearch[] = [];
 	@Input()
 	set gtSettings(value: GtConfigSetting[]) {
 		this._gtSettings = value;
@@ -1139,6 +1149,30 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 	public gtSearch(value: string) {
 		this.gtInfo.searchTerms = value;
 		// always go to first page when searching
+		this.goToPage(1);
+		this.updateTotals();
+	}
+
+	public handleColumnSearch(event: GtColumnSearch) {
+		const columnObjectKey = event.id;
+		const searchTerms = event.value;
+		const onlyNull = event.onlyNull;
+		this.gtColumnSearch(columnObjectKey, searchTerms, onlyNull);
+	}
+
+	public gtColumnSearch(objectKey: string, value: string, onlyNull: boolean) {
+		// map the column search criteria to its column
+		for (const column of this.gtColumnSearchTerms) {
+			if (column.id === objectKey) {
+				column.value = value;
+				column.onlyNull = onlyNull;
+			}
+		}
+
+		// Replace column search terms with a new object. This allows angular to
+		// detect a change in the pipe.
+		this.gtColumnSearchTerms = [...this.gtColumnSearchTerms];
+
 		this.goToPage(1);
 		this.updateTotals();
 	}

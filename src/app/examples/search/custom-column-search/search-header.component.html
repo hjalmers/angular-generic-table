@@ -1,0 +1,12 @@
+<label class="column-name">{{column | titlecase}}</label>
+<div (click)="$event.stopPropagation()" class="input-group input-group-sm mb-3">
+  <div class="input-group-prepend">
+    <div class="input-group-text">
+      <input #nullCheckbox type="checkbox" aria-label="Null only"
+        (change)="searchWithinColumn(inputBox.value, nullCheckbox.checked)" />
+    </div>
+  </div>
+  <input #inputBox type="text" placeholder="{{column}}"
+    (click)="$event.stopPropagation()"
+    (keyup)="searchWithinColumn(inputBox.value, nullCheckbox.checked)" />
+</div>

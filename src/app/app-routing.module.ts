@@ -63,6 +63,13 @@ const routes: Routes = [
 			example: ExampleResolver
 		}
 	},
+	{
+		path: 'search',
+		component: ExampleWrapperComponent,
+		resolve: {
+			example: ExampleResolver
+		}
+	},
 	{ path: '**', component: HomeComponent }
 ];
 @NgModule({
