@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+## [4.17.1] - 2018-09-07
+
+### Fixed
+
+* Event handling for inline edit #269
+
+## [4.17.0] - 2018-07-15
+
+### Added
+
+* Option for preventing mutation of original data input #263
+
 ## [4.16.0] - 2018-06-06
 
 ### Added
