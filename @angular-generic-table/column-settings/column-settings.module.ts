@@ -8,7 +8,7 @@ import { GenericTableModule } from '@angular-generic-table/core';
 import { DragulaModule } from 'ng2-dragula';
 
 @NgModule({
-	imports: [CommonModule, GenericTableModule, DragulaModule],
+	imports: [CommonModule, GenericTableModule, DragulaModule.forRoot()],
 	declarations: [GtColumnSettingsComponent, GtColumnPipe],
 	exports: [GtColumnSettingsComponent, GtColumnPipe]
 })

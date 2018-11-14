@@ -22,11 +22,11 @@
   "peerDependencies": {
     "@angular-generic-table/core": "^4.5.0",
     "dragula": "^3.7.2",
-    "ng2-dragula": "^1.5.0"
+    "ng2-dragula": "^2.1.1"
   },
   "devDependencies": {
-    "@angular/compiler": "^5.0.0",
-    "@angular/compiler-cli": "^5.0.0",
-    "bootstrap": "^4.0.0-beta"
+    "@angular/compiler": "^7.0.3",
+    "@angular/compiler-cli": "^7.0.3",
+    "bootstrap": "^4.1.3"
   }
 }

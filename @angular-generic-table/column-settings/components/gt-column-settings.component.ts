@@ -123,16 +123,14 @@ export class GtColumnSettingsComponent implements OnInit {
 	constructor(
 		private dragulaService: DragulaService,
 		private changeDetectorRef: ChangeDetectorRef
-	) {
-		dragulaService.drop.subscribe((value: Array<any>) => {
-			if (value[0] === this.bagId) {
-				this._onDrop(value.slice(1));
-			}
-		});
-	}
+	) {}
 
 	ngOnInit() {
 		this.bagId = this.generateId();
+		this.dragulaService.drop(this.bagId).subscribe(({ el, source }) => {
+			this._onDrop([el, source]);
+		});
+
 		// setup texts
 		this.gtTexts = <GtColumnSettingsTexts>this.extend(
 			this.gtDefaultTexts,
