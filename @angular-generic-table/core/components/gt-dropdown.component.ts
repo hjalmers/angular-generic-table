@@ -7,8 +7,8 @@ import {
 	Output,
 	Renderer2
 } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
 import * as Tether from 'tether';
+import { Subject } from 'rxjs';
 
 @Component({
 	selector: 'gt-dropdown',

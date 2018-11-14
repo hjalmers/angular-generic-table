@@ -5,7 +5,6 @@ import {
 	ViewChild,
 	OnInit
 } from '@angular/core';
-import { Response } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { CustomRowComponent } from '../custom-row/custom-row.component';
 import {
@@ -14,7 +13,6 @@ import {
 	GtCustomComponent,
 	GtRow
 } from '@angular-generic-table/core';
-import 'rxjs/add/operator/map';
 
 export interface RowData extends GtRow {
 	id: number;

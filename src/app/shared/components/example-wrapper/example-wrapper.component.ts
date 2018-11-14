@@ -1,7 +1,7 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { ExampleContent } from '../../services/example-content.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { ReplaySubject } from 'rxjs';
 
 @Component({
 	templateUrl: './example-wrapper.component.html',

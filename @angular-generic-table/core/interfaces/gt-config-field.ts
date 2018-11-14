@@ -1,7 +1,7 @@
 import { GtRow } from './gt-row';
 import { Type, Injector } from '@angular/core';
 import { GtCustomComponent } from '../components/gt-custom-component-factory';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 export type GtRenderFunc<R extends GtRow> = (row: R) => string;
 

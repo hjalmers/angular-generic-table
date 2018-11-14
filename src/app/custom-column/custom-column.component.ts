@@ -1,15 +1,8 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/delay';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/scan';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/take';
 import { GtConfig, GtRow } from '@angular-generic-table/core';
 import { GtCustomComponent } from '../../../@angular-generic-table/core/components/gt-custom-component-factory';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { delay, filter, map, scan, startWith, take } from 'rxjs/operators';
 
 export interface StateDictionary {
 	[index: number]: { name?: string; age?: number };
@@ -41,7 +34,9 @@ export class StateService {
 		this.updates = new Subject<UpdateFunction>();
 		this._states = new BehaviorSubject<StateDictionary>({});
 		this.updates
-			.scan((previousState, apply: UpdateFunction) => apply(previousState), {})
+			.pipe(
+				scan((previousState, apply: UpdateFunction) => apply(previousState), {})
+			)
 			// .do(dictionary => console.log(`State = ${JSON.stringify(dictionary, null, 2)}`))
 			.subscribe(this._states);
 	}
@@ -116,11 +111,13 @@ export class NameComponent extends GtCustomComponent<Row> implements OnInit {
 	}
 
 	ngOnInit() {
-		const source = this.editService.ids
-			.startWith(this.row.id)
-			.filter(id => id === this.row.id);
-		this.edit = source.scan(prev => !prev, true);
-		this.view = source.scan(prev => !prev, false);
+		const source = this.editService.ids.pipe(
+			startWith(this.row.id),
+			filter(id => id === this.row.id),
+			map(id => id === this.row.id)
+		);
+		this.edit = source.pipe(scan(prev => !prev, true));
+		this.view = source.pipe(scan(prev => !prev, false));
 		this.name = this.row.name;
 	}
 }
@@ -156,11 +153,13 @@ export class AgeComponent extends GtCustomComponent<Row> implements OnInit {
 	}
 
 	ngOnInit() {
-		const source = this.editService.ids
-			.startWith(this.row.id)
-			.filter(id => id === this.row.id);
-		this.edit = source.scan(prev => !prev, true);
-		this.view = source.scan(prev => !prev, false);
+		const source = this.editService.ids.pipe(
+			startWith(this.row.id),
+			filter(id => id === this.row.id),
+			map(id => id === this.row.id)
+		);
+		this.edit = source.pipe(scan(prev => !prev, true));
+		this.view = source.pipe(scan(prev => !prev, false));
 		this.age = this.row.age;
 	}
 }
@@ -239,8 +238,7 @@ export class CustomColumnComponent {
 					'<button type="button" class="btn btn-primary btn-sm">Save</button>',
 				click: row =>
 					this.stateService.states
-						.take(1)
-						.delay(Math.floor(Math.random() * 2000) + 1000)
+						.pipe(take(1), delay(Math.floor(Math.random() * 2000) + 1000))
 						.subscribe(dictionary => {
 							const name = dictionary[row.id].name;
 							const age = dictionary[row.id].age;
@@ -273,8 +271,7 @@ export class CustomColumnComponent {
 
 	saveAll() {
 		this.stateService.states
-			.take(1)
-			.delay(Math.floor(Math.random() * 2000) + 1000)
+			.pipe(take(1), delay(Math.floor(Math.random() * 2000) + 1000))
 			.subscribe(dictionary => {
 				const newData: Row[] = Object.keys(dictionary).map(key => ({
 					id: parseInt(key, 10),

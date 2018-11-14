@@ -12,11 +12,10 @@ import {
 	GtRow
 } from '@angular-generic-table/core';
 import { GtCustomComponent } from '@angular-generic-table/core/components/gt-custom-component-factory';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { filter, map, scan, startWith, take } from 'rxjs/operators';
 
 export interface Row extends GtRow {
 	id: number;
@@ -54,7 +53,9 @@ export class StateService {
 		this.updates = new Subject<UpdateFunction>();
 		this._states = new BehaviorSubject<StateDictionary>({});
 		this.updates
-			.scan((previousState, apply: UpdateFunction) => apply(previousState), {})
+			.pipe(
+				scan((previousState, apply: UpdateFunction) => apply(previousState), {})
+			)
 			// .do(dictionary => console.log(`State = ${JSON.stringify(dictionary, null, 2)}`))
 			.subscribe(this._states);
 	}
@@ -148,11 +149,13 @@ abstract class CustomColumnComponentBase extends GtCustomComponent<Row>
 	}
 
 	ngOnInit() {
-		const source = this.editService.ids
-			.startWith(this.rowId)
-			.filter(id => id === this.rowId);
-		this.edit = source.scan(prev => !prev, true);
-		this.view = source.scan(prev => !prev, false);
+		const source = this.editService.ids.pipe(
+			startWith(this.rowId),
+			filter(id => id === this.rowId),
+			map(id => id === this.rowId)
+		);
+		this.edit = source.pipe(scan(prev => !prev, true));
+		this.view = source.pipe(scan(prev => !prev, false));
 		this.edit.subscribe(e => (this.editModeActive = e));
 	}
 }
@@ -277,7 +280,7 @@ export class EditSaveButtonComponent extends CustomColumnComponentBase {
 	}
 
 	public save() {
-		this.stateService.states.take(1).subscribe(dictionary => {
+		this.stateService.states.pipe(take(1)).subscribe(dictionary => {
 			console.log(`Saving object ${JSON.stringify(dictionary[this.rowId])}`);
 			Object.keys(dictionary[this.rowId]).forEach(prop => {
 				this.row[prop] = dictionary[this.rowId][prop];

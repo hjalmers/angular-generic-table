@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { GtRow } from '../interfaces/gt-row';
-import { GtRowMeta } from '../interfaces/gt-row-meta';
 
 @Pipe({
 	name: 'gtMeta'

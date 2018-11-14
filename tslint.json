@@ -13,7 +13,7 @@
 			"severity": "warn"
 		},
 		"forin": true,
-		"import-blacklist": [true, "rxjs", "rxjs/Rx"],
+		"import-blacklist": [true, "rxjs/Rx"],
 		"interface-over-type-literal": true,
 		"label-position": true,
 		"max-line-length": [false, 140],

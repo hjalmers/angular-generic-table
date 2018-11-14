@@ -7,7 +7,7 @@ import {
 	Output,
 	Type
 } from '@angular/core';
-import { ReplaySubject } from 'rxjs/ReplaySubject';
+import { ReplaySubject } from 'rxjs';
 
 export abstract class GtCustomComponent<R> implements OnInit {
 	row: R;

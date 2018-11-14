@@ -10,7 +10,7 @@
       <button class="btn btn-sm btn-primary mb-3" (click)="myTable.inlineEditUpdate()">Save changes<i class="fa fa-save ml-2"></i></button>
     </ng-container>
     <div class="table-responsive">
-      <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data" (gtEvent)="trigger($event)"></generic-table>
+      <generic-table [gtClasses]="'table-sm'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data" (gtEvent)="trigger($event)" [gtOptions]="{'stack':true}"></generic-table>
     </div>
     <div class="text-center">
       <small><gt-table-info class="form-text text-muted mb-2" [genericTable]="myTable"></gt-table-info></small>

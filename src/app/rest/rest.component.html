@@ -42,7 +42,7 @@
         </div>
       </div>
     </form>
-    <button class="btn-link" (click)="columnSettings.toggleColumnSettings()"> {{columnSettings.active ? 'Hide column settings':'Show column settings'}}</button>
+    <button class="btn btn-link" (click)="columnSettings.toggleColumnSettings()"> {{columnSettings.active ? 'Hide column settings':'Show column settings'}}</button>
     <gt-column-settings [genericTable]="myTable" #columnSettings (gtEvent)="trigger($event)">
       <div class="table-responsive">
         <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data" [gtOptions]="{stack:true, highlightSearch:true, rowSelection:true}" (gtEvent)="trigger($event)"></generic-table>

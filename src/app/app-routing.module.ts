@@ -23,7 +23,7 @@ import { ExampleResolver } from './shared/resolvers/example.resolver';
 const routes: Routes = [
 	{ path: '', redirectTo: '/start', pathMatch: 'full' },
 	{ path: 'start', component: HomeComponent },
-	/*{ path: 'lazy', component: LazyComponent },
+	{ path: 'lazy', component: LazyComponent },
 	{ path: 'advanced', component: RestComponent },
 	{ path: 'basic', component: BasicComponent },
 	{ path: 'drilldown', component: DrilldownComponent },
@@ -41,7 +41,7 @@ const routes: Routes = [
 	},
 	{ path: 'checkbox', component: CheckboxComponent },
 	{ path: 'custom-header', component: CustomHeaderComponent },
-	{ path: 'row-click', component: RowClickComponent },*/
+	/*{ path: 'row-click', component: RowClickComponent },*/
 	{
 		path: 'example-usage',
 		component: ExampleWrapperComponent,

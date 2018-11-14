@@ -20,14 +20,14 @@
     "url": "https://github.com/hjalmers/angular-generic-table.git"
   },
   "peerDependencies": {
-    "@angular/core": "^4.0.0",
-    "@angular/common": "^4.0.0",
-    "@types/tether": "^1.4.2",
-    "tether": "^1.4.0"
+    "@angular/core": "^7.0.3",
+    "@angular/common": "^7.0.3",
+    "@types/tether": "^1.4.4",
+    "tether": "^1.4.5"
   },
   "devDependencies": {
-    "@angular/compiler": "^5.0.0",
-    "@angular/compiler-cli": "^5.0.0",
-    "bootstrap": "^4.1.0"
+    "@angular/compiler": "^7.0.3",
+    "@angular/compiler-cli": "^7.0.3",
+    "bootstrap": "^4.1.3"
   }
 }
