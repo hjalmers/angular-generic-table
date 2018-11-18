@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import {
-	GenericTableComponent,
-	GtConfig,
-	GtOptions,
-	GtRow
-} from '@angular-generic-table/core';
+import { GtRow } from '../../../projects/core/src/lib/interfaces/gt-row';
+import { GtConfig } from '../../../projects/core/src/lib/interfaces/gt-config';
 import { CustomRowComponent } from '../custom-row/custom-row.component';
+import { GenericTableComponent } from '../../../projects/core/src/lib/components/generic-table/generic-table.component';
+import { GtOptions } from '../../../projects/core/src/lib/interfaces/gt-options';
 
 export interface RowData extends GtRow {
 	id: number;

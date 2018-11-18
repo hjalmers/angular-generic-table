@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { GtConfig, GtRow } from '@angular-generic-table/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { GtConfig } from '../../../../../projects/core/src/lib/interfaces/gt-config';
+import { GtRow } from '../../../../../projects/core/src/lib/interfaces/gt-row';
 
 export interface Employee extends GtRow {
 	id: number;

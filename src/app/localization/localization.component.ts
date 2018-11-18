@@ -1,7 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
-import { GtConfig, GtTexts } from '@angular-generic-table/core';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
-import { GenericTableComponent } from '@angular-generic-table/core';
+import { GtConfig } from '../../../projects/core/src/lib/interfaces/gt-config';
+import { GtTexts } from '../../../projects/core/src/lib/interfaces/gt-texts';
+import { GenericTableComponent } from '../../../projects/core/src/lib/components/generic-table/generic-table.component';
 
 @Component({
 	selector: 'app-localization',

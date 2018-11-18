@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GtExpandedRow } from '@angular-generic-table/core';
+import { GtExpandedRow } from '../../../projects/core/src/lib/components/gt-expanding-row/gt-expanding-row.component';
 
 @Component({
 	selector: 'app-custom-row',

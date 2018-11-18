@@ -6,16 +6,15 @@ import {
 	Injectable,
 	Inject
 } from '@angular/core';
-import {
-	GenericTableComponent,
-	GtConfig,
-	GtRow
-} from '@angular-generic-table/core';
-import { GtCustomComponent } from '@angular-generic-table/core/components/gt-custom-component-factory';
+
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { NgForm } from '@angular/forms';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { filter, map, scan, startWith, take } from 'rxjs/operators';
+import { GtRow } from '../../../projects/core/src/lib/interfaces/gt-row';
+import { GenericTableComponent } from '../../../projects/core/src/lib/components/generic-table/generic-table.component';
+import { GtCustomComponent } from '../../../projects/core/src/lib/components/gt-custom-component-factory/gt-custom-component-factory.component';
+import { GtConfig } from '../../../projects/core/src/lib/interfaces/gt-config';
 
 export interface Row extends GtRow {
 	id: number;

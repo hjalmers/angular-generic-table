@@ -1,11 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import {
-	GtConfig,
-	GenericTableComponent,
-	GtDrilldownComponent,
-	GtRow,
-	GtEvent
-} from '@angular-generic-table/core';
+import { GtRow } from '../../../projects/core/src/lib/interfaces/gt-row';
+import { GtConfig } from '../../../projects/core/src/lib/interfaces/gt-config';
+import { GenericTableComponent } from '../../../projects/core/src/lib/components/generic-table/generic-table.component';
+import { GtDrilldownComponent } from '../../../projects/core/src/lib/components/gt-drilldown/gt-drilldown.component';
+import { GtEvent } from '../../../projects/core/src/lib/interfaces/gt-event';
 
 export interface RowData extends GtRow {
 	name: string;

@@ -1,9 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import {
-	GenericTableComponent,
-	GtConfig,
-	GtRow
-} from '@angular-generic-table/core';
+import { GtRow } from '../../../projects/core/src/lib/interfaces/gt-row';
+import { GtConfig } from '../../../projects/core/src/lib/interfaces/gt-config';
+import { GenericTableComponent } from '../../../projects/core/src/lib/components/generic-table/generic-table.component';
 
 export interface RowData extends GtRow {
 	order: number;

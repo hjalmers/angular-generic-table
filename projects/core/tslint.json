@@ -1,0 +1,22 @@
+{
+  "extends": "../../tslint.json",
+  "rules": {
+    "directive-selector": [
+      true,
+      "attribute",
+      ["gt", "generic"],
+      "camelCase"
+    ],
+    "component-selector": [
+      true,
+      "element",
+      ["gt", "generic"],
+      "kebab-case"
+    ],
+    "component-class-suffix": [
+      true,
+      "Component",
+      "Factory"
+    ]
+  }
+}

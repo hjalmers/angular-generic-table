@@ -1,0 +1,50 @@
+<h2>Column settings component</h2>
+<p class="lead">Toggle column visibility and column order using the <code>ColumnSettingsComponent</code>.</p>
+<h5>Installation</h5>
+<p>Install with npm by running:</p>
+<code>npm install @angular-generic-table/column-settings dragula ng2-dragula --save</code>
+<p class="mt-4">More info available in the <a href="https://github.com/hjalmers/angular-generic-table/wiki/Installation-and-basic-usage" target="_blank">wiki</a>.</p>
+
+<h5>Usage</h5>
+<p>This how the <code>ColumnSettingsComponent</code> looks and behaves by default but feel free to customize it using css or by passing predefined classes. You can also define your own template for the columns.</p>
+<div class="card mb-5">
+  <div class="card-header">Example</div>
+  <div class="card-body">
+    <button class="btn btn-link" (click)="columnSettings.toggleColumnSettings()"> {{columnSettings.active ? 'Hide column settings':'Show column settings'}}</button>
+    <gt-column-settings [genericTable]="myTable" #columnSettings>
+      <div class="table-responsive">
+        <generic-table [gtClasses]="'table-hover'" #myTable [gtSettings]="firstConfigObject.settings" [gtFields]="firstConfigObject.fields" [gtData]="firstConfigObject.data" [gtOptions]="{numberOfRows:5}"></generic-table>
+      </div>
+      <div class="text-center">
+        <gt-pagination [gtClasses]="'justify-content-center'" [genericTable]="myTable"></gt-pagination>
+      </div>
+    </gt-column-settings>
+
+  </div>
+  <div class="card-footer" #columnSettingsExample></div>
+</div>
+
+<h5>Customize</h5>
+<p>Pass your own template for columns and change texts and css/classes for a custom look and feel.</p>
+<div class="card mb-5">
+  <div class="card-header">Example</div>
+  <div class="card-body">
+    <ng-template #gtColumnItem let-column let-index="index" let-name="name">
+      <div class="btn-group btn-group-sm mb-1 col-12 p-0" role="group">
+        <button type="button" class="btn w-100" [ngClass]="{'btn-primary':column.visible !== false, 'btn-secondary':column.visible === false}" style="cursor: move;">{{index}}: {{name}}</button>
+        <button type="button" class="btn w-100" [ngClass]="{'btn-outline-primary':column.visible !== false, 'btn-outline-secondary':column.visible === false}" (click)="customColumnSettings.toggleColumnVisibility(column)" style="cursor: pointer;">{{column.visible !== false ? 'visible':'hidden'}}</button>
+      </div>
+    </ng-template>
+    <button class="btn btn-link" (click)="customColumnSettings.toggleColumnSettings()"> {{customColumnSettings.active ? 'Hide column settings':'Show column settings'}}</button>
+    <gt-column-settings [genericTable]="myCustomTable" #customColumnSettings [gtColumnItem]="gtColumnItem" [gtTexts]="{help:'Click to toggle column visibility, drag to reorder.'}" [gtHeaderClasses]="'px-3 pt-3 pb-2 bg-light'" [gtWrapperClasses]="'px-3 pb-2 bg-light h-50'">
+      <div class="table-responsive">
+        <generic-table [gtClasses]="'table-hover'" #myCustomTable [gtSettings]="secondConfigObject.settings" [gtFields]="secondConfigObject.fields" [gtData]="secondConfigObject.data"></generic-table>
+      </div>
+      <div class="text-center">
+        <gt-pagination [gtClasses]="'justify-content-center'" [genericTable]="myCustomTable"></gt-pagination>
+      </div>
+    </gt-column-settings>
+  </div>
+  <div class="card-footer" #columnSettingsTemplateExample></div>
+</div>
+

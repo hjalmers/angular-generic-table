@@ -1,8 +1,9 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { GtConfig, GtRow } from '@angular-generic-table/core';
-import { GtCustomComponent } from '../../../@angular-generic-table/core/components/gt-custom-component-factory';
+import { GtRow } from '../../../projects/core/src/lib/interfaces/gt-row';
+import { GtConfig } from '../../../projects/core/src/lib/interfaces/gt-config';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { delay, filter, map, scan, startWith, take } from 'rxjs/operators';
+import { GtCustomComponent } from '../../../projects/core/src/lib/components/gt-custom-component-factory/gt-custom-component-factory.component';
 
 export interface StateDictionary {
 	[index: number]: { name?: string; age?: number };
