@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { GtConfig, GtOptions, GtRow } from '@angular-generic-table/core';
+import { GtConfig } from '../../../../../projects/core/src/lib/interfaces/gt-config';
+import { GtRow } from '../../../../../projects/core/src/lib/interfaces/gt-row';
 
 export interface Employee extends GtRow {
 	id: number;

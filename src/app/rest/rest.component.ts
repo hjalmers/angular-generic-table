@@ -7,12 +7,10 @@ import {
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CustomRowComponent } from '../custom-row/custom-row.component';
-import {
-	GenericTableComponent,
-	GtConfig,
-	GtCustomComponent,
-	GtRow
-} from '@angular-generic-table/core';
+import { GtRow } from '../../../projects/core/src/lib/interfaces/gt-row';
+import { GtConfig } from '../../../projects/core/src/lib/interfaces/gt-config';
+import { GtCustomComponent } from '../../../projects/core/src/lib/components/gt-custom-component-factory/gt-custom-component-factory.component';
+import { GenericTableComponent } from '../../../projects/core/src/lib/components/generic-table/generic-table.component';
 
 export interface RowData extends GtRow {
 	id: number;

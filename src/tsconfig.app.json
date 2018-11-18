@@ -12,7 +12,10 @@
 		"module": "es2015",
 		"baseUrl": ".",
 		"paths": {
-			"@angular-generic-table/*": ["../@angular-generic-table/*"]
+			"@angular-generic-table/core": ["../../projects/core/src/lib/core"],
+			"@angular-generic-table/column-settings": [
+				"../../projects/column-settings/src/lib/column-settings"
+			]
 		},
 		"types": []
 	},

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { GtCustomComponent } from '@angular-generic-table/core/components/gt-custom-component-factory';
-import { GtConfig } from '@angular-generic-table/core/interfaces/gt-config';
-import { GtRow } from '@angular-generic-table/core';
+import { GtRow } from '../../../projects/core/src/lib/interfaces/gt-row';
+import { GtConfig } from '../../../projects/core/src/lib/interfaces/gt-config';
+import { GtCustomComponent } from '../../../projects/core/src/lib/components/gt-custom-component-factory/gt-custom-component-factory.component';
 
 export interface RowData extends GtRow {
 	id: number;

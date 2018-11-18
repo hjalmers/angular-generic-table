@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GenericTableModule } from '@angular-generic-table/core';
 import { EmployeeTableComponent } from './in-memory-array/employee-table.component';
 import { RestExampleComponent } from './using-rest-api/rest-example.component';
 import { LazyLoadExampleComponent } from './lazy-load/lazy-load-example.component';
+import { GenericTableModule } from '../../../../projects/core/src/lib/core.module';
 
 @NgModule({
 	imports: [CommonModule, GenericTableModule],
