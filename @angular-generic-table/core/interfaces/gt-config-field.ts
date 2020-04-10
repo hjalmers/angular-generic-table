@@ -1,7 +1,7 @@
-import { GtRow } from './gt-row';
-import { Type, Injector } from '@angular/core';
-import { GtCustomComponent } from '../components/gt-custom-component-factory';
-import { Observable } from 'rxjs/Observable';
+import {GtRow} from './gt-row';
+import {Injector, Type} from '@angular/core';
+import {GtCustomComponent} from '../components/gt-custom-component-factory';
+import {Observable} from 'rxjs/Observable';
 
 export type GtRenderFunc<R extends GtRow> = (row: R) => string;
 
@@ -16,10 +16,8 @@ export type GtClassFunc = (row: any, col: any) => string;
 
 export type GtInlineEditFunc<R extends GtRow> = (row: any, col: any) => boolean;
 
-export interface GtConfigField<
-	R extends GtRow,
-	C extends GtCustomComponent<any>
-> {
+export interface GtConfigField<R extends GtRow,
+	C extends GtCustomComponent<any>> {
 	/**
 	 * name or label of field
 	 * (will be displayed as heading for column)
@@ -72,6 +70,7 @@ export interface GtConfigField<
 	/**
 	 * custom function for export presentation
 	 */
+	exportHeader?: string;
 	export?: GtValueFunc<R>;
 	sort?: GtValueFunc<R>;
 	/**
@@ -81,15 +80,15 @@ export interface GtConfigField<
 	search?: any;
 	inlineEdit?:
 		| {
-				active: Observable<boolean> | GtInlineEditFunc<R>;
-				type?:
-					| Observable<any>
-					| Array<any>
-					| 'text'
-					| 'number'
-					| 'password'
-					| 'email';
-		  }
+		active: Observable<boolean> | GtInlineEditFunc<R>;
+		type?:
+			| Observable<any>
+			| Array<any>
+			| 'text'
+			| 'number'
+			| 'password'
+			| 'email';
+	}
 		| boolean
 		| Array<any>
 		| 'number'
