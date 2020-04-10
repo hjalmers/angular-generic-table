@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [4.18.0] - 2020-04-10
+
+### Added
+
+* Support for custom CSV export header using `exportHeader` property in field settings
+
 ## [4.17.1] - 2018-09-07
 
 ### Fixed
