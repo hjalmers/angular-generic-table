@@ -1,27 +1,27 @@
 import {
 	Component,
-	OnInit,
-	OnChanges,
-	Output,
-	Input,
 	EventEmitter,
-	Type,
-	SimpleChanges,
+	Input,
+	OnChanges,
+	OnDestroy,
+	OnInit,
+	Output,
 	Renderer2,
-	OnDestroy
+	SimpleChanges,
+	Type
 } from '@angular/core';
 import {
 	GtConfig,
 	GtConfigField,
 	GtConfigSetting,
-	GtTexts,
-	GtInformation,
+	GtEvent,
 	GtExpandedRow,
-	GtRow,
+	GtInformation,
 	GtOptions,
-	GtRowMeta,
 	GtRenderField,
-	GtEvent
+	GtRow,
+	GtRowMeta,
+	GtTexts
 } from '..';
 import { GtMetaPipe } from '../pipes/gt-meta.pipe';
 
@@ -84,6 +84,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 	set gtTotals(value: any) {
 		this._gtTotals = value;
 	}
+
 	@Input()
 	set gtFields(value: GtConfigField<R, any>[]) {
 		this._gtFields = value;
@@ -98,6 +99,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 			);
 		}
 	}
+
 	@Input()
 	set gtSettings(value: GtConfigSetting[]) {
 		this._gtSettings = value;
@@ -139,6 +141,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		}
 		this.restructureSorting();
 	}
+
 	@Input()
 	set gtData(initialData: Array<any>) {
 		const data = this._gtOptions.mutateData
@@ -650,6 +653,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 	public deselectAllRows(): void {
 		this._toggleAllRowProperty('isSelected', false);
 	}
+
 	/**
 	 * Toggle all rows.
 	 */
@@ -1035,6 +1039,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 			this._listenForKeydownEvent();
 		}
 	}
+
 	/**
 	 * Listen for key down event - listen for key down event during inline edit.
 	 */
@@ -1055,6 +1060,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 			}
 		);
 	}
+
 	/**
 	 * Inline edit update - accept changes and update row values.
 	 */
@@ -1077,6 +1083,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		// remove listener
 		this._stopListeningForKeydownEvent();
 	}
+
 	/**
 	 * Inline edit cancel - cancel and reset inline edits.
 	 */
@@ -1104,6 +1111,7 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		// remove listener
 		this._stopListeningForKeydownEvent();
 	}
+
 	/**
 	 * Stop listening for key down event - stop listening for key down events passed during inline edit.
 	 */
@@ -1297,6 +1305,19 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 		// csv export headers
 		for (let i = 0; i < this._gtSettings.length; i++) {
 			if (this._gtSettings[i].export !== false) {
+				// get field settings
+				const fieldSetting = this.getProperty(
+					this._gtFields,
+					this._gtSettings[i].objectKey
+				);
+
+				// get export value, if exportHeader string is defined use it otherwise returns name
+				const exportValue: string = fieldSetting.exportHeader
+					? fieldSetting.exportHeader
+					: fieldSetting.name;
+
+				csv += this.escapeCSVDelimiter(exportValue);
+
 				csv += this.getProperty(this._gtFields, this._gtSettings[i].objectKey)
 					.name;
 
@@ -1318,21 +1339,15 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 					);
 
 					// get export value, if export function is defined use it otherwise check for value function and as a last resort export raw data
-					let exportValue: string =
+					const exportValue: string =
 						fieldSetting.export && typeof fieldSetting.export === 'function'
 							? fieldSetting.export(row)
 							: fieldSetting.value && typeof fieldSetting.value === 'function'
 								? fieldSetting.value(row)
 								: row[this._gtSettings[i].objectKey];
 
-					// escape export value using double quotes (") if export value contains delimiter
-					exportValue =
-						typeof exportValue === 'string' &&
-						exportValue.indexOf(this._gtOptions.csvDelimiter) !== -1
-							? '"' + exportValue + '"'
-							: exportValue;
+					csv += this.escapeCSVDelimiter(exportValue);
 
-					csv += exportValue;
 					if (i < this._gtSettings.length - 1) {
 						csv += this._gtOptions.csvDelimiter;
 					}
@@ -1436,6 +1451,17 @@ export class GenericTableComponent<R extends GtRow, C extends GtExpandedRow<R>>
 			this.sortOrder = sorting;
 		}
 	};
+
+	/**
+	 * Escape export value using double quotes (") if export value contains delimiter
+	 * @param value Value to be escaped
+	 */
+	private escapeCSVDelimiter(value) {
+		return typeof value === 'string' &&
+			value.indexOf(this._gtOptions.csvDelimiter) !== -1
+			? '"' + value + '"'
+			: value;
+	}
 
 	ngOnInit() {
 		// if number of row to display from start is set to null or 0...
