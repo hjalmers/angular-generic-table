@@ -72,6 +72,7 @@ export interface GtConfigField<
 	/**
 	 * custom function for export presentation
 	 */
+	exportHeader?: string;
 	export?: GtValueFunc<R>;
 	sort?: GtValueFunc<R>;
 	/**
