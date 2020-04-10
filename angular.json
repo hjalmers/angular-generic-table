@@ -3,7 +3,7 @@
 	"version": 1,
 	"newProjectRoot": "projects",
 	"projects": {
-		"@angular-generic-table": {
+		"angular-generic-table": {
 			"root": "",
 			"sourceRoot": "src",
 			"projectType": "application",
@@ -43,18 +43,18 @@
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"options": {
-						"browserTarget": "@angular-generic-table:build"
+						"browserTarget": "angular-generic-table:build"
 					},
 					"configurations": {
 						"production": {
-							"browserTarget": "@angular-generic-table:build:production"
+							"browserTarget": "angular-generic-table:build:production"
 						}
 					}
 				},
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
 					"options": {
-						"browserTarget": "@angular-generic-table:build"
+						"browserTarget": "angular-generic-table:build"
 					}
 				},
 				"test": {
@@ -78,7 +78,7 @@
 				}
 			}
 		},
-		"@angular-generic-table-e2e": {
+		"angular-generic-table-e2e": {
 			"root": "e2e",
 			"sourceRoot": "e2e",
 			"projectType": "application",
@@ -87,7 +87,7 @@
 					"builder": "@angular-devkit/build-angular:protractor",
 					"options": {
 						"protractorConfig": "./protractor.conf.js",
-						"devServerTarget": "@angular-generic-table:serve"
+						"devServerTarget": "angular-generic-table:serve"
 					}
 				},
 				"lint": {
@@ -296,7 +296,7 @@
 			}
 		}
 	},
-	"defaultProject": "@angular-generic-table",
+	"defaultProject": "angular-generic-table",
 	"schematics": {
 		"@schematics/angular:component": {
 			"prefix": "gt",
