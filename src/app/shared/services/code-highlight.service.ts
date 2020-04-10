@@ -14,6 +14,6 @@ import 'prismjs/components/prism-bash';
 @Injectable()
 export class CodeHighlightService {
 	highlight(code: string, lang: string) {
-		return prism.highlight(code.trim(), prism.languages[lang]);
+		return prism.highlight(code.trim(), prism.languages[lang], lang);
 	}
 }
