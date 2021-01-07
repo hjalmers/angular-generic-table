@@ -11,9 +11,11 @@
     "e2e": "ng e2e",
     "commit": "git-cz",
     "semantic-release": "semantic-release && npm run build",
-    "format-all": "prettier --config ./.prettierrc --write \"projects/**/src/{app,environments,assets}/**/*{.ts,.js,.json,.css,.scss}\"",
+    "format-all":
+      "prettier --config ./.prettierrc --write \"projects/**/src/{app,environments,assets}/**/*{.ts,.js,.json,.css,.scss}\"",
     "format-staged": "pretty-quick --staged",
-    "format-check": "prettier --config ./.prettierrc --list-different \"src/{app,environments,assets}/**/*{.ts,.js,.json,.css,.scss}\"",
+    "format-check":
+      "prettier --config ./.prettierrc --list-different \"src/{app,environments,assets}/**/*{.ts,.js,.json,.css,.scss}\"",
     "precommit": "npm run format-staged && npm run lint --fix --force"
   },
   "config": {
@@ -22,9 +24,7 @@
     }
   },
   "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
+    "extends": ["@commitlint/config-conventional"]
   },
   "husky": {
     "hooks": {
@@ -81,6 +81,7 @@
     "prettier": "^2.2.1",
     "pretty-quick": "^3.1.0",
     "protractor": "~7.0.0",
+    "replace": "^1.2.0",
     "semantic-release": "^17.3.1",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
