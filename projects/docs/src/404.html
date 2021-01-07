@@ -1,0 +1,8 @@
+<meta http-equiv="refresh" id="metaRedirect" />
+<script>
+  sessionStorage.redirect = location.href;
+  const target =
+    'https://hjalmers.github.io/angular-generic-table/' +
+    location.href.split('https://hjalmers.github.io/angular-generic-table')[1].split('/')[1];
+  document.getElementById('metaRedirect').setAttribute('content', '0;URL=' + target);
+</script>

@@ -1,0 +1,66 @@
+name: CI
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF##*/})"
+        id: branch
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build library
+        run: npm run build
+
+      - name: Build documentation and demo site
+        run: npm run build:docs
+
+      #- uses: codfish/semantic-release-action@master
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      #    NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Run semantic release and publish new version to npm
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm run semantic-release
+
+      - name: Set base href
+        run: ./node_modules/.bin/replace '<base href=(.*?)>' '<base href="/${{ github.event.repository.name }}/${{ steps.branch.outputs.branch }}/">' dist/docs/index.html
+
+      # - name: Set build (run) number
+      #  run: ./node_modules/.bin/replace '##BUILD_NUMBER##' '${{ github.run_number }}' www/index.html
+
+      - name: Get last release
+        # if: steps.semantic.outputs.new-release-published !== 'true'
+        id: version
+        uses: abatilo/release-info-action@v1.3.0
+        with:
+          owner: hjalmers
+          repo: angular-generic-table
+
+      #- name: Set version number after release
+      #  if: steps.semantic.outputs.new-release-published == 'true'
+      #  run: ./node_modules/.bin/replace '##VERSION##' 'v${{ steps.semantic.outputs.release-version }}' www/index.html
+
+      #- name: Set version number
+      #  if: steps.semantic.outputs.new-release-published != 'true'
+      #  run: ./node_modules/.bin/replace '##VERSION##' '${{ steps.version.outputs.latest_tag }}' www/index.html
+
+      - name: Deploy documentation to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@3.4.1
+        with:
+          ACCESS_TOKEN: ${{ secrets.GH_TOKEN }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: dist/docs # The folder the action should deploy.
+          TARGET_FOLDER: ${{ steps.branch.outputs.branch }} # The folder the action should deploy to.
+

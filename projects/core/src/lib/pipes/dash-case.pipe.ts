@@ -1,10 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { dashed } from '../utilities/utilities';
 
 @Pipe({
-	name: 'dashCase'
+  name: 'dashCase'
 })
 export class DashCasePipe implements PipeTransform {
-	transform(string: string): string {
-		return string.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
-	}
+  transform(s: string): any {
+    return dashed(s);
+  }
 }

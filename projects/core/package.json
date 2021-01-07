@@ -1,22 +1,17 @@
 {
   "name": "@angular-generic-table/core",
-  "version": "5.0.0-alpha.3",
-  "description": "A generic table component for Angular",
-  "keywords": [
-    "Angular",
-    "Table"
-  ],
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
-  },
+  "version": "0.0.0-semantically-released",
   "author": "Robert Hjalmers <opensource@rhj.se> (http://www.linkedin.com/in/robert-hjalmers/)",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/hjalmers/angular-generic-table.git"
   },
   "peerDependencies": {
-    "@angular/common": "^7.0.0",
-    "@angular/core": "^7.0.0"
+    "@angular/common": "^11.0.6",
+    "@angular/core": "^11.0.6"
+  },
+  "dependencies": {
+    "tslib": "^2.0.0"
   }
 }

@@ -1,146 +1,27 @@
-# angular-generic-table
+# MyWorkspace
 
-[![Build Status](https://travis-ci.org/hjalmers/angular-generic-table.svg?branch=master)](https://travis-ci.org/hjalmers/angular-generic-table)
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
-[![Cypress.io Dashboard](https://img.shields.io/badge/cypress-dashboard-brightgreen.svg?style=flat-square)](https://dashboard.cypress.io/#/projects/d5k4ex/runs)
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.6.
 
-A generic table for Angular 2+. This project is a re-write of [this](https://github.com/hjalmers/angularjs-generic-table) project for AngularJS, the idea is to have support for the same features and that the configuration should be the same. Generic table uses standard markup for tables ie. table, tr and td elements etc. and has support for expanding rows, search, filters, sorting, pagination, export to CSV, column clicks, custom column rendering, custom export values. [View demo](https://hjalmers.github.io/angular-generic-table/)
+## Development server
 
-## Features
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-* Uses standard HTML tables (no divs etc.)
-* Markup uses Twitter bootstrap class names
-* Client and server-side pagination, sorting and filtering
-* Lazy-loading of data from server
-* Expanding rows with custom component
-* Use custom functions for sorting, exporting and rendering of data
-* Configure table using json object (add columns etc.)
-* Toggle column visibility
-* Export to CSV
+## Code scaffolding
 
-## Installation and usage
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-Run `npm install @angular-generic-table/core --save`
+## Build
 
-Include generic table module in your project, for example if you want to add it to your app module:
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-**App Module**
+## Running unit tests
 
-```TypeScript
-import { BrowserModule } from '@angular/platform-browser';
-import { AppComponent } from './app.component';
-import { GenericTableModule } from '@angular-generic-table/core';
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    GenericTableModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
-```
+## Running end-to-end tests
 
-Configure the table in your component, in this case we're adding a basic example with static data to a component called StaticComponent.
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
-**Static Component**
+## Further help
 
-```TypeScript
-import { Component } from '@angular/core';
-import { GtConfig } from '@angular-generic-table/core';
-
-@Component({
-  selector: 'app-static',
-  templateUrl: './static.component.html'
-})
-export class StaticComponent {
-
-  public configObject: GtConfig<any>;
-
-  public data:Array<{
-    id:number,
-    name:string,
-    lucky_number:number
-  }> = [];
-
-  constructor() {
-
-    this.configObject = {
-      settings:[{
-        objectKey:'id',
-        sort:'desc',
-        columnOrder:0
-      },{
-        objectKey:'name',
-        sort:'enable',
-        columnOrder:1
-      },{
-        objectKey:'lucky_number',
-        sort:'enable',
-        columnOrder:2
-      }],
-      fields:[{
-        name:'Id',
-        objectKey:'id'
-      },{
-        name:'Name',
-        objectKey:'name'
-      },{
-        name:'Lucky number',
-        objectKey:'lucky_number'
-      }],
-      data:[{
-        "id": 1,
-        "name": "Anna",
-        "lucky_number": 63
-      }, {
-        "id": 2,
-        "name": "Julie",
-        "lucky_number": 8
-      }, {
-        "id": 3,
-        "name": "Lillian",
-        "lucky_number": 30
-      }, {
-        "id": 4,
-        "name": "Norma",
-        "lucky_number": 13
-      }, {
-        "id": 5,
-        "name": "Ralph",
-        "lucky_number": 28
-      }, {
-        "id": 6,
-        "name": "Benjamin",
-        "lucky_number": 66
-      }, {
-        "id": 7,
-        "name": "George",
-        "lucky_number": 66
-      }, {
-        "id": 8,
-        "name": "Ryan",
-        "lucky_number": 65
-      }, {
-        "id": 9,
-        "name": "Martha",
-        "lucky_number": 57
-      }, {
-        "id": 10,
-        "name": "Todd",
-        "lucky_number": 65
-      }]
-    };
-  }
-}
-```
-
-**Usage**
-
-```Html
-<generic-table [gtSettings]="configObject.settings" [gtFields]="configObject.fields" [gtData]="configObject.data"></generic-table>
-```
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

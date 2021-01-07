@@ -1,0 +1,61 @@
+<table class="table text-nowrap mb-0" id="agreementList_table">
+  <thead>
+    <tr>
+      <ng-container *ngFor="let column of (tableConfig$ | async)!.columns | keyvalue: columnOrder">
+        <th
+          *ngIf="!column.value?.hidden"
+          ngClass="{{ column.value?.sortable ? 'sort ' : '' }} {{ sortBy | sortClass: column.key }} {{
+            (column.key | dashCase) + '-column'
+          }}"
+          [class.disabled]="loading$ | async"
+          (click)="!column.value.sortable || sort(column.key)"
+        >
+          <span>{{ column.value?.header || column.key }}</span>
+        </th>
+      </ng-container>
+    </tr>
+  </thead>
+  <tbody *ngIf="false !== false; else tableContent">
+    <tr>
+      <!-- <td class="p-0" [colSpan]="colspan$ | async">-->
+      <td class="p-0">
+        <div class="skeleton-loader skeleton-loader-table"></div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<ng-template #tableContent>
+  <ng-container
+    *ngIf="{
+      data: data$ | async,
+      config: tableConfig$ | async
+    } as table"
+  >
+    <tbody id="agreementList_tableContent" *ngIf="table.data!.length > 0; else noData">
+      <tr *ngFor="let row of table.data; let i = index" [attr.id]="'tableRow_' + i">
+        <ng-container *ngFor="let column of table.config?.columns | keyvalue: columnOrder">
+          <td *ngIf="!column.value?.hidden">
+            <!--<ng-container *ngIf="column.value.template === 'actions'">
+            <ng-container
+              *ngTemplateOutlet="actionsColumn; context: { agreement: agreement, index: i }"
+            ></ng-container>
+          </ng-container>
+          <ng-container *ngIf="column.value.template === 'date'">
+            <ng-container
+              *ngTemplateOutlet="dateColumn; context: { agreement: agreement, column: column.key }"
+            ></ng-container>
+          </ng-container>
+          <ng-container *ngIf="column.value.template === 'name'">
+            <ng-container *ngTemplateOutlet="nameColumn; context: { agreement: agreement }"></ng-container>
+          </ng-container>
+          <ng-container *ngIf="column.value.template === 'badge'">
+            <ng-container *ngTemplateOutlet="badgeColumn; context: { agreement: agreement }"></ng-container>
+          </ng-container>-->
+            {{ row[column.key] }}
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </ng-container>
+</ng-template>
+<ng-template #noData></ng-template>

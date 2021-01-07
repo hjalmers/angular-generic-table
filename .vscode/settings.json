@@ -1,6 +1,0 @@
-{
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "docthis.includeTypes": false,
-  "docthis.includeMemberOfOnInterfaceMembers": false,
-  "docthis.includeMemberOfOnClassMembers": false
-}
