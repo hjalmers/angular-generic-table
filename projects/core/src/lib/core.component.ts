@@ -1,10 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, isObservable, Observable, of, ReplaySubject } from 'rxjs';
 import { TableConfig } from './models/table-config.interface';
 import { KeyValue } from '@angular/common';
-import { map } from 'rxjs/operators';
+import { map, shareReplay, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { TableColumn } from './models/table-column.interface';
 import { Order } from './enums/order.enum';
+import { chunk } from './utilities/utilities';
+import { TableRow } from './models/table-row.interface';
+import { TableSort } from './models/table-sort.interface';
 
 @Component({
   selector: 'angular-generic-table',
@@ -13,60 +16,101 @@ import { Order } from './enums/order.enum';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoreComponent implements OnInit {
-  get tableConfig$(): Observable<TableConfig> | undefined {
-    return this._tableConfig$;
+  @Input()
+  set page(value: Observable<number> | number) {
+    this._currentPage$.next(value);
   }
 
   @Input()
-  set config(value: any) {
-    this._tableConfig$ = value;
-  }
-  get data$(): Observable<Array<any>> {
-    return this._data$!.pipe(
-      map(data =>
-        data.sort(
-          (a, b) =>
-            a[this.sortBy.sortBy] > b[this.sortBy.sortBy]
-              ? this.sortBy.sortByOrder === Order.ASC
-                ? 1
-                : -1
-              : b[this.sortBy.sortBy] > a[this.sortBy.sortBy]
-                ? this.sortBy.sortByOrder === Order.ASC
-                  ? -1
-                  : 1
-                : 0
-        )
-      )
-    );
+  set config(value: Observable<TableConfig> | TableConfig) {
+    this._tableConfig$.next(value);
   }
 
   @Input()
-  set data(value: any) {
-    this._data$ = value;
+  set data(value: Observable<Array<TableRow>> | Array<TableRow>) {
+    this._data$.next(value);
   }
   constructor() {}
 
   loading$ = of(false);
 
-  sortBy: { sortBy: string; sortByOrder: Order } = {
+  sortBy$: BehaviorSubject<TableSort> = new BehaviorSubject({
     sortBy: 'firstName',
     sortByOrder: Order.ASC
-  };
+  });
+  // tslint:disable-next-line:variable-name
+  private _tableConfig$: ReplaySubject<TableConfig | Observable<TableConfig>> = new ReplaySubject(1);
+  tableConfig$: Observable<TableConfig> = this._tableConfig$.pipe(
+    map(value => (isObservable(value) ? value : of(value))),
+    switchMap(obs => obs),
+    shareReplay(1)
+  );
 
   // tslint:disable-next-line:variable-name
-  private _data$: Observable<Array<any>> | undefined;
-  // tslint:disable-next-line:variable-name
-  private _tableConfig$: Observable<TableConfig> | undefined;
+  private _data$: ReplaySubject<Array<TableRow> | Observable<Array<TableRow>>> = new ReplaySubject(1);
+  data$: Observable<Array<TableRow>> = this._data$.pipe(
+    map(value => (isObservable(value) ? value : of(value))),
+    switchMap(obs => combineLatest([obs, this.sortBy$])),
+    map(([data, sortBy]) =>
+      data.sort(
+        (a, b) =>
+          a[sortBy.sortBy] > b[sortBy.sortBy]
+            ? sortBy.sortByOrder === Order.ASC
+              ? 1
+              : -1
+            : b[sortBy.sortBy] > a[sortBy.sortBy]
+              ? sortBy.sortByOrder === Order.ASC
+                ? -1
+                : 1
+              : 0
+      )
+    )
+  );
+
+  table$: Observable<{ data: Array<Array<TableRow>>; config: TableConfig; info: any }> = combineLatest([
+    this.data$,
+    this.tableConfig$
+  ]).pipe(
+    map(([sorted, config]: any) => {
+      // if pagination is disabled...
+      if (!config.pagination || config.pagination.length === 0) {
+        // ...return unaltered array
+        return [sorted];
+      }
+      // return record set
+      return {
+        data: chunk(sorted, +config.pagination.length),
+        config,
+        info: { records: sorted.length, pageTotal: Math.ceil(sorted.length / +config.pagination.length) }
+      };
+    })
+  );
+
+  private _currentPage$: BehaviorSubject<Observable<number> | number> = new BehaviorSubject(0);
+  currentPage$ = this._currentPage$.pipe(
+    map(value => (isObservable(value) ? value : of(value))),
+    switchMap(obs => obs),
+    withLatestFrom(this.table$),
+    map(([page, table]: any) => {
+      // determine last page
+      const lastPage = Math.ceil(table.info.records / table.config.pagination.length) - 1;
+      // determine max/min position
+      return +page < 0 ? 0 : +page > lastPage ? lastPage : +page;
+    }),
+    shareReplay(1)
+  );
 
   sort(property: string): void {
     const newSortOrder =
-      this.sortBy.sortBy !== property || this.sortBy.sortByOrder === Order.DESC || !this.sortBy.sortByOrder
+      this.sortBy$.getValue().sortBy !== property ||
+      this.sortBy$.getValue().sortByOrder === Order.DESC ||
+      !this.sortBy$.getValue().sortByOrder
         ? Order.ASC
         : Order.DESC;
-    this.sortBy = {
+    this.sortBy$.next({
       sortBy: property,
       sortByOrder: newSortOrder
-    };
+    });
   }
 
   ngOnInit() {}

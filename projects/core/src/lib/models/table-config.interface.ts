@@ -5,4 +5,7 @@ export interface TableConfig {
   columns: {
     [key: string]: TableColumn;
   };
+  pagination: {
+    length: number;
+  };
 }

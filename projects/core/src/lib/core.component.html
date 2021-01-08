@@ -4,7 +4,7 @@
       <ng-container *ngFor="let column of (tableConfig$ | async)!.columns | keyvalue: columnOrder">
         <th
           *ngIf="!column.value?.hidden"
-          ngClass="{{ column.value?.sortable ? 'sort ' : '' }} {{ sortBy | sortClass: column.key }} {{
+          ngClass="{{ column.value?.sortable ? 'sort ' : '' }} {{ sortBy$ | async | sortClass: column.key }} {{
             (column.key | dashCase) + '-column'
           }}"
           [class.disabled]="loading$ | async"
@@ -26,13 +26,10 @@
 </table>
 <ng-template #tableContent>
   <ng-container
-    *ngIf="{
-      data: data$ | async,
-      config: tableConfig$ | async
-    } as table"
+    *ngIf="table$ | async as table"
   >
-    <tbody id="agreementList_tableContent" *ngIf="table.data!.length > 0; else noData">
-      <tr *ngFor="let row of table.data; let i = index" [attr.id]="'tableRow_' + i">
+    <tbody id="agreementList_tableContent" *ngIf="table.data?.length > 0; else noData">
+      <tr *ngFor="let row of table!.data![(currentPage$ | async) || 0]; let i = index" [attr.id]="'tableRow_' + i">
         <ng-container *ngFor="let column of table.config?.columns | keyvalue: columnOrder">
           <td *ngIf="!column.value?.hidden">
             <!--<ng-container *ngIf="column.value.template === 'actions'">
