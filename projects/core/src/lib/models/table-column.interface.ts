@@ -3,4 +3,5 @@ export interface TableColumn {
   hidden?: boolean;
   sortable?: boolean;
   order?: number;
+  search?: boolean;
 }

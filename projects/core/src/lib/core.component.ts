@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { BehaviorSubject, combineLatest, isObservable, Observable, of, ReplaySubject } from 'rxjs';
 import { TableConfig } from './models/table-config.interface';
 import { KeyValue } from '@angular/common';
-import { map, shareReplay, switchMap, tap, withLatestFrom } from 'rxjs/operators';
+import { map, shareReplay, startWith, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { TableColumn } from './models/table-column.interface';
 import { Order } from './enums/order.enum';
-import { chunk } from './utilities/utilities';
+import { chunk, search } from './utilities/utilities';
 import { TableRow } from './models/table-row.interface';
 import { TableSort } from './models/table-sort.interface';
 
@@ -19,6 +19,11 @@ export class CoreComponent implements OnInit {
   @Input()
   set page(value: Observable<number> | number) {
     this._currentPage$.next(value);
+  }
+
+  @Input()
+  set search(value: Observable<string> | string) {
+    this._searchBy$.next(value);
   }
 
   @Input()
@@ -38,6 +43,16 @@ export class CoreComponent implements OnInit {
     sortBy: 'firstName',
     sortByOrder: Order.ASC
   });
+
+  // tslint:disable-next-line:variable-name
+  private _searchBy$: ReplaySubject<Observable<string>> = new ReplaySubject(1);
+  searchBy$: Observable<string> = this._searchBy$.pipe(
+    startWith(''),
+    map(value => (isObservable(value) ? value : of(value))),
+    switchMap(obs => obs),
+    shareReplay(1)
+  );
+
   // tslint:disable-next-line:variable-name
   private _tableConfig$: ReplaySubject<TableConfig | Observable<TableConfig>> = new ReplaySubject(1);
   tableConfig$: Observable<TableConfig> = this._tableConfig$.pipe(
@@ -50,9 +65,10 @@ export class CoreComponent implements OnInit {
   private _data$: ReplaySubject<Array<TableRow> | Observable<Array<TableRow>>> = new ReplaySubject(1);
   data$: Observable<Array<TableRow>> = this._data$.pipe(
     map(value => (isObservable(value) ? value : of(value))),
-    switchMap(obs => combineLatest([obs, this.sortBy$])),
-    map(([data, sortBy]) =>
-      data.sort(
+    switchMap(obs => combineLatest([obs, this.sortBy$, this.searchBy$])),
+    withLatestFrom(this.tableConfig$),
+    map(([[data, sortBy, searchBy], config]) => {
+      return (searchBy ? search(searchBy, false, data, config) : data).sort(
         (a, b) =>
           a[sortBy.sortBy] > b[sortBy.sortBy]
             ? sortBy.sortByOrder === Order.ASC
@@ -63,8 +79,8 @@ export class CoreComponent implements OnInit {
                 ? -1
                 : 1
               : 0
-      )
-    )
+      );
+    })
   );
 
   table$: Observable<{ data: Array<Array<TableRow>>; config: TableConfig; info: any }> = combineLatest([
