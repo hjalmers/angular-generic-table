@@ -48,8 +48,9 @@
           <ng-container *ngIf="column.value.template === 'badge'">
             <ng-container *ngTemplateOutlet="badgeColumn; context: { agreement: agreement }"></ng-container>
           </ng-container>-->
-            <ng-container [ngTemplateOutlet]="(searchBy$ | async) ? highlighted: tableRow" [ngTemplateOutletContext]="{row: row, column: column, search: (searchBy$ | async) }"></ng-container>
-          </td>
+            <ng-container [ngTemplateOutlet]="(searchBy$ | async) && !table.config.columns[column.key].templateRef ? highlighted:
+            table.config.columns[column.key].templateRef ? templateRef :
+            rawData" [ngTemplateOutletContext]="{row: row, column: column, search: (searchBy$ | async), templateRef: table.config.columns[column.key].templateRef, index: i}"></ng-container></td>
         </ng-container>
       </tr>
     </tbody>
@@ -59,6 +60,9 @@
 <ng-template #highlighted let-row="row" let-column="column" let-search="search">
   <div [innerHTML]="(row[column.key] | highlight: search)"></div>
 </ng-template>
-<ng-template #tableRow let-row="row" let-column="column">
+<ng-template #rawData let-row="row" let-column="column">
   {{row[column.key]}}
+</ng-template>
+<ng-template #templateRef let-row="row" let-column="column" let-index="index" let-templateRef="templateRef">
+  <ng-container [ngTemplateOutlet]="templateRef"  [ngTemplateOutletContext]="{row: row, col: column, index: index}"></ng-container>
 </ng-template>
