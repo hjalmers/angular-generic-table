@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { FormBuilder } from '@angular/forms';
+import { TableConfig } from '../../../core/src/lib/models/table-config.interface';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,8 @@ export class AppComponent implements OnInit {
     this._currentPage$.next(value);
   }
   constructor(private fb: FormBuilder) {}
+  @ViewChild('actions', { static: true }) actions: TemplateRef<any> | undefined;
+  @ViewChild('color', { static: true }) color: TemplateRef<any> | undefined;
   paginationForm = this.fb.group({
     length: [10],
     search: [''],
@@ -39,53 +42,24 @@ export class AppComponent implements OnInit {
     },
   ]);
 
-  tableConfig$ = new BehaviorSubject({
-    columns: {
-      firstName: {
-        header: 'First name',
-        template: 'name',
-        sortable: true,
-        order: 0,
-      },
-      lastName: {
-        header: 'Last name',
-        hidden: false,
-        sortable: true,
-      },
-      gender: {
-        header: 'Gender',
-        template: 'date',
-        sortable: true,
-        order: 1,
-      },
-      favoriteColor: {
-        header: 'Favorite color',
-        template: 'date',
-        sortable: false,
-        order: 2,
-        search: false,
-      },
-      favoriteFood: {
-        header: 'Favorite food',
-        hidden: false,
-        sortable: true,
-        order: 0,
-      },
-    },
-    pagination: {
-      length: this.paginationForm.get('length')!.value || 0,
-    },
-  });
   private _currentPage$ = new BehaviorSubject(0);
 
+  clicked: string = '';
   maleFirstNames = ['Peter', 'Clark', 'Ruben', 'John', 'Jack', 'Roscoe'];
   femaleFirstNames = ['Mary Jane', 'Kim', 'Sarah', 'Michelle', 'Ann'];
   lastNames = ['Andersson', 'Smith', 'Parker', 'Kent', 'Rogers', 'Lane', 'Jackson'];
   foods = ['Pizza', 'Pasta', 'Hamburger', 'Pancakes', 'Tacos', 'Lasagna', 'Meatloaf'];
   colors = ['#33d60b', '#dcafff', '#3fc9ff', '#ff1600', '#5238b1', '#fff'];
 
+  tableConfig$: BehaviorSubject<TableConfig | null> = new BehaviorSubject(null);
+
   addData() {
     this.data$.next([...this.data$.getValue(), this.randomRecord()]);
+  }
+
+  clickAction(row: any, column: any, index: number) {
+    console.log('clicked row:', row, 'col:', column);
+    this.clicked = `clicked row number: ${index}`;
   }
 
   randomRecord() {
@@ -118,6 +92,45 @@ export class AppComponent implements OnInit {
         ...this.tableConfig$.getValue(),
         pagination: { ...this.tableConfig$.getValue().pagination, length },
       });
+    });
+    this.tableConfig$.next({
+      columns: {
+        firstName: {
+          header: 'First name',
+          sortable: true,
+          order: 0,
+        },
+        lastName: {
+          header: 'Last name',
+          hidden: false,
+          sortable: true,
+        },
+        gender: {
+          header: 'Gender',
+          sortable: true,
+          order: 1,
+        },
+        favoriteColor: {
+          header: 'Favorite color',
+          templateRef: this.color,
+          sortable: false,
+          order: 2,
+          search: false,
+        },
+        favoriteFood: {
+          header: 'Favorite food',
+          hidden: false,
+          sortable: true,
+          order: 0,
+        },
+        action: {
+          header: 'Action',
+          templateRef: this.actions,
+        },
+      },
+      pagination: {
+        length: this.paginationForm.get('length')!.value || 0,
+      },
     });
   }
 }
