@@ -32,7 +32,7 @@
     }
   },
   "release": {
-    "pkgRoot": "./dist/lib",
+    "pkgRoot": "./dist/core",
     "branches": [
       "+([0-9])?(.{+([0-9]),x}).x",
       "master",
