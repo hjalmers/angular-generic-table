@@ -26,9 +26,9 @@
 </table>
 <ng-template #tableContent>
   <ng-container
-    *ngIf="table$ | async as table"
+    *ngIf="(table$ | async)! as table"
   >
-    <tbody id="agreementList_tableContent" *ngIf="table.data?.length > 0; else noData">
+    <tbody id="agreementList_tableContent" *ngIf="table!.data!.length > 0; else noData">
       <tr *ngFor="let row of table!.data![(currentPage$ | async) || 0]; let i = index" [attr.id]="'tableRow_' + i">
         <ng-container *ngFor="let column of table.config?.columns | keyvalue: columnOrder">
           <td *ngIf="!column.value?.hidden">
@@ -48,7 +48,7 @@
           <ng-container *ngIf="column.value.template === 'badge'">
             <ng-container *ngTemplateOutlet="badgeColumn; context: { agreement: agreement }"></ng-container>
           </ng-container>-->
-            {{ row[column.key] }}
+            <ng-container [ngTemplateOutlet]="(searchBy$ | async) ? highlighted: tableRow" [ngTemplateOutletContext]="{row: row, column: column, search: (searchBy$ | async) }"></ng-container>
           </td>
         </ng-container>
       </tr>
@@ -56,3 +56,9 @@
   </ng-container>
 </ng-template>
 <ng-template #noData></ng-template>
+<ng-template #highlighted let-row="row" let-column="column" let-search="search">
+  <div [innerHTML]="(row[column.key] | highlight: search)"></div>
+</ng-template>
+<ng-template #tableRow let-row="row" let-column="column">
+  {{row[column.key]}}
+</ng-template>
