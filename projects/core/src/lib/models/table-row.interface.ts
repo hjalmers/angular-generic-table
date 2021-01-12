@@ -1,3 +1,3 @@
 export interface TableRow {
-  [key: string]: number | string | boolean;
+  [key: string]: number | string | boolean | any;
 }
