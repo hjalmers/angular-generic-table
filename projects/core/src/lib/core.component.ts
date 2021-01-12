@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { BehaviorSubject, combineLatest, isObservable, Observable, of, ReplaySubject } from 'rxjs';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { BehaviorSubject, combineLatest, EMPTY, isObservable, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { TableConfig } from './models/table-config.interface';
 import { KeyValue } from '@angular/common';
 import { map, shareReplay, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import { TableInfo } from './models/table-info.interface';
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CoreComponent implements OnInit {
+export class CoreComponent {
   @Input()
   set page(value: Observable<number> | number) {
     this._currentPage$.next(value);
@@ -39,11 +39,9 @@ export class CoreComponent implements OnInit {
   constructor() {}
 
   loading$ = of(false);
-
-  sortBy$: BehaviorSubject<any> = new BehaviorSubject({
-    sortBy: 'firstName',
-    sortByOrder: Order.ASC,
-  });
+  sortBy$: Subject<TableSort> = new Subject();
+  // tslint:disable-next-line:variable-name
+  private _sortBy: TableSort | undefined;
 
   // tslint:disable-next-line:variable-name
   private _searchBy$: ReplaySubject<Observable<string> | string> = new ReplaySubject(1);
@@ -66,24 +64,26 @@ export class CoreComponent implements OnInit {
   private _data$: ReplaySubject<Array<TableRow> | Observable<Array<TableRow>>> = new ReplaySubject(1);
   data$: Observable<Array<TableRow>> = this._data$.pipe(
     map((value) => (isObservable(value) ? value : of(value))),
-    switchMap((obs) => combineLatest([obs, this.sortBy$, this.searchBy$])),
+    switchMap((obs) => combineLatest([obs, this.sortBy$.pipe(startWith(EMPTY)), this.searchBy$])),
     withLatestFrom(this.tableConfig$),
     map(([[data, sortBy, searchBy], config]) => {
       return !sortBy
         ? searchBy
           ? search(searchBy, false, data, config)
           : data
-        : (searchBy ? search(searchBy, false, data, config) : data).sort((a, b) =>
-            a[sortBy.sortBy] > b[sortBy.sortBy]
-              ? sortBy.sortByOrder === Order.ASC
+        : (searchBy ? search(searchBy, false, data, config) : data).sort((a, b) => {
+            // TODO: improve logic
+            const typed = sortBy as TableSort;
+            return a[typed.sortBy] > b[typed.sortBy]
+              ? typed.sortByOrder === Order.ASC
                 ? 1
                 : -1
-              : b[sortBy.sortBy] > a[sortBy.sortBy]
-              ? sortBy.sortByOrder === Order.ASC
+              : b[typed.sortBy] > a[typed.sortBy]
+              ? typed.sortByOrder === Order.ASC
                 ? -1
                 : 1
-              : 0
-          );
+              : 0;
+          });
     })
   );
 
@@ -126,18 +126,16 @@ export class CoreComponent implements OnInit {
 
   sort(property: string): void {
     const newSortOrder =
-      this.sortBy$.getValue()?.sortBy !== property ||
-      this.sortBy$.getValue()?.sortByOrder === Order.DESC ||
-      !this.sortBy$.getValue()?.sortByOrder
+      this._sortBy?.sortBy !== property || this._sortBy?.sortByOrder === Order.DESC || !this._sortBy.sortByOrder
         ? Order.ASC
         : Order.DESC;
-    this.sortBy$.next({
+    const newSortBy = {
       sortBy: property,
       sortByOrder: newSortOrder,
-    });
+    };
+    this.sortBy$.next(newSortBy);
+    this._sortBy = newSortBy;
   }
-
-  ngOnInit() {}
 
   columnOrder = (a: KeyValue<string, TableColumn>, b: KeyValue<string, TableColumn>): number => {
     return (a.value.order || 0) - (b.value.order || 0);
