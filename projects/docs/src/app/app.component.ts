@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { FormBuilder } from '@angular/forms';
 import { TableConfig } from '../../../core/src/lib/models/table-config.interface';
+import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -51,7 +52,7 @@ export class AppComponent implements OnInit {
   foods = ['Pizza', 'Pasta', 'Hamburger', 'Pancakes', 'Tacos', 'Lasagna', 'Meatloaf'];
   colors = ['#33d60b', '#dcafff', '#3fc9ff', '#ff1600', '#5238b1', '#fff'];
 
-  tableConfig$: BehaviorSubject<TableConfig | null> = new BehaviorSubject(null);
+  tableConfig$: ReplaySubject<TableConfig> = new ReplaySubject(1);
 
   addData() {
     this.data$.next([...this.data$.getValue(), this.randomRecord()]);
@@ -86,13 +87,16 @@ export class AppComponent implements OnInit {
   };
 
   ngOnInit() {
-    this.paginationForm.get('length')?.valueChanges.subscribe((length) => {
-      length = +length;
-      this.tableConfig$.next({
-        ...this.tableConfig$.getValue(),
-        pagination: { ...this.tableConfig$.getValue().pagination, length },
+    this.paginationForm
+      .get('length')
+      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))
+      .subscribe(([length, config]) => {
+        length = +length;
+        this.tableConfig$.next({
+          ...config,
+          pagination: { ...config.pagination, length },
+        });
       });
-    });
     this.tableConfig$.next({
       columns: {
         firstName: {
