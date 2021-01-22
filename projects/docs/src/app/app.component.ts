@@ -26,6 +26,7 @@ export class AppComponent implements OnInit {
     search: [''],
   });
   search$ = this.paginationForm.get('search')!.valueChanges;
+  loading$ = new BehaviorSubject(true);
   data$: BehaviorSubject<any> = new BehaviorSubject([
     {
       firstName: 'Peter',
@@ -58,6 +59,16 @@ export class AppComponent implements OnInit {
     this.data$.next([...this.data$.getValue(), this.randomRecord()]);
   }
 
+  removeData() {
+    this.data$.next([]);
+  }
+
+  simulateLoad() {
+    this.loading$.next(true);
+    // set loading state to false after 2 seconds
+    setTimeout(() => this.loading$.next(false), 2000);
+  }
+
   clickAction(row: any, column: any, index: number) {
     console.log('clicked row:', row, 'col:', column);
     this.clicked = `clicked row number: ${index}`;
@@ -87,6 +98,7 @@ export class AppComponent implements OnInit {
   };
 
   ngOnInit() {
+    this.simulateLoad();
     this.paginationForm
       .get('length')
       ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))
@@ -120,6 +132,7 @@ export class AppComponent implements OnInit {
           sortable: false,
           order: 2,
           search: false,
+          class: 'custom-class',
         },
         favoriteFood: {
           header: 'Favorite food',

@@ -17,6 +17,9 @@ import { TableInfo } from './models/table-info.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoreComponent {
+  @Input() set loading(value: Observable<boolean> | boolean) {
+    this._loading$.next(value);
+  }
   @Input()
   set page(value: Observable<number> | number) {
     this._currentPage$.next(value);
@@ -36,9 +39,18 @@ export class CoreComponent {
   set data(value: Observable<Array<TableRow>> | Array<TableRow>) {
     this._data$.next(value);
   }
-  constructor() {}
 
-  loading$ = of(false);
+  constructor() {}
+  get loading$(): Observable<boolean> {
+    return this._loading$.pipe(
+      startWith(false),
+      map((value) => (isObservable(value) ? value : of(value))),
+      switchMap((obs) => obs),
+      shareReplay(1)
+    );
+  }
+
+  private _loading$: ReplaySubject<Observable<boolean> | boolean> = new ReplaySubject(1);
   sortBy$: Subject<TableSort> = new Subject();
   // tslint:disable-next-line:variable-name
   private _sortBy: TableSort | undefined;
@@ -122,6 +134,10 @@ export class CoreComponent {
       return +page < 0 ? 0 : +page > lastPage ? lastPage : +page;
     }),
     shareReplay(1)
+  );
+
+  colspan$ = this.tableConfig$.pipe(
+    map((config) => Object.values(config.columns).filter((value) => value.hidden !== true).length)
   );
 
   sort(property: string): void {

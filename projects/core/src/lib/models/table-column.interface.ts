@@ -7,4 +7,5 @@ export interface TableColumn {
   order?: number;
   search?: boolean;
   templateRef?: TemplateRef<any>;
+  class?: string;
 }

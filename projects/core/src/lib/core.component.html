@@ -1,25 +1,27 @@
 <table class="table text-nowrap mb-0" id="agreementList_table">
   <thead>
-    <tr>
-      <ng-container *ngFor="let column of (tableConfig$ | async)!.columns | keyvalue: columnOrder">
+    <tr *ngIf="{
+    config:(tableConfig$ | async)!,
+    loading: loading$ | async
+    } as table">
+      <ng-container *ngFor="let column of table.config.columns | keyvalue: columnOrder">
         <th
           *ngIf="!column.value?.hidden"
           ngClass="{{ column.value?.sortable ? 'sort ' : '' }} {{ sortBy$ | async | sortClass: column.key }} {{
             (column.key | dashCase) + '-column'
-          }}"
-          [class.disabled]="loading$ | async"
-          (click)="!column.value.sortable || sort(column.key)"
+          }} {{column.value.class}}"
+          [class.disabled]="table.loading"
+          (click)="table.loading || !column.value.sortable || sort(column.key)"
         >
           <span>{{ column.value?.header || column.key }}</span>
         </th>
       </ng-container>
     </tr>
   </thead>
-  <tbody *ngIf="false !== false; else tableContent">
+  <tbody *ngIf="loading$ | async; else tableContent">
     <tr>
-      <!-- <td class="p-0" [colSpan]="colspan$ | async">-->
-      <td class="p-0">
-        <div class="skeleton-loader skeleton-loader-table"></div>
+      <td class="p-0" [colSpan]="colspan$ | async">
+        <ng-content select=".table-loading"></ng-content>
       </td>
     </tr>
   </tbody>
@@ -31,23 +33,7 @@
     <tbody id="agreementList_tableContent" *ngIf="table!.data!.length > 0; else noData">
       <tr *ngFor="let row of table!.data![(currentPage$ | async) || 0]; let i = index" [attr.id]="'tableRow_' + i">
         <ng-container *ngFor="let column of table.config?.columns | keyvalue: columnOrder">
-          <td *ngIf="!column.value?.hidden">
-            <!--<ng-container *ngIf="column.value.template === 'actions'">
-            <ng-container
-              *ngTemplateOutlet="actionsColumn; context: { agreement: agreement, index: i }"
-            ></ng-container>
-          </ng-container>
-          <ng-container *ngIf="column.value.template === 'date'">
-            <ng-container
-              *ngTemplateOutlet="dateColumn; context: { agreement: agreement, column: column.key }"
-            ></ng-container>
-          </ng-container>
-          <ng-container *ngIf="column.value.template === 'name'">
-            <ng-container *ngTemplateOutlet="nameColumn; context: { agreement: agreement }"></ng-container>
-          </ng-container>
-          <ng-container *ngIf="column.value.template === 'badge'">
-            <ng-container *ngTemplateOutlet="badgeColumn; context: { agreement: agreement }"></ng-container>
-          </ng-container>-->
+          <td *ngIf="!column.value?.hidden" ngClass="{{(column.key | dashCase) + '-column'}} {{column.value.class}}">
             <ng-container [ngTemplateOutlet]="(searchBy$ | async) && !table.config.columns[column.key].templateRef ? highlighted:
             table.config.columns[column.key].templateRef ? templateRef :
             rawData" [ngTemplateOutletContext]="{row: row, column: column, search: (searchBy$ | async), templateRef: table.config.columns[column.key].templateRef, index: i}"></ng-container></td>
@@ -56,7 +42,15 @@
     </tbody>
   </ng-container>
 </ng-template>
-<ng-template #noData></ng-template>
+<ng-template #noData>
+  <tbody>
+  <tr>
+    <td class="p-0" [colSpan]="colspan$ | async">
+      <ng-content select=".table-no-data"></ng-content>
+    </td>
+  </tr>
+  </tbody>
+</ng-template>
 <ng-template #highlighted let-row="row" let-column="column" let-search="search">
   <div [innerHTML]="(row[column.key] | highlight: search)"></div>
 </ng-template>
