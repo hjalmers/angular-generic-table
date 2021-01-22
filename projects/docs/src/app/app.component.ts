@@ -120,6 +120,7 @@ export class AppComponent implements OnInit {
           sortable: false,
           order: 2,
           search: false,
+          class: 'custom-class',
         },
         favoriteFood: {
           header: 'Favorite food',
