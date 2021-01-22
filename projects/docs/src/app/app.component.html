@@ -1,7 +1,17 @@
 <div class="card mt-3">
   <h4 class="card-header">Table</h4>
   <div class="card-body">
-    <button class="btn btn-primary" (click)="addData()">Add random data</button>
+    <div class="form-row mb-3">
+      <div class="col col-sm-auto">
+        <button class="btn btn-primary w-100" (click)="addData()">Add random data</button>
+      </div>
+      <div class="col col-sm-auto">
+        <button class="btn btn-danger w-100" (click)="removeData()">Remove data</button>
+      </div>
+      <div class="col col-sm-auto">
+        <button class="btn btn-secondary w-100" (click)="simulateLoad()">Load</button>
+      </div>
+    </div>
     <form [formGroup]="paginationForm">
       <div class="form-row">
         <div class="form-group col-12 col-sm-auto">
@@ -14,7 +24,12 @@
         </div>
       </div>
     </form>
-    <angular-generic-table [data]="data$" [config]="tableConfig$" [page]="currentPage$" [search]="search$"></angular-generic-table>
+    <angular-generic-table [data]="data$" [config]="tableConfig$" [page]="currentPage$" [search]="search$" [loading]="loading$">
+      <div class="table-loading skeleton-loader skeleton-loader-table"></div>
+      <div class="table-no-data alert alert-info mt-3">
+        Table is empty
+      </div>
+    </angular-generic-table>
     <div class="row justify-content-center align-items-center mt-3">
       <div class="col-auto">
         <button class="btn btn-primary" (click)="prev()">Prev</button>
