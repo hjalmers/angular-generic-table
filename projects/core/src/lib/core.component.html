@@ -32,22 +32,6 @@
       <tr *ngFor="let row of table!.data![(currentPage$ | async) || 0]; let i = index" [attr.id]="'tableRow_' + i">
         <ng-container *ngFor="let column of table.config?.columns | keyvalue: columnOrder">
           <td *ngIf="!column.value?.hidden" ngClass="{{(column.key | dashCase) + '-column'}} {{column.value.class}}">
-            <!--<ng-container *ngIf="column.value.template === 'actions'">
-            <ng-container
-              *ngTemplateOutlet="actionsColumn; context: { agreement: agreement, index: i }"
-            ></ng-container>
-          </ng-container>
-          <ng-container *ngIf="column.value.template === 'date'">
-            <ng-container
-              *ngTemplateOutlet="dateColumn; context: { agreement: agreement, column: column.key }"
-            ></ng-container>
-          </ng-container>
-          <ng-container *ngIf="column.value.template === 'name'">
-            <ng-container *ngTemplateOutlet="nameColumn; context: { agreement: agreement }"></ng-container>
-          </ng-container>
-          <ng-container *ngIf="column.value.template === 'badge'">
-            <ng-container *ngTemplateOutlet="badgeColumn; context: { agreement: agreement }"></ng-container>
-          </ng-container>-->
             <ng-container [ngTemplateOutlet]="(searchBy$ | async) && !table.config.columns[column.key].templateRef ? highlighted:
             table.config.columns[column.key].templateRef ? templateRef :
             rawData" [ngTemplateOutletContext]="{row: row, column: column, search: (searchBy$ | async), templateRef: table.config.columns[column.key].templateRef, index: i}"></ng-container></td>
