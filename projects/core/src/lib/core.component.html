@@ -31,7 +31,7 @@
     <tbody id="agreementList_tableContent" *ngIf="table!.data!.length > 0; else noData">
       <tr *ngFor="let row of table!.data![(currentPage$ | async) || 0]; let i = index" [attr.id]="'tableRow_' + i">
         <ng-container *ngFor="let column of table.config?.columns | keyvalue: columnOrder">
-          <td *ngIf="!column.value?.hidden">
+          <td *ngIf="!column.value?.hidden" ngClass="{{(column.key | dashCase) + '-column'}}">
             <!--<ng-container *ngIf="column.value.template === 'actions'">
             <ng-container
               *ngTemplateOutlet="actionsColumn; context: { agreement: agreement, index: i }"
