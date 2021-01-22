@@ -42,7 +42,15 @@
     </tbody>
   </ng-container>
 </ng-template>
-<ng-template #noData></ng-template>
+<ng-template #noData>
+  <tbody>
+  <tr>
+    <td class="p-0" [colSpan]="colspan$ | async">
+      <ng-content select=".table-no-data"></ng-content>
+    </td>
+  </tr>
+  </tbody>
+</ng-template>
 <ng-template #highlighted let-row="row" let-column="column" let-search="search">
   <div [innerHTML]="(row[column.key] | highlight: search)"></div>
 </ng-template>
