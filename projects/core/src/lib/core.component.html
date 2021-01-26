@@ -34,6 +34,7 @@
       <tr *ngFor="let row of table!.data![(currentPage$ | async) || 0]; let i = index" [attr.id]="'tableRow_' + i">
         <ng-container *ngFor="let column of table.config?.columns | keyvalue: columnOrder">
           <td *ngIf="!column.value?.hidden" ngClass="{{(column.key | dashCase) + '-column'}} {{column.value.class}}">
+            <span *ngIf="column.value.mobileHeader" class="mobile-header">{{ column.value?.mobileHeader === true ? column.value?.header : column.value?.mobileHeader || column.key }}</span>
             <ng-container [ngTemplateOutlet]="(searchBy$ | async) && !table.config.columns[column.key].templateRef ? highlighted:
             table.config.columns[column.key].templateRef ? templateRef :
             rawData" [ngTemplateOutletContext]="{row: row, column: column, search: (searchBy$ | async), templateRef: table.config.columns[column.key].templateRef, index: i}"></ng-container></td>
