@@ -1,4 +1,4 @@
-<table class="table text-nowrap mb-0" id="agreementList_table">
+<table class="table" id="agreementList_table" [ngClass]="(tableConfig$ | async).class">
   <thead>
     <tr *ngIf="{
     config:(tableConfig$ | async)!,
