@@ -2,3 +2,50 @@
 .gt-highlight-search {
   background: yellow;
 }
+table.table-mobile .mobile-header {
+  display: none;
+}
+@media (max-width: 576px) {
+  table.table-mobile {
+    table-layout: fixed;
+    border-bottom: none;
+    thead {
+      position: sticky;
+      top: 0;
+      display: block;
+      @media (hover: none) and (pointer: coarse) {
+        display: table-header-group;
+      }
+      background: #fff;
+      tr {
+        display: flex;
+        overflow: auto;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+    }
+    tbody {
+      tr {
+        display: flex;
+        flex-direction: column;
+        border-bottom: solid 1px #dedede;
+      }
+      td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: none !important;
+        & > .mobile-header {
+          font-weight: 500;
+          display: block;
+        }
+        .btn-sm {
+          width: 100%;
+          font-size: 1rem;
+          padding: 0.5625rem 1rem;
+        }
+      }
+    }
+  }
+}

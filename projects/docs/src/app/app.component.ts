@@ -3,6 +3,8 @@ import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { FormBuilder } from '@angular/forms';
 import { TableConfig } from '../../../core/src/lib/models/table-config.interface';
 import { withLatestFrom } from 'rxjs/operators';
+import { TableRow } from '../../../core/src/lib/models/table-row.interface';
+import { TableColumn } from '../../../core/src/lib/models/table-column.interface';
 
 @Component({
   selector: 'app-root',
@@ -63,18 +65,19 @@ export class AppComponent implements OnInit {
     this.data$.next([]);
   }
 
-  simulateLoad() {
+  simulateLoad(): void {
     this.loading$.next(true);
     // set loading state to false after 2 seconds
     setTimeout(() => this.loading$.next(false), 2000);
   }
 
-  clickAction(row: any, column: any, index: number) {
+  clickAction(row: TableRow, column: { key: string; value: TableColumn }, index: number): void {
     console.log('clicked row:', row, 'col:', column);
+    alert(`clicked row index: ${index}, col: ${column.key}`);
     this.clicked = `clicked row number: ${index}`;
   }
 
-  randomRecord() {
+  randomRecord(): void {
     const random = Math.floor(Math.random() * 2);
     const newRecord = {
       firstName: random
@@ -110,24 +113,29 @@ export class AppComponent implements OnInit {
         });
       });
     this.tableConfig$.next({
+      class: 'table-mobile text-nowrap mb-0',
       columns: {
         firstName: {
           header: 'First name',
+          mobileHeader: true,
           sortable: true,
           order: 0,
         },
         lastName: {
           header: 'Last name',
+          mobileHeader: true,
           hidden: false,
           sortable: true,
         },
         gender: {
           header: 'Gender',
+          mobileHeader: 'Sex',
           sortable: true,
           order: 1,
         },
         favoriteColor: {
           header: 'Favorite color',
+          mobileHeader: true,
           templateRef: this.color,
           sortable: false,
           order: 2,
@@ -135,14 +143,17 @@ export class AppComponent implements OnInit {
           class: 'custom-class',
         },
         favoriteFood: {
+          mobileHeader: true,
           header: 'Favorite food',
           hidden: false,
           sortable: true,
           order: 0,
         },
         action: {
+          mobileHeader: false,
           header: 'Action',
           templateRef: this.actions,
+          order: 6,
         },
       },
       pagination: {

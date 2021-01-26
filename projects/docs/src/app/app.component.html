@@ -24,13 +24,15 @@
         </div>
       </div>
     </form>
+    <div class="mx-n3 mx-sm-0">
     <angular-generic-table [data]="data$" [config]="tableConfig$" [page]="currentPage$" [search]="search$" [loading]="loading$">
       <div class="table-loading skeleton-loader skeleton-loader-table"></div>
       <div class="table-no-data alert alert-info mt-3">
         Table is empty
       </div>
     </angular-generic-table>
-    <div class="row justify-content-center align-items-center mt-3">
+    </div>
+    <div class="row justify-content-between justify-content-sm-center align-items-center mt-3">
       <div class="col-auto">
         <button class="btn btn-primary" (click)="prev()">Prev</button>
       </div>
@@ -48,7 +50,7 @@
   </div>
 </div>
 <ng-template #actions let-row="row" let-col="col" let-index="index">
-  <button class="btn btn-outline-primary btn-sm my-n3" (click)="clickAction(row, col, index)">Click me!</button>
+  <button class="btn btn-outline-primary btn-sm my-sm-n3" (click)="clickAction(row, col, index)">Click me!</button>
 </ng-template>
 <ng-template #color let-row="row" let-col="col">
   <div [style.background]="row[col.key]" style="width: 1.5rem; height: 1.5rem; border-radius: 50%"></div>
