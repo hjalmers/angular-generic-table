@@ -57,11 +57,11 @@ export class AppComponent implements OnInit {
 
   tableConfig$: ReplaySubject<TableConfig> = new ReplaySubject(1);
 
-  addData() {
+  addData(): void {
     this.data$.next([...this.data$.getValue(), this.randomRecord()]);
   }
 
-  removeData() {
+  removeData(): void {
     this.data$.next([]);
   }
 
@@ -77,7 +77,7 @@ export class AppComponent implements OnInit {
     this.clicked = `clicked row number: ${index}`;
   }
 
-  randomRecord(): void {
+  randomRecord(): TableRow {
     const random = Math.floor(Math.random() * 2);
     const newRecord = {
       firstName: random
@@ -100,7 +100,7 @@ export class AppComponent implements OnInit {
     this.currentPage = this._currentPage$.value - 1;
   };
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.simulateLoad();
     this.paginationForm
       .get('length')
