@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import { SortClassPipe } from './pipes/sort-class.pipe';
 import { DashCasePipe } from './pipes/dash-case.pipe';
 import { HighlightPipe } from './pipes/highlight.pipe';
+import { CapitalCasePipe } from './pipes/capital-case.pipe';
 
 @NgModule({
-  declarations: [CoreComponent, SortClassPipe, DashCasePipe, HighlightPipe],
+  declarations: [CoreComponent, SortClassPipe, DashCasePipe, HighlightPipe, CapitalCasePipe, CapitalCasePipe],
   imports: [CommonModule],
-  exports: [CoreComponent]
+  exports: [CoreComponent],
 })
 export class GenericTableCoreModule {}

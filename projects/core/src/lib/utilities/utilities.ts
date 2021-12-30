@@ -2,7 +2,14 @@ import { TableRow } from '../models/table-row.interface';
 import { TableConfig } from '../models/table-config.interface';
 
 export let dashed: (s: string) => string;
-dashed = (s: string) => s.replace(/[A-Z]/g, m => '-' + m.toLowerCase());
+dashed = (s: string) => s.replace(/[A-Z]/g, (m) => '-' + m.toLowerCase());
+
+export let capitalize: (s: string) => string;
+capitalize = (s: string) =>
+  s
+    .replace(/([A-Z])/g, (match) => ` ${match}`)
+    .replace(/^./, (match) => match.toUpperCase())
+    .trim();
 
 export let chunk: (array: Array<any>, chunkSize: number) => Array<Array<TableRow>>;
 chunk = (array, chunkSize) => {

@@ -13,7 +13,7 @@
           [class.disabled]="table.loading"
           (click)="table.loading || !column.value.sortable || sort(column.key)"
         >
-          <span>{{ column.value?.header || column.key }}</span>
+          <span>{{ column.value?.header || column.key | capitalCase }}</span>
         </th>
       </ng-container>
     </tr>
