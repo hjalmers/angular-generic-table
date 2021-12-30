@@ -1,17 +1,17 @@
-<table class="table" id="agreementList_table" [ngClass]="(tableConfig$ | async)!.class">
+<table id="agreementList_table" [ngClass]="(tableConfig$ | async)?.class || 'table'">
   <thead>
     <tr *ngIf="{
     config:(tableConfig$ | async)!,
     loading: loading$ | async
     } as table">
-      <ng-container *ngFor="let column of table.config.columns | keyvalue: columnOrder">
+      <ng-container *ngFor="let column of table?.config?.columns | keyvalue: columnOrder">
         <th
           *ngIf="!column.value?.hidden"
           ngClass="{{ column.value?.sortable ? 'sort ' : '' }} {{ sortBy$ | async | sortClass: column.key }} {{
             (column.key | dashCase) + '-column'
           }} {{column.value.class}}"
           [class.disabled]="table.loading"
-          (click)="table.loading || !column.value.sortable || sort(column.key)"
+          (click)="table.loading || !column.value?.sortable || sort(column.key)"
         >
           <span>{{ column.value?.header || column.key | capitalCase }}</span>
         </th>
@@ -33,7 +33,7 @@
     <tbody id="agreementList_tableContent" *ngIf="table!.data!.length > 0; else noData">
       <tr *ngFor="let row of table!.data![(currentPage$ | async) || 0]; let i = index" [attr.id]="'tableRow_' + i">
         <ng-container *ngFor="let column of table.config?.columns | keyvalue: columnOrder">
-          <td *ngIf="!column.value?.hidden" ngClass="{{(column.key | dashCase) + '-column'}} {{column.value.class}}">
+          <td *ngIf="!column.value?.hidden" ngClass="{{(column.key | dashCase) + '-column'}} {{column.value?.class}}">
             <span *ngIf="column.value.mobileHeader" class="mobile-header">{{ column.value?.mobileHeader === true ? column.value?.header : column.value?.mobileHeader || column.key }}</span>
             <ng-container [ngTemplateOutlet]="(searchBy$ | async) && !table.config.columns[column.key].templateRef ? highlighted:
             table.config.columns[column.key].templateRef ? templateRef :

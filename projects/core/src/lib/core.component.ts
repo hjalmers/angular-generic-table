@@ -26,7 +26,7 @@ export class CoreComponent {
   }
 
   @Input()
-  set search(value: Observable<string> | string) {
+  set search(value: Observable<string> | string | null) {
     this._searchBy$.next(value);
   }
 
@@ -56,8 +56,8 @@ export class CoreComponent {
   private _sortBy: TableSort | undefined;
 
   // tslint:disable-next-line:variable-name
-  private _searchBy$: ReplaySubject<Observable<string> | string> = new ReplaySubject(1);
-  searchBy$: Observable<string> = this._searchBy$.pipe(
+  private _searchBy$: ReplaySubject<Observable<string> | string | null> = new ReplaySubject(1);
+  searchBy$: Observable<string | null> = this._searchBy$.pipe(
     startWith(''),
     map((value) => (isObservable(value) ? value : of(value))),
     switchMap((obs) => obs),
@@ -111,11 +111,11 @@ export class CoreComponent {
       }
       // return record set
       return {
-        data: chunk(sorted, +config.pagination.length),
+        data: chunk(sorted, +(config.pagination.length || 0)),
         config,
         info: {
           records: sorted.length,
-          pageTotal: Math.ceil(sorted.length / +config.pagination.length),
+          pageTotal: Math.ceil(sorted.length / +(config.pagination.length || 0)),
         },
       };
     })
@@ -129,7 +129,7 @@ export class CoreComponent {
     withLatestFrom(this.table$),
     map(([page, table]: any) => {
       // determine last page
-      const lastPage = Math.ceil(table.info.records / table.config.pagination.length) - 1;
+      const lastPage = Math.ceil(table.info.records / (table.config?.pagination?.length || 0)) - 1;
       // determine max/min position
       return +page < 0 ? 0 : +page > lastPage ? lastPage : +page;
     }),

@@ -28,18 +28,23 @@ chunk = (array, chunkSize) => {
 
 export let search: (text: string, caseSensitive: boolean, data: Array<TableRow>, config: TableConfig) => TableRow[];
 search = (text: string, caseSensitive: boolean, data: Array<TableRow>, config: TableConfig) => {
-  const searchColumns = Object.keys(config.columns).filter(
-    key => !config.columns[key].hidden && config.columns[key].search !== false
-  );
-  return data.filter(
-    row =>
-      Object.entries(row)
-        .filter(([key, value]) => searchColumns.indexOf(key) !== -1)
-        .reduce(
-          (prev, [key, value]): string =>
-            prev + (prev === '' ? '' : ' & ') + (caseSensitive ? value + '' : (value + '').toLowerCase()),
-          ''
-        )
-        .indexOf(text) !== -1
-  );
+  if (config.columns) {
+    const searchColumns = Object.keys(config.columns).filter(
+      // @ts-ignore
+      (key) => !config.columns[key].hidden && config.columns[key].search !== false
+    );
+    return data.filter(
+      (row) =>
+        Object.entries(row)
+          .filter(([key, value]) => searchColumns.indexOf(key) !== -1)
+          .reduce(
+            (prev, [key, value]): string =>
+              prev + (prev === '' ? '' : ' & ') + (caseSensitive ? value + '' : (value + '').toLowerCase()),
+            ''
+          )
+          .indexOf(text) !== -1
+    );
+  } else {
+    return data;
+  }
 };

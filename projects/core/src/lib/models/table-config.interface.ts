@@ -2,11 +2,11 @@ import { TableColumn } from './table-column.interface';
 
 export interface TableConfig {
   hidden?: boolean;
-  class: string;
+  class?: string;
   columns: {
     [key: string]: TableColumn;
   };
-  pagination: {
-    length: number;
+  pagination?: {
+    length?: number;
   };
 }
