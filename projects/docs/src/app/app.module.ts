@@ -3,14 +3,17 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { GenericTableCoreModule } from '../../../core/src/lib/core.module';
+import { GenericTableCoreModule } from '@angular-generic-table/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ButtonComponent } from './components/button/button.component';
+import { AdvancedComponent } from './examples/advanced/advanced.component';
+import { SimpleComponent } from './examples/simple/simple.component';
+import { TabsComponent } from './components/tabs/tabs.component';
+import { CustomTemplatesComponent } from './examples/custom-templates/custom-templates.component';
 
 @NgModule({
-  declarations: [AppComponent, ButtonComponent],
+  declarations: [AppComponent, AdvancedComponent, SimpleComponent, TabsComponent, CustomTemplatesComponent],
   imports: [BrowserModule, AppRoutingModule, GenericTableCoreModule, ReactiveFormsModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,17 +1,17 @@
-import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { FormBuilder } from '@angular/forms';
 import { TableConfig, TableRow, TableColumn } from '@angular-generic-table/core';
 import { withLatestFrom } from 'rxjs/operators';
 import { Story } from '@storybook/angular/types-6-0';
+import { ADVANCED_DOCS } from './advanced.snippets';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'docs-advanced',
+  templateUrl: './advanced.component.html',
+  styles: [],
 })
-export class AppComponent implements OnInit {
+export class AdvancedComponent implements OnInit {
   get currentPage$(): Observable<number> {
     return this._currentPage$.asObservable();
   }
@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     length: [10],
     search: [''],
   });
-  search$ = this.paginationForm.get('search')!.valueChanges;
+  search$ = this.paginationForm.get('search')?.valueChanges as Observable<string>;
   loading$ = new BehaviorSubject(true);
   data$: BehaviorSubject<any> = new BehaviorSubject([
     {
@@ -55,6 +55,7 @@ export class AppComponent implements OnInit {
   colors = ['#33d60b', '#dcafff', '#3fc9ff', '#ff1600', '#5238b1', '#fff'];
 
   tableConfig$: ReplaySubject<TableConfig> = new ReplaySubject(1);
+  SNIPPETS = ADVANCED_DOCS;
 
   addData(): void {
     this.data$.next([...this.data$.getValue(), this.randomRecord()]);
@@ -161,7 +162,7 @@ export class AppComponent implements OnInit {
   }
 }
 
-export const Advanced: Story<AppComponent> = (args: AppComponent) => ({
+export const Advanced: Story<AdvancedComponent> = (args: AdvancedComponent) => ({
   props: args,
-  component: AppComponent,
+  component: AdvancedComponent,
 });

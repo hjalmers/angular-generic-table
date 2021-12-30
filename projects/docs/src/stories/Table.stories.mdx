@@ -1,0 +1,103 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs';
+
+import {moduleMetadata} from "@storybook/angular";
+import {BrowserModule} from "@angular/platform-browser";
+import {CommonModule} from "@angular/common";
+import {GenericTableCoreModule} from "../../../core/src/lib/core.module";
+import {Simple, SimpleComponent} from "../app/examples/simple/simple.component";
+import {Advanced, AdvancedComponent} from "../app/examples/advanced/advanced.component";
+import {ReactiveFormsModule} from "@angular/forms";
+import {TabsComponent} from "../app/components/tabs/tabs.component";
+import {CustomTemplates, CustomTemplatesComponent} from "../app/examples/custom-templates/custom-templates.component";
+
+<Meta title="Examples" decorators={[
+  moduleMetadata({
+    declarations: [CustomTemplatesComponent, SimpleComponent, AdvancedComponent, TabsComponent],
+    imports: [BrowserModule, CommonModule, GenericTableCoreModule, ReactiveFormsModule],
+  })]}/>
+
+# Examples
+
+## Basic table
+
+Pass `data` and `config` to table to generate a table. The example below uses the minimal configuration needed to generate a table with static data.
+
+<Story name="Basic table"
+       args={{
+         data: [
+           {
+             firstName: 'Mark',
+             lastName: 'Parker',
+             gender: 'male',
+             favoriteFood: 'Pasta',
+           },
+           {
+             firstName: 'Mary Jane',
+             lastName: 'Watson',
+             gender: 'female',
+             favoriteFood: 'Pizza',
+           },
+         ]
+       }}>
+  {Simple.bind({})}
+</Story>
+
+## Custom templates
+
+Define custom templates and assign them to different columns using the `templateRef` property when declaring `columns` in `config`.
+
+<Story name="Custom templates"
+       args={{
+         data: [
+           {
+             firstName: 'Peter',
+             lastName: 'Parker',
+             gender: 'male',
+             favoriteColor: '#26BFAF',
+             favoriteFood: 'Pasta',
+           },
+           {
+             firstName: 'Mary Jane',
+             lastName: 'Watson',
+             gender: 'female',
+             favoriteColor: '#0f0',
+             favoriteFood: 'Pizza',
+           },
+         ]
+       }}>
+  {CustomTemplates.bind({})}
+</Story>
+
+## Advanced example
+
+Example showcasing:
+* Row sort
+* Loading state
+* Empty state
+* Global search
+* Mobile table layout with sticky header (resize viewport to < 576px to view example)
+* Pagination
+* Add/remove data
+* Custom templates
+
+<Story name="Advanced"
+       args={{
+         data: [
+           {
+             firstName: 'Peter',
+             lastName: 'Parker',
+             gender: 'male',
+             favoriteColor: '#26BFAF',
+             favoriteFood: 'Pasta',
+           },
+           {
+             firstName: 'Mary Jane',
+             lastName: 'Watson',
+             gender: 'female',
+             favoriteColor: '#0f0',
+             favoriteFood: 'Pizza',
+           },
+         ]
+       }}>
+  {Advanced.bind({})}
+</Story>

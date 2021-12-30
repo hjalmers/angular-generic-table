@@ -1,17 +1,74 @@
-import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+export const ADVANCED_DOCS = [
+  {
+    name: 'advanced.component.html',
+    code: `<div class="form-row mb-3">
+  <div class="col col-sm-auto">
+    <button class="btn btn-primary w-100" (click)="addData()">Add random data</button>
+  </div>
+  <div class="col col-sm-auto">
+    <button class="btn btn-danger w-100" (click)="removeData()">Remove data</button>
+  </div>
+  <div class="col col-sm-auto">
+    <button class="btn btn-secondary w-100" (click)="simulateLoad()">Load</button>
+  </div>
+</div>
+<form [formGroup]="paginationForm">
+  <div class="form-row">
+    <div class="form-group col-12 col-sm-auto">
+      <label for="length_input">Length</label>
+      <input id="length_input" formControlName="length" type="number" class="form-control">
+    </div>
+    <div class="form-group col-12 col-sm-auto">
+      <label for="search_input">Search</label>
+      <input id="search_input" formControlName="search" type="text" class="form-control">
+    </div>
+  </div>
+</form>
+<div class="mx-n3 mx-sm-0">
+  <angular-generic-table [data]="data$" [config]="tableConfig$" [page]="currentPage$" [search]="search$" [loading]="loading$">
+    <div class="table-loading skeleton-loader skeleton-loader-table"></div>
+    <div class="table-no-data alert alert-info mt-3">
+      Table is empty
+    </div>
+  </angular-generic-table>
+</div>
+<div class="row justify-content-between justify-content-sm-center align-items-center mt-3">
+  <div class="col-auto">
+    <button class="btn btn-primary" (click)="prev()">Prev</button>
+  </div>
+  <div class="col-auto">
+    <button class="btn btn-primary" (click)="next()">Next</button>
+  </div>
+  <div class="col-auto">Current page: {{currentPage$ | async}}</div>
+  <div class="col-auto">
+    Records: {{(data$ | async).length}}
+  </div>
+  <div class="col-auto">
+    {{clicked}}
+  </div>
+</div>
+<ng-template #actions let-row="row" let-col="col" let-index="index">
+  <button class="btn btn-outline-primary btn-sm my-sm-n3" (click)="clickAction(row, col, index)">Click me!</button>
+</ng-template>
+<ng-template #color let-row="row" let-col="col">
+  <div [style.background]="row[col.key]" style="width: 1.5rem; height: 1.5rem; border-radius: 50%"></div>
+</ng-template>`,
+    language: 'xml',
+  },
+  {
+    name: 'advanced.component.ts',
+    code: `import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { FormBuilder } from '@angular/forms';
-import { TableConfig, TableRow, TableColumn } from '@angular-generic-table/core';
+import { TableColumn, TableConfig, TableRow } from '@angular-generic-table/core';
 import { withLatestFrom } from 'rxjs/operators';
-import { Story } from '@storybook/angular/types-6-0';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'docs-advanced',
+  templateUrl: './advanced.component.html',
+  styles: [],
 })
-export class AppComponent implements OnInit {
+export class AdvancedComponent implements OnInit {
   get currentPage$(): Observable<number> {
     return this._currentPage$.asObservable();
   }
@@ -26,7 +83,7 @@ export class AppComponent implements OnInit {
     length: [10],
     search: [''],
   });
-  search$ = this.paginationForm.get('search')!.valueChanges;
+  search$ = this.paginationForm.get('search')?.valueChanges as Observable<string>;
   loading$ = new BehaviorSubject(true);
   data$: BehaviorSubject<any> = new BehaviorSubject([
     {
@@ -72,7 +129,7 @@ export class AppComponent implements OnInit {
 
   clickAction(row: TableRow, column: { key: string; value: TableColumn }, index: number): void {
     console.log('clicked row:', row, 'col:', column);
-    this.clicked = `clicked row number: ${index}`;
+    this.clicked = \`clicked row number: \${index}\`;
   }
 
   randomRecord(): TableRow {
@@ -159,9 +216,23 @@ export class AppComponent implements OnInit {
       },
     });
   }
-}
+}`,
+    language: 'typescript',
+  },
+  {
+    name: 'app.module.ts',
+    code: `import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 
-export const Advanced: Story<AppComponent> = (args: AppComponent) => ({
-  props: args,
-  component: AppComponent,
-});
+import { CustomTemplatesComponent } from './custom-templates-table.component';
+import { GenericTableCoreModule } from '@angular-generic-table/core';
+
+@NgModule({
+  declarations: [CustomTemplatesComponent],
+  imports: [BrowserModule, GenericTableCoreModule],
+  bootstrap: [CustomTemplatesComponent]
+})
+export class AppModule {}`,
+    language: 'typescript',
+  },
+];
