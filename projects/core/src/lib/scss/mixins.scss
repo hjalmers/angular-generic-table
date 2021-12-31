@@ -56,3 +56,24 @@
     }
   }
 }
+@mixin add-pagination-style() {
+  nav.gt-pagination {
+    display: flex;
+    justify-content: tokens.$pagination-justify-content;
+    ul {
+      display: inline-flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      li {
+        &.ellipsis::after {
+          content: tokens.$pagination-ellipsis-content;
+          display: inline-flex;
+        }
+        &.active button {
+          color: tokens.$pagination-active-color;
+        }
+      }
+    }
+  }
+}

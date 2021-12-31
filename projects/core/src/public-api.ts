@@ -10,3 +10,4 @@ export * from './lib/models/table-column.interface';
 export * from './lib/models/table-info.interface';
 export * from './lib/models/table-row.interface';
 export * from './lib/models/table-sort.interface';
+export * from './lib/models/table-meta.interface';

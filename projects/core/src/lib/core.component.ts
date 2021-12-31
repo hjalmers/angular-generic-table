@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { BehaviorSubject, combineLatest, EMPTY, isObservable, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { TableConfig } from './models/table-config.interface';
 import { KeyValue } from '@angular/common';
@@ -8,7 +8,7 @@ import { Order } from './enums/order.enum';
 import { chunk, search } from './utilities/utilities';
 import { TableRow } from './models/table-row.interface';
 import { TableSort } from './models/table-sort.interface';
-import { TableInfo } from './models/table-info.interface';
+import { TableMeta } from './models/table-meta.interface';
 
 @Component({
   selector: 'angular-generic-table',
@@ -21,7 +21,7 @@ export class CoreComponent {
     this._loading$.next(value);
   }
   @Input()
-  set page(value: Observable<number> | number) {
+  set page(value: number) {
     this._currentPage$.next(value);
   }
 
@@ -40,7 +40,6 @@ export class CoreComponent {
     this._data$.next(value);
   }
 
-  constructor() {}
   get loading$(): Observable<boolean> {
     return this._loading$.pipe(
       startWith(false),
@@ -99,10 +98,7 @@ export class CoreComponent {
     })
   );
 
-  table$: Observable<{ data: Array<Array<TableRow>>; config: TableConfig; info: TableInfo }> = combineLatest([
-    this.data$,
-    this.tableConfig$,
-  ]).pipe(
+  table$: Observable<TableMeta> = combineLatest([this.data$, this.tableConfig$]).pipe(
     map(([sorted, config]) => {
       // if pagination is disabled...
       if (!config.pagination || config.pagination.length === 0) {
@@ -121,15 +117,11 @@ export class CoreComponent {
     })
   );
 
-  // tslint:disable-next-line:variable-name
-  private _currentPage$: BehaviorSubject<any> = new BehaviorSubject(0);
-  currentPage$ = this._currentPage$.pipe(
-    map((value) => (isObservable(value) ? (value as Observable<number>) : (of(value) as Observable<number>))),
-    switchMap((obs) => obs),
-    withLatestFrom(this.table$),
+  private _currentPage$: BehaviorSubject<number> = new BehaviorSubject(0);
+  currentPage$ = combineLatest([this._currentPage$, this.table$]).pipe(
     map(([page, table]: any) => {
       // determine last page
-      const lastPage = Math.ceil(table.info.records / (table.config?.pagination?.length || 0)) - 1;
+      const lastPage = Math.ceil(table.info.records / (table.config?.pagination?.length || table.info.records)) - 1;
       // determine max/min position
       return +page < 0 ? 0 : +page > lastPage ? lastPage : +page;
     }),
