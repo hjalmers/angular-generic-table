@@ -25,21 +25,23 @@ export const ADVANCED_DOCS = [
   </div>
 </form>
 <div class="mx-n3 mx-sm-0">
-  <angular-generic-table [data]="data$" [config]="tableConfig$" [page]="currentPage$" [search]="search$" [loading]="loading$">
+  <angular-generic-table [data]="data$" [config]="tableConfig$" [page]="(currentPage$ | async)!" [search]="search$" [loading]="loading$" #table>
     <div class="table-loading skeleton-loader skeleton-loader-table"></div>
     <div class="table-no-data alert alert-info mt-3">
       Table is empty
     </div>
   </angular-generic-table>
 </div>
-<div class="row justify-content-between justify-content-sm-center align-items-center mt-3">
+<div class="row justify-content-between justify-content-sm-center align-items-center mt-3" *ngIf="{current: (currentPage$ | async) || 0,total: (table.table$ | async)?.info?.pageTotal || 1
+} as pagination">
   <div class="col-auto">
-    <button class="btn btn-primary" (click)="prev()">Prev</button>
+    <button class="btn btn-primary" (click)="prev()" [disabled]="pagination.current === 0">Prev</button>
   </div>
   <div class="col-auto">
-    <button class="btn btn-primary" (click)="next()">Next</button>
+    <button class="btn btn-primary" (click)="next()" [disabled]="pagination.total -1 === pagination.current">Next</button>
   </div>
-  <div class="col-auto">Current page: {{currentPage$ | async}}</div>
+  <div class="col-auto">Current page: {{pagination.current +1}}</div>
+  <div class="col-auto">Total pages: {{pagination.total}}</div>
   <div class="col-auto">
     Records: {{(data$ | async).length}}
   </div>
@@ -223,14 +225,15 @@ export class AdvancedComponent implements OnInit {
     name: 'app.module.ts',
     code: `import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 
-import { CustomTemplatesComponent } from './custom-templates-table.component';
+import { AdvancedComponent } from './advanced.component';
 import { GenericTableCoreModule } from '@angular-generic-table/core';
 
 @NgModule({
-  declarations: [CustomTemplatesComponent],
-  imports: [BrowserModule, GenericTableCoreModule],
-  bootstrap: [CustomTemplatesComponent]
+  declarations: [AdvancedComponent],
+  imports: [BrowserModule, ReactiveFormsModule, GenericTableCoreModule],
+  bootstrap: [AdvancedComponent]
 })
 export class AppModule {}`,
     language: 'typescript',
