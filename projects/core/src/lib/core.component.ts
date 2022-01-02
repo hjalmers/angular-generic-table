@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { BehaviorSubject, combineLatest, EMPTY, isObservable, Observable, of, ReplaySubject, Subject } from 'rxjs';
 import { TableConfig } from './models/table-config.interface';
 import { KeyValue } from '@angular/common';

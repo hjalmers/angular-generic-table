@@ -5,9 +5,10 @@ import { SortClassPipe } from './pipes/sort-class.pipe';
 import { DashCasePipe } from './pipes/dash-case.pipe';
 import { HighlightPipe } from './pipes/highlight.pipe';
 import { CapitalCasePipe } from './pipes/capital-case.pipe';
+import { DynamicPipe } from './pipes/dynamic.pipe';
 
 @NgModule({
-  declarations: [CoreComponent, SortClassPipe, DashCasePipe, HighlightPipe, CapitalCasePipe, CapitalCasePipe],
+  declarations: [CoreComponent, SortClassPipe, DashCasePipe, HighlightPipe, CapitalCasePipe, CapitalCasePipe, DynamicPipe],
   imports: [CommonModule],
   exports: [CoreComponent],
 })

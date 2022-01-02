@@ -36,8 +36,8 @@
           <td *ngIf="!column.value?.hidden" ngClass="{{(column.key | dashCase) + '-column'}} {{column.value?.class}}">
             <span *ngIf="column.value.mobileHeader" class="mobile-header">{{ column.value?.mobileHeader === true ? column.value?.header : column.value?.mobileHeader || column.key }}</span>
             <ng-container [ngTemplateOutlet]="(searchBy$ | async) && !table.config.columns[column.key].templateRef ? highlighted:
-            table.config.columns[column.key].templateRef ? templateRef :
-            rawData" [ngTemplateOutletContext]="{row: row, column: column, search: (searchBy$ | async), templateRef: table.config.columns[column.key].templateRef, index: i}"></ng-container></td>
+            table.config.columns[column.key].templateRef ? templateRef : table.config.columns[column.key].transform ? transformData:
+            rawData" [ngTemplateOutletContext]="{row: row, column: column, search: (searchBy$ | async), transform: table.config.columns[column.key].transform, templateRef: table.config.columns[column.key].templateRef, index: i}"></ng-container></td>
         </ng-container>
       </tr>
     </tbody>
@@ -57,6 +57,9 @@
 </ng-template>
 <ng-template #rawData let-row="row" let-column="column">
   {{row[column.key]}}
+</ng-template>
+<ng-template #transformData let-row="row" let-column="column" let-transform="transform">
+  {{row[column.key] | dynamicPipe:transform.pipe:transform?.args}}
 </ng-template>
 <ng-template #templateRef let-row="row" let-column="column" let-index="index" let-templateRef="templateRef">
   <ng-container [ngTemplateOutlet]="templateRef"  [ngTemplateOutletContext]="{row: row, col: column, index: index}"></ng-container>
