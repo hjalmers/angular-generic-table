@@ -3,7 +3,10 @@
   "compilerOptions": {
     "types": [
       "node"
-    ]
+    ],
+    "paths": {
+      "@angular-generic-table/core": ["projects/core/src/public-api.ts"],
+    }
   },
   "exclude": [
     "../src/test.ts",

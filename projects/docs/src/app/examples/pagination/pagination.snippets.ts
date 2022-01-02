@@ -32,7 +32,6 @@ import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { FormBuilder } from '@angular/forms';
 import { TableConfig } from '@angular-generic-table/core';
 import { pluck, tap, withLatestFrom } from 'rxjs/operators';
-import { Story } from '@storybook/angular/types-6-0';
 import { HttpClient } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 

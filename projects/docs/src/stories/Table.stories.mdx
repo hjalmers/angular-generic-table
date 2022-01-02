@@ -1,4 +1,4 @@
-import { Meta, Story, Canvas } from '@storybook/addon-docs';
+import { Meta, Story } from '@storybook/addon-docs';
 
 import {moduleMetadata} from "@storybook/angular";
 import {BrowserModule} from "@angular/platform-browser";
@@ -8,12 +8,14 @@ import {Simple, SimpleComponent} from "../app/examples/simple/simple.component";
 import {Advanced, AdvancedComponent} from "../app/examples/advanced/advanced.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {TabsComponent} from "../app/components/tabs/tabs.component";
-import {CustomTemplates, CustomTemplatesComponent} from "../app/examples/custom-templates/custom-templates.component";
+import {CustomTemplates, CustomTemplatesComponent} from "../app/examples/custom-templates/custom-templates.component"; import {Pagination,
+  PaginationComponent
+} from "../app/examples/pagination/pagination.component"; import {HttpClientModule} from "@angular/common/http"; import {GenericTablePaginationModule} from "../../../core/src/lib/pagination/pagination.module";
 
 <Meta title="Examples" decorators={[
   moduleMetadata({
-    declarations: [CustomTemplatesComponent, SimpleComponent, AdvancedComponent, TabsComponent],
-    imports: [BrowserModule, CommonModule, GenericTableCoreModule, ReactiveFormsModule],
+    declarations: [CustomTemplatesComponent, SimpleComponent, AdvancedComponent, PaginationComponent, TabsComponent],
+    imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
   })]}/>
 
 # Examples
@@ -76,7 +78,7 @@ Example showcasing:
 * Empty state
 * Global search
 * Mobile table layout with sticky header (resize viewport to < 576px to view example)
-* Pagination
+* Custom pagination
 * Add/remove data
 * Custom templates
 
@@ -100,4 +102,37 @@ Example showcasing:
          ]
        }}>
   {Advanced.bind({})}
+</Story>
+
+
+## Pagination example
+
+What would a table be without pagination? To simplify things for you, Angular Generic Table provides a basic pagination component. Just pass a reference to the table like this:
+```markup
+<angular-generic-table #tableRef" .../>
+<angular-generic-table-pagination [table]="tableRef"/>
+```
+
+### Import module
+In order to use the pagination component provided by angular generic table, you need to import it.
+```ts
+import { GenericTableCoreModule, GenericTablePaginationModule } from '@angular-generic-table/core';
+
+@NgModule({
+  declarations: [...],
+  imports: [
+    ...
+    GenericTableCoreModule,
+    GenericTablePaginationModule
+  ],
+  exports: [
+    GenericTableCoreModule,
+    GenericTablePaginationModule
+  ]
+})
+export class SharedModule {}
+```
+
+<Story name="Pagination">
+  {Pagination.bind({})}
 </Story>

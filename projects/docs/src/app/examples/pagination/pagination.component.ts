@@ -73,7 +73,7 @@ export class PaginationComponent implements OnInit {
   }
 }
 
-export const Advanced: Story<PaginationComponent> = (args: PaginationComponent) => ({
+export const Pagination: Story<PaginationComponent> = (args: PaginationComponent) => ({
   props: args,
   component: PaginationComponent,
 });
