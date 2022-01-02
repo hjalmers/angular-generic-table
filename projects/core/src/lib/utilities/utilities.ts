@@ -7,6 +7,7 @@ dashed = (s: string) => s.replace(/[A-Z]/g, (m) => '-' + m.toLowerCase());
 export let capitalize: (s: string) => string;
 capitalize = (s: string) =>
   s
+    .replace(/_/g, ' ')
     .replace(/([A-Z])/g, (match) => ` ${match}`)
     .replace(/^./, (match) => match.toUpperCase())
     .trim();
