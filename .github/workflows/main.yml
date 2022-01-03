@@ -34,8 +34,8 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm run semantic-release
 
-      - name: Set base href
-        run: ./node_modules/.bin/replace '<base href=(.*?)>' '<base href="/${{ github.event.repository.name }}/${{ steps.branch.outputs.branch }}/">' dist/docs/index.html
+      # - name: Set base href
+      #  run: ./node_modules/.bin/replace '<base href=(.*?)>' '<base href="/${{ github.event.repository.name }}/${{ steps.branch.outputs.branch }}/">' dist/docs/index.html
 
       # - name: Set build (run) number
       #  run: ./node_modules/.bin/replace '##BUILD_NUMBER##' '${{ github.run_number }}' www/index.html
