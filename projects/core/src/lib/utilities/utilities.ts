@@ -2,7 +2,15 @@ import { TableRow } from '../models/table-row.interface';
 import { TableConfig } from '../models/table-config.interface';
 
 export let dashed: (s: string) => string;
-dashed = (s: string) => s.replace(/[A-Z]/g, m => '-' + m.toLowerCase());
+dashed = (s: string) => s.replace(/[A-Z]/g, (m) => '-' + m.toLowerCase());
+
+export let capitalize: (s: string) => string;
+capitalize = (s: string) =>
+  s
+    .replace(/_/g, ' ')
+    .replace(/([A-Z])/g, (match) => ` ${match}`)
+    .replace(/^./, (match) => match.toUpperCase())
+    .trim();
 
 export let chunk: (array: Array<any>, chunkSize: number) => Array<Array<TableRow>>;
 chunk = (array, chunkSize) => {
@@ -21,18 +29,23 @@ chunk = (array, chunkSize) => {
 
 export let search: (text: string, caseSensitive: boolean, data: Array<TableRow>, config: TableConfig) => TableRow[];
 search = (text: string, caseSensitive: boolean, data: Array<TableRow>, config: TableConfig) => {
-  const searchColumns = Object.keys(config.columns).filter(
-    key => !config.columns[key].hidden && config.columns[key].search !== false
-  );
-  return data.filter(
-    row =>
-      Object.entries(row)
-        .filter(([key, value]) => searchColumns.indexOf(key) !== -1)
-        .reduce(
-          (prev, [key, value]): string =>
-            prev + (prev === '' ? '' : ' & ') + (caseSensitive ? value + '' : (value + '').toLowerCase()),
-          ''
-        )
-        .indexOf(text) !== -1
-  );
+  if (config.columns) {
+    const searchColumns = Object.keys(config.columns).filter(
+      // @ts-ignore
+      (key) => !config.columns[key].hidden && config.columns[key].search !== false
+    );
+    return data.filter(
+      (row) =>
+        Object.entries(row)
+          .filter(([key, value]) => searchColumns.indexOf(key) !== -1)
+          .reduce(
+            (prev, [key, value]): string =>
+              prev + (prev === '' ? '' : ' & ') + (caseSensitive ? value + '' : (value + '').toLowerCase()),
+            ''
+          )
+          .indexOf(text) !== -1
+    );
+  } else {
+    return data;
+  }
 };

@@ -8,7 +8,7 @@ import { Order } from './enums/order.enum';
 import { chunk, search } from './utilities/utilities';
 import { TableRow } from './models/table-row.interface';
 import { TableSort } from './models/table-sort.interface';
-import { TableInfo } from './models/table-info.interface';
+import { TableMeta } from './models/table-meta.interface';
 
 @Component({
   selector: 'angular-generic-table',
@@ -21,12 +21,12 @@ export class CoreComponent {
     this._loading$.next(value);
   }
   @Input()
-  set page(value: Observable<number> | number) {
+  set page(value: number) {
     this._currentPage$.next(value);
   }
 
   @Input()
-  set search(value: Observable<string> | string) {
+  set search(value: Observable<string> | string | null) {
     this._searchBy$.next(value);
   }
 
@@ -40,7 +40,6 @@ export class CoreComponent {
     this._data$.next(value);
   }
 
-  constructor() {}
   get loading$(): Observable<boolean> {
     return this._loading$.pipe(
       startWith(false),
@@ -56,8 +55,8 @@ export class CoreComponent {
   private _sortBy: TableSort | undefined;
 
   // tslint:disable-next-line:variable-name
-  private _searchBy$: ReplaySubject<Observable<string> | string> = new ReplaySubject(1);
-  searchBy$: Observable<string> = this._searchBy$.pipe(
+  private _searchBy$: ReplaySubject<Observable<string> | string | null> = new ReplaySubject(1);
+  searchBy$: Observable<string | null> = this._searchBy$.pipe(
     startWith(''),
     map((value) => (isObservable(value) ? value : of(value))),
     switchMap((obs) => obs),
@@ -99,10 +98,7 @@ export class CoreComponent {
     })
   );
 
-  table$: Observable<{ data: Array<Array<TableRow>>; config: TableConfig; info: TableInfo }> = combineLatest([
-    this.data$,
-    this.tableConfig$,
-  ]).pipe(
+  table$: Observable<TableMeta> = combineLatest([this.data$, this.tableConfig$]).pipe(
     map(([sorted, config]) => {
       // if pagination is disabled...
       if (!config.pagination || config.pagination.length === 0) {
@@ -111,25 +107,21 @@ export class CoreComponent {
       }
       // return record set
       return {
-        data: chunk(sorted, +config.pagination.length),
+        data: chunk(sorted, +(config.pagination.length || 0)),
         config,
         info: {
           records: sorted.length,
-          pageTotal: Math.ceil(sorted.length / +config.pagination.length),
+          pageTotal: Math.ceil(sorted.length / +(config.pagination.length || 0)),
         },
       };
     })
   );
 
-  // tslint:disable-next-line:variable-name
-  private _currentPage$: BehaviorSubject<any> = new BehaviorSubject(0);
-  currentPage$ = this._currentPage$.pipe(
-    map((value) => (isObservable(value) ? (value as Observable<number>) : (of(value) as Observable<number>))),
-    switchMap((obs) => obs),
-    withLatestFrom(this.table$),
+  private _currentPage$: BehaviorSubject<number> = new BehaviorSubject(0);
+  currentPage$ = combineLatest([this._currentPage$, this.table$]).pipe(
     map(([page, table]: any) => {
       // determine last page
-      const lastPage = Math.ceil(table.info.records / table.config.pagination.length) - 1;
+      const lastPage = Math.ceil(table.info.records / (table.config?.pagination?.length || table.info.records)) - 1;
       // determine max/min position
       return +page < 0 ? 0 : +page > lastPage ? lastPage : +page;
     }),

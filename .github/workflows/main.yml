@@ -21,7 +21,7 @@ jobs:
         run: npm run build
 
       - name: Build documentation and demo site
-        run: npm run build:docs
+        run: npm run build-storybook
 
       #- uses: codfish/semantic-release-action@master
       #  env:
@@ -34,8 +34,8 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm run semantic-release
 
-      - name: Set base href
-        run: ./node_modules/.bin/replace '<base href=(.*?)>' '<base href="/${{ github.event.repository.name }}/${{ steps.branch.outputs.branch }}/">' dist/docs/index.html
+      # - name: Set base href
+      #  run: ./node_modules/.bin/replace '<base href=(.*?)>' '<base href="/${{ github.event.repository.name }}/${{ steps.branch.outputs.branch }}/">' dist/docs/index.html
 
       # - name: Set build (run) number
       #  run: ./node_modules/.bin/replace '##BUILD_NUMBER##' '${{ github.run_number }}' www/index.html
@@ -61,6 +61,6 @@ jobs:
         with:
           ACCESS_TOKEN: ${{ secrets.GH_TOKEN }}
           BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: dist/docs # The folder the action should deploy.
+          FOLDER: dist/storybook # The folder the action should deploy.
           TARGET_FOLDER: ${{ steps.branch.outputs.branch }} # The folder the action should deploy to.
 

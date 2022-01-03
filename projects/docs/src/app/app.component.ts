@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { FormBuilder } from '@angular/forms';
-import { TableConfig } from '../../../core/src/lib/models/table-config.interface';
+import { TableConfig, TableRow, TableColumn } from '@angular-generic-table/core';
 import { withLatestFrom } from 'rxjs/operators';
+import { Story } from '@storybook/angular/types-6-0';
 
 @Component({
   selector: 'app-root',
@@ -55,26 +56,26 @@ export class AppComponent implements OnInit {
 
   tableConfig$: ReplaySubject<TableConfig> = new ReplaySubject(1);
 
-  addData() {
+  addData(): void {
     this.data$.next([...this.data$.getValue(), this.randomRecord()]);
   }
 
-  removeData() {
+  removeData(): void {
     this.data$.next([]);
   }
 
-  simulateLoad() {
+  simulateLoad(): void {
     this.loading$.next(true);
     // set loading state to false after 2 seconds
     setTimeout(() => this.loading$.next(false), 2000);
   }
 
-  clickAction(row: any, column: any, index: number) {
+  clickAction(row: TableRow, column: { key: string; value: TableColumn }, index: number): void {
     console.log('clicked row:', row, 'col:', column);
     this.clicked = `clicked row number: ${index}`;
   }
 
-  randomRecord() {
+  randomRecord(): TableRow {
     const random = Math.floor(Math.random() * 2);
     const newRecord = {
       firstName: random
@@ -85,7 +86,7 @@ export class AppComponent implements OnInit {
       favoriteColor: this.colors[Math.floor(Math.random() * this.colors.length)],
       favoriteFood: this.foods[Math.floor(Math.random() * this.foods.length)],
     };
-    console.log(newRecord);
+    console.log('added new random record:', newRecord);
 
     return newRecord;
   }
@@ -97,7 +98,7 @@ export class AppComponent implements OnInit {
     this.currentPage = this._currentPage$.value - 1;
   };
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.simulateLoad();
     this.paginationForm
       .get('length')
@@ -110,24 +111,29 @@ export class AppComponent implements OnInit {
         });
       });
     this.tableConfig$.next({
+      class: 'table table-mobile text-nowrap mb-0',
       columns: {
         firstName: {
           header: 'First name',
+          mobileHeader: true,
           sortable: true,
           order: 0,
         },
         lastName: {
           header: 'Last name',
+          mobileHeader: true,
           hidden: false,
           sortable: true,
         },
         gender: {
           header: 'Gender',
+          mobileHeader: 'Sex',
           sortable: true,
           order: 1,
         },
         favoriteColor: {
           header: 'Favorite color',
+          mobileHeader: true,
           templateRef: this.color,
           sortable: false,
           order: 2,
@@ -135,19 +141,27 @@ export class AppComponent implements OnInit {
           class: 'custom-class',
         },
         favoriteFood: {
+          mobileHeader: true,
           header: 'Favorite food',
           hidden: false,
           sortable: true,
           order: 0,
         },
         action: {
+          mobileHeader: false,
           header: 'Action',
           templateRef: this.actions,
+          order: 6,
         },
       },
       pagination: {
-        length: this.paginationForm.get('length')!.value || 0,
+        length: this.paginationForm.get('length')?.value || 0,
       },
     });
   }
 }
+
+export const Advanced: Story<AppComponent> = (args: AppComponent) => ({
+  props: args,
+  component: AppComponent,
+});

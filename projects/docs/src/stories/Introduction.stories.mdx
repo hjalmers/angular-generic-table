@@ -1,0 +1,49 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="Introduction" />
+
+# Angular Generic Table Docs
+
+Generic table version 5 has been rebuilt to be more efficient and to make it easier to customize and add new features. It still relies on native html tables for layout and rendering. Follow the instructions below to get started with the latest release candidate.
+
+
+## Install
+
+```
+npm install @angular-generic-table/core@rc --save
+```
+
+## Import module
+We recommend import `GenericTableCoreModule` into a shared module eg. `SharedModule` that can be imported into other, preferably lazy loaded modules when needed.
+```ts
+import { GenericTableCoreModule } from '@angular-generic-table/core';
+
+@NgModule({
+  declarations: [...],
+  imports: [
+    ...
+    GenericTableCoreModule
+  ],
+  exports: [
+    GenericTableCoreModule
+  ]
+})
+export class SharedModule {}
+```
+
+## Import styling
+We recommend setting up your Angular project to use scss (SASS) for css preprocessing.
+
+Once configured to use scss, it's just a matter of including the scss to your main styles file, typically it would be `styles.scss` located at the root of the `src` folder unless you've changed it.
+
+### Add scss
+`{project}/src/styles.scss`
+
+```css
+// import base styles from angular-generic-table/core
+@use '~@angular-generic-table/core/scss';
+```
+
+### Have other needs?
+More examples and use cases coming soon! In the meantime create an [issue over at github](https://github.com/hjalmers/angular-generic-table/issues)
+

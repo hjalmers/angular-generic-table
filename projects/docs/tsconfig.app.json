@@ -3,8 +3,12 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
+    "paths": {
+      "@angular-generic-table/core": ["projects/core/src/public-api.ts"],
+    },
     "types": []
   },
   "files": ["src/main.ts", "src/polyfills.ts"],
-  "include": ["src/**/*.d.ts"]
+  "include": ["src/**/*.d.ts"],
+  "exclude": ["src/stories"]
 }

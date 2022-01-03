@@ -1,19 +1,19 @@
-<table class="table text-nowrap mb-0" id="agreementList_table">
+<table id="agreementList_table" [ngClass]="(tableConfig$ | async)?.class || 'table'">
   <thead>
     <tr *ngIf="{
     config:(tableConfig$ | async)!,
     loading: loading$ | async
     } as table">
-      <ng-container *ngFor="let column of table.config.columns | keyvalue: columnOrder">
+      <ng-container *ngFor="let column of table?.config?.columns | keyvalue: columnOrder">
         <th
           *ngIf="!column.value?.hidden"
           ngClass="{{ column.value?.sortable ? 'sort ' : '' }} {{ sortBy$ | async | sortClass: column.key }} {{
             (column.key | dashCase) + '-column'
           }} {{column.value.class}}"
           [class.disabled]="table.loading"
-          (click)="table.loading || !column.value.sortable || sort(column.key)"
+          (click)="table.loading || !column.value?.sortable || sort(column.key)"
         >
-          <span>{{ column.value?.header || column.key }}</span>
+          <span>{{ column.value?.header || column.key | capitalCase }}</span>
         </th>
       </ng-container>
     </tr>
@@ -33,10 +33,11 @@
     <tbody id="agreementList_tableContent" *ngIf="table!.data!.length > 0; else noData">
       <tr *ngFor="let row of table!.data![(currentPage$ | async) || 0]; let i = index" [attr.id]="'tableRow_' + i">
         <ng-container *ngFor="let column of table.config?.columns | keyvalue: columnOrder">
-          <td *ngIf="!column.value?.hidden" ngClass="{{(column.key | dashCase) + '-column'}} {{column.value.class}}">
+          <td *ngIf="!column.value?.hidden" ngClass="{{(column.key | dashCase) + '-column'}} {{column.value?.class}}">
+            <span *ngIf="column.value.mobileHeader" class="mobile-header">{{ column.value?.mobileHeader === true ? column.value?.header : column.value?.mobileHeader || column.key }}</span>
             <ng-container [ngTemplateOutlet]="(searchBy$ | async) && !table.config.columns[column.key].templateRef ? highlighted:
-            table.config.columns[column.key].templateRef ? templateRef :
-            rawData" [ngTemplateOutletContext]="{row: row, column: column, search: (searchBy$ | async), templateRef: table.config.columns[column.key].templateRef, index: i}"></ng-container></td>
+            table.config.columns[column.key].templateRef ? templateRef : table.config.columns[column.key].transform ? transformData:
+            rawData" [ngTemplateOutletContext]="{row: row, column: column, search: (searchBy$ | async), transform: table.config.columns[column.key].transform, templateRef: table.config.columns[column.key].templateRef, index: i}"></ng-container></td>
         </ng-container>
       </tr>
     </tbody>
@@ -56,6 +57,9 @@
 </ng-template>
 <ng-template #rawData let-row="row" let-column="column">
   {{row[column.key]}}
+</ng-template>
+<ng-template #transformData let-row="row" let-column="column" let-transform="transform">
+  {{row[column.key] | dynamicPipe:transform.pipe:transform?.args}}
 </ng-template>
 <ng-template #templateRef let-row="row" let-column="column" let-index="index" let-templateRef="templateRef">
   <ng-container [ngTemplateOutlet]="templateRef"  [ngTemplateOutletContext]="{row: row, col: column, index: index}"></ng-container>
