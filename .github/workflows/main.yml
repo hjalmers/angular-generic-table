@@ -61,6 +61,6 @@ jobs:
         with:
           ACCESS_TOKEN: ${{ secrets.GH_TOKEN }}
           BRANCH: gh-pages # The branch the action should deploy to.
-          FOLDER: dist/docs # The folder the action should deploy.
+          FOLDER: dist/storybook # The folder the action should deploy.
           TARGET_FOLDER: ${{ steps.branch.outputs.branch }} # The folder the action should deploy to.
 
