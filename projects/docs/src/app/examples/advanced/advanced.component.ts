@@ -127,7 +127,6 @@ export class AdvancedComponent implements OnInit {
           sortable: true,
         },
         gender: {
-          header: 'Gender',
           mobileHeader: 'Sex',
           sortable: true,
           order: 1,
@@ -150,7 +149,7 @@ export class AdvancedComponent implements OnInit {
         },
         action: {
           mobileHeader: false,
-          header: 'Action',
+          header: false,
           templateRef: this.actions,
           order: 6,
         },
