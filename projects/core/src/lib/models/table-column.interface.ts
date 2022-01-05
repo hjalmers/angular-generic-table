@@ -1,7 +1,7 @@
 import { PipeTransform, TemplateRef } from '@angular/core';
 
 export interface TableColumn {
-  header?: string;
+  header?: string | false;
   mobileHeader?: string | boolean;
   hidden?: boolean;
   sortable?: boolean;
