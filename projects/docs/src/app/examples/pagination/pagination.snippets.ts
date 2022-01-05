@@ -86,9 +86,10 @@ export class PaginationComponent implements OnInit {
         birthday: {
           mobileHeader: true,
           sortable: true,
+          class: 'text-right',
           transform: {
             pipe: DatePipe,
-            args: 'longDate',
+            args: ['longDate'],
           },
         },
       },
