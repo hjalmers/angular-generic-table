@@ -1,4 +1,4 @@
-import { PipeTransform, TemplateRef } from '@angular/core';
+import { TemplateRef } from '@angular/core';
 
 export interface TableColumn {
   header?: string | false;
@@ -10,7 +10,7 @@ export interface TableColumn {
   templateRef?: TemplateRef<any>;
   transform?: {
     pipe: any;
-    args?: string;
+    args?: Array<any>;
   };
   class?: string;
 }
