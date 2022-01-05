@@ -39,10 +39,46 @@ Once configured to use scss, it's just a matter of including the scss to your ma
 ### Add scss
 `{project}/src/styles.scss`
 
-```css
+```scss
 // import base styles from angular-generic-table/core
-@use '~@angular-generic-table/core/scss';
+@use '~@angular-generic-table/core/scss' as generic-table-styles;
+@include generic-table-styles.styles(); // all styles
+
+// @include generic-table-styles.search-style(); // search (highlight) style
+// @include generic-table-styles.mobile-style(); // mobile layout style
+// @include generic-table-styles.pagination-style(); // pagination styles
 ```
+
+
+### Override scss variables
+It's possible to override the scss variables used by generic table by passing them when importing the scss.
+`{project}/src/styles.scss`
+
+```scss
+// import base styles from angular-generic-table/core and override scss variables
+@use '~@angular-generic-table/core/scss' as generic-table-styles with (
+    $highlight-background-color: purple,
+    $mobile-style-max-width: 375px
+);
+@include generic-table-styles.styles();
+```
+
+**SCSS Variables**
+
+|Name|Default value|
+|:--|:--|
+|$highlight-background-color: | #ffdd00; |
+|$mobile-style-selector: | 'table.table-mobile'; |
+|$mobile-style-max-width: | 576px; |
+|$mobile-style-header-font-weight: | 500; |
+|$mobile-style-header-background-color: | #fff; |
+|$mobile-style-button-selector: | '.btn-sm'; |
+|$mobile-style-border-bottom: | solid 1px #dedede; |
+|$mobile-style-button-font-size: | 1rem; |
+|$mobile-style-button-padding: | 0.5625rem 1rem; |
+|$pagination-ellipsis-content: | '...'; |
+|$pagination-active-color: | #000; |
+|$pagination-justify-content: | center; |
 
 ### Have other needs?
 More examples and use cases coming soon! In the meantime create an [issue over at github](https://github.com/hjalmers/angular-generic-table/issues)
