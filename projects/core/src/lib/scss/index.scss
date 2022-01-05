@@ -1,4 +1,97 @@
-@use "mixins";
-@include mixins.add-mobile-style;
-@include mixins.add-search-style;
-@include mixins.add-pagination-style;
+$highlight-background-color: #ffdd00 !default;
+$mobile-style-selector: 'table.table-mobile' !default;
+$mobile-style-max-width: 576px !default;
+$mobile-style-header-font-weight: 500 !default;
+$mobile-style-header-background-color: #fff !default;
+$mobile-style-button-selector: '.btn-sm' !default;
+$mobile-style-border-bottom: solid 1px #dedede !default;
+$mobile-style-button-font-size: 1rem !default;
+$mobile-style-button-padding: 0.5625rem 1rem !default;
+$pagination-ellipsis-content: '...' !default;
+$pagination-active-color: #000 !default;
+$pagination-justify-content: center !default;
+
+@mixin styles() {
+  @include search-style;
+  @include mobile-style;
+  @include pagination-style;
+}
+@mixin search-style {
+  .gt-highlight-search {
+    background: $highlight-background-color;
+  }
+}
+@mixin mobile-style($selector: $mobile-style-selector) {
+  #{$selector} {
+    .mobile-header {
+      display: none;
+    }
+  }
+  @media (max-width: $mobile-style-max-width) {
+    #{$selector} {
+      table-layout: fixed;
+      border-bottom: none;
+      thead {
+        position: sticky;
+        top: 0;
+        display: block;
+        @media (hover: none) and (pointer: coarse) {
+          display: table-header-group;
+        }
+        background: $mobile-style-header-background-color;
+        tr {
+          display: flex;
+          overflow: auto;
+          &::-webkit-scrollbar {
+            display: none;
+          }
+        }
+      }
+      tbody {
+        tr {
+          display: flex;
+          flex-direction: column;
+          border-bottom: $mobile-style-border-bottom;
+        }
+        td {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-top: none !important;
+          & > .mobile-header {
+            font-weight: $mobile-style-header-font-weight;
+            display: block;
+          }
+          #{$mobile-style-button-selector} {
+            width: 100%;
+            font-size: $mobile-style-button-font-size;
+            padding: $mobile-style-button-padding;
+          }
+        }
+      }
+    }
+  }
+}
+@mixin pagination-style() {
+  nav.gt-pagination {
+    display: flex;
+    justify-content: $pagination-justify-content;
+    ul {
+      display: inline-flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      li {
+        &.ellipsis::after {
+          content: $pagination-ellipsis-content;
+          display: inline-flex;
+        }
+        &.active button {
+          color: $pagination-active-color;
+        }
+      }
+    }
+  }
+}
+
+
