@@ -114,7 +114,8 @@ export class CoreComponent {
           pageTotal: Math.ceil(sorted.length / +(config.pagination.length || 0)),
         },
       };
-    })
+    }),
+    shareReplay(1)
   );
 
   private _currentPage$: BehaviorSubject<number> = new BehaviorSubject(0);
@@ -129,7 +130,11 @@ export class CoreComponent {
   );
 
   colspan$ = this.tableConfig$.pipe(
-    map((config) => Object.values(config.columns).filter((value) => value.hidden !== true).length)
+    switchMap((config) =>
+      config.columns
+        ? of(Object.values(config.columns || config.rows || {}).filter((value) => value.hidden !== true).length)
+        : this.data$.pipe(map((data) => data.length + 1))
+    )
   );
 
   sort(property: string): void {

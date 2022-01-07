@@ -4,6 +4,7 @@ import { AdvancedComponent } from './examples/advanced/advanced.component';
 import { SimpleComponent } from './examples/simple/simple.component';
 import { CustomTemplatesComponent } from './examples/custom-templates/custom-templates.component';
 import { PaginationComponent } from './examples/pagination/pagination.component';
+import { TransposeComponent } from './examples/transpose/transpose.component';
 
 const routes: Routes = [
   {
@@ -17,6 +18,10 @@ const routes: Routes = [
   {
     path: 'simple',
     component: SimpleComponent,
+  },
+  {
+    path: 'transpose',
+    component: TransposeComponent,
   },
   {
     path: 'custom-templates',

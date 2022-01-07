@@ -10,11 +10,13 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {TabsComponent} from "../app/components/tabs/tabs.component";
 import {CustomTemplates, CustomTemplatesComponent} from "../app/examples/custom-templates/custom-templates.component"; import {Pagination,
   PaginationComponent
-} from "../app/examples/pagination/pagination.component"; import {HttpClientModule} from "@angular/common/http"; import {GenericTablePaginationModule} from "../../../core/src/lib/pagination/pagination.module";
+} from "../app/examples/pagination/pagination.component"; import {HttpClientModule} from "@angular/common/http"; import {GenericTablePaginationModule} from "../../../core/src/lib/pagination/pagination.module"; import {Horizontal,
+  TransposeComponent
+} from "../app/examples/transpose/transpose.component";
 
 <Meta title="Examples" decorators={[
   moduleMetadata({
-    declarations: [CustomTemplatesComponent, SimpleComponent, AdvancedComponent, PaginationComponent, TabsComponent],
+    declarations: [CustomTemplatesComponent, SimpleComponent, AdvancedComponent, PaginationComponent, TransposeComponent, TabsComponent],
     imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
   })]}/>
 
@@ -135,4 +137,12 @@ export class SharedModule {}
 
 <Story name="Pagination">
   {Pagination.bind({})}
+</Story>
+
+## Horizontal example
+
+Declare `rows` instead of `columns` to get a horizontal table where records are added as columns instead of rows.
+
+<Story name="Horizontal table">
+  {Horizontal.bind({})}
 </Story>

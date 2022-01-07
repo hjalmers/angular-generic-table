@@ -1,2 +1,3 @@
 // load global styles used by storybook
-@use 'projects/core/src/lib/scss';
+@use 'projects/core/src/lib/scss' as generic-table;
+@include generic-table.styles;
