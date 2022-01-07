@@ -1,4 +1,4 @@
-<table id="agreementList_table" [ngClass]="(tableConfig$ | async)?.class || 'table'">
+<table [ngClass]="(tableConfig$ | async)?.class || 'table'">
   <thead>
     <tr *ngIf="{
     config:(tableConfig$ | async)!,
@@ -16,6 +16,20 @@
           <span *ngIf="column.value?.header !== false">{{ column.value?.header || column.key | capitalCase }}</span>
         </th>
       </ng-container>
+      <ng-container *ngIf="((table?.config?.rows | keyvalue: columnOrder)||[])[0] as headerRow">
+        <th class="row-header"
+            ngClass="{{ headerRow.value?.sortable ? 'sort ' : '' }} {{ sortBy$ | async | sortClass: headerRow.key }} {{
+            (headerRow.key | dashCase) + '-column'
+          }}"
+            (click)="table.loading || !headerRow.value?.sortable || sort(headerRow.key)">
+          <ng-container *ngIf="headerRow?.value?.header !== false">{{headerRow?.value?.header || headerRow.key | capitalCase }}</ng-container>
+        </th>
+        <th *ngFor="let column of ((table$ | async)?.data || [])[0]"  ngClass="{{headerRow.value?.class}}">
+          <ng-container [ngTemplateOutlet]="(table.config?.rows || {})[headerRow.key].templateRef ? templateRef : (table.config?.rows || {})[headerRow.key].transform ? transformData:
+            rawData" [ngTemplateOutletContext]="{row: column, column: headerRow, transform: (table.config?.rows || {})[headerRow.key].transform, templateRef: (table.config?.rows || {})[headerRow.key].templateRef, index: 0}">
+          </ng-container>
+        </th>
+      </ng-container>
     </tr>
   </thead>
   <tbody *ngIf="loading$ | async; else tableContent">
@@ -30,16 +44,33 @@
   <ng-container
     *ngIf="(table$ | async)! as table"
   >
-    <tbody id="agreementList_tableContent" *ngIf="table!.data!.length > 0; else noData">
-      <tr *ngFor="let row of table!.data![(currentPage$ | async) || 0]; let i = index" [attr.id]="'tableRow_' + i">
-        <ng-container *ngFor="let column of table.config?.columns | keyvalue: columnOrder">
-          <td *ngIf="!column.value?.hidden" ngClass="{{(column.key | dashCase) + '-column'}} {{column.value?.class}}">
-            <span *ngIf="column.value.mobileHeader" class="mobile-header">{{ column.value?.mobileHeader !== true ? column.value?.mobileHeader : column.value?.header || column.key  | capitalCase }}</span>
-            <ng-container [ngTemplateOutlet]="(searchBy$ | async) && !table.config.columns[column.key].templateRef ? highlighted:
-            table.config.columns[column.key].templateRef ? templateRef : table.config.columns[column.key].transform ? transformData:
-            rawData" [ngTemplateOutletContext]="{row: row, column: column, search: (searchBy$ | async), transform: table.config.columns[column.key].transform, templateRef: table.config.columns[column.key].templateRef, index: i}"></ng-container></td>
+    <tbody *ngIf="(table!.data![0] || table!.data!).length > 0; else noData">
+      <ng-container *ngIf="table.config.columns">
+        <tr *ngFor="let row of table!.data![(currentPage$ | async) || 0]; let i = index" [attr.id]="'tableRow_' + i">
+          <ng-container *ngFor="let column of table.config?.columns | keyvalue: columnOrder">
+            <td *ngIf="!column.value?.hidden" ngClass="{{(column.key | dashCase) + '-column'}} {{column.value?.class}}">
+              <span *ngIf="column.value.mobileHeader" class="mobile-header">{{ column.value?.mobileHeader !== true ? column.value?.mobileHeader : column.value?.header || column.key  | capitalCase }}</span>
+              <ng-container [ngTemplateOutlet]="(searchBy$ | async) && !(table.config?.columns || {})[column.key].templateRef ? highlighted:
+                (table.config?.columns || {})[column.key].templateRef ? templateRef : (table.config?.columns || {})[column.key].transform ? transformData:
+                rawData" [ngTemplateOutletContext]="{row: row, column: column, search: (searchBy$ | async), transform: (table.config?.columns || {})[column.key].transform, templateRef: (table.config?.columns || {})[column.key].templateRef, index: i}"></ng-container></td>
+          </ng-container>
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="table.config.rows">
+        <ng-container *ngFor="let row of table?.config?.rows | keyvalue: columnOrder | slice:1; let i = index">
+          <tr *ngIf="!row.value?.hidden" [attr.id]="'tableRow_' + i" ngClass="{{(row.key | dashCase) + '-row'}}">
+            <th class="row-header">
+              <span *ngIf="row.value.mobileHeader" class="mobile-header">{{ row.value?.mobileHeader !== true ? row.value?.mobileHeader : row.value?.header || row.key  | capitalCase }}</span>
+              {{row.value?.header || row.key | capitalCase}}
+            </th>
+            <td *ngFor="let column of (table?.data || [])[0]" ngClass="{{row.value?.class}}">
+              <ng-container [ngTemplateOutlet]="(table.config?.rows || {})[row.key].templateRef ? templateRef : (table.config?.rows || {})[row.key].transform ? transformData:
+              rawData" [ngTemplateOutletContext]="{row: column, column: row, transform: (table.config?.rows || {})[row.key].transform, templateRef: (table.config?.rows || {})[row.key].templateRef, index: i}">
+              </ng-container>
+            </td>
+          </tr>
         </ng-container>
-      </tr>
+      </ng-container>
     </tbody>
   </ng-container>
 </ng-template>
