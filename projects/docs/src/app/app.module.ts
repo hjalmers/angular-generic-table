@@ -12,12 +12,14 @@ import { CustomTemplatesComponent } from './examples/custom-templates/custom-tem
 import { PaginationComponent } from './examples/pagination/pagination.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { TransposeComponent } from './examples/transpose/transpose.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AdvancedComponent,
     SimpleComponent,
+    TransposeComponent,
     PaginationComponent,
     TabsComponent,
     CustomTemplatesComponent,
