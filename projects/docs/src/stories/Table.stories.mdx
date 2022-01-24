@@ -5,6 +5,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {CommonModule} from "@angular/common";
 import {GenericTableCoreModule} from "../../../core/src/lib/core.module";
 import {Simple, SimpleComponent} from "../app/examples/simple/simple.component";
+import {Mobile, MobileLayoutComponent} from "../app/examples/mobile-layout/mobile-layout.component";
 import {Advanced, AdvancedComponent} from "../app/examples/advanced/advanced.component";
 import {ReactiveFormsModule} from "@angular/forms";
 import {TabsComponent} from "../app/components/tabs/tabs.component";
@@ -16,11 +17,12 @@ import {CustomTemplates, CustomTemplatesComponent} from "../app/examples/custom-
 
 <Meta title="Examples" decorators={[
   moduleMetadata({
-    declarations: [CustomTemplatesComponent, SimpleComponent, AdvancedComponent, PaginationComponent, TransposeComponent, TabsComponent],
+    declarations: [CustomTemplatesComponent, SimpleComponent, AdvancedComponent, PaginationComponent, TransposeComponent, TabsComponent, MobileLayoutComponent],
     imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
   })]}/>
 
 # Examples
+
 
 ## Basic table
 
@@ -45,6 +47,7 @@ Pass `data` and `config` to table to generate a table. The example below uses th
        }}>
   {Simple.bind({})}
 </Story>
+
 
 ## Custom templates
 
@@ -71,6 +74,7 @@ Define custom templates and assign them to different columns using the `template
        }}>
   {CustomTemplates.bind({})}
 </Story>
+
 
 ## Advanced example
 
@@ -139,10 +143,32 @@ export class SharedModule {}
   {Pagination.bind({})}
 </Story>
 
+
 ## Horizontal example
 
 Declare `rows` instead of `columns` to get a horizontal table where records are added as columns instead of rows.
 
 <Story name="Horizontal table">
   {Horizontal.bind({})}
+</Story>
+
+
+## Toggle mobile layout
+
+Use mobile layout for table by setting `mobileLayout` config option to `true` for table (or by adding class `.table-mobile` to table). Using config option is the preferred way as it will not only add the correct styling but also hide mobile headers automatically when option changes. Generic table uses CSS to create an layout optimized for mobiles, i.e the markup stays the same and it's still use table elements for rendering. Resize the window or view the example below on a small screen to checkout the mobile version as well as the ability toggle to desktop layout.
+
+### Set breakpoint for mobile layout
+Since Generic table relies solely on CSS and media queries to accomplish the mobile layout, it's just a matter of declaring a breakpoint using `SCSS`. Override the default value of `576px`
+(bootstrap breakpoint for small screens), by passing a new value for `$mobile-style-max-width` like this:
+
+```scss
+@use '@angular-generic-table/core/scss' as generic-table-styles with (
+  $mobile-style-max-width: 375px
+);
+@include generic-table-styles.styles();
+```
+
+
+<Story name="Toggle mobile layout">
+  {Mobile.bind({})}
 </Story>

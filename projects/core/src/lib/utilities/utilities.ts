@@ -5,11 +5,12 @@ export let dashed: (s: string) => string;
 dashed = (s: string) => s.replace(/[A-Z]/g, (m) => '-' + m.toLowerCase());
 
 export let capitalize: (s: string) => string;
-capitalize = (s: string) =>
-  s
+capitalize = (s) =>
+  (s.charAt(0).toUpperCase() + s.slice(1))
     .replace(/_/g, ' ')
-    .replace(/([A-Z])/g, (match) => ` ${match}`)
-    .replace(/^./, (match) => match.toUpperCase())
+    .replace(/([A-Z][a-z]+)/g, ' $1')
+    .replace(/([A-Z]{2,})/g, ' $1')
+    .replace(/\s{2,}/g, ' ')
     .trim();
 
 export let chunk: (array: Array<any>, chunkSize: number) => Array<Array<TableRow>>;

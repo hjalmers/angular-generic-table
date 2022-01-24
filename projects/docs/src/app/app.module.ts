@@ -13,6 +13,7 @@ import { PaginationComponent } from './examples/pagination/pagination.component'
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { TransposeComponent } from './examples/transpose/transpose.component';
+import { MobileLayoutComponent } from './examples/mobile-layout/mobile-layout.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { TransposeComponent } from './examples/transpose/transpose.component';
     PaginationComponent,
     TabsComponent,
     CustomTemplatesComponent,
+    MobileLayoutComponent,
   ],
   imports: [
     BrowserModule,

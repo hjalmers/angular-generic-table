@@ -45,6 +45,11 @@ $pagination-justify-content: center !default;
           &::-webkit-scrollbar {
             display: none;
           }
+          th {
+            flex: auto;
+            text-align: left !important;
+            white-space: nowrap;
+          }
         }
       }
       tbody {
