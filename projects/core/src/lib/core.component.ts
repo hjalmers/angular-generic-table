@@ -78,11 +78,13 @@ export class CoreComponent {
     switchMap((obs) => combineLatest([obs, this.sortBy$.pipe(startWith(EMPTY)), this.searchBy$])),
     withLatestFrom(this.tableConfig$),
     map(([[data, sortBy, searchBy], config]) => {
+      // create a new array reference and sort new array (prevent mutating existing state)
+      data = [...data];
       return !sortBy
         ? searchBy
           ? search(searchBy, false, data, config)
           : data
-        : (searchBy ? search(searchBy, false, data, config) : data).sort((a, b) => {
+        : (searchBy ? search(searchBy, false, data, config) : data)?.sort((a, b) => {
             // TODO: improve logic
             const typed = sortBy as TableSort;
             return a[typed.sortBy] > b[typed.sortBy]
@@ -95,7 +97,8 @@ export class CoreComponent {
                 : 1
               : 0;
           });
-    })
+    }),
+    shareReplay(1)
   );
 
   table$: Observable<TableMeta> = combineLatest([this.data$, this.tableConfig$]).pipe(
