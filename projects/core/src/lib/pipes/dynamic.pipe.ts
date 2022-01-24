@@ -13,6 +13,6 @@ export class DynamicPipe implements PipeTransform {
       providers: [{ provide: requiredPipe }],
     });
     const pipe = injector.get(requiredPipe);
-    return pipe.transform(value, ...[pipeArgs || []]);
+    return pipe.transform(value, ...(pipeArgs || []));
   }
 }
