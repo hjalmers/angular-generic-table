@@ -5,6 +5,7 @@ import { SimpleComponent } from './examples/simple/simple.component';
 import { CustomTemplatesComponent } from './examples/custom-templates/custom-templates.component';
 import { PaginationComponent } from './examples/pagination/pagination.component';
 import { TransposeComponent } from './examples/transpose/transpose.component';
+import {MobileLayoutComponent} from "./examples/mobile-layout/mobile-layout.component";
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path: 'custom-templates',
     component: CustomTemplatesComponent,
+  },
+  {
+    path: 'mobile-layout',
+    component: MobileLayoutComponent,
   },
 ];
 
