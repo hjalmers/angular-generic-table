@@ -13,4 +13,8 @@ export interface TableColumn {
     args?: Array<any>;
   };
   class?: string;
+  mapTo?: {
+    path: string;
+    missingValue?: string | number;
+  };
 }
