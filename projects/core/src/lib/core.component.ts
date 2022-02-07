@@ -1,14 +1,14 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { BehaviorSubject, combineLatest, EMPTY, isObservable, Observable, of, ReplaySubject, Subject } from 'rxjs';
-import { TableConfig } from './models/table-config.interface';
-import { KeyValue } from '@angular/common';
-import { map, shareReplay, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
-import { TableColumn } from './models/table-column.interface';
-import { Order } from './enums/order.enum';
-import { chunk, search } from './utilities/utilities';
-import { TableRow } from './models/table-row.interface';
-import { TableSort } from './models/table-sort.interface';
-import { TableMeta } from './models/table-meta.interface';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
+import {BehaviorSubject, combineLatest, EMPTY, isObservable, Observable, of, ReplaySubject, Subject} from 'rxjs';
+import {TableConfig} from './models/table-config.interface';
+import {KeyValue} from '@angular/common';
+import {map, shareReplay, startWith, switchMap, withLatestFrom} from 'rxjs/operators';
+import {TableColumn} from './models/table-column.interface';
+import {Order} from './enums/order.enum';
+import {chunk, search} from './utilities/utilities';
+import {TableRow} from './models/table-row.interface';
+import {TableSort} from './models/table-sort.interface';
+import {TableMeta} from './models/table-meta.interface';
 
 @Component({
   selector: 'angular-generic-table',
@@ -71,20 +71,38 @@ export class CoreComponent {
     shareReplay(1)
   );
 
-  // tslint:disable-next-line:variable-name
   private _data$: ReplaySubject<Array<TableRow> | Observable<Array<TableRow>>> = new ReplaySubject(1);
   data$: Observable<Array<TableRow>> = this._data$.pipe(
     map((value) => (isObservable(value) ? value : of(value))),
-    switchMap((obs) => combineLatest([obs, this.sortBy$.pipe(startWith(EMPTY)), this.searchBy$])),
+    switchMap((obs) => combineLatest([obs])),
     withLatestFrom(this.tableConfig$),
-    map(([[data, sortBy, searchBy], config]) => {
+    map(([[data], config]) => {
+      // if columns or rows contains config for mapTo...
+      if (config.columns && !!Object.values(config.columns).find(column => !!column.mapTo) ||
+        (config.rows && !!Object.values(config.rows).find(column => !!column.mapTo))) {
+        // ...map data to new keys on row...
+        data = data.map(row => {
+          const newKeys = Object.entries(config.columns || config.rows || [])
+              .filter(([key, value]) => !!value.mapTo) // add keys for columns with mapTo config...
+              .reduce((previousValue, currentValue) => ({
+                ...previousValue,
+                // tslint:disable-next-line:no-non-null-assertion
+                [currentValue[0]]: this.nestedValue(row, currentValue[1].mapTo!.path, currentValue[1].mapTo?.missingValue)
+              }), {});
+          return {...row, ...newKeys}
+        });
+      }
+      return {data, config}
+    }),
+    switchMap(obs => combineLatest([of(obs), this.sortBy$.pipe(startWith(EMPTY)), this.searchBy$])),
+    map(([table, sortBy, searchBy]) => {
       // create a new array reference and sort new array (prevent mutating existing state)
-      data = [...data];
+      table.data = [...table.data];
       return !sortBy
         ? searchBy
-          ? search(searchBy, false, data, config)
-          : data
-        : (searchBy ? search(searchBy, false, data, config) : data)?.sort((a, b) => {
+          ? search(searchBy, false, table.data, table.config)
+          : table.data
+        : (searchBy ? search(searchBy, false, table.data, table.config) : table.data)?.sort((a, b) => {
             // TODO: improve logic
             const typed = sortBy as TableSort;
             return a[typed.sortBy] > b[typed.sortBy]
@@ -156,4 +174,10 @@ export class CoreComponent {
   columnOrder = (a: KeyValue<string, TableColumn>, b: KeyValue<string, TableColumn>): number => {
     return (a.value.order || 0) - (b.value.order || 0);
   };
+
+  nestedValue(object: any, mapTo: string, missingValue: string | number | null = null): unknown {
+    const levels = mapTo
+      .split('.');
+    return levels.reduce((previousValue, currentValue, index) => (previousValue)[currentValue] || (index === levels.length - 1 ? missingValue : {}), object);
+  }
 }

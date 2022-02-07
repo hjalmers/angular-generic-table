@@ -6,6 +6,7 @@ import { CustomTemplatesComponent } from './examples/custom-templates/custom-tem
 import { PaginationComponent } from './examples/pagination/pagination.component';
 import { TransposeComponent } from './examples/transpose/transpose.component';
 import {MobileLayoutComponent} from "./examples/mobile-layout/mobile-layout.component";
+import {NestedDataComponent} from "./examples/nested-data/nested-data.component";
 
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
   {
     path: 'mobile-layout',
     component: MobileLayoutComponent,
+  },
+  {
+    path: 'nested',
+    component: NestedDataComponent,
   },
 ];
 

@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { TransposeComponent } from './examples/transpose/transpose.component';
 import { MobileLayoutComponent } from './examples/mobile-layout/mobile-layout.component';
+import { NestedDataComponent } from './examples/nested-data/nested-data.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { MobileLayoutComponent } from './examples/mobile-layout/mobile-layout.co
     TabsComponent,
     CustomTemplatesComponent,
     MobileLayoutComponent,
+    NestedDataComponent,
   ],
   imports: [
     BrowserModule,
