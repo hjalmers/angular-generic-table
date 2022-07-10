@@ -1,5 +1,5 @@
 $highlight-background-color: #ffdd00 !default;
-$mobile-style-selector: 'table.table-mobile' !default;
+$mobile-style-selector: 'table.table-mobile:not(.table-horizontal)' !default;
 $mobile-style-max-width: 576px !default;
 $mobile-style-header-font-weight: 500 !default;
 $mobile-style-header-background-color: #fff !default;

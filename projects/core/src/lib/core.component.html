@@ -1,6 +1,7 @@
 <table
   [ngClass]="(tableConfig$ | async)?.class || 'table'"
   [class.table-mobile]="(tableConfig$ | async)?.mobileLayout"
+  [class.table-horizontal]="(tableConfig$ | async)?.rows"
 >
   <thead>
     <tr
@@ -144,12 +145,7 @@
             [attr.id]="'tableRow_' + i"
             ngClass="{{ (row.key | dashCase) + '-row' }}"
           >
-            <th class="row-header">
-              <span *ngIf="row.value.mobileHeader" class="mobile-header">{{
-                row.value?.mobileHeader !== true
-                  ? row.value?.mobileHeader
-                  : (row.value?.header || row.key | capitalCase)
-              }}</span>
+            <th class="row-header" scope="row">
               {{ row.value?.header || row.key | capitalCase }}
             </th>
             <td
