@@ -20,7 +20,9 @@ export class PaginationComponent {
   table$: ReplaySubject<CoreComponent> = new ReplaySubject(1);
   private _table: CoreComponent | undefined;
   pagination$ = this.table$.pipe(
-    switchMap((core) => combineLatest([core?.table$.pipe(pluck('info')), core?.currentPage$])),
+    switchMap((core) =>
+      combineLatest([core?.table$.pipe(pluck('info')), core?.currentPage$])
+    ),
     map(([info, currentPage]) => this.generateList(info.pageTotal, currentPage))
   );
 
@@ -38,9 +40,15 @@ export class PaginationComponent {
         return pages;
       } else if (currentPosition > middle && currentPosition < pages - middle) {
         return i + currentPosition - (middle - 1);
-      } else if (currentPosition > middle && currentPosition < pages - (middle - 1)) {
+      } else if (
+        currentPosition > middle &&
+        currentPosition < pages - (middle - 1)
+      ) {
         return i + currentPosition - middle;
-      } else if (currentPosition > middle && currentPosition === pages - (middle - 1)) {
+      } else if (
+        currentPosition > middle &&
+        currentPosition === pages - (middle - 1)
+      ) {
         return i + currentPosition - (middle + 1);
       } else if (currentPosition > middle && currentPosition === pages - 1) {
         return i + currentPosition - (middle + 2);

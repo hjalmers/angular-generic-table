@@ -8,7 +8,15 @@ import { CapitalCasePipe } from './pipes/capital-case.pipe';
 import { DynamicPipe } from './pipes/dynamic.pipe';
 
 @NgModule({
-  declarations: [CoreComponent, SortClassPipe, DashCasePipe, HighlightPipe, CapitalCasePipe, CapitalCasePipe, DynamicPipe],
+  declarations: [
+    CoreComponent,
+    SortClassPipe,
+    DashCasePipe,
+    HighlightPipe,
+    CapitalCasePipe,
+    CapitalCasePipe,
+    DynamicPipe,
+  ],
   imports: [CommonModule],
   exports: [CoreComponent],
 })

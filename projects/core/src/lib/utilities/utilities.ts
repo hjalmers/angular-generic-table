@@ -13,7 +13,10 @@ capitalize = (s) =>
     .replace(/\s{2,}/g, ' ')
     .trim();
 
-export let chunk: (array: Array<any>, chunkSize: number) => Array<Array<TableRow>>;
+export let chunk: (
+  array: Array<any>,
+  chunkSize: number
+) => Array<Array<TableRow>>;
 chunk = (array, chunkSize) => {
   if (chunkSize < 0) {
     throw new Error('Invalid chunk size');
@@ -28,12 +31,23 @@ chunk = (array, chunkSize) => {
   return CHUNK;
 };
 
-export let search: (text: string, caseSensitive: boolean, data: Array<TableRow>, config: TableConfig) => TableRow[];
-search = (text: string, caseSensitive: boolean, data: Array<TableRow>, config: TableConfig) => {
+export let search: (
+  text: string,
+  caseSensitive: boolean,
+  data: Array<TableRow>,
+  config: TableConfig
+) => TableRow[];
+search = (
+  text: string,
+  caseSensitive: boolean,
+  data: Array<TableRow>,
+  config: TableConfig
+) => {
   if (config.columns) {
     const searchColumns = Object.keys(config.columns).filter(
       // @ts-ignore
-      (key) => !config.columns[key].hidden && config.columns[key].search !== false
+      (key) =>
+        !config.columns[key].hidden && config.columns[key].search !== false
     );
     return data.filter(
       (row) =>
@@ -41,7 +55,9 @@ search = (text: string, caseSensitive: boolean, data: Array<TableRow>, config: T
           .filter(([key, value]) => searchColumns.indexOf(key) !== -1)
           .reduce(
             (prev, [key, value]): string =>
-              prev + (prev === '' ? '' : ' & ') + (caseSensitive ? value + '' : (value + '').toLowerCase()),
+              prev +
+              (prev === '' ? '' : ' & ') +
+              (caseSensitive ? value + '' : (value + '').toLowerCase()),
             ''
           )
           .indexOf(text) !== -1
