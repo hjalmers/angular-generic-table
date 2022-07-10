@@ -22,11 +22,6 @@ $pagination-justify-content: center !default;
   }
 }
 @mixin mobile-style($selector: $mobile-style-selector) {
-  #{$selector} {
-    .mobile-header {
-      display: none;
-    }
-  }
   @media (max-width: $mobile-style-max-width) {
     #{$selector} {
       table-layout: fixed;
@@ -63,10 +58,12 @@ $pagination-justify-content: center !default;
           justify-content: space-between;
           align-items: center;
           border-top: none !important;
-          & > .mobile-header {
-            font-weight: $mobile-style-header-font-weight;
+          &::before {
+            content: attr(data-label);
             display: block;
+            font-weight: $mobile-style-header-font-weight;
           }
+
           #{$mobile-style-button-selector} {
             width: 100%;
             font-size: $mobile-style-button-font-size;
