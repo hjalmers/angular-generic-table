@@ -28,6 +28,15 @@
             "tsConfig": "projects/core/tsconfig.spec.json",
             "karmaConfig": "projects/core/karma.conf.js"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/core/src/**/*.ts",
+              "projects/core/src/**/*.html"
+            ]
+          }
         }
       }
     },
