@@ -140,6 +140,21 @@
               "devServerTarget": "docs:serve:production"
             }
           }
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "browserTarget": "docs:build",
+            "port": 4400,
+            "styles": [".storybook/scss-loader.scss"]
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "browserTarget": "docs:build",
+            "outputDir": "dist/storybook"
+          }
         }
       }
     }
