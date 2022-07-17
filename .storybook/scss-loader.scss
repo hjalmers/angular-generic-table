@@ -1,3 +1,8 @@
 // load global styles used by storybook
+
+@use 'bootstrap/scss/bootstrap' with (
+  $enable-negative-margins: true
+);
+
 @use 'projects/core/src/lib/scss' as generic-table;
 @include generic-table.styles;
