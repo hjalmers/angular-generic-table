@@ -37,11 +37,16 @@ $descending-sort-gradient: linear-gradient(0.75turn,
 ) !default;
 */
 
+$skeleton-loader-highlight-color: var(--bs-gray-300, rgb(200,200,200)) !default;
+$skeleton-loader-background-color: var(--bs-gray-200, rgb(240,240,240)) !default;
+$skeleton-loader-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='768' height='159'%3E%3Cpath fill-rule='evenodd' fill='%23FFF' d='M0 124.999v-1h768v1H0ZM660 114V90h73.999v24H660Zm-144.001 0V90h120v24h-120ZM402 114V90h80v24h-80Zm-134 0V90h100v24H268Zm-154.001 0V90h130v24h-130ZM0 78.999h768v1H0v-1ZM660 69V45h63.999v24H660Zm-144.001 0V45h110v24h-110ZM402 69V45h69.999v24H402Zm-134 0V45h80v24h-80Zm-154.001 0V45h120v24h-120ZM0 33.999h768V35H0v-1.001ZM660 0h83.999v24H660V0ZM515.999 0h90v24h-90V0ZM402 0h90v24h-90V0ZM268 0h100v24H268V0ZM113.999 0h100v24h-100V0ZM0 0h90v24H0V0Zm70 69H0V45h70v24Zm10 45H0V90h80v24Zm10 45H0v-24h90v24Zm134 0H113.999v-24H224v24Zm154 0H268v-24h110v24Zm114 0h-90v-24h90v24Zm124 0H515.999v-24H616v24Zm127.999 0H660v-24h83.999v24Z'/%3E%3C/svg%3E") !default;
+
 @mixin styles() {
   @include search-style;
   @include default-style;
   @include mobile-style;
   @include pagination-style;
+  @include skeleton-loader-styles;
 }
 
 @mixin default-style {
@@ -184,4 +189,32 @@ $descending-sort-gradient: linear-gradient(0.75turn,
   }
 }
 
+@mixin skeleton-loader-styles() {
+  .gt-skeleton-loader {
+    margin: 0.625rem 0;
+    --gt-skeleton-loader-mask: #{$skeleton-loader-mask};
+    --gt-skeleton-loader-highlight-color: #{$skeleton-loader-highlight-color};
+    --gt-skeleton-loader-bg-color: #{$skeleton-loader-background-color};
+    @keyframes skeleton-loader {
+      0% {
+        background-position: 0 0;
+      }
+      25%,
+      100% {
+        background-position: 200vw 0;
+      }
+    }
+    height: 158px;
+    mask-image: var(--gt-skeleton-loader-mask);
+    background: linear-gradient(
+        280deg,
+        $skeleton-loader-background-color 12.5%,
+        $skeleton-loader-highlight-color 17.5%,
+        $skeleton-loader-background-color 37.5%
+    );
+    background-size: 200vw 100vw;
+    background-position: 0 0;
+    animation: skeleton-loader 3000ms linear infinite;
+  }
+}
 
