@@ -157,6 +157,59 @@ What would a table be without pagination? To simplify things for you, Angular Ge
 <angular-generic-table-pagination [table]="tableRef"/>
 ```
 
+
+<Preview>
+  <div class="overflow-auto">
+  <table>
+    <thead>
+    <tr>
+      <th>@Input</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Default</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td><code>table</code></td>
+      <td>Table connected to the pagination control.</td>
+      <td>Table component</td>
+      <td><code>n/a</code></td>
+    </tr>
+    <tr>
+      <td><code>paginationLength</code></td>
+      <td>Number of pagination buttons to show.</td>
+      <td><code>number</code></td>
+      <td><code>5</code></td>
+    </tr>
+    <tr>
+      <td><code>classes</code></td>
+      <td>Classes for pagination elements. Pass an object with key values, where key is element and value is classes to be applied.</td>
+      <td><code>GtPaginationClasses</code></td>
+      <td><code>&#123;
+        nav: null,
+        ul: 'pagination',
+        li: 'page-item',
+        button: 'page-link'
+        &#125;
+      </code></td>
+    </tr>
+    <tr>
+      <td><code>ariaLabels</code></td>
+      <td>Aria labels for pagination elements. Pass an object with key values, where key is element and value is aria label to use.</td>
+      <td><code>GtPaginationAriaLabels</code></td>
+      <td><code>
+        &#123;
+        nav: 'Table navigation',
+        button: 'Go to page '
+        &#125;
+      </code></td>
+    </tr>
+    </tbody>
+  </table>
+  </div>
+</Preview>
+
 ### Import module
 In order to use the pagination component provided by angular generic table, you need to import it.
 ```ts

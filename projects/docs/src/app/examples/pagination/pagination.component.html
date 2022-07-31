@@ -1,21 +1,35 @@
 <form [formGroup]="paginationForm">
-  <div class="form-row">
+  <div class="row gy-3">
     <div class="form-group col-12 col-sm-auto">
-      <label for="length_input">Length</label>
-      <input id="length_input" formControlName="length" type="number" class="form-control">
+      <label for="length_input">Number of rows</label>
+      <input
+        id="length_input"
+        formControlName="length"
+        type="number"
+        class="form-control"
+      />
     </div>
     <div class="form-group col-12 col-sm-auto">
       <label for="search_input">Search</label>
-      <input id="search_input" formControlName="search" type="text" class="form-control">
+      <input
+        id="search_input"
+        formControlName="search"
+        type="text"
+        class="form-control"
+      />
     </div>
   </div>
 </form>
-<div class="mx-n3 mx-sm-0">
-  <angular-generic-table [data]="data$" [config]="tableConfig$" [search]="search$" [loading]="loading$" #table>
-    <div class="table-loading skeleton-loader skeleton-loader-table"></div>
-    <div class="table-no-data alert alert-info mt-3">
-      Table is empty
-    </div>
+<div class="mx-n3 mx-sm-0 my-3 overflow-auto">
+  <angular-generic-table
+    [data]="data$"
+    [config]="tableConfig$"
+    [search]="search$"
+    [loading]="loading$"
+    #table
+  >
+    <div class="table-loading gt-skeleton-loader"></div>
+    <div class="table-no-data alert alert-info mt-3">Table is empty</div>
   </angular-generic-table>
 </div>
 <angular-generic-table-pagination [table]="table">

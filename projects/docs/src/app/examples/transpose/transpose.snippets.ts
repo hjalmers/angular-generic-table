@@ -95,7 +95,7 @@ export class TransposeComponent implements OnInit {
 <button class="btn btn-outline-danger mx-3" (click)="empty()">Empty</button>
 <button class="btn btn-outline-primary" (click)="load()">Reset</button>
 <angular-generic-table [data]="data" [config]="config" [loading]="loading$">
-  <div class="table-loading skeleton-loader skeleton-loader-table"></div>
+  <div class="table-loading gt-skeleton-loader"></div>
   <div class="table-no-data alert alert-info mt-3">Table is empty</div>
 </angular-generic-table>
 <ng-template #feelings let-row="row" let-col="col">

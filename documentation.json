@@ -45,7 +45,7 @@
         },
         {
             "name": "DashCasePipe",
-            "id": "pipe-DashCasePipe-4017df98b719591cde460a3f250768183ac280628c3d59cb9f2441f8d1e3376547b6b5aedff3bc8af8b7d97f863f066536eb699f88c8b2b3cdec7c3f350a4f8b",
+            "id": "pipe-DashCasePipe-67844698d38f46a703c8055efff81a2825551f27d8f2c5403c4fb2b9865d5d0daf5bbdf34c9ece4087820abd4e96301019762eeb2dfca2fefd2fa95a6c28a776",
             "file": "projects/core/src/lib/pipes/dash-case.pipe.ts",
             "type": "pipe",
             "deprecated": false,
@@ -84,7 +84,7 @@
                 }
             ],
             "ngname": "dashCase",
-            "sourceCode": "import { Pipe, PipeTransform } from '@angular/core';\nimport { dashed } from '../utilities/utilities';\n\n@Pipe({\n  name: 'dashCase'\n})\nexport class DashCasePipe implements PipeTransform {\n  transform(s: string): any {\n    return dashed(s);\n  }\n}\n"
+            "sourceCode": "import { Pipe, PipeTransform } from '@angular/core';\nimport { dashed } from '../utilities/utilities';\n\n@Pipe({\n  name: 'dashCase',\n})\nexport class DashCasePipe implements PipeTransform {\n  transform(s: string): any {\n    return dashed(s);\n  }\n}\n"
         },
         {
             "name": "DynamicPipe",
@@ -204,7 +204,7 @@
         },
         {
             "name": "HighlightPipe",
-            "id": "pipe-HighlightPipe-d185bb2c2498b91f6e3251bb88ffa81628dbe70cbe8e0dc4a5609fd9b0a18e39af77bdb5baa556d0f6da386f68346a900472b8c4f248a760b0c994e72804eaa8",
+            "id": "pipe-HighlightPipe-170b3fde5f924488434a54204079f9bc641bc6b1d553bfc3b0db6b86024c027a9e715dce4cdbc029dc645ae8bcc80db5288a7f91dd34db27fb7015f58690bfc6",
             "file": "projects/core/src/lib/pipes/highlight.pipe.ts",
             "type": "pipe",
             "deprecated": false,
@@ -258,11 +258,11 @@
                 }
             ],
             "ngname": "highlight",
-            "sourceCode": "import { Pipe, PipeTransform } from '@angular/core';\n\n@Pipe({\n  name: 'highlight'\n})\nexport class HighlightPipe implements PipeTransform {\n  transform(text: any, searchTerm: string | null): string {\n    if (!searchTerm) {\n      return text;\n    }\n    const haystackAlwaysString = text + '';\n    let highlightedText = haystackAlwaysString; // fallback\n\n    let searchPattern;\n    try {\n      searchPattern = new RegExp(\n        '(' +\n        // @ts-ignore\n        searchTerm\n          .toLowerCase()\n          .match(/\".*?\"|[^ ]+/g) // extract words\n          .map(\n            needle => needle.replace(/\"(.*?)\"/, '$1') // strip away '\"'\n          )\n          .join('|') + // combine words\n          ')',\n        'ig'\n      );\n    } catch (error) {\n      return highlightedText;\n    }\n\n    const containsTagPattern = /(<.*?>)(.*)(<\\/.*?>)/gi;\n    const containsTagMatches = containsTagPattern.exec(haystackAlwaysString);\n\n    if (containsTagMatches) {\n      // tag exists in haystack\n      highlightedText =\n        containsTagMatches[1] +\n        containsTagMatches[2].replace(searchPattern, '<span class=\"gt-highlight-search\">$1</span>') +\n        containsTagMatches[3];\n    } else {\n      highlightedText = haystackAlwaysString.replace(searchPattern, '<span class=\"gt-highlight-search\">$1</span>');\n    }\n\n    return highlightedText;\n  }\n}\n"
+            "sourceCode": "import { Pipe, PipeTransform } from '@angular/core';\n\n@Pipe({\n  name: 'highlight',\n})\nexport class HighlightPipe implements PipeTransform {\n  transform(text: any, searchTerm: string | null): string {\n    if (!searchTerm) {\n      return text;\n    }\n    const haystackAlwaysString = text + '';\n    let highlightedText = haystackAlwaysString; // fallback\n\n    let searchPattern;\n    try {\n      searchPattern = new RegExp(\n        '(' +\n          // @ts-ignore\n          searchTerm\n            .toLowerCase()\n            .match(/\".*?\"|[^ ]+/g) // extract words\n            .map(\n              (needle) => needle.replace(/\"(.*?)\"/, '$1') // strip away '\"'\n            )\n            .join('|') + // combine words\n          ')',\n        'ig'\n      );\n    } catch (error) {\n      return highlightedText;\n    }\n\n    const containsTagPattern = /(<.*?>)(.*)(<\\/.*?>)/gi;\n    const containsTagMatches = containsTagPattern.exec(haystackAlwaysString);\n\n    if (containsTagMatches) {\n      // tag exists in haystack\n      highlightedText =\n        containsTagMatches[1] +\n        containsTagMatches[2].replace(\n          searchPattern,\n          '<span class=\"gt-highlight-search\">$1</span>'\n        ) +\n        containsTagMatches[3];\n    } else {\n      highlightedText = haystackAlwaysString.replace(\n        searchPattern,\n        '<span class=\"gt-highlight-search\">$1</span>'\n      );\n    }\n\n    return highlightedText;\n  }\n}\n"
         },
         {
             "name": "SortClassPipe",
-            "id": "pipe-SortClassPipe-a53ebcf3312bb7ead898b3a803cfdde788b6cc165558b4ef475c279f136271ecaf729125c9d24b4f7acded1bf62a8503538e1a2284316507fe28d3b33f2cf3f7",
+            "id": "pipe-SortClassPipe-a55105d02f9568c517c39af2393d1378995a5ccddc579f68199abd1ca1ff9656fbe7ac800e67ed2e8098953ea641b08e67b8f5168c76ef2ba04ca38117e51c7c",
             "file": "projects/core/src/lib/pipes/sort-class.pipe.ts",
             "type": "pipe",
             "deprecated": false,
@@ -285,10 +285,17 @@
                             "type": "string",
                             "deprecated": false,
                             "deprecationMessage": ""
+                        },
+                        {
+                            "name": "aria",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "false"
                         }
                     ],
                     "optional": false,
-                    "returnType": "string",
+                    "returnType": "string | null",
                     "typeParameters": [],
                     "line": 8,
                     "deprecated": false,
@@ -311,12 +318,22 @@
                             "tagName": {
                                 "text": "param"
                             }
+                        },
+                        {
+                            "name": "aria",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "defaultValue": "false",
+                            "tagName": {
+                                "text": "param"
+                            }
                         }
                     ]
                 }
             ],
             "ngname": "sortClass",
-            "sourceCode": "import { Pipe, PipeTransform } from '@angular/core';\nimport { Order } from '../enums/order.enum';\n\n@Pipe({\n  name: 'sortClass',\n})\nexport class SortClassPipe implements PipeTransform {\n  transform(selection: { sortBy: string; sortByOrder: Order } | any, property: string): string {\n    return selection?.sortBy === property ? 'sort-' + selection.sortByOrder : '';\n  }\n}\n"
+            "sourceCode": "import { Pipe, PipeTransform } from '@angular/core';\nimport { Order } from '../enums/order.enum';\n\n@Pipe({\n  name: 'sortClass',\n})\nexport class SortClassPipe implements PipeTransform {\n  transform(\n    selection: { sortBy: string; sortByOrder: Order } | any,\n    property: string,\n    aria = false\n  ): string | null {\n    return selection?.sortBy === property\n      ? !aria\n        ? 'gt-sort-' + selection.sortByOrder\n        : selection.sortByOrder + 'ending'\n      : !aria\n      ? ''\n      : null;\n  }\n}\n"
         }
     ],
     "interfaces": [
@@ -630,7 +647,7 @@
     "injectables": [
         {
             "name": "CoreService",
-            "id": "injectable-CoreService-2e409702024a2b887f15a8cd19af33f959c7625cae438df9b419f13003dc36e8faec3fc4efa935a7c4aa55ab5635e1062f115d8be6c6dd2b10b5d851382c810b",
+            "id": "injectable-CoreService-aa6c97a9fa8aaeb04ef59acbab00bca3734e79841c357f3bf212f24c045414c295ec1cd3b16188e237ce977a4ffec26961195586d7de5f10277a1cb0f8bf2896",
             "file": "projects/core/src/lib/core.service.ts",
             "properties": [],
             "methods": [],
@@ -638,7 +655,7 @@
             "deprecationMessage": "",
             "description": "",
             "rawdescription": "\n",
-            "sourceCode": "import { Injectable } from '@angular/core';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class CoreService {\n  constructor() {}\n}\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class CoreService {\n  constructor() {}\n}\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -657,7 +674,7 @@
     "components": [
         {
             "name": "AdvancedComponent",
-            "id": "component-AdvancedComponent-08b75b2ba2da34adc9176ef5fffbd79f68876d561626ab61db62d34e13f51675d13dc790e233983b67442a985e3ad7b6b42ae90b34ae41664674f38f45852909",
+            "id": "component-AdvancedComponent-89ff734ac3a472f0ccb2b658902b20b84fe1d1d33c8885b4ee7c7b56355553499c3414f9529410b0b4bdb7565753c1682761468dbc0411d0e67df780f83c67c2",
             "file": "projects/docs/src/app/examples/advanced/advanced.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -682,7 +699,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 48,
+                    "line": 53,
                     "modifierKind": [
                         121
                     ]
@@ -694,7 +711,7 @@
                     "type": "TemplateRef<any> | undefined",
                     "optional": false,
                     "description": "",
-                    "line": 23,
+                    "line": 27,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -710,7 +727,7 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 50
+                    "line": 55
                 },
                 {
                     "name": "color",
@@ -719,7 +736,7 @@
                     "type": "TemplateRef<any> | undefined",
                     "optional": false,
                     "description": "",
-                    "line": 24,
+                    "line": 28,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -735,7 +752,7 @@
                     "type": "[]",
                     "optional": false,
                     "description": "",
-                    "line": 55
+                    "line": 76
                 },
                 {
                     "name": "data$",
@@ -745,7 +762,7 @@
                     "type": "BehaviorSubject<any>",
                     "optional": false,
                     "description": "",
-                    "line": 31
+                    "line": 36
                 },
                 {
                     "name": "femaleFirstNames",
@@ -755,27 +772,27 @@
                     "type": "[]",
                     "optional": false,
                     "description": "",
-                    "line": 52
+                    "line": 57
                 },
                 {
                     "name": "foods",
-                    "defaultValue": "['Pizza', 'Pasta', 'Hamburger', 'Pancakes', 'Tacos', 'Lasagna', 'Meatloaf']",
+                    "defaultValue": "[\n    'Pizza',\n    'Pasta',\n    'Hamburger',\n    'Pancakes',\n    'Tacos',\n    'Lasagna',\n    'Meatloaf',\n  ]",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "[]",
                     "optional": false,
                     "description": "",
-                    "line": 54
+                    "line": 67
                 },
                 {
                     "name": "lastNames",
-                    "defaultValue": "['Andersson', 'Smith', 'Parker', 'Kent', 'Rogers', 'Lane', 'Jackson']",
+                    "defaultValue": "[\n    'Andersson',\n    'Smith',\n    'Parker',\n    'Kent',\n    'Rogers',\n    'Lane',\n    'Jackson',\n  ]",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "[]",
                     "optional": false,
                     "description": "",
-                    "line": 53
+                    "line": 58
                 },
                 {
                     "name": "loading$",
@@ -785,7 +802,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 30
+                    "line": 35
                 },
                 {
                     "name": "maleFirstNames",
@@ -795,7 +812,7 @@
                     "type": "[]",
                     "optional": false,
                     "description": "",
-                    "line": 51
+                    "line": 56
                 },
                 {
                     "name": "next",
@@ -805,7 +822,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 95
+                    "line": 126
                 },
                 {
                     "name": "paginationForm",
@@ -815,7 +832,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 25
+                    "line": 29
                 },
                 {
                     "name": "prev",
@@ -825,17 +842,17 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 98
+                    "line": 129
                 },
                 {
                     "name": "search$",
-                    "defaultValue": "this.paginationForm.get('search')?.valueChanges as Observable<string>",
+                    "defaultValue": "this.paginationForm.get('search')\n    ?.valueChanges as Observable<string>",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 29
+                    "line": 33
                 },
                 {
                     "name": "SNIPPETS",
@@ -845,7 +862,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 58
+                    "line": 79
                 },
                 {
                     "name": "tableConfig$",
@@ -855,7 +872,7 @@
                     "type": "ReplaySubject<TableConfig>",
                     "optional": false,
                     "description": "",
-                    "line": 57
+                    "line": 78
                 }
             ],
             "methodsClass": [
@@ -865,7 +882,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 60,
+                    "line": 81,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -894,7 +911,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 74,
+                    "line": 95,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -933,7 +950,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 102,
+                    "line": 133,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -943,7 +960,7 @@
                     "optional": false,
                     "returnType": "TableRow",
                     "typeParameters": [],
-                    "line": 79,
+                    "line": 104,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -953,7 +970,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 64,
+                    "line": 85,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -963,7 +980,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 68,
+                    "line": 89,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -975,7 +992,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';\nimport { FormBuilder } from '@angular/forms';\nimport { TableConfig, TableRow, TableColumn } from '@angular-generic-table/core';\nimport { withLatestFrom } from 'rxjs/operators';\nimport { Story } from '@storybook/angular/types-6-0';\nimport { ADVANCED_DOCS } from './advanced.snippets';\n\n@Component({\n  selector: 'docs-advanced',\n  templateUrl: './advanced.component.html',\n  styles: [],\n})\nexport class AdvancedComponent implements OnInit {\n  get currentPage$(): Observable<number> {\n    return this._currentPage$.asObservable();\n  }\n\n  set currentPage(value: number) {\n    this._currentPage$.next(value);\n  }\n  constructor(private fb: FormBuilder) {}\n  @ViewChild('actions', { static: true }) actions: TemplateRef<any> | undefined;\n  @ViewChild('color', { static: true }) color: TemplateRef<any> | undefined;\n  paginationForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.paginationForm.get('search')?.valueChanges as Observable<string>;\n  loading$ = new BehaviorSubject(true);\n  data$: BehaviorSubject<any> = new BehaviorSubject([\n    {\n      firstName: 'Peter',\n      lastName: 'Parker',\n      gender: 'male',\n      favoriteColor: '#26BFAF',\n      favoriteFood: 'Pasta',\n    },\n    {\n      firstName: 'Mary Jane',\n      lastName: 'Watson',\n      gender: 'female',\n      favoriteColor: '#0f0',\n      favoriteFood: 'Pizza',\n    },\n  ]);\n\n  private _currentPage$ = new BehaviorSubject(0);\n\n  clicked: string = '';\n  maleFirstNames = ['Peter', 'Clark', 'Ruben', 'John', 'Jack', 'Roscoe'];\n  femaleFirstNames = ['Mary Jane', 'Kim', 'Sarah', 'Michelle', 'Ann'];\n  lastNames = ['Andersson', 'Smith', 'Parker', 'Kent', 'Rogers', 'Lane', 'Jackson'];\n  foods = ['Pizza', 'Pasta', 'Hamburger', 'Pancakes', 'Tacos', 'Lasagna', 'Meatloaf'];\n  colors = ['#33d60b', '#dcafff', '#3fc9ff', '#ff1600', '#5238b1', '#fff'];\n\n  tableConfig$: ReplaySubject<TableConfig> = new ReplaySubject(1);\n  SNIPPETS = ADVANCED_DOCS;\n\n  addData(): void {\n    this.data$.next([...this.data$.getValue(), this.randomRecord()]);\n  }\n\n  removeData(): void {\n    this.data$.next([]);\n  }\n\n  simulateLoad(): void {\n    this.loading$.next(true);\n    // set loading state to false after 2 seconds\n    setTimeout(() => this.loading$.next(false), 2000);\n  }\n\n  clickAction(row: TableRow, column: { key: string; value: TableColumn }, index: number): void {\n    console.log('clicked row:', row, 'col:', column);\n    this.clicked = `clicked row number: ${index}`;\n  }\n\n  randomRecord(): TableRow {\n    const random = Math.floor(Math.random() * 2);\n    const newRecord = {\n      firstName: random\n        ? this.maleFirstNames[Math.floor(Math.random() * this.maleFirstNames.length)]\n        : this.femaleFirstNames[Math.floor(Math.random() * this.femaleFirstNames.length)],\n      lastName: this.lastNames[Math.floor(Math.random() * this.lastNames.length)],\n      gender: random ? 'male' : 'female',\n      favoriteColor: this.colors[Math.floor(Math.random() * this.colors.length)],\n      favoriteFood: this.foods[Math.floor(Math.random() * this.foods.length)],\n    };\n    console.log('added new random record:', newRecord);\n\n    return newRecord;\n  }\n\n  next = () => {\n    this.currentPage = this._currentPage$.value + 1;\n  };\n  prev = () => {\n    this.currentPage = this._currentPage$.value - 1;\n  };\n\n  ngOnInit(): void {\n    this.simulateLoad();\n    this.paginationForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n    this.tableConfig$.next({\n      class: 'table table-mobile text-nowrap mb-0',\n      columns: {\n        firstName: {\n          header: 'First name',\n          mobileHeader: true,\n          sortable: true,\n          order: 0,\n        },\n        lastName: {\n          header: 'Last name',\n          mobileHeader: true,\n          hidden: false,\n          sortable: true,\n        },\n        gender: {\n          mobileHeader: 'Sex',\n          sortable: true,\n          order: 1,\n        },\n        favoriteColor: {\n          header: 'Favorite color',\n          mobileHeader: true,\n          templateRef: this.color,\n          sortable: false,\n          order: 2,\n          search: false,\n          class: 'custom-class',\n        },\n        favoriteFood: {\n          mobileHeader: true,\n          header: 'Favorite food',\n          hidden: false,\n          sortable: true,\n          order: 0,\n        },\n        action: {\n          mobileHeader: false,\n          header: false,\n          templateRef: this.actions,\n          order: 6,\n        },\n      },\n      pagination: {\n        length: this.paginationForm.get('length')?.value || 0,\n      },\n    });\n  }\n}\n\nexport const Advanced: Story<AdvancedComponent> = (args: AdvancedComponent) => ({\n  props: args,\n  component: AdvancedComponent,\n});\n",
+            "sourceCode": "import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';\nimport { FormBuilder } from '@angular/forms';\nimport {\n  TableConfig,\n  TableRow,\n  TableColumn,\n} from '@angular-generic-table/core';\nimport { withLatestFrom } from 'rxjs/operators';\nimport { Story } from '@storybook/angular/types-6-0';\nimport { ADVANCED_DOCS } from './advanced.snippets';\n\n@Component({\n  selector: 'docs-advanced',\n  templateUrl: './advanced.component.html',\n  styles: [],\n})\nexport class AdvancedComponent implements OnInit {\n  get currentPage$(): Observable<number> {\n    return this._currentPage$.asObservable();\n  }\n\n  set currentPage(value: number) {\n    this._currentPage$.next(value);\n  }\n  constructor(private fb: FormBuilder) {}\n  @ViewChild('actions', { static: true }) actions: TemplateRef<any> | undefined;\n  @ViewChild('color', { static: true }) color: TemplateRef<any> | undefined;\n  paginationForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.paginationForm.get('search')\n    ?.valueChanges as Observable<string>;\n  loading$ = new BehaviorSubject(true);\n  data$: BehaviorSubject<any> = new BehaviorSubject([\n    {\n      firstName: 'Peter',\n      lastName: 'Parker',\n      gender: 'male',\n      favoriteColor: '#26BFAF',\n      favoriteFood: 'Pasta',\n    },\n    {\n      firstName: 'Mary Jane',\n      lastName: 'Watson',\n      gender: 'female',\n      favoriteColor: '#0f0',\n      favoriteFood: 'Pizza',\n    },\n  ]);\n\n  private _currentPage$ = new BehaviorSubject(0);\n\n  clicked: string = '';\n  maleFirstNames = ['Peter', 'Clark', 'Ruben', 'John', 'Jack', 'Roscoe'];\n  femaleFirstNames = ['Mary Jane', 'Kim', 'Sarah', 'Michelle', 'Ann'];\n  lastNames = [\n    'Andersson',\n    'Smith',\n    'Parker',\n    'Kent',\n    'Rogers',\n    'Lane',\n    'Jackson',\n  ];\n  foods = [\n    'Pizza',\n    'Pasta',\n    'Hamburger',\n    'Pancakes',\n    'Tacos',\n    'Lasagna',\n    'Meatloaf',\n  ];\n  colors = ['#33d60b', '#dcafff', '#3fc9ff', '#ff1600', '#5238b1', '#fff'];\n\n  tableConfig$: ReplaySubject<TableConfig> = new ReplaySubject(1);\n  SNIPPETS = ADVANCED_DOCS;\n\n  addData(): void {\n    this.data$.next([...this.data$.getValue(), this.randomRecord()]);\n  }\n\n  removeData(): void {\n    this.data$.next([]);\n  }\n\n  simulateLoad(): void {\n    this.loading$.next(true);\n    // set loading state to false after 2 seconds\n    setTimeout(() => this.loading$.next(false), 2000);\n  }\n\n  clickAction(\n    row: TableRow,\n    column: { key: string; value: TableColumn },\n    index: number\n  ): void {\n    console.log('clicked row:', row, 'col:', column);\n    this.clicked = `clicked row number: ${index}`;\n  }\n\n  randomRecord(): TableRow {\n    const random = Math.floor(Math.random() * 2);\n    const newRecord = {\n      firstName: random\n        ? this.maleFirstNames[\n            Math.floor(Math.random() * this.maleFirstNames.length)\n          ]\n        : this.femaleFirstNames[\n            Math.floor(Math.random() * this.femaleFirstNames.length)\n          ],\n      lastName:\n        this.lastNames[Math.floor(Math.random() * this.lastNames.length)],\n      gender: random ? 'male' : 'female',\n      favoriteColor:\n        this.colors[Math.floor(Math.random() * this.colors.length)],\n      favoriteFood: this.foods[Math.floor(Math.random() * this.foods.length)],\n    };\n    console.log('added new random record:', newRecord);\n\n    return newRecord;\n  }\n\n  next = () => {\n    this.currentPage = this._currentPage$.value + 1;\n  };\n  prev = () => {\n    this.currentPage = this._currentPage$.value - 1;\n  };\n\n  ngOnInit(): void {\n    this.simulateLoad();\n    this.paginationForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n    this.tableConfig$.next({\n      class: 'table text-nowrap mb-0',\n      mobileLayout: true,\n      columns: {\n        firstName: {\n          header: 'First name',\n          mobileHeader: true,\n          sortable: true,\n          order: 0,\n        },\n        lastName: {\n          header: 'Last name',\n          mobileHeader: true,\n          hidden: false,\n          sortable: true,\n        },\n        gender: {\n          mobileHeader: 'Sex',\n          sortable: true,\n          order: 1,\n        },\n        favoriteColor: {\n          header: 'Favorite color',\n          mobileHeader: true,\n          templateRef: this.color,\n          sortable: false,\n          order: 2,\n          search: false,\n          class: 'custom-class',\n        },\n        favoriteFood: {\n          mobileHeader: true,\n          header: 'Favorite food',\n          hidden: false,\n          sortable: true,\n          order: 0,\n        },\n        action: {\n          mobileHeader: false,\n          header: false,\n          templateRef: this.actions,\n          order: 6,\n          class: 'py-1 text-end',\n        },\n      },\n      pagination: {\n        length: this.paginationForm.get('length')?.value || 0,\n      },\n    });\n  }\n}\n\nexport const Advanced: Story<AdvancedComponent> = (\n  args: AdvancedComponent\n) => ({\n  props: args,\n  component: AdvancedComponent,\n});\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -992,7 +1009,7 @@
                         "deprecationMessage": ""
                     }
                 ],
-                "line": 21,
+                "line": 25,
                 "jsdoctags": [
                     {
                         "name": "fb",
@@ -1015,7 +1032,7 @@
                         "name": "currentPage$",
                         "type": "",
                         "returnType": "Observable<number>",
-                        "line": 15
+                        "line": 19
                     }
                 },
                 "currentPage": {
@@ -1034,7 +1051,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 19,
+                        "line": 23,
                         "jsdoctags": [
                             {
                                 "name": "value",
@@ -1049,7 +1066,7 @@
                     }
                 }
             },
-            "templateData": "<div class=\"form-row mb-3\">\n  <div class=\"col col-sm-auto\">\n    <button class=\"btn btn-primary w-100\" (click)=\"addData()\">Add random data</button>\n  </div>\n  <div class=\"col col-sm-auto\">\n    <button class=\"btn btn-danger w-100\" (click)=\"removeData()\">Remove data</button>\n  </div>\n  <div class=\"col col-sm-auto\">\n    <button class=\"btn btn-secondary w-100\" (click)=\"simulateLoad()\">Load</button>\n  </div>\n</div>\n<form [formGroup]=\"paginationForm\">\n  <div class=\"form-row\">\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"length_input\">Length</label>\n      <input id=\"length_input\" formControlName=\"length\" type=\"number\" class=\"form-control\">\n    </div>\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"search_input\">Search</label>\n      <input id=\"search_input\" formControlName=\"search\" type=\"text\" class=\"form-control\">\n    </div>\n  </div>\n</form>\n<div class=\"mx-n3 mx-sm-0\">\n  <angular-generic-table [data]=\"data$\" [config]=\"tableConfig$\" [page]=\"(currentPage$ | async)!\" [search]=\"search$\" [loading]=\"loading$\" #table>\n    <div class=\"table-loading skeleton-loader skeleton-loader-table\"></div>\n    <div class=\"table-no-data alert alert-info mt-3\">\n      Table is empty\n    </div>\n  </angular-generic-table>\n</div>\n<div class=\"row justify-content-between justify-content-sm-center align-items-center mt-3\" *ngIf=\"{current: (currentPage$ | async) || 0,total: (table.table$ | async)?.info?.pageTotal || 1\n} as pagination\">\n  <div class=\"col-auto\">\n    <button class=\"btn btn-primary\" (click)=\"prev()\" [disabled]=\"pagination.current === 0\">Prev</button>\n  </div>\n  <div class=\"col-auto\">\n    <button class=\"btn btn-primary\" (click)=\"next()\" [disabled]=\"pagination.total -1 === pagination.current\">Next</button>\n  </div>\n  <div class=\"col-auto\">Current page: {{pagination.current +1}}</div>\n  <div class=\"col-auto\">Total pages: {{pagination.total}}</div>\n  <div class=\"col-auto\">\n    Records: {{(data$ | async).length}}\n  </div>\n  <div class=\"col-auto\">\n    {{clicked}}\n  </div>\n</div>\n<ng-template #actions let-row=\"row\" let-col=\"col\" let-index=\"index\">\n  <button class=\"btn btn-outline-primary btn-sm my-sm-n3\" (click)=\"clickAction(row, col, index)\">Click me!</button>\n</ng-template>\n<ng-template #color let-row=\"row\" let-col=\"col\">\n  <div [style.background]=\"row[col.key]\" style=\"width: 1.5rem; height: 1.5rem; border-radius: 50%\"></div>\n</ng-template>\n<docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n"
+            "templateData": "<div class=\"row mb-3 gx-2\">\n  <div class=\"col col-sm-auto\">\n    <button class=\"btn btn-primary w-100\" (click)=\"addData()\">\n      Add random data\n    </button>\n  </div>\n  <div class=\"col col-sm-auto\">\n    <button class=\"btn btn-danger w-100\" (click)=\"removeData()\">\n      Remove data\n    </button>\n  </div>\n  <div class=\"col col-sm-auto\">\n    <button class=\"btn btn-secondary w-100\" (click)=\"simulateLoad()\">\n      Load\n    </button>\n  </div>\n</div>\n<form [formGroup]=\"paginationForm\">\n  <div class=\"row gy-3\">\n    <div class=\"form-group col-6 col-sm-auto\">\n      <label for=\"length_input\">Length</label>\n      <input\n        id=\"length_input\"\n        formControlName=\"length\"\n        type=\"number\"\n        class=\"form-control\"\n      />\n    </div>\n    <div class=\"form-group col-6 col-sm-auto\">\n      <label for=\"search_input\">Search</label>\n      <input\n        id=\"search_input\"\n        formControlName=\"search\"\n        type=\"text\"\n        class=\"form-control\"\n      />\n    </div>\n  </div>\n</form>\n<div class=\"overflow-scroll mt-3 pb-3\">\n  <angular-generic-table\n    [data]=\"data$\"\n    [config]=\"tableConfig$\"\n    [page]=\"(currentPage$ | async)!\"\n    [search]=\"search$\"\n    [loading]=\"loading$\"\n    #table\n  >\n    <div class=\"table-loading skeleton-loader skeleton-loader-table\"></div>\n    <div class=\"table-no-data alert alert-info mt-3\">Table is empty</div>\n  </angular-generic-table>\n</div>\n<div\n  class=\"row justify-content-center align-items-center gy-3\"\n  *ngIf=\"{\n    current: (currentPage$ | async) || 0,\n    total: (table.table$ | async)?.info?.pageTotal || 1\n  } as pagination\"\n>\n  <div class=\"col-6 col-sm-auto\">\n    <button\n      class=\"btn btn-primary w-100\"\n      (click)=\"prev()\"\n      [disabled]=\"pagination.current === 0\"\n    >\n      Prev\n    </button>\n  </div>\n  <div class=\"col-6 col-sm-auto\">\n    <button\n      class=\"btn btn-primary w-100\"\n      (click)=\"next()\"\n      [disabled]=\"pagination.total - 1 === pagination.current\"\n    >\n      Next\n    </button>\n  </div>\n  <div class=\"col-auto\">Current page: {{ pagination.current + 1 }}</div>\n  <div class=\"col-auto\">Total pages: {{ pagination.total }}</div>\n  <div class=\"col-auto\">Records: {{ (data$ | async).length }}</div>\n  <div class=\"col-auto\">\n    {{ clicked }}\n  </div>\n</div>\n<ng-template #actions let-row=\"row\" let-col=\"col\" let-index=\"index\">\n  <button\n    class=\"btn btn-outline-primary btn-sm\"\n    (click)=\"clickAction(row, col, index)\"\n  >\n    Click me!\n  </button>\n</ng-template>\n<ng-template #color let-row=\"row\" let-col=\"col\">\n  <div\n    [style.background]=\"row[col.key]\"\n    style=\"width: 1.5rem; height: 1.5rem; border-radius: 50%\"\n  ></div>\n</ng-template>\n<docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n"
         },
         {
             "name": "AppComponent",
@@ -1443,11 +1460,11 @@
                     }
                 }
             },
-            "templateData": "<!--<div class=\"card mt-3\">\n  <h4 class=\"card-header\">Table</h4>\n  <div class=\"card-body\">\n    <div class=\"form-row mb-3\">\n      <div class=\"col col-sm-auto\">\n        <button class=\"btn btn-primary w-100\" (click)=\"addData()\">Add random data</button>\n      </div>\n      <div class=\"col col-sm-auto\">\n        <button class=\"btn btn-danger w-100\" (click)=\"removeData()\">Remove data</button>\n      </div>\n      <div class=\"col col-sm-auto\">\n        <button class=\"btn btn-secondary w-100\" (click)=\"simulateLoad()\">Load</button>\n      </div>\n    </div>\n    <form [formGroup]=\"paginationForm\">\n      <div class=\"form-row\">\n        <div class=\"form-group col-12 col-sm-auto\">\n          <label for=\"length_input\">Length</label>\n          <input id=\"length_input\" formControlName=\"length\" type=\"number\" class=\"form-control\">\n        </div>\n        <div class=\"form-group col-12 col-sm-auto\">\n          <label for=\"search_input\">Search</label>\n          <input id=\"search_input\" formControlName=\"search\" type=\"text\" class=\"form-control\">\n        </div>\n      </div>\n    </form>\n    <div class=\"mx-n3 mx-sm-0\">\n    <angular-generic-table [data]=\"data$\" [config]=\"tableConfig$\" [page]=\"currentPage$\" [search]=\"search$\" [loading]=\"loading$\">\n      <div class=\"table-loading skeleton-loader skeleton-loader-table\"></div>\n      <div class=\"table-no-data alert alert-info mt-3\">\n        Table is empty\n      </div>\n    </angular-generic-table>\n    </div>\n    <div class=\"row justify-content-between justify-content-sm-center align-items-center mt-3\">\n      <div class=\"col-auto\">\n        <button class=\"btn btn-primary\" (click)=\"prev()\">Prev</button>\n      </div>\n      <div class=\"col-auto\">\n        <button class=\"btn btn-primary\" (click)=\"next()\">Next</button>\n      </div>\n      <div class=\"col-auto\">Current page: {{currentPage$ | async}}</div>\n      <div class=\"col-auto\">\n        Records: {{(data$ | async).length}}\n      </div>\n      <div class=\"col-auto\">\n        {{clicked}}\n      </div>\n    </div>\n  </div>\n</div>\n<ng-template #actions let-row=\"row\" let-col=\"col\" let-index=\"index\">\n  <button class=\"btn btn-outline-primary btn-sm my-sm-n3\" (click)=\"clickAction(row, col, index)\">Click me!</button>\n</ng-template>\n<ng-template #color let-row=\"row\" let-col=\"col\">\n  <div [style.background]=\"row[col.key]\" style=\"width: 1.5rem; height: 1.5rem; border-radius: 50%\"></div>\n</ng-template>\n-->\n<div class=\"card mt-3 mx-sm-3\">\n  <h4 class=\"card-header\">Example</h4>\n  <div class=\"card-body\">\n    <router-outlet></router-outlet>\n  </div>\n</div>\n"
+            "templateData": "<!--<div class=\"card mt-3\">\n  <h4 class=\"card-header\">Table</h4>\n  <div class=\"card-body\">\n    <div class=\"row mb-3\">\n      <div class=\"col col-sm-auto\">\n        <button class=\"btn btn-primary w-100\" (click)=\"addData()\">Add random data</button>\n      </div>\n      <div class=\"col col-sm-auto\">\n        <button class=\"btn btn-danger w-100\" (click)=\"removeData()\">Remove data</button>\n      </div>\n      <div class=\"col col-sm-auto\">\n        <button class=\"btn btn-secondary w-100\" (click)=\"simulateLoad()\">Load</button>\n      </div>\n    </div>\n    <form [formGroup]=\"paginationForm\">\n      <div class=\"row\">\n        <div class=\"form-group col-12 col-sm-auto\">\n          <label for=\"length_input\">Length</label>\n          <input id=\"length_input\" formControlName=\"length\" type=\"number\" class=\"form-control\">\n        </div>\n        <div class=\"form-group col-12 col-sm-auto\">\n          <label for=\"search_input\">Search</label>\n          <input id=\"search_input\" formControlName=\"search\" type=\"text\" class=\"form-control\">\n        </div>\n      </div>\n    </form>\n    <div class=\"mx-n3 mx-sm-0\">\n    <angular-generic-table [data]=\"data$\" [config]=\"tableConfig$\" [page]=\"currentPage$\" [search]=\"search$\" [loading]=\"loading$\">\n      <div class=\"table-loading skeleton-loader skeleton-loader-table\"></div>\n      <div class=\"table-no-data alert alert-info mt-3\">\n        Table is empty\n      </div>\n    </angular-generic-table>\n    </div>\n    <div class=\"row justify-content-between justify-content-sm-center align-items-center mt-3\">\n      <div class=\"col-auto\">\n        <button class=\"btn btn-primary\" (click)=\"prev()\">Prev</button>\n      </div>\n      <div class=\"col-auto\">\n        <button class=\"btn btn-primary\" (click)=\"next()\">Next</button>\n      </div>\n      <div class=\"col-auto\">Current page: {{currentPage$ | async}}</div>\n      <div class=\"col-auto\">\n        Records: {{(data$ | async).length}}\n      </div>\n      <div class=\"col-auto\">\n        {{clicked}}\n      </div>\n    </div>\n  </div>\n</div>\n<ng-template #actions let-row=\"row\" let-col=\"col\" let-index=\"index\">\n  <button class=\"btn btn-outline-primary btn-sm my-sm-n3\" (click)=\"clickAction(row, col, index)\">Click me!</button>\n</ng-template>\n<ng-template #color let-row=\"row\" let-col=\"col\">\n  <div [style.background]=\"row[col.key]\" style=\"width: 1.5rem; height: 1.5rem; border-radius: 50%\"></div>\n</ng-template>\n-->\n<div class=\"card mt-3 mx-sm-3\">\n  <h4 class=\"card-header\">Example</h4>\n  <div class=\"card-body\">\n    <router-outlet></router-outlet>\n  </div>\n</div>\n"
         },
         {
             "name": "CoreComponent",
-            "id": "component-CoreComponent-4daf7b76a76f4e7766237b09cd3b5e0285951ef0ae64e967e9361f455c0d3df06f41d268334111b251b5c7a3dddff06e9ea3e8240a5c6e152d37d2f59b6ab314",
+            "id": "component-CoreComponent-588825abbdac23db10e9838e91cb4695a57ea1e2ffe12894f81174748a23599aec1bf50a6f05bf6d0a755cd8256f8a39b05ff704affdf9b55efdea45723eaca1",
             "file": "projects/core/src/lib/core.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -1467,7 +1484,7 @@
                     "name": "config",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 34,
+                    "line": 49,
                     "type": "",
                     "decorators": []
                 },
@@ -1475,7 +1492,7 @@
                     "name": "data",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 39,
+                    "line": 54,
                     "type": "",
                     "decorators": []
                 },
@@ -1483,7 +1500,7 @@
                     "name": "loading",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 20,
+                    "line": 35,
                     "type": "",
                     "decorators": []
                 },
@@ -1491,7 +1508,7 @@
                     "name": "page",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 24,
+                    "line": 39,
                     "type": "number",
                     "decorators": []
                 },
@@ -1499,7 +1516,7 @@
                     "name": "search",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 29,
+                    "line": 44,
                     "type": "",
                     "decorators": []
                 }
@@ -1514,7 +1531,7 @@
                     "type": "BehaviorSubject<number>",
                     "optional": false,
                     "description": "",
-                    "line": 142,
+                    "line": 190,
                     "modifierKind": [
                         121
                     ]
@@ -1527,7 +1544,7 @@
                     "type": "ReplaySubject<Array | Observable>",
                     "optional": false,
                     "description": "",
-                    "line": 74,
+                    "line": 92,
                     "modifierKind": [
                         121
                     ]
@@ -1540,7 +1557,7 @@
                     "type": "ReplaySubject<Observable | boolean>",
                     "optional": false,
                     "description": "",
-                    "line": 52,
+                    "line": 67,
                     "modifierKind": [
                         121
                     ]
@@ -1553,7 +1570,7 @@
                     "type": "ReplaySubject<Observable | string | null>",
                     "optional": false,
                     "description": "",
-                    "line": 58,
+                    "line": 74,
                     "modifierKind": [
                         121
                     ]
@@ -1565,7 +1582,7 @@
                     "type": "TableSort | undefined",
                     "optional": false,
                     "description": "",
-                    "line": 55,
+                    "line": 71,
                     "modifierKind": [
                         121
                     ]
@@ -1578,20 +1595,20 @@
                     "type": "ReplaySubject<TableConfig | Observable>",
                     "optional": false,
                     "description": "",
-                    "line": 67,
+                    "line": 84,
                     "modifierKind": [
                         121
                     ]
                 },
                 {
                     "name": "colspan$",
-                    "defaultValue": "this.tableConfig$.pipe(\n    switchMap((config) =>\n      config.columns\n        ? of(Object.values(config.columns || config.rows || {}).filter((value) => value.hidden !== true).length)\n        : this.data$.pipe(map((data) => data.length + 1))\n    )\n  )",
+                    "defaultValue": "this.tableConfig$.pipe(\n    switchMap((config) =>\n      config.columns\n        ? of(\n            Object.values(config.columns || config.rows || {}).filter(\n              (value) => value.hidden !== true\n            ).length\n          )\n        : this.data$.pipe(map((data) => data.length + 1))\n    )\n  )",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 153
+                    "line": 205
                 },
                 {
                     "name": "columnOrder",
@@ -1601,27 +1618,27 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 174
+                    "line": 233
                 },
                 {
                     "name": "currentPage$",
-                    "defaultValue": "combineLatest([this._currentPage$, this.table$]).pipe(\n    map(([page, table]: any) => {\n      // determine last page\n      const lastPage = Math.ceil(table.info.records / (table.config?.pagination?.length || table.info.records)) - 1;\n      // determine max/min position\n      return +page < 0 ? 0 : +page > lastPage ? lastPage : +page;\n    }),\n    shareReplay(1)\n  )",
+                    "defaultValue": "combineLatest([this._currentPage$, this.table$]).pipe(\n    map(([page, table]: any) => {\n      // determine last page\n      const lastPage =\n        Math.ceil(\n          table.info.records /\n            (table.config?.pagination?.length || table.info.records)\n        ) - 1;\n      // determine max/min position\n      return +page < 0 ? 0 : +page > lastPage ? lastPage : +page;\n    }),\n    shareReplay(1)\n  )",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 143
+                    "line": 191
                 },
                 {
                     "name": "data$",
-                    "defaultValue": "this._data$.pipe(\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => combineLatest([obs])),\n    withLatestFrom(this.tableConfig$),\n    map(([[data], config]) => {\n      // if columns or rows contains config for mapTo...\n      if (config.columns && !!Object.values(config.columns).find(column => !!column.mapTo) ||\n        (config.rows && !!Object.values(config.rows).find(column => !!column.mapTo))) {\n        // ...map data to new keys on row...\n        data = data.map(row => {\n          const newKeys = Object.entries(config.columns || config.rows || [])\n              .filter(([key, value]) => !!value.mapTo) // add keys for columns with mapTo config...\n              .reduce((previousValue, currentValue) => ({\n                ...previousValue,\n                // tslint:disable-next-line:no-non-null-assertion\n                [currentValue[0]]: this.nestedValue(row, currentValue[1].mapTo!.path, currentValue[1].mapTo?.missingValue)\n              }), {});\n          return {...row, ...newKeys}\n        });\n      }\n      return {data, config}\n    }),\n    switchMap(obs => combineLatest([of(obs), this.sortBy$.pipe(startWith(EMPTY)), this.searchBy$])),\n    map(([table, sortBy, searchBy]) => {\n      // create a new array reference and sort new array (prevent mutating existing state)\n      table.data = [...table.data];\n      return !sortBy\n        ? searchBy\n          ? search(searchBy, false, table.data, table.config)\n          : table.data\n        : (searchBy ? search(searchBy, false, table.data, table.config) : table.data)?.sort((a, b) => {\n            // TODO: improve logic\n            const typed = sortBy as TableSort;\n            return a[typed.sortBy] > b[typed.sortBy]\n              ? typed.sortByOrder === Order.ASC\n                ? 1\n                : -1\n              : b[typed.sortBy] > a[typed.sortBy]\n              ? typed.sortByOrder === Order.ASC\n                ? -1\n                : 1\n              : 0;\n          });\n    }),\n    shareReplay(1)\n  )",
+                    "defaultValue": "this._data$.pipe(\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => combineLatest([obs])),\n    withLatestFrom(this.tableConfig$),\n    map(([[data], config]) => {\n      // if columns or rows contains config for mapTo...\n      if (\n        (config.columns &&\n          !!Object.values(config.columns).find((column) => !!column.mapTo)) ||\n        (config.rows &&\n          !!Object.values(config.rows).find((column) => !!column.mapTo))\n      ) {\n        // ...map data to new keys on row...\n        data = data.map((row) => {\n          const newKeys = Object.entries(config.columns || config.rows || [])\n            .filter(([key, value]) => !!value.mapTo) // add keys for columns with mapTo config...\n            .reduce(\n              (previousValue, currentValue) => ({\n                ...previousValue,\n                // tslint:disable-next-line:no-non-null-assertion\n                [currentValue[0]]: this.nestedValue(\n                  row,\n                  currentValue[1].mapTo!.path,\n                  currentValue[1].mapTo?.missingValue\n                ),\n              }),\n              {}\n            );\n          return { ...row, ...newKeys };\n        });\n      }\n      return { data, config };\n    }),\n    switchMap((obs) =>\n      combineLatest([\n        of(obs),\n        this.sortBy$.pipe(startWith(EMPTY)),\n        this.searchBy$,\n      ])\n    ),\n    map(([table, sortBy, searchBy]) => {\n      // create a new array reference and sort new array (prevent mutating existing state)\n      table.data = [...table.data];\n      return !sortBy\n        ? searchBy\n          ? search(searchBy, false, table.data, table.config)\n          : table.data\n        : (searchBy\n            ? search(searchBy, false, table.data, table.config)\n            : table.data\n          )?.sort((a, b) => {\n            // TODO: improve logic\n            const typed = sortBy as TableSort;\n            return a[typed.sortBy] > b[typed.sortBy]\n              ? typed.sortByOrder === Order.ASC\n                ? 1\n                : -1\n              : b[typed.sortBy] > a[typed.sortBy]\n              ? typed.sortByOrder === Order.ASC\n                ? -1\n                : 1\n              : 0;\n          });\n    }),\n    shareReplay(1)\n  )",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Observable<Array<TableRow>>",
                     "optional": false,
                     "description": "",
-                    "line": 75
+                    "line": 94
                 },
                 {
                     "name": "searchBy$",
@@ -1631,7 +1648,7 @@
                     "type": "Observable<string | null>",
                     "optional": false,
                     "description": "",
-                    "line": 59
+                    "line": 76
                 },
                 {
                     "name": "sortBy$",
@@ -1641,17 +1658,17 @@
                     "type": "Subject<TableSort>",
                     "optional": false,
                     "description": "",
-                    "line": 53
+                    "line": 69
                 },
                 {
                     "name": "table$",
-                    "defaultValue": "combineLatest([this.data$, this.tableConfig$]).pipe(\n    map(([sorted, config]) => {\n      // if pagination is disabled...\n      if (!config.pagination || config.pagination.length === 0) {\n        // ...return unaltered array\n        return { data: [sorted], config, info: { records: sorted.length, pageTotal: 1 } };\n      }\n      // return record set\n      return {\n        data: chunk(sorted, +(config.pagination.length || 0)),\n        config,\n        info: {\n          records: sorted.length,\n          pageTotal: Math.ceil(sorted.length / +(config.pagination.length || 0)),\n        },\n      };\n    }),\n    shareReplay(1)\n  )",
+                    "defaultValue": "combineLatest([\n    this.data$,\n    this.tableConfig$,\n  ]).pipe(\n    map(([sorted, config]) => {\n      // if pagination is disabled...\n      if (!config.pagination || config.pagination.length === 0) {\n        // ...return unaltered array\n        return {\n          data: [sorted],\n          config,\n          info: { records: sorted.length, pageTotal: 1 },\n        };\n      }\n      // return record set\n      return {\n        data: chunk(sorted, +(config.pagination.length || 0)),\n        config,\n        info: {\n          records: sorted.length,\n          pageTotal: Math.ceil(\n            sorted.length / +(config.pagination.length || 0)\n          ),\n        },\n      };\n    }),\n    shareReplay(1)\n  )",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Observable<TableMeta>",
                     "optional": false,
                     "description": "",
-                    "line": 122
+                    "line": 161
                 },
                 {
                     "name": "tableConfig$",
@@ -1661,7 +1678,7 @@
                     "type": "Observable<TableConfig>",
                     "optional": false,
                     "description": "",
-                    "line": 68
+                    "line": 86
                 }
             ],
             "methodsClass": [
@@ -1691,7 +1708,7 @@
                     "optional": false,
                     "returnType": "",
                     "typeParameters": [],
-                    "line": 178,
+                    "line": 240,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1738,7 +1755,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 161,
+                    "line": 217,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1761,7 +1778,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {ChangeDetectionStrategy, Component, Input} from '@angular/core';\nimport {BehaviorSubject, combineLatest, EMPTY, isObservable, Observable, of, ReplaySubject, Subject} from 'rxjs';\nimport {TableConfig} from './models/table-config.interface';\nimport {KeyValue} from '@angular/common';\nimport {map, shareReplay, startWith, switchMap, withLatestFrom} from 'rxjs/operators';\nimport {TableColumn} from './models/table-column.interface';\nimport {Order} from './enums/order.enum';\nimport {chunk, search} from './utilities/utilities';\nimport {TableRow} from './models/table-row.interface';\nimport {TableSort} from './models/table-sort.interface';\nimport {TableMeta} from './models/table-meta.interface';\n\n@Component({\n  selector: 'angular-generic-table',\n  templateUrl: './core.component.html',\n  styles: [],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class CoreComponent {\n  @Input() set loading(value: Observable<boolean> | boolean) {\n    this._loading$.next(value);\n  }\n  @Input()\n  set page(value: number) {\n    this._currentPage$.next(value);\n  }\n\n  @Input()\n  set search(value: Observable<string> | string | null) {\n    this._searchBy$.next(value);\n  }\n\n  @Input()\n  set config(value: Observable<TableConfig> | TableConfig) {\n    this._tableConfig$.next(value);\n  }\n\n  @Input()\n  set data(value: Observable<Array<TableRow>> | Array<TableRow>) {\n    this._data$.next(value);\n  }\n\n  get loading$(): Observable<boolean> {\n    return this._loading$.pipe(\n      startWith(false),\n      map((value) => (isObservable(value) ? value : of(value))),\n      switchMap((obs) => obs),\n      shareReplay(1)\n    );\n  }\n\n  private _loading$: ReplaySubject<Observable<boolean> | boolean> = new ReplaySubject(1);\n  sortBy$: Subject<TableSort> = new Subject();\n  // tslint:disable-next-line:variable-name\n  private _sortBy: TableSort | undefined;\n\n  // tslint:disable-next-line:variable-name\n  private _searchBy$: ReplaySubject<Observable<string> | string | null> = new ReplaySubject(1);\n  searchBy$: Observable<string | null> = this._searchBy$.pipe(\n    startWith(''),\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => obs),\n    shareReplay(1)\n  );\n\n  // tslint:disable-next-line:variable-name\n  private _tableConfig$: ReplaySubject<TableConfig | Observable<TableConfig>> = new ReplaySubject(1);\n  tableConfig$: Observable<TableConfig> = this._tableConfig$.pipe(\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => obs),\n    shareReplay(1)\n  );\n\n  private _data$: ReplaySubject<Array<TableRow> | Observable<Array<TableRow>>> = new ReplaySubject(1);\n  data$: Observable<Array<TableRow>> = this._data$.pipe(\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => combineLatest([obs])),\n    withLatestFrom(this.tableConfig$),\n    map(([[data], config]) => {\n      // if columns or rows contains config for mapTo...\n      if (config.columns && !!Object.values(config.columns).find(column => !!column.mapTo) ||\n        (config.rows && !!Object.values(config.rows).find(column => !!column.mapTo))) {\n        // ...map data to new keys on row...\n        data = data.map(row => {\n          const newKeys = Object.entries(config.columns || config.rows || [])\n              .filter(([key, value]) => !!value.mapTo) // add keys for columns with mapTo config...\n              .reduce((previousValue, currentValue) => ({\n                ...previousValue,\n                // tslint:disable-next-line:no-non-null-assertion\n                [currentValue[0]]: this.nestedValue(row, currentValue[1].mapTo!.path, currentValue[1].mapTo?.missingValue)\n              }), {});\n          return {...row, ...newKeys}\n        });\n      }\n      return {data, config}\n    }),\n    switchMap(obs => combineLatest([of(obs), this.sortBy$.pipe(startWith(EMPTY)), this.searchBy$])),\n    map(([table, sortBy, searchBy]) => {\n      // create a new array reference and sort new array (prevent mutating existing state)\n      table.data = [...table.data];\n      return !sortBy\n        ? searchBy\n          ? search(searchBy, false, table.data, table.config)\n          : table.data\n        : (searchBy ? search(searchBy, false, table.data, table.config) : table.data)?.sort((a, b) => {\n            // TODO: improve logic\n            const typed = sortBy as TableSort;\n            return a[typed.sortBy] > b[typed.sortBy]\n              ? typed.sortByOrder === Order.ASC\n                ? 1\n                : -1\n              : b[typed.sortBy] > a[typed.sortBy]\n              ? typed.sortByOrder === Order.ASC\n                ? -1\n                : 1\n              : 0;\n          });\n    }),\n    shareReplay(1)\n  );\n\n  table$: Observable<TableMeta> = combineLatest([this.data$, this.tableConfig$]).pipe(\n    map(([sorted, config]) => {\n      // if pagination is disabled...\n      if (!config.pagination || config.pagination.length === 0) {\n        // ...return unaltered array\n        return { data: [sorted], config, info: { records: sorted.length, pageTotal: 1 } };\n      }\n      // return record set\n      return {\n        data: chunk(sorted, +(config.pagination.length || 0)),\n        config,\n        info: {\n          records: sorted.length,\n          pageTotal: Math.ceil(sorted.length / +(config.pagination.length || 0)),\n        },\n      };\n    }),\n    shareReplay(1)\n  );\n\n  private _currentPage$: BehaviorSubject<number> = new BehaviorSubject(0);\n  currentPage$ = combineLatest([this._currentPage$, this.table$]).pipe(\n    map(([page, table]: any) => {\n      // determine last page\n      const lastPage = Math.ceil(table.info.records / (table.config?.pagination?.length || table.info.records)) - 1;\n      // determine max/min position\n      return +page < 0 ? 0 : +page > lastPage ? lastPage : +page;\n    }),\n    shareReplay(1)\n  );\n\n  colspan$ = this.tableConfig$.pipe(\n    switchMap((config) =>\n      config.columns\n        ? of(Object.values(config.columns || config.rows || {}).filter((value) => value.hidden !== true).length)\n        : this.data$.pipe(map((data) => data.length + 1))\n    )\n  );\n\n  sort(property: string): void {\n    const newSortOrder =\n      this._sortBy?.sortBy !== property || this._sortBy?.sortByOrder === Order.DESC || !this._sortBy.sortByOrder\n        ? Order.ASC\n        : Order.DESC;\n    const newSortBy = {\n      sortBy: property,\n      sortByOrder: newSortOrder,\n    };\n    this.sortBy$.next(newSortBy);\n    this._sortBy = newSortBy;\n  }\n\n  columnOrder = (a: KeyValue<string, TableColumn>, b: KeyValue<string, TableColumn>): number => {\n    return (a.value.order || 0) - (b.value.order || 0);\n  };\n\n  nestedValue(object: any, mapTo: string, missingValue: string | number | null = null): unknown {\n    const levels = mapTo\n      .split('.');\n    return levels.reduce((previousValue, currentValue, index) => (previousValue)[currentValue] || (index === levels.length - 1 ? missingValue : {}), object);\n  }\n}\n",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, Input } from '@angular/core';\nimport {\n  BehaviorSubject,\n  combineLatest,\n  EMPTY,\n  isObservable,\n  Observable,\n  of,\n  ReplaySubject,\n  Subject,\n} from 'rxjs';\nimport { TableConfig } from './models/table-config.interface';\nimport { KeyValue } from '@angular/common';\nimport {\n  map,\n  shareReplay,\n  startWith,\n  switchMap,\n  withLatestFrom,\n} from 'rxjs/operators';\nimport { TableColumn } from './models/table-column.interface';\nimport { Order } from './enums/order.enum';\nimport { chunk, search } from './utilities/utilities';\nimport { TableRow } from './models/table-row.interface';\nimport { TableSort } from './models/table-sort.interface';\nimport { TableMeta } from './models/table-meta.interface';\n\n@Component({\n  selector: 'angular-generic-table',\n  templateUrl: './core.component.html',\n  styles: [],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class CoreComponent {\n  @Input() set loading(value: Observable<boolean> | boolean) {\n    this._loading$.next(value);\n  }\n  @Input()\n  set page(value: number) {\n    this._currentPage$.next(value);\n  }\n\n  @Input()\n  set search(value: Observable<string> | string | null) {\n    this._searchBy$.next(value);\n  }\n\n  @Input()\n  set config(value: Observable<TableConfig> | TableConfig) {\n    this._tableConfig$.next(value);\n  }\n\n  @Input()\n  set data(value: Observable<Array<TableRow>> | Array<TableRow>) {\n    this._data$.next(value);\n  }\n\n  get loading$(): Observable<boolean> {\n    return this._loading$.pipe(\n      startWith(false),\n      map((value) => (isObservable(value) ? value : of(value))),\n      switchMap((obs) => obs),\n      shareReplay(1)\n    );\n  }\n\n  private _loading$: ReplaySubject<Observable<boolean> | boolean> =\n    new ReplaySubject(1);\n  sortBy$: Subject<TableSort> = new Subject();\n  // tslint:disable-next-line:variable-name\n  private _sortBy: TableSort | undefined;\n\n  // tslint:disable-next-line:variable-name\n  private _searchBy$: ReplaySubject<Observable<string> | string | null> =\n    new ReplaySubject(1);\n  searchBy$: Observable<string | null> = this._searchBy$.pipe(\n    startWith(''),\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => obs),\n    shareReplay(1)\n  );\n\n  // tslint:disable-next-line:variable-name\n  private _tableConfig$: ReplaySubject<TableConfig | Observable<TableConfig>> =\n    new ReplaySubject(1);\n  tableConfig$: Observable<TableConfig> = this._tableConfig$.pipe(\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => obs),\n    shareReplay(1)\n  );\n\n  private _data$: ReplaySubject<Array<TableRow> | Observable<Array<TableRow>>> =\n    new ReplaySubject(1);\n  data$: Observable<Array<TableRow>> = this._data$.pipe(\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => combineLatest([obs])),\n    withLatestFrom(this.tableConfig$),\n    map(([[data], config]) => {\n      // if columns or rows contains config for mapTo...\n      if (\n        (config.columns &&\n          !!Object.values(config.columns).find((column) => !!column.mapTo)) ||\n        (config.rows &&\n          !!Object.values(config.rows).find((column) => !!column.mapTo))\n      ) {\n        // ...map data to new keys on row...\n        data = data.map((row) => {\n          const newKeys = Object.entries(config.columns || config.rows || [])\n            .filter(([key, value]) => !!value.mapTo) // add keys for columns with mapTo config...\n            .reduce(\n              (previousValue, currentValue) => ({\n                ...previousValue,\n                // tslint:disable-next-line:no-non-null-assertion\n                [currentValue[0]]: this.nestedValue(\n                  row,\n                  currentValue[1].mapTo!.path,\n                  currentValue[1].mapTo?.missingValue\n                ),\n              }),\n              {}\n            );\n          return { ...row, ...newKeys };\n        });\n      }\n      return { data, config };\n    }),\n    switchMap((obs) =>\n      combineLatest([\n        of(obs),\n        this.sortBy$.pipe(startWith(EMPTY)),\n        this.searchBy$,\n      ])\n    ),\n    map(([table, sortBy, searchBy]) => {\n      // create a new array reference and sort new array (prevent mutating existing state)\n      table.data = [...table.data];\n      return !sortBy\n        ? searchBy\n          ? search(searchBy, false, table.data, table.config)\n          : table.data\n        : (searchBy\n            ? search(searchBy, false, table.data, table.config)\n            : table.data\n          )?.sort((a, b) => {\n            // TODO: improve logic\n            const typed = sortBy as TableSort;\n            return a[typed.sortBy] > b[typed.sortBy]\n              ? typed.sortByOrder === Order.ASC\n                ? 1\n                : -1\n              : b[typed.sortBy] > a[typed.sortBy]\n              ? typed.sortByOrder === Order.ASC\n                ? -1\n                : 1\n              : 0;\n          });\n    }),\n    shareReplay(1)\n  );\n\n  table$: Observable<TableMeta> = combineLatest([\n    this.data$,\n    this.tableConfig$,\n  ]).pipe(\n    map(([sorted, config]) => {\n      // if pagination is disabled...\n      if (!config.pagination || config.pagination.length === 0) {\n        // ...return unaltered array\n        return {\n          data: [sorted],\n          config,\n          info: { records: sorted.length, pageTotal: 1 },\n        };\n      }\n      // return record set\n      return {\n        data: chunk(sorted, +(config.pagination.length || 0)),\n        config,\n        info: {\n          records: sorted.length,\n          pageTotal: Math.ceil(\n            sorted.length / +(config.pagination.length || 0)\n          ),\n        },\n      };\n    }),\n    shareReplay(1)\n  );\n\n  private _currentPage$: BehaviorSubject<number> = new BehaviorSubject(0);\n  currentPage$ = combineLatest([this._currentPage$, this.table$]).pipe(\n    map(([page, table]: any) => {\n      // determine last page\n      const lastPage =\n        Math.ceil(\n          table.info.records /\n            (table.config?.pagination?.length || table.info.records)\n        ) - 1;\n      // determine max/min position\n      return +page < 0 ? 0 : +page > lastPage ? lastPage : +page;\n    }),\n    shareReplay(1)\n  );\n\n  colspan$ = this.tableConfig$.pipe(\n    switchMap((config) =>\n      config.columns\n        ? of(\n            Object.values(config.columns || config.rows || {}).filter(\n              (value) => value.hidden !== true\n            ).length\n          )\n        : this.data$.pipe(map((data) => data.length + 1))\n    )\n  );\n\n  sort(property: string): void {\n    console.log('SORT');\n    const newSortOrder =\n      this._sortBy?.sortBy !== property ||\n      this._sortBy?.sortByOrder === Order.DESC ||\n      !this._sortBy.sortByOrder\n        ? Order.ASC\n        : Order.DESC;\n    const newSortBy = {\n      sortBy: property,\n      sortByOrder: newSortOrder,\n    };\n    this.sortBy$.next(newSortBy);\n    this._sortBy = newSortBy;\n  }\n\n  columnOrder = (\n    a: KeyValue<string, TableColumn>,\n    b: KeyValue<string, TableColumn>\n  ): number => {\n    return (a.value.order || 0) - (b.value.order || 0);\n  };\n\n  nestedValue(\n    object: any,\n    mapTo: string,\n    missingValue: string | number | null = null\n  ): unknown {\n    const levels = mapTo.split('.');\n    return levels.reduce(\n      (previousValue, currentValue, index) =>\n        previousValue[currentValue] ||\n        (index === levels.length - 1 ? missingValue : {}),\n      object\n    );\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -1782,7 +1799,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 20,
+                        "line": 35,
                         "jsdoctags": [
                             {
                                 "name": "value",
@@ -1812,7 +1829,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 24,
+                        "line": 39,
                         "jsdoctags": [
                             {
                                 "name": "value",
@@ -1842,7 +1859,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 29,
+                        "line": 44,
                         "jsdoctags": [
                             {
                                 "name": "value",
@@ -1872,7 +1889,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 34,
+                        "line": 49,
                         "jsdoctags": [
                             {
                                 "name": "value",
@@ -1902,7 +1919,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 39,
+                        "line": 54,
                         "jsdoctags": [
                             {
                                 "name": "value",
@@ -1922,11 +1939,11 @@
                         "name": "loading$",
                         "type": "",
                         "returnType": "Observable<boolean>",
-                        "line": 43
+                        "line": 58
                     }
                 }
             },
-            "templateData": "<table [ngClass]=\"(tableConfig$ | async)?.class || 'table'\" [class.table-mobile]=\"(tableConfig$ | async)?.mobileLayout\">\n  <thead>\n    <tr *ngIf=\"{\n    config:(tableConfig$ | async)!,\n    loading: loading$ | async\n    } as table\">\n      <ng-container *ngFor=\"let column of table?.config?.columns | keyvalue: columnOrder\">\n        <th\n          *ngIf=\"!column.value?.hidden\"\n          ngClass=\"{{ column.value?.sortable ? 'sort ' : '' }} {{ sortBy$ | async | sortClass: column.key }} {{\n            (column.key | dashCase) + '-column'\n          }} {{column.value.class}}\"\n          [class.disabled]=\"table.loading\"\n          (click)=\"table.loading || !column.value?.sortable || sort(column.key)\"\n        >\n          <span *ngIf=\"column.value?.header !== false\">{{ column.value?.header || column.key | capitalCase }}</span>\n        </th>\n      </ng-container>\n      <ng-container *ngIf=\"((table?.config?.rows | keyvalue: columnOrder)||[])[0] as headerRow\">\n        <th class=\"row-header\"\n            ngClass=\"{{ headerRow.value?.sortable ? 'sort ' : '' }} {{ sortBy$ | async | sortClass: headerRow.key }} {{\n            (headerRow.key | dashCase) + '-column'\n          }}\"\n            (click)=\"table.loading || !headerRow.value?.sortable || sort(headerRow.key)\">\n          <ng-container *ngIf=\"headerRow?.value?.header !== false\">{{headerRow?.value?.header || headerRow.key | capitalCase }}</ng-container>\n        </th>\n        <th *ngFor=\"let column of ((table$ | async)?.data || [])[0]\"  ngClass=\"{{headerRow.value?.class}}\">\n          <ng-container [ngTemplateOutlet]=\"(table.config?.rows || {})[headerRow.key].templateRef ? templateRef : (table.config?.rows || {})[headerRow.key].transform ? transformData:\n            rawData\" [ngTemplateOutletContext]=\"{row: column, column: headerRow, transform: (table.config?.rows || {})[headerRow.key].transform, templateRef: (table.config?.rows || {})[headerRow.key].templateRef, index: 0}\">\n          </ng-container>\n        </th>\n      </ng-container>\n    </tr>\n  </thead>\n  <tbody *ngIf=\"loading$ | async; else tableContent\">\n    <tr>\n      <td class=\"p-0\" [colSpan]=\"colspan$ | async\">\n        <ng-content select=\".table-loading\"></ng-content>\n      </td>\n    </tr>\n  </tbody>\n</table>\n<ng-template #tableContent>\n  <ng-container\n    *ngIf=\"(table$ | async)! as table\"\n  >\n    <tbody *ngIf=\"(table!.data![0] || table!.data!).length > 0; else noData\">\n      <ng-container *ngIf=\"table.config.columns\">\n        <tr *ngFor=\"let row of table!.data![(currentPage$ | async) || 0]; let i = index\" [attr.id]=\"'tableRow_' + i\">\n          <ng-container *ngFor=\"let column of table.config?.columns | keyvalue: columnOrder\">\n            <td *ngIf=\"!column.value?.hidden\" ngClass=\"{{(column.key | dashCase) + '-column'}} {{column.value?.class}}\">\n              <span *ngIf=\"column.value?.mobileHeader && table.config?.mobileLayout\" class=\"mobile-header\">{{ column.value?.mobileHeader !== true ? column.value?.mobileHeader : column.value?.header || column.key  | capitalCase }}</span>\n              <ng-container [ngTemplateOutlet]=\"(searchBy$ | async) && !(table.config?.columns || {})[column.key].templateRef ? highlighted:\n                (table.config?.columns || {})[column.key].templateRef ? templateRef : (table.config?.columns || {})[column.key].transform ? transformData:\n                rawData\" [ngTemplateOutletContext]=\"{row: row, column: column, search: (searchBy$ | async), transform: (table.config?.columns || {})[column.key].transform, templateRef: (table.config?.columns || {})[column.key].templateRef, index: i}\"></ng-container></td>\n          </ng-container>\n        </tr>\n      </ng-container>\n      <ng-container *ngIf=\"table.config.rows\">\n        <ng-container *ngFor=\"let row of table?.config?.rows | keyvalue: columnOrder | slice:1; let i = index\">\n          <tr *ngIf=\"!row.value?.hidden\" [attr.id]=\"'tableRow_' + i\" ngClass=\"{{(row.key | dashCase) + '-row'}}\">\n            <th class=\"row-header\">\n              <span *ngIf=\"row.value.mobileHeader\" class=\"mobile-header\">{{ row.value?.mobileHeader !== true ? row.value?.mobileHeader : row.value?.header || row.key  | capitalCase }}</span>\n              {{row.value?.header || row.key | capitalCase}}\n            </th>\n            <td *ngFor=\"let column of (table?.data || [])[0]\" ngClass=\"{{row.value?.class}}\">\n              <ng-container [ngTemplateOutlet]=\"(table.config?.rows || {})[row.key].templateRef ? templateRef : (table.config?.rows || {})[row.key].transform ? transformData:\n              rawData\" [ngTemplateOutletContext]=\"{row: column, column: row, transform: (table.config?.rows || {})[row.key].transform, templateRef: (table.config?.rows || {})[row.key].templateRef, index: i}\">\n              </ng-container>\n            </td>\n          </tr>\n        </ng-container>\n      </ng-container>\n    </tbody>\n  </ng-container>\n</ng-template>\n<ng-template #noData>\n  <tbody>\n  <tr>\n    <td class=\"p-0\" [colSpan]=\"colspan$ | async\">\n      <ng-content select=\".table-no-data\"></ng-content>\n    </td>\n  </tr>\n  </tbody>\n</ng-template>\n<ng-template #highlighted let-row=\"row\" let-column=\"column\" let-search=\"search\">\n  <div [innerHTML]=\"(row[column.key] | highlight: search)\"></div>\n</ng-template>\n<ng-template #rawData let-row=\"row\" let-column=\"column\">\n  {{row[column.key]}}\n</ng-template>\n<ng-template #transformData let-row=\"row\" let-column=\"column\" let-transform=\"transform\">\n  {{row[column.key] | dynamicPipe:transform.pipe:transform?.args}}\n</ng-template>\n<ng-template #templateRef let-row=\"row\" let-column=\"column\" let-index=\"index\" let-templateRef=\"templateRef\">\n  <ng-container [ngTemplateOutlet]=\"templateRef\"  [ngTemplateOutletContext]=\"{row: row, col: column, index: index}\"></ng-container>\n</ng-template>\n"
+            "templateData": "<table\n  [ngClass]=\"(tableConfig$ | async)?.class || 'table'\"\n  [class.table-mobile]=\"(tableConfig$ | async)?.mobileLayout\"\n  [class.table-horizontal]=\"(tableConfig$ | async)?.rows\"\n  [class.table-loading]=\"loading$ | async\"\n  [attr.aria-busy]=\"(loading$ | async) === true ? true : null\"\n>\n  <thead>\n    <tr\n      *ngIf=\"{\n        config: (tableConfig$ | async)!,\n        isLoading: loading$ | async\n      } as table\"\n    >\n      <ng-container\n        *ngFor=\"let column of table?.config?.columns | keyvalue: columnOrder\"\n      >\n        <th\n          *ngIf=\"!column.value?.hidden\"\n          ngClass=\"{{ (column.key | dashCase) + '-column' }} {{\n            column.value.class\n          }}\"\n          [class.disabled]=\"table.isLoading\"\n          [attr.aria-sort]=\"sortBy$ | async | sortClass: column.key:true\"\n          [class.gt-sortable]=\"true\"\n          scope=\"col\"\n        >\n          <button\n            *ngIf=\"column.value?.sortable\"\n            class=\"gt-sort\"\n            (click)=\"\n              table.isLoading || !column.value?.sortable || sort(column.key)\n            \"\n          >\n            <span *ngIf=\"column.value?.header !== false\">{{\n              column.value?.header || column.key | capitalCase\n            }}</span>\n          </button>\n          <span\n            *ngIf=\"!column.value?.sortable && column.value?.header !== false\"\n            >{{ column.value?.header || column.key | capitalCase }}</span\n          >\n        </th>\n      </ng-container>\n      <ng-container\n        *ngIf=\"\n          ((table?.config?.rows | keyvalue: columnOrder) || [])[0] as headerRow\n        \"\n      >\n        <th\n          class=\"row-header\"\n          [attr.aria-sort]=\"sortBy$ | async | sortClass: headerRow.key:true\"\n          ngClass=\"{{ headerRow.value?.sortable ? 'sort ' : '' }} {{\n            sortBy$ | async | sortClass: headerRow.key\n          }} {{ (headerRow.key | dashCase) + '-column' }}\"\n          (click)=\"\n            table.isLoading || !headerRow.value?.sortable || sort(headerRow.key)\n          \"\n          scope=\"col\"\n        >\n          <ng-container *ngIf=\"headerRow?.value?.header !== false\">{{\n            headerRow?.value?.header || headerRow.key | capitalCase\n          }}</ng-container>\n        </th>\n        <th\n          *ngFor=\"let column of ((table$ | async)?.data || [])[0]\"\n          ngClass=\"{{ headerRow.value?.class }}\"\n        >\n          <ng-container\n            [ngTemplateOutlet]=\"\n              (table.config?.rows || {})[headerRow.key].templateRef\n                ? templateRef\n                : (table.config?.rows || {})[headerRow.key].transform\n                ? transformData\n                : rawData\n            \"\n            [ngTemplateOutletContext]=\"{\n              row: column,\n              column: headerRow,\n              transform: (table.config?.rows || {})[headerRow.key].transform,\n              templateRef: (table.config?.rows || {})[headerRow.key]\n                .templateRef,\n              index: 0\n            }\"\n          >\n          </ng-container>\n        </th>\n      </ng-container>\n    </tr>\n  </thead>\n  <tbody *ngIf=\"loading$ | async; else tableContent\">\n    <tr>\n      <td class=\"p-0\" [colSpan]=\"colspan$ | async\">\n        <ng-content select=\".table-loading\"></ng-content>\n      </td>\n    </tr>\n  </tbody>\n</table>\n<ng-template #tableContent>\n  <ng-container *ngIf=\"(table$ | async)! as table\">\n    <tbody *ngIf=\"(table!.data![0] || table!.data!).length > 0; else noData\">\n      <ng-container *ngIf=\"table.config.columns\">\n        <tr\n          *ngFor=\"\n            let row of table!.data![(currentPage$ | async) || 0];\n            let i = index\n          \"\n          [attr.id]=\"'tableRow_' + i\"\n        >\n          <ng-container\n            *ngFor=\"let column of table.config?.columns | keyvalue: columnOrder\"\n          >\n            <td\n              *ngIf=\"!column.value?.hidden\"\n              ngClass=\"{{ (column.key | dashCase) + '-column' }} {{\n                column.value?.class\n              }}\"\n              [attr.data-label]=\"\n                table.config?.mobileLayout && column.value?.mobileHeader\n                  ? column.value?.mobileHeader !== true\n                    ? column.value?.mobileHeader\n                    : (column.value?.header || column.key | capitalCase)\n                  : null\n              \"\n            >\n              <ng-container\n                [ngTemplateOutlet]=\"\n                  (searchBy$ | async) &&\n                  !(table.config?.columns || {})[column.key].templateRef\n                    ? highlighted\n                    : (table.config?.columns || {})[column.key].templateRef\n                    ? templateRef\n                    : (table.config?.columns || {})[column.key].transform\n                    ? transformData\n                    : rawData\n                \"\n                [ngTemplateOutletContext]=\"{\n                  row: row,\n                  column: column,\n                  search: (searchBy$ | async),\n                  transform: (table.config?.columns || {})[column.key]\n                    .transform,\n                  templateRef: (table.config?.columns || {})[column.key]\n                    .templateRef,\n                  index: i\n                }\"\n              ></ng-container>\n            </td>\n          </ng-container>\n        </tr>\n      </ng-container>\n      <ng-container *ngIf=\"table.config.rows\">\n        <ng-container\n          *ngFor=\"\n            let row of table?.config?.rows | keyvalue: columnOrder | slice: 1;\n            let i = index\n          \"\n        >\n          <tr\n            *ngIf=\"!row.value?.hidden\"\n            [attr.id]=\"'tableRow_' + i\"\n            ngClass=\"{{ (row.key | dashCase) + '-row' }}\"\n          >\n            <th class=\"row-header\" scope=\"row\">\n              {{ row.value?.header || row.key | capitalCase }}\n            </th>\n            <td\n              *ngFor=\"let column of (table?.data || [])[0]\"\n              ngClass=\"{{ row.value?.class }}\"\n            >\n              <ng-container\n                [ngTemplateOutlet]=\"\n                  (table.config?.rows || {})[row.key].templateRef\n                    ? templateRef\n                    : (table.config?.rows || {})[row.key].transform\n                    ? transformData\n                    : rawData\n                \"\n                [ngTemplateOutletContext]=\"{\n                  row: column,\n                  column: row,\n                  transform: (table.config?.rows || {})[row.key].transform,\n                  templateRef: (table.config?.rows || {})[row.key].templateRef,\n                  index: i\n                }\"\n              >\n              </ng-container>\n            </td>\n          </tr>\n        </ng-container>\n      </ng-container>\n    </tbody>\n  </ng-container>\n</ng-template>\n<ng-template #noData>\n  <tbody>\n    <tr>\n      <td class=\"p-0\" [colSpan]=\"colspan$ | async\">\n        <ng-content select=\".table-no-data\"></ng-content>\n      </td>\n    </tr>\n  </tbody>\n</ng-template>\n<ng-template #highlighted let-row=\"row\" let-column=\"column\" let-search=\"search\">\n  <div [innerHTML]=\"row[column.key] | highlight: search\"></div>\n</ng-template>\n<ng-template #rawData let-row=\"row\" let-column=\"column\">\n  {{ row[column.key] }}\n</ng-template>\n<ng-template\n  #transformData\n  let-row=\"row\"\n  let-column=\"column\"\n  let-transform=\"transform\"\n>\n  {{ row[column.key] | dynamicPipe: transform.pipe:transform?.args }}\n</ng-template>\n<ng-template\n  #templateRef\n  let-row=\"row\"\n  let-column=\"column\"\n  let-index=\"index\"\n  let-templateRef=\"templateRef\"\n>\n  <ng-container\n    [ngTemplateOutlet]=\"templateRef\"\n    [ngTemplateOutletContext]=\"{ row: row, col: column, index: index }\"\n  ></ng-container>\n</ng-template>\n"
         },
         {
             "name": "CustomTemplatesComponent",
@@ -2274,7 +2291,7 @@
         },
         {
             "name": "NestedDataComponent",
-            "id": "component-NestedDataComponent-0368a30b14184803ea2d1e5c288b29d0fc90b2f4e6f1baf73ed33d59c8693c26bc54bc02b63091925149ae215c60fec485a68e38f44094b271b15b7942b1f79e",
+            "id": "component-NestedDataComponent-7254617e411c026cd7b5ff76b8fc2bda53c29a870fefe1c5d8ed801f7f065cec8c56e8528e34b4f2dcd4e9a261aec02538e155d3da09410adfb9c5d28a9e16bc",
             "file": "projects/docs/src/app/examples/nested-data/nested-data.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2284,7 +2301,7 @@
             "selector": "nested-data",
             "styleUrls": [],
             "styles": [],
-            "template": "<button class=\"btn btn-secondary\" (click)=\"loadData()\">Load other data</button>\n<angular-generic-table [data]=\"data\" [config]=\"config\"></angular-generic-table>\n<docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n<ng-template #gender let-row=\"row\" let-col=\"col\">\n  <div [ngSwitch]=\"row[col.key]\">\n    <ng-container *ngSwitchCase=\"'male'\">♂️</ng-container>\n    <ng-container *ngSwitchCase=\"'female'\">♀️</ng-container>\n  </div>\n</ng-template>\n",
+            "template": "<button class=\"btn btn-outline-primary mb-3\" (click)=\"loadData()\">Load other data</button>\n<angular-generic-table [data]=\"data\" [config]=\"config\"></angular-generic-table>\n<docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n<ng-template #gender let-row=\"row\" let-col=\"col\">\n  <div [ngSwitch]=\"row[col.key]\">\n    <ng-container *ngSwitchCase=\"'male'\">♂️</ng-container>\n    <ng-container *ngSwitchCase=\"'female'\">♀️</ng-container>\n  </div>\n</ng-template>\n",
             "templateUrl": [],
             "viewProviders": [],
             "inputsClass": [],
@@ -2365,7 +2382,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {NESTED_SNIPPETS} from \"./nested.snippets\";\nimport { Story } from '@storybook/angular/types-6-0';\nimport {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';\nimport {TableConfig, TableRows} from \"@angular-generic-table/core\";\n\n@Component({\n  selector: 'nested-data',\n  template: `\n    <button class=\"btn btn-secondary\" (click)=\"loadData()\">Load other data</button>\n    <angular-generic-table [data]=\"data\" [config]=\"config\"></angular-generic-table>\n    <docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n    <ng-template #gender let-row=\"row\" let-col=\"col\">\n      <div [ngSwitch]=\"row[col.key]\">\n        <ng-container *ngSwitchCase=\"'male'\">♂️</ng-container>\n        <ng-container *ngSwitchCase=\"'female'\">♀️</ng-container>\n      </div>\n    </ng-template>\n  `,\n  styles: [],\n})\nexport class NestedDataComponent implements OnInit {\n  @ViewChild('gender', { static: true }) gender: TemplateRef<any> | undefined;\n\n  config: TableConfig = {};\n  data: TableRows = [];\n  ngOnInit(): void {\n    this.data = [\n      {\n        name: {\n          first: 'Peter',\n          last: 'Parker',\n        },\n        data: {\n          details: {\n            gender: 'male',\n            favoriteFood: 'Pasta',\n          }\n        },\n      },\n      {\n        name: {\n          first: 'Mary Jane',\n          last: 'Watson',\n        },\n        data: {\n          details: {\n            gender: 'female',\n            favoriteFood: 'Pizza',\n          }\n        }\n      },\n    ];\n    this.config = {\n      columns: {\n        firstName: {\n          sortable: true,\n          mapTo: { path: 'name.first' }\n        },\n        lastName: {\n          mapTo: { path: 'name.last' }\n        },\n        gender: {\n          mapTo: { path: 'data.details.gender' },\n          templateRef: this.gender,\n\n        },\n        favoriteFood: {\n          mapTo: { path: 'data.details.favoriteFood', missingValue: 'n/a'  }\n        },\n        missing: {\n          mapTo: { path: 'data.missingKey.noMatch', missingValue: 'n/a' }\n        },\n      },\n    };\n  }\n\n  loadData(): void {\n    this.data = [\n      {\n        name: {\n          first: 'John',\n          last: 'Doe',\n        },\n        data: {\n          details: {\n            gender: 'male',\n            favoriteFood: 'Pasta',\n          }\n        },\n      },\n      {\n        name: {\n          first: 'Jane',\n          last: 'Doe',\n        },\n        data: {\n          details: {\n            gender: 'female',\n            favoriteFood: 'Pizza',\n          }\n        }\n      },\n      {\n        name: {\n          first: 'Foo',\n          last: 'Bar',\n        },\n        data: {}\n      },\n    ];\n  }\n\n  SNIPPETS = NESTED_SNIPPETS;\n}\n\nexport const Nested: Story<NestedDataComponent> = (args: NestedDataComponent) => ({\n  props: args,\n  component: NestedDataComponent,\n});\n",
+            "sourceCode": "import {NESTED_SNIPPETS} from \"./nested.snippets\";\nimport { Story } from '@storybook/angular/types-6-0';\nimport {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';\nimport {TableConfig, TableRows} from \"@angular-generic-table/core\";\n\n@Component({\n  selector: 'nested-data',\n  template: `\n    <button class=\"btn btn-outline-primary mb-3\" (click)=\"loadData()\">Load other data</button>\n    <angular-generic-table [data]=\"data\" [config]=\"config\"></angular-generic-table>\n    <docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n    <ng-template #gender let-row=\"row\" let-col=\"col\">\n      <div [ngSwitch]=\"row[col.key]\">\n        <ng-container *ngSwitchCase=\"'male'\">♂️</ng-container>\n        <ng-container *ngSwitchCase=\"'female'\">♀️</ng-container>\n      </div>\n    </ng-template>\n  `,\n  styles: [],\n})\nexport class NestedDataComponent implements OnInit {\n  @ViewChild('gender', { static: true }) gender: TemplateRef<any> | undefined;\n\n  config: TableConfig = {};\n  data: TableRows = [];\n  ngOnInit(): void {\n    this.data = [\n      {\n        name: {\n          first: 'Peter',\n          last: 'Parker',\n        },\n        data: {\n          details: {\n            gender: 'male',\n            favoriteFood: 'Pasta',\n          }\n        },\n      },\n      {\n        name: {\n          first: 'Mary Jane',\n          last: 'Watson',\n        },\n        data: {\n          details: {\n            gender: 'female',\n            favoriteFood: 'Pizza',\n          }\n        }\n      },\n    ];\n    this.config = {\n      columns: {\n        firstName: {\n          sortable: true,\n          mapTo: { path: 'name.first' }\n        },\n        lastName: {\n          mapTo: { path: 'name.last' }\n        },\n        gender: {\n          mapTo: { path: 'data.details.gender' },\n          templateRef: this.gender,\n\n        },\n        favoriteFood: {\n          mapTo: { path: 'data.details.favoriteFood', missingValue: 'n/a'  }\n        },\n        missing: {\n          mapTo: { path: 'data.missingKey.noMatch', missingValue: 'n/a' }\n        },\n      },\n    };\n  }\n\n  loadData(): void {\n    this.data = [\n      {\n        name: {\n          first: 'John',\n          last: 'Doe',\n        },\n        data: {\n          details: {\n            gender: 'male',\n            favoriteFood: 'Pasta',\n          }\n        },\n      },\n      {\n        name: {\n          first: 'Jane',\n          last: 'Doe',\n        },\n        data: {\n          details: {\n            gender: 'female',\n            favoriteFood: 'Pizza',\n          }\n        }\n      },\n      {\n        name: {\n          first: 'Foo',\n          last: 'Bar',\n        },\n        data: {}\n      },\n    ];\n  }\n\n  SNIPPETS = NESTED_SNIPPETS;\n}\n\nexport const Nested: Story<NestedDataComponent> = (args: NestedDataComponent) => ({\n  props: args,\n  component: NestedDataComponent,\n});\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -2375,7 +2392,7 @@
         },
         {
             "name": "PaginationComponent",
-            "id": "component-PaginationComponent-585222b5a5e9d0ae9a2d1590a9cee3123ca9f582b54ee5bd868d9b7e85f1a240e87ba893889466694fc8d57d541b63631401e9cd4ae63674f5dd890f36378caf",
+            "id": "component-PaginationComponent-102bbf376ed19ee42c47798d0e87316cebdfbc0f9f9f21637c4406d96645c9b9e646fa39657fd21594ba10dd95cf6221b2927ae775bed410e38e0831595c2b2c",
             "file": "projects/core/src/lib/pagination/pagination.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -2416,7 +2433,7 @@
                 },
                 {
                     "name": "pagination$",
-                    "defaultValue": "this.table$.pipe(\n    switchMap((core) => combineLatest([core?.table$.pipe(pluck('info')), core?.currentPage$])),\n    map(([info, currentPage]) => this.generateList(info.pageTotal, currentPage))\n  )",
+                    "defaultValue": "this.table$.pipe(\n    switchMap((core) =>\n      combineLatest([core?.table$.pipe(pluck('info')), core?.currentPage$])\n    ),\n    map(([info, currentPage]) => this.generateList(info.pageTotal, currentPage))\n  )",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
@@ -2455,7 +2472,7 @@
                     "optional": false,
                     "returnType": "Array<number>",
                     "typeParameters": [],
-                    "line": 27,
+                    "line": 29,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2492,7 +2509,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 53,
+                    "line": 61,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2515,7 +2532,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { ChangeDetectionStrategy, Component, Input } from '@angular/core';\nimport { combineLatest, ReplaySubject } from 'rxjs';\nimport { map, pluck, switchMap } from 'rxjs/operators';\nimport { CoreComponent } from '../core.component';\n\n@Component({\n  selector: 'angular-generic-table-pagination',\n  templateUrl: './pagination.component.html',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PaginationComponent {\n  get table(): CoreComponent | undefined {\n    return this._table;\n  }\n  @Input() set table(value: any) {\n    this._table = value;\n    this.table$.next(value);\n  }\n\n  table$: ReplaySubject<CoreComponent> = new ReplaySubject(1);\n  private _table: CoreComponent | undefined;\n  pagination$ = this.table$.pipe(\n    switchMap((core) => combineLatest([core?.table$.pipe(pluck('info')), core?.currentPage$])),\n    map(([info, currentPage]) => this.generateList(info.pageTotal, currentPage))\n  );\n\n  generateList(pages: number, currentPosition: number): Array<number> {\n    const paginationLength: 5 | 7 = 5;\n    const middle = Math.floor(paginationLength / 2);\n    const length = pages < paginationLength ? pages : paginationLength;\n\n    return Array.from({ length }, (_, i) => {\n      if (i === 0) {\n        return 1;\n      } else if (pages < paginationLength) {\n        return i + 1;\n      } else if (i + 1 === length) {\n        return pages;\n      } else if (currentPosition > middle && currentPosition < pages - middle) {\n        return i + currentPosition - (middle - 1);\n      } else if (currentPosition > middle && currentPosition < pages - (middle - 1)) {\n        return i + currentPosition - middle;\n      } else if (currentPosition > middle && currentPosition === pages - (middle - 1)) {\n        return i + currentPosition - (middle + 1);\n      } else if (currentPosition > middle && currentPosition === pages - 1) {\n        return i + currentPosition - (middle + 2);\n      } else {\n        return i + 1;\n      }\n    });\n  }\n\n  goto(page: number): void {\n    if (this.table) {\n      this.table.page = page - 1;\n    }\n  }\n}\n",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, Input } from '@angular/core';\nimport { combineLatest, ReplaySubject } from 'rxjs';\nimport { map, pluck, switchMap } from 'rxjs/operators';\nimport { CoreComponent } from '../core.component';\n\n@Component({\n  selector: 'angular-generic-table-pagination',\n  templateUrl: './pagination.component.html',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PaginationComponent {\n  get table(): CoreComponent | undefined {\n    return this._table;\n  }\n  @Input() set table(value: any) {\n    this._table = value;\n    this.table$.next(value);\n  }\n\n  table$: ReplaySubject<CoreComponent> = new ReplaySubject(1);\n  private _table: CoreComponent | undefined;\n  pagination$ = this.table$.pipe(\n    switchMap((core) =>\n      combineLatest([core?.table$.pipe(pluck('info')), core?.currentPage$])\n    ),\n    map(([info, currentPage]) => this.generateList(info.pageTotal, currentPage))\n  );\n\n  generateList(pages: number, currentPosition: number): Array<number> {\n    const paginationLength: 5 | 7 = 5;\n    const middle = Math.floor(paginationLength / 2);\n    const length = pages < paginationLength ? pages : paginationLength;\n\n    return Array.from({ length }, (_, i) => {\n      if (i === 0) {\n        return 1;\n      } else if (pages < paginationLength) {\n        return i + 1;\n      } else if (i + 1 === length) {\n        return pages;\n      } else if (currentPosition > middle && currentPosition < pages - middle) {\n        return i + currentPosition - (middle - 1);\n      } else if (\n        currentPosition > middle &&\n        currentPosition < pages - (middle - 1)\n      ) {\n        return i + currentPosition - middle;\n      } else if (\n        currentPosition > middle &&\n        currentPosition === pages - (middle - 1)\n      ) {\n        return i + currentPosition - (middle + 1);\n      } else if (currentPosition > middle && currentPosition === pages - 1) {\n        return i + currentPosition - (middle + 2);\n      } else {\n        return i + 1;\n      }\n    });\n  }\n\n  goto(page: number): void {\n    if (this.table) {\n      this.table.page = page - 1;\n    }\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -2739,7 +2756,7 @@
             "isDuplicate": true,
             "duplicateId": 1,
             "duplicateName": "PaginationComponent-1",
-            "templateData": "<form [formGroup]=\"paginationForm\">\n  <div class=\"form-row\">\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"length_input\">Length</label>\n      <input id=\"length_input\" formControlName=\"length\" type=\"number\" class=\"form-control\">\n    </div>\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"search_input\">Search</label>\n      <input id=\"search_input\" formControlName=\"search\" type=\"text\" class=\"form-control\">\n    </div>\n  </div>\n</form>\n<div class=\"mx-n3 mx-sm-0\">\n  <angular-generic-table [data]=\"data$\" [config]=\"tableConfig$\" [search]=\"search$\" [loading]=\"loading$\" #table>\n    <div class=\"table-loading skeleton-loader skeleton-loader-table\"></div>\n    <div class=\"table-no-data alert alert-info mt-3\">\n      Table is empty\n    </div>\n  </angular-generic-table>\n</div>\n<angular-generic-table-pagination [table]=\"table\">\n</angular-generic-table-pagination>\n<docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n"
+            "templateData": "<form [formGroup]=\"paginationForm\">\n  <div class=\"row\">\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"length_input\">Length</label>\n      <input\n        id=\"length_input\"\n        formControlName=\"length\"\n        type=\"number\"\n        class=\"form-control\"\n      />\n    </div>\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"search_input\">Search</label>\n      <input\n        id=\"search_input\"\n        formControlName=\"search\"\n        type=\"text\"\n        class=\"form-control\"\n      />\n    </div>\n  </div>\n</form>\n<div class=\"mx-n3 mx-sm-0\">\n  <angular-generic-table\n    [data]=\"data$\"\n    [config]=\"tableConfig$\"\n    [search]=\"search$\"\n    [loading]=\"loading$\"\n    #table\n  >\n    <div class=\"table-loading skeleton-loader skeleton-loader-table\"></div>\n    <div class=\"table-no-data alert alert-info mt-3\">Table is empty</div>\n  </angular-generic-table>\n</div>\n<angular-generic-table-pagination [table]=\"table\">\n</angular-generic-table-pagination>\n<docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n"
         },
         {
             "name": "SimpleComponent",
@@ -2973,7 +2990,7 @@
         },
         {
             "name": "TransposeComponent",
-            "id": "component-TransposeComponent-242be5f01c510d9ba9e1eb3afc5690137f27a753a3f55b1379dfff902d289ecd6af60851b26a5d5e8786425cbf7b492c09e0a0b1ba4f2d4d3e62c23d4debb98d",
+            "id": "component-TransposeComponent-c1bc4083339eb72a2db338e7ebf4f5f83ae72603b5d672a8c80592fbc5f205be77cfd6bd83f804f6e9232f4e104bb69bc1574dd010b827358f5f900408892f8d",
             "file": "projects/docs/src/app/examples/transpose/transpose.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -2983,7 +3000,7 @@
             "selector": "docs-transpose",
             "styleUrls": [],
             "styles": [],
-            "template": "<button class=\"btn btn-outline-primary\" (click)=\"simulateLoad()\">Simulate load</button>\n<button class=\"btn btn-outline-danger mx-3\" (click)=\"empty()\">Empty</button>\n<button class=\"btn btn-outline-primary\" (click)=\"load()\">Reset</button>\n<angular-generic-table [data]=\"data\" [config]=\"config\" [loading]=\"loading$\">\n  <div class=\"table-loading skeleton-loader skeleton-loader-table\"></div>\n  <div class=\"table-no-data alert alert-info mt-3\">Table is empty</div>\n</angular-generic-table>\n<ng-template #feelings let-row=\"row\" let-col=\"col\">\n  <div [ngSwitch]=\"row[col.key]\">\n    <ng-container *ngSwitchCase=\"'thrilled'\">😀</ng-container>\n    <ng-container *ngSwitchCase=\"'positive'\">🙂</ng-container>\n    <ng-container *ngSwitchCase=\"'neutral'\">😐</ng-container>\n    <ng-container *ngSwitchCase=\"'negative'\">😭</ng-container>\n  </div>\n</ng-template>\n<docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n",
+            "template": "<button class=\"btn btn-outline-primary\" (click)=\"simulateLoad()\">\n  Simulate load\n</button>\n<button class=\"btn btn-outline-danger mx-3\" (click)=\"empty()\">Empty</button>\n<button class=\"btn btn-outline-primary\" (click)=\"load()\">Reset</button>\n<angular-generic-table [data]=\"data\" [config]=\"config\" [loading]=\"loading$\">\n  <div class=\"table-loading skeleton-loader skeleton-loader-table\"></div>\n  <div class=\"table-no-data alert alert-info mt-3\">Table is empty</div>\n</angular-generic-table>\n<ng-template #feelings let-row=\"row\" let-col=\"col\">\n  <div [ngSwitch]=\"row[col.key]\">\n    <ng-container *ngSwitchCase=\"'thrilled'\">😀</ng-container>\n    <ng-container *ngSwitchCase=\"'positive'\">🙂</ng-container>\n    <ng-container *ngSwitchCase=\"'neutral'\">😐</ng-container>\n    <ng-container *ngSwitchCase=\"'negative'\">😭</ng-container>\n  </div>\n</ng-template>\n<docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n",
             "templateUrl": [],
             "viewProviders": [],
             "inputsClass": [],
@@ -2997,7 +3014,7 @@
                     "type": "TableConfig",
                     "optional": false,
                     "description": "",
-                    "line": 33
+                    "line": 37
                 },
                 {
                     "name": "data",
@@ -3007,7 +3024,7 @@
                     "type": "TableRows",
                     "optional": false,
                     "description": "",
-                    "line": 34
+                    "line": 38
                 },
                 {
                     "name": "feelings",
@@ -3016,7 +3033,7 @@
                     "type": "TemplateRef<any> | undefined",
                     "optional": false,
                     "description": "",
-                    "line": 31,
+                    "line": 33,
                     "decorators": [
                         {
                             "name": "ViewChild",
@@ -3032,7 +3049,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 32
+                    "line": 36
                 },
                 {
                     "name": "SNIPPETS",
@@ -3042,7 +3059,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 105
+                    "line": 110
                 }
             ],
             "methodsClass": [
@@ -3052,7 +3069,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 67,
+                    "line": 72,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -3062,7 +3079,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 70,
+                    "line": 75,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -3072,7 +3089,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 36,
+                    "line": 40,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -3082,7 +3099,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 62,
+                    "line": 67,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -3094,7 +3111,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { Story } from '@storybook/angular/types-6-0';\nimport { TRANSPOSE_SNIPPETS } from './transpose.snippets';\nimport { PercentPipe } from '@angular/common';\nimport { TableConfig, TableRows } from '@angular-generic-table/core';\nimport { BehaviorSubject } from 'rxjs';\n\n@Component({\n  selector: 'docs-transpose',\n  template: `\n    <button class=\"btn btn-outline-primary\" (click)=\"simulateLoad()\">Simulate load</button>\n    <button class=\"btn btn-outline-danger mx-3\" (click)=\"empty()\">Empty</button>\n    <button class=\"btn btn-outline-primary\" (click)=\"load()\">Reset</button>\n    <angular-generic-table [data]=\"data\" [config]=\"config\" [loading]=\"loading$\">\n      <div class=\"table-loading skeleton-loader skeleton-loader-table\"></div>\n      <div class=\"table-no-data alert alert-info mt-3\">Table is empty</div>\n    </angular-generic-table>\n    <ng-template #feelings let-row=\"row\" let-col=\"col\">\n      <div [ngSwitch]=\"row[col.key]\">\n        <ng-container *ngSwitchCase=\"'thrilled'\">😀</ng-container>\n        <ng-container *ngSwitchCase=\"'positive'\">🙂</ng-container>\n        <ng-container *ngSwitchCase=\"'neutral'\">😐</ng-container>\n        <ng-container *ngSwitchCase=\"'negative'\">😭</ng-container>\n      </div>\n    </ng-template>\n    <docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n  `,\n  styles: [],\n})\nexport class TransposeComponent implements OnInit {\n  @ViewChild('feelings', { static: true }) feelings: TemplateRef<any> | undefined;\n  loading$ = new BehaviorSubject(false);\n  config: TableConfig = {};\n  data: TableRows = [];\n\n  ngOnInit(): void {\n    this.config = {\n      rows: {\n        year: {\n          class: 'text-right',\n          header: false,\n        },\n        value: {\n          class: 'text-right',\n        },\n        change: {\n          header: 'Change %',\n          transform: {\n            pipe: PercentPipe,\n            args: [],\n          },\n          class: 'text-right',\n        },\n        feeling: {\n          templateRef: this.feelings,\n          class: 'text-right',\n        },\n      },\n    };\n    this.load();\n  }\n  simulateLoad(): void {\n    this.loading$.next(true);\n    // set loading state to false after 2 seconds\n    setTimeout(() => this.loading$.next(false), 2000);\n  }\n  empty(): void {\n    this.data = [];\n  }\n  load(): void {\n    this.data = [\n      {\n        year: '2017',\n        value: 50,\n        change: 0.5,\n        feeling: 'thrilled',\n      },\n      {\n        year: '2018',\n        value: 75,\n        change: 0.33,\n        feeling: 'positive',\n      },\n      {\n        year: '2019',\n        value: 100,\n        change: 1.5,\n        feeling: 'thrilled',\n      },\n      {\n        year: '2020',\n        value: 250,\n        change: -0.8,\n        feeling: 'negative',\n      },\n      {\n        year: '2021',\n        value: 50,\n        change: null,\n        feeling: 'neutral',\n      },\n    ];\n  }\n\n  SNIPPETS = TRANSPOSE_SNIPPETS;\n}\n\nexport const Horizontal: Story<TransposeComponent> = (args: TransposeComponent) => ({\n  props: args,\n  component: TransposeComponent,\n});\n",
+            "sourceCode": "import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { Story } from '@storybook/angular/types-6-0';\nimport { TRANSPOSE_SNIPPETS } from './transpose.snippets';\nimport { PercentPipe } from '@angular/common';\nimport { TableConfig, TableRows } from '@angular-generic-table/core';\nimport { BehaviorSubject } from 'rxjs';\n\n@Component({\n  selector: 'docs-transpose',\n  template: `\n    <button class=\"btn btn-outline-primary\" (click)=\"simulateLoad()\">\n      Simulate load\n    </button>\n    <button class=\"btn btn-outline-danger mx-3\" (click)=\"empty()\">Empty</button>\n    <button class=\"btn btn-outline-primary\" (click)=\"load()\">Reset</button>\n    <angular-generic-table [data]=\"data\" [config]=\"config\" [loading]=\"loading$\">\n      <div class=\"table-loading skeleton-loader skeleton-loader-table\"></div>\n      <div class=\"table-no-data alert alert-info mt-3\">Table is empty</div>\n    </angular-generic-table>\n    <ng-template #feelings let-row=\"row\" let-col=\"col\">\n      <div [ngSwitch]=\"row[col.key]\">\n        <ng-container *ngSwitchCase=\"'thrilled'\">😀</ng-container>\n        <ng-container *ngSwitchCase=\"'positive'\">🙂</ng-container>\n        <ng-container *ngSwitchCase=\"'neutral'\">😐</ng-container>\n        <ng-container *ngSwitchCase=\"'negative'\">😭</ng-container>\n      </div>\n    </ng-template>\n    <docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n  `,\n  styles: [],\n})\nexport class TransposeComponent implements OnInit {\n  @ViewChild('feelings', { static: true }) feelings:\n    | TemplateRef<any>\n    | undefined;\n  loading$ = new BehaviorSubject(false);\n  config: TableConfig = {};\n  data: TableRows = [];\n\n  ngOnInit(): void {\n    this.config = {\n      mobileLayout: true,\n      rows: {\n        year: {\n          class: 'text-right',\n          header: false,\n        },\n        value: {\n          class: 'text-right',\n        },\n        change: {\n          header: 'Change %',\n          transform: {\n            pipe: PercentPipe,\n            args: [],\n          },\n          class: 'text-right',\n        },\n        feeling: {\n          templateRef: this.feelings,\n          class: 'text-right',\n        },\n      },\n    };\n    this.load();\n  }\n  simulateLoad(): void {\n    this.loading$.next(true);\n    // set loading state to false after 2 seconds\n    setTimeout(() => this.loading$.next(false), 2000);\n  }\n  empty(): void {\n    this.data = [];\n  }\n  load(): void {\n    this.data = [\n      {\n        year: '2017',\n        value: 50,\n        change: 0.5,\n        feeling: 'thrilled',\n      },\n      {\n        year: '2018',\n        value: 75,\n        change: 0.33,\n        feeling: 'positive',\n      },\n      {\n        year: '2019',\n        value: 100,\n        change: 1.5,\n        feeling: 'thrilled',\n      },\n      {\n        year: '2020',\n        value: 250,\n        change: -0.8,\n        feeling: 'negative',\n      },\n      {\n        year: '2021',\n        value: 50,\n        change: null,\n        feeling: 'neutral',\n      },\n    ];\n  }\n\n  SNIPPETS = TRANSPOSE_SNIPPETS;\n}\n\nexport const Horizontal: Story<TransposeComponent> = (\n  args: TransposeComponent\n) => ({\n  props: args,\n  component: TransposeComponent,\n});\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -3217,13 +3234,13 @@
         },
         {
             "name": "GenericTableCoreModule",
-            "id": "module-GenericTableCoreModule-f48995d25178a40996b4dd9bd48332aeaa61ea9cca67f19a2d0e27a2832273fa74dee140f635991aee277c438cb426c90e020536a2ae4d56ead6d459f0119b40",
+            "id": "module-GenericTableCoreModule-efb81996a789bd17daf4b4c3203041c1dfa6e76dda2796bdeb052928658ab24b512ec0c46e590c513c613fe45c95c2d0f4e36e1fe458167efdd99ff496bf95cd",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "projects/core/src/lib/core.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CoreComponent } from './core.component';\nimport { CommonModule } from '@angular/common';\nimport { SortClassPipe } from './pipes/sort-class.pipe';\nimport { DashCasePipe } from './pipes/dash-case.pipe';\nimport { HighlightPipe } from './pipes/highlight.pipe';\nimport { CapitalCasePipe } from './pipes/capital-case.pipe';\nimport { DynamicPipe } from './pipes/dynamic.pipe';\n\n@NgModule({\n  declarations: [CoreComponent, SortClassPipe, DashCasePipe, HighlightPipe, CapitalCasePipe, CapitalCasePipe, DynamicPipe],\n  imports: [CommonModule],\n  exports: [CoreComponent],\n})\nexport class GenericTableCoreModule {}\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CoreComponent } from './core.component';\nimport { CommonModule } from '@angular/common';\nimport { SortClassPipe } from './pipes/sort-class.pipe';\nimport { DashCasePipe } from './pipes/dash-case.pipe';\nimport { HighlightPipe } from './pipes/highlight.pipe';\nimport { CapitalCasePipe } from './pipes/capital-case.pipe';\nimport { DynamicPipe } from './pipes/dynamic.pipe';\n\n@NgModule({\n  declarations: [\n    CoreComponent,\n    SortClassPipe,\n    DashCasePipe,\n    HighlightPipe,\n    CapitalCasePipe,\n    CapitalCasePipe,\n    DynamicPipe,\n  ],\n  imports: [CommonModule],\n  exports: [CoreComponent],\n})\nexport class GenericTableCoreModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -3342,7 +3359,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<AdvancedComponent>",
-                "defaultValue": "(args: AdvancedComponent) => ({\n  props: args,\n  component: AdvancedComponent,\n})"
+                "defaultValue": "(\n  args: AdvancedComponent\n) => ({\n  props: args,\n  component: AdvancedComponent,\n})"
             },
             {
                 "name": "ADVANCED_DOCS",
@@ -3352,7 +3369,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "[]",
-                "defaultValue": "[\n  {\n    name: 'advanced.component.html',\n    code: `<div class=\"form-row mb-3\">\n  <div class=\"col col-sm-auto\">\n    <button class=\"btn btn-primary w-100\" (click)=\"addData()\">Add random data</button>\n  </div>\n  <div class=\"col col-sm-auto\">\n    <button class=\"btn btn-danger w-100\" (click)=\"removeData()\">Remove data</button>\n  </div>\n  <div class=\"col col-sm-auto\">\n    <button class=\"btn btn-secondary w-100\" (click)=\"simulateLoad()\">Load</button>\n  </div>\n</div>\n<form [formGroup]=\"paginationForm\">\n  <div class=\"form-row\">\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"length_input\">Length</label>\n      <input id=\"length_input\" formControlName=\"length\" type=\"number\" class=\"form-control\">\n    </div>\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"search_input\">Search</label>\n      <input id=\"search_input\" formControlName=\"search\" type=\"text\" class=\"form-control\">\n    </div>\n  </div>\n</form>\n<div class=\"mx-n3 mx-sm-0\">\n  <angular-generic-table [data]=\"data$\" [config]=\"tableConfig$\" [page]=\"(currentPage$ | async)!\" [search]=\"search$\" [loading]=\"loading$\" #table>\n    <div class=\"table-loading skeleton-loader skeleton-loader-table\"></div>\n    <div class=\"table-no-data alert alert-info mt-3\">\n      Table is empty\n    </div>\n  </angular-generic-table>\n</div>\n<div class=\"row justify-content-between justify-content-sm-center align-items-center mt-3\" *ngIf=\"{current: (currentPage$ | async) || 0,total: (table.table$ | async)?.info?.pageTotal || 1\n} as pagination\">\n  <div class=\"col-auto\">\n    <button class=\"btn btn-primary\" (click)=\"prev()\" [disabled]=\"pagination.current === 0\">Prev</button>\n  </div>\n  <div class=\"col-auto\">\n    <button class=\"btn btn-primary\" (click)=\"next()\" [disabled]=\"pagination.total -1 === pagination.current\">Next</button>\n  </div>\n  <div class=\"col-auto\">Current page: {{pagination.current +1}}</div>\n  <div class=\"col-auto\">Total pages: {{pagination.total}}</div>\n  <div class=\"col-auto\">\n    Records: {{(data$ | async).length}}\n  </div>\n  <div class=\"col-auto\">\n    {{clicked}}\n  </div>\n</div>\n<ng-template #actions let-row=\"row\" let-col=\"col\" let-index=\"index\">\n  <button class=\"btn btn-outline-primary btn-sm my-sm-n3\" (click)=\"clickAction(row, col, index)\">Click me!</button>\n</ng-template>\n<ng-template #color let-row=\"row\" let-col=\"col\">\n  <div [style.background]=\"row[col.key]\" style=\"width: 1.5rem; height: 1.5rem; border-radius: 50%\"></div>\n</ng-template>`,\n    language: 'xml',\n  },\n  {\n    name: 'advanced.component.ts',\n    code: `import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';\nimport { FormBuilder } from '@angular/forms';\nimport { TableColumn, TableConfig, TableRow } from '@angular-generic-table/core';\nimport { withLatestFrom } from 'rxjs/operators';\n\n@Component({\n  selector: 'docs-advanced',\n  templateUrl: './advanced.component.html',\n  styles: [],\n})\nexport class AdvancedComponent implements OnInit {\n  get currentPage$(): Observable<number> {\n    return this._currentPage$.asObservable();\n  }\n\n  set currentPage(value: number) {\n    this._currentPage$.next(value);\n  }\n  constructor(private fb: FormBuilder) {}\n  @ViewChild('actions', { static: true }) actions: TemplateRef<any> | undefined;\n  @ViewChild('color', { static: true }) color: TemplateRef<any> | undefined;\n  paginationForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.paginationForm.get('search')?.valueChanges as Observable<string>;\n  loading$ = new BehaviorSubject(true);\n  data$: BehaviorSubject<any> = new BehaviorSubject([\n    {\n      firstName: 'Peter',\n      lastName: 'Parker',\n      gender: 'male',\n      favoriteColor: '#26BFAF',\n      favoriteFood: 'Pasta',\n    },\n    {\n      firstName: 'Mary Jane',\n      lastName: 'Watson',\n      gender: 'female',\n      favoriteColor: '#0f0',\n      favoriteFood: 'Pizza',\n    },\n  ]);\n\n  private _currentPage$ = new BehaviorSubject(0);\n\n  clicked: string = '';\n  maleFirstNames = ['Peter', 'Clark', 'Ruben', 'John', 'Jack', 'Roscoe'];\n  femaleFirstNames = ['Mary Jane', 'Kim', 'Sarah', 'Michelle', 'Ann'];\n  lastNames = ['Andersson', 'Smith', 'Parker', 'Kent', 'Rogers', 'Lane', 'Jackson'];\n  foods = ['Pizza', 'Pasta', 'Hamburger', 'Pancakes', 'Tacos', 'Lasagna', 'Meatloaf'];\n  colors = ['#33d60b', '#dcafff', '#3fc9ff', '#ff1600', '#5238b1', '#fff'];\n\n  tableConfig$: ReplaySubject<TableConfig> = new ReplaySubject(1);\n\n  addData(): void {\n    this.data$.next([...this.data$.getValue(), this.randomRecord()]);\n  }\n\n  removeData(): void {\n    this.data$.next([]);\n  }\n\n  simulateLoad(): void {\n    this.loading$.next(true);\n    // set loading state to false after 2 seconds\n    setTimeout(() => this.loading$.next(false), 2000);\n  }\n\n  clickAction(row: TableRow, column: { key: string; value: TableColumn }, index: number): void {\n    console.log('clicked row:', row, 'col:', column);\n    this.clicked = \\`clicked row number: \\${index}\\`;\n  }\n\n  randomRecord(): TableRow {\n    const random = Math.floor(Math.random() * 2);\n    const newRecord = {\n      firstName: random\n        ? this.maleFirstNames[Math.floor(Math.random() * this.maleFirstNames.length)]\n        : this.femaleFirstNames[Math.floor(Math.random() * this.femaleFirstNames.length)],\n      lastName: this.lastNames[Math.floor(Math.random() * this.lastNames.length)],\n      gender: random ? 'male' : 'female',\n      favoriteColor: this.colors[Math.floor(Math.random() * this.colors.length)],\n      favoriteFood: this.foods[Math.floor(Math.random() * this.foods.length)],\n    };\n    console.log('added new random record:', newRecord);\n\n    return newRecord;\n  }\n\n  next = () => {\n    this.currentPage = this._currentPage$.value + 1;\n  };\n  prev = () => {\n    this.currentPage = this._currentPage$.value - 1;\n  };\n\n  ngOnInit(): void {\n    this.simulateLoad();\n    this.paginationForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n    this.tableConfig$.next({\n      class: 'table table-mobile text-nowrap mb-0',\n      columns: {\n        firstName: {\n          header: 'First name',\n          mobileHeader: true,\n          sortable: true,\n          order: 0,\n        },\n        lastName: {\n          header: 'Last name',\n          mobileHeader: true,\n          hidden: false,\n          sortable: true,\n        },\n        gender: {\n          mobileHeader: 'Sex',\n          sortable: true,\n          order: 1,\n        },\n        favoriteColor: {\n          header: 'Favorite color',\n          mobileHeader: true,\n          templateRef: this.color,\n          sortable: false,\n          order: 2,\n          search: false,\n          class: 'custom-class',\n        },\n        favoriteFood: {\n          mobileHeader: true,\n          header: 'Favorite food',\n          hidden: false,\n          sortable: true,\n          order: 0,\n        },\n        action: {\n          mobileHeader: false,\n          header: false,\n          templateRef: this.actions,\n          order: 6,\n        },\n      },\n      pagination: {\n        length: this.paginationForm.get('length')?.value || 0,\n      },\n    });\n  }\n}`,\n    language: 'typescript',\n  },\n  {\n    name: 'app.module.ts',\n    code: `import { BrowserModule } from '@angular/platform-browser';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\n\nimport { AdvancedComponent } from './advanced.component';\nimport { GenericTableCoreModule } from '@angular-generic-table/core';\n\n@NgModule({\n  declarations: [AdvancedComponent],\n  imports: [BrowserModule, ReactiveFormsModule, GenericTableCoreModule],\n  bootstrap: [AdvancedComponent]\n})\nexport class AppModule {}`,\n    language: 'typescript',\n  },\n]"
+                "defaultValue": "[\n  {\n    name: 'advanced.component.html',\n    code: `<div class=\"row mb-3\">\n  <div class=\"col col-sm-auto\">\n    <button class=\"btn btn-primary w-100\" (click)=\"addData()\">Add random data</button>\n  </div>\n  <div class=\"col col-sm-auto\">\n    <button class=\"btn btn-danger w-100\" (click)=\"removeData()\">Remove data</button>\n  </div>\n  <div class=\"col col-sm-auto\">\n    <button class=\"btn btn-secondary w-100\" (click)=\"simulateLoad()\">Load</button>\n  </div>\n</div>\n<form [formGroup]=\"paginationForm\">\n  <div class=\"row\">\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"length_input\">Length</label>\n      <input id=\"length_input\" formControlName=\"length\" type=\"number\" class=\"form-control\">\n    </div>\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"search_input\">Search</label>\n      <input id=\"search_input\" formControlName=\"search\" type=\"text\" class=\"form-control\">\n    </div>\n  </div>\n</form>\n<div class=\"mx-n3 mx-sm-0\">\n  <angular-generic-table [data]=\"data$\" [config]=\"tableConfig$\" [page]=\"(currentPage$ | async)!\" [search]=\"search$\" [loading]=\"loading$\" #table>\n    <div class=\"table-loading skeleton-loader skeleton-loader-table\"></div>\n    <div class=\"table-no-data alert alert-info mt-3\">\n      Table is empty\n    </div>\n  </angular-generic-table>\n</div>\n<div class=\"row justify-content-between justify-content-sm-center align-items-center mt-3\" *ngIf=\"{current: (currentPage$ | async) || 0,total: (table.table$ | async)?.info?.pageTotal || 1\n} as pagination\">\n  <div class=\"col-auto\">\n    <button class=\"btn btn-primary\" (click)=\"prev()\" [disabled]=\"pagination.current === 0\">Prev</button>\n  </div>\n  <div class=\"col-auto\">\n    <button class=\"btn btn-primary\" (click)=\"next()\" [disabled]=\"pagination.total -1 === pagination.current\">Next</button>\n  </div>\n  <div class=\"col-auto\">Current page: {{pagination.current +1}}</div>\n  <div class=\"col-auto\">Total pages: {{pagination.total}}</div>\n  <div class=\"col-auto\">\n    Records: {{(data$ | async).length}}\n  </div>\n  <div class=\"col-auto\">\n    {{clicked}}\n  </div>\n</div>\n<ng-template #actions let-row=\"row\" let-col=\"col\" let-index=\"index\">\n  <button class=\"btn btn-outline-primary btn-sm my-sm-n3\" (click)=\"clickAction(row, col, index)\">Click me!</button>\n</ng-template>\n<ng-template #color let-row=\"row\" let-col=\"col\">\n  <div [style.background]=\"row[col.key]\" style=\"width: 1.5rem; height: 1.5rem; border-radius: 50%\"></div>\n</ng-template>`,\n    language: 'xml',\n  },\n  {\n    name: 'advanced.component.ts',\n    code: `import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';\nimport { FormBuilder } from '@angular/forms';\nimport { TableColumn, TableConfig, TableRow } from '@angular-generic-table/core';\nimport { withLatestFrom } from 'rxjs/operators';\n\n@Component({\n  selector: 'docs-advanced',\n  templateUrl: './advanced.component.html',\n  styles: [],\n})\nexport class AdvancedComponent implements OnInit {\n  get currentPage$(): Observable<number> {\n    return this._currentPage$.asObservable();\n  }\n\n  set currentPage(value: number) {\n    this._currentPage$.next(value);\n  }\n  constructor(private fb: FormBuilder) {}\n  @ViewChild('actions', { static: true }) actions: TemplateRef<any> | undefined;\n  @ViewChild('color', { static: true }) color: TemplateRef<any> | undefined;\n  paginationForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.paginationForm.get('search')?.valueChanges as Observable<string>;\n  loading$ = new BehaviorSubject(true);\n  data$: BehaviorSubject<any> = new BehaviorSubject([\n    {\n      firstName: 'Peter',\n      lastName: 'Parker',\n      gender: 'male',\n      favoriteColor: '#26BFAF',\n      favoriteFood: 'Pasta',\n    },\n    {\n      firstName: 'Mary Jane',\n      lastName: 'Watson',\n      gender: 'female',\n      favoriteColor: '#0f0',\n      favoriteFood: 'Pizza',\n    },\n  ]);\n\n  private _currentPage$ = new BehaviorSubject(0);\n\n  clicked: string = '';\n  maleFirstNames = ['Peter', 'Clark', 'Ruben', 'John', 'Jack', 'Roscoe'];\n  femaleFirstNames = ['Mary Jane', 'Kim', 'Sarah', 'Michelle', 'Ann'];\n  lastNames = ['Andersson', 'Smith', 'Parker', 'Kent', 'Rogers', 'Lane', 'Jackson'];\n  foods = ['Pizza', 'Pasta', 'Hamburger', 'Pancakes', 'Tacos', 'Lasagna', 'Meatloaf'];\n  colors = ['#33d60b', '#dcafff', '#3fc9ff', '#ff1600', '#5238b1', '#fff'];\n\n  tableConfig$: ReplaySubject<TableConfig> = new ReplaySubject(1);\n\n  addData(): void {\n    this.data$.next([...this.data$.getValue(), this.randomRecord()]);\n  }\n\n  removeData(): void {\n    this.data$.next([]);\n  }\n\n  simulateLoad(): void {\n    this.loading$.next(true);\n    // set loading state to false after 2 seconds\n    setTimeout(() => this.loading$.next(false), 2000);\n  }\n\n  clickAction(row: TableRow, column: { key: string; value: TableColumn }, index: number): void {\n    console.log('clicked row:', row, 'col:', column);\n    this.clicked = \\`clicked row number: \\${index}\\`;\n  }\n\n  randomRecord(): TableRow {\n    const random = Math.floor(Math.random() * 2);\n    const newRecord = {\n      firstName: random\n        ? this.maleFirstNames[Math.floor(Math.random() * this.maleFirstNames.length)]\n        : this.femaleFirstNames[Math.floor(Math.random() * this.femaleFirstNames.length)],\n      lastName: this.lastNames[Math.floor(Math.random() * this.lastNames.length)],\n      gender: random ? 'male' : 'female',\n      favoriteColor: this.colors[Math.floor(Math.random() * this.colors.length)],\n      favoriteFood: this.foods[Math.floor(Math.random() * this.foods.length)],\n    };\n    console.log('added new random record:', newRecord);\n\n    return newRecord;\n  }\n\n  next = () => {\n    this.currentPage = this._currentPage$.value + 1;\n  };\n  prev = () => {\n    this.currentPage = this._currentPage$.value - 1;\n  };\n\n  ngOnInit(): void {\n    this.simulateLoad();\n    this.paginationForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n    this.tableConfig$.next({\n      class: 'table table-mobile text-nowrap mb-0',\n      columns: {\n        firstName: {\n          header: 'First name',\n          mobileHeader: true,\n          sortable: true,\n          order: 0,\n        },\n        lastName: {\n          header: 'Last name',\n          mobileHeader: true,\n          hidden: false,\n          sortable: true,\n        },\n        gender: {\n          mobileHeader: 'Sex',\n          sortable: true,\n          order: 1,\n        },\n        favoriteColor: {\n          header: 'Favorite color',\n          mobileHeader: true,\n          templateRef: this.color,\n          sortable: false,\n          order: 2,\n          search: false,\n          class: 'custom-class',\n        },\n        favoriteFood: {\n          mobileHeader: true,\n          header: 'Favorite food',\n          hidden: false,\n          sortable: true,\n          order: 0,\n        },\n        action: {\n          mobileHeader: false,\n          header: false,\n          templateRef: this.actions,\n          order: 6,\n        },\n      },\n      pagination: {\n        length: this.paginationForm.get('length')?.value || 0,\n      },\n    });\n  }\n}`,\n    language: 'typescript',\n  },\n  {\n    name: 'app.module.ts',\n    code: `import { BrowserModule } from '@angular/platform-browser';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\n\nimport { AdvancedComponent } from './advanced.component';\nimport { GenericTableCoreModule } from '@angular-generic-table/core';\n\n@NgModule({\n  declarations: [AdvancedComponent],\n  imports: [BrowserModule, ReactiveFormsModule, GenericTableCoreModule],\n  bootstrap: [AdvancedComponent]\n})\nexport class AppModule {}`,\n    language: 'typescript',\n  },\n]"
             },
             {
                 "name": "ADVANCED_DOCS",
@@ -3362,7 +3379,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "[]",
-                "defaultValue": "[\n  {\n    name: 'pagination.component.html',\n    code: `<form [formGroup]=\"paginationForm\">\n  <div class=\"form-row\">\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"length_input\">Length</label>\n      <input id=\"length_input\" formControlName=\"length\" type=\"number\" class=\"form-control\">\n    </div>\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"search_input\">Search</label>\n      <input id=\"search_input\" formControlName=\"search\" type=\"text\" class=\"form-control\">\n    </div>\n  </div>\n</form>\n<div class=\"mx-n3 mx-sm-0\">\n  <angular-generic-table [data]=\"data$\" [config]=\"tableConfig$\" [search]=\"search$\" [loading]=\"loading$\" #table>\n    <div class=\"table-loading skeleton-loader skeleton-loader-table\"></div>\n    <div class=\"table-no-data alert alert-info mt-3\">\n      Table is empty\n    </div>\n  </angular-generic-table>\n</div>\n<angular-generic-table-pagination [table]=\"table\">\n</angular-generic-table-pagination>`,\n    language: 'xml',\n  },\n  {\n    name: 'pagination.component.ts',\n    code: `import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';\nimport { FormBuilder } from '@angular/forms';\nimport { TableConfig } from '@angular-generic-table/core';\nimport { pluck, tap, withLatestFrom } from 'rxjs/operators';\nimport { HttpClient } from '@angular/common/http';\nimport { DatePipe } from '@angular/common';\n\n@Component({\n  selector: 'docs-pagination',\n  templateUrl: './pagination.component.html',\n  styles: [],\n})\nexport class PaginationComponent implements OnInit {\n  constructor(private fb: FormBuilder, private http: HttpClient) {}\n  @ViewChild('actions', { static: true }) actions: TemplateRef<any> | undefined;\n  @ViewChild('color', { static: true }) color: TemplateRef<any> | undefined;\n  paginationForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.paginationForm.get('search')?.valueChanges as Observable<string>;\n  loading$ = new BehaviorSubject(true);\n  data$: Observable<any> = this.http.get('https://private-730c61-generictable.apiary-mock.com/data').pipe(\n    pluck('data'),\n    tap((_) => this.loading$.next(false))\n  );\n\n  tableConfig$: ReplaySubject<TableConfig> = new ReplaySubject(1);\n\n  ngOnInit(): void {\n    this.paginationForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n    this.tableConfig$.next({\n      class: 'table table-mobile text-nowrap mb-0',\n      columns: {\n        first_name: {\n          mobileHeader: true,\n          sortable: true,\n        },\n        last_name: {\n          mobileHeader: true,\n          sortable: true,\n        },\n        gender: {\n          mobileHeader: 'Sex',\n          sortable: true,\n        },\n        birthday: {\n          mobileHeader: true,\n          sortable: true,\n          class: 'text-right',\n          transform: {\n            pipe: DatePipe,\n            args: ['longDate'],\n          },\n        },\n      },\n      pagination: {\n        length: this.paginationForm.get('length')?.value || 0,\n      },\n    });\n  }\n}`,\n    language: 'typescript',\n  },\n  {\n    name: 'app.module.ts',\n    code: `import { BrowserModule } from '@angular/platform-browser';\nimport { NgModule } from '@angular/core';\nimport { HttpClientModule } from '@angular/common/http';\nimport { ReactiveFormsModule } from '@angular/forms';\n\nimport { PaginationComponent } from './pagination.component';\nimport { GenericTableCoreModule, GenericTablePaginationModule } from '@angular-generic-table/core';\n\n@NgModule({\n  declarations: [PaginationComponent],\n  imports: [\n    BrowserModule,\n    GenericTableCoreModule,\n    GenericTablePaginationModule,\n    ReactiveFormsModule,\n    HttpClientModule\n  ],\n  bootstrap: [PaginationComponent]\n})\nexport class AppModule {}`,\n    language: 'typescript',\n  },\n]"
+                "defaultValue": "[\n  {\n    name: 'pagination.component.html',\n    code: `<form [formGroup]=\"paginationForm\">\n  <div class=\"row\">\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"length_input\">Length</label>\n      <input id=\"length_input\" formControlName=\"length\" type=\"number\" class=\"form-control\">\n    </div>\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"search_input\">Search</label>\n      <input id=\"search_input\" formControlName=\"search\" type=\"text\" class=\"form-control\">\n    </div>\n  </div>\n</form>\n<div class=\"mx-n3 mx-sm-0\">\n  <angular-generic-table [data]=\"data$\" [config]=\"tableConfig$\" [search]=\"search$\" [loading]=\"loading$\" #table>\n    <div class=\"table-loading skeleton-loader skeleton-loader-table\"></div>\n    <div class=\"table-no-data alert alert-info mt-3\">\n      Table is empty\n    </div>\n  </angular-generic-table>\n</div>\n<angular-generic-table-pagination [table]=\"table\">\n</angular-generic-table-pagination>`,\n    language: 'xml',\n  },\n  {\n    name: 'pagination.component.ts',\n    code: `import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';\nimport { FormBuilder } from '@angular/forms';\nimport { TableConfig } from '@angular-generic-table/core';\nimport { pluck, tap, withLatestFrom } from 'rxjs/operators';\nimport { HttpClient } from '@angular/common/http';\nimport { DatePipe } from '@angular/common';\n\n@Component({\n  selector: 'docs-pagination',\n  templateUrl: './pagination.component.html',\n  styles: [],\n})\nexport class PaginationComponent implements OnInit {\n  constructor(private fb: FormBuilder, private http: HttpClient) {}\n  @ViewChild('actions', { static: true }) actions: TemplateRef<any> | undefined;\n  @ViewChild('color', { static: true }) color: TemplateRef<any> | undefined;\n  paginationForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.paginationForm.get('search')?.valueChanges as Observable<string>;\n  loading$ = new BehaviorSubject(true);\n  data$: Observable<any> = this.http.get('https://private-730c61-generictable.apiary-mock.com/data').pipe(\n    pluck('data'),\n    tap((_) => this.loading$.next(false))\n  );\n\n  tableConfig$: ReplaySubject<TableConfig> = new ReplaySubject(1);\n\n  ngOnInit(): void {\n    this.paginationForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n    this.tableConfig$.next({\n      class: 'table table-mobile text-nowrap mb-0',\n      columns: {\n        first_name: {\n          mobileHeader: true,\n          sortable: true,\n        },\n        last_name: {\n          mobileHeader: true,\n          sortable: true,\n        },\n        gender: {\n          mobileHeader: 'Sex',\n          sortable: true,\n        },\n        birthday: {\n          mobileHeader: true,\n          sortable: true,\n          class: 'text-right',\n          transform: {\n            pipe: DatePipe,\n            args: ['longDate'],\n          },\n        },\n      },\n      pagination: {\n        length: this.paginationForm.get('length')?.value || 0,\n      },\n    });\n  }\n}`,\n    language: 'typescript',\n  },\n  {\n    name: 'app.module.ts',\n    code: `import { BrowserModule } from '@angular/platform-browser';\nimport { NgModule } from '@angular/core';\nimport { HttpClientModule } from '@angular/common/http';\nimport { ReactiveFormsModule } from '@angular/forms';\n\nimport { PaginationComponent } from './pagination.component';\nimport { GenericTableCoreModule, GenericTablePaginationModule } from '@angular-generic-table/core';\n\n@NgModule({\n  declarations: [PaginationComponent],\n  imports: [\n    BrowserModule,\n    GenericTableCoreModule,\n    GenericTablePaginationModule,\n    ReactiveFormsModule,\n    HttpClientModule\n  ],\n  bootstrap: [PaginationComponent]\n})\nexport class AppModule {}`,\n    language: 'typescript',\n  },\n]"
             },
             {
                 "name": "capitalize",
@@ -3386,7 +3403,7 @@
                 "name": "context",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/docs/src/test.ts",
+                "file": "projects/core/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -3396,7 +3413,7 @@
                 "name": "context",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/core/src/test.ts",
+                "file": "projects/docs/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -3459,7 +3476,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<TransposeComponent>",
-                "defaultValue": "(args: TransposeComponent) => ({\n  props: args,\n  component: TransposeComponent,\n})"
+                "defaultValue": "(\n  args: TransposeComponent\n) => ({\n  props: args,\n  component: TransposeComponent,\n})"
             },
             {
                 "name": "Mobile",
@@ -3499,7 +3516,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "[]",
-                "defaultValue": "[\n  {\n    name: 'nested-data.component.ts',\n    code: `import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';\nimport {TableConfig, TableRows} from \"@angular-generic-table/core\";\n\n@Component({\n  selector: 'nested-data',\n  template: \\`\n    <button class=\"btn btn-secondary\" (click)=\"loadData()\">Load other data</button>\n    <angular-generic-table [data]=\"data\" [config]=\"config\"></angular-generic-table>\n    <docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n    <ng-template #gender let-row=\"row\" let-col=\"col\">\n      <div [ngSwitch]=\"row[col.key]\">\n        <ng-container *ngSwitchCase=\"'male'\">♂️</ng-container>\n        <ng-container *ngSwitchCase=\"'female'\">♀️</ng-container>\n      </div>\n    </ng-template>\n  \\`,\n  styles: [],\n})\nexport class NestedDataComponent implements OnInit {\n  @ViewChild(/'gender/', { static: true }) gender: TemplateRef<any> | undefined;\n\n  config: TableConfig = {};\n  data: TableRows = [];\n  ngOnInit(): void {\n    this.data = [\n      {\n        name: {\n          first: 'Peter',\n          last: 'Parker',\n        },\n        data: {\n          details: {\n            gender: 'male',\n            favoriteFood: 'Pasta',\n          }\n        },\n      },\n      {\n        name: {\n          first: 'Mary Jane',\n          last: 'Watson',\n        },\n        data: {\n          details: {\n            gender: 'female',\n            favoriteFood: 'Pizza',\n          }\n        }\n      },\n    ];\n    this.config = {\n      columns: {\n        firstName: {\n          sortable: true,\n          mapTo: { path: 'name.first' }\n        },\n        lastName: {\n          mapTo: { path: 'name.last' }\n        },\n        gender: {\n          mapTo: { path: 'data.details.gender' },\n          templateRef: this.gender,\n\n        },\n        favoriteFood: {\n          mapTo: { path: 'data.details.favoriteFood' }\n        },\n        missing: {\n          mapTo: { path: 'data.missingKey.noMatch', missingValue: 'n/a' }\n        },\n      },\n    };\n  }\n\n  loadData(): void {\n    this.data = [\n      {\n        name: {\n          first: 'John',\n          last: 'Doe',\n        },\n        data: {\n          details: {\n            gender: 'male',\n            favoriteFood: 'Pasta',\n          }\n        },\n      },\n      {\n        name: {\n          first: 'Jane',\n          last: 'Doe',\n        },\n        data: {\n          details: {\n            gender: 'female',\n            favoriteFood: 'Pizza',\n          }\n        }\n      },\n      {\n        name: {\n          first: 'Foo',\n          last: 'Bar',\n        },\n        data: {}\n      },\n    ];\n  }\n}`,\n    language: 'typescript',\n  },\n  {\n    name: 'app.module.ts',\n    code: `import { BrowserModule } from '@angular/platform-browser';\nimport { NgModule } from '@angular/core';\n\nimport { NestedDataComponent } from './nested-data.component';\nimport { GenericTableCoreModule } from '@angular-generic-table/core';\n\n@NgModule({\n  declarations: [NestedDataComponent],\n  imports: [BrowserModule, GenericTableCoreModule],\n  bootstrap: [NestedDataComponent]\n})\nexport class AppModule {}`,\n    language: 'typescript',\n  },\n]"
+                "defaultValue": "[\n  {\n    name: 'nested-data.component.ts',\n    code: `import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';\nimport {TableConfig, TableRows} from \"@angular-generic-table/core\";\n\n@Component({\n  selector: 'nested-data',\n  template: \\`\n    <button class=\"btn btn-outline-primary mb-3\" (click)=\"loadData()\">Load other data</button>\n    <angular-generic-table [data]=\"data\" [config]=\"config\"></angular-generic-table>\n    <docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n    <ng-template #gender let-row=\"row\" let-col=\"col\">\n      <div [ngSwitch]=\"row[col.key]\">\n        <ng-container *ngSwitchCase=\"'male'\">♂️</ng-container>\n        <ng-container *ngSwitchCase=\"'female'\">♀️</ng-container>\n      </div>\n    </ng-template>\n  \\`,\n  styles: [],\n})\nexport class NestedDataComponent implements OnInit {\n  @ViewChild(/'gender/', { static: true }) gender: TemplateRef<any> | undefined;\n\n  config: TableConfig = {};\n  data: TableRows = [];\n  ngOnInit(): void {\n    this.data = [\n      {\n        name: {\n          first: 'Peter',\n          last: 'Parker',\n        },\n        data: {\n          details: {\n            gender: 'male',\n            favoriteFood: 'Pasta',\n          }\n        },\n      },\n      {\n        name: {\n          first: 'Mary Jane',\n          last: 'Watson',\n        },\n        data: {\n          details: {\n            gender: 'female',\n            favoriteFood: 'Pizza',\n          }\n        }\n      },\n    ];\n    this.config = {\n      columns: {\n        firstName: {\n          sortable: true,\n          mapTo: { path: 'name.first' }\n        },\n        lastName: {\n          mapTo: { path: 'name.last' }\n        },\n        gender: {\n          mapTo: { path: 'data.details.gender' },\n          templateRef: this.gender,\n\n        },\n        favoriteFood: {\n          mapTo: { path: 'data.details.favoriteFood' }\n        },\n        missing: {\n          mapTo: { path: 'data.missingKey.noMatch', missingValue: 'n/a' }\n        },\n      },\n    };\n  }\n\n  loadData(): void {\n    this.data = [\n      {\n        name: {\n          first: 'John',\n          last: 'Doe',\n        },\n        data: {\n          details: {\n            gender: 'male',\n            favoriteFood: 'Pasta',\n          }\n        },\n      },\n      {\n        name: {\n          first: 'Jane',\n          last: 'Doe',\n        },\n        data: {\n          details: {\n            gender: 'female',\n            favoriteFood: 'Pizza',\n          }\n        }\n      },\n      {\n        name: {\n          first: 'Foo',\n          last: 'Bar',\n        },\n        data: {}\n      },\n    ];\n  }\n}`,\n    language: 'typescript',\n  },\n  {\n    name: 'app.module.ts',\n    code: `import { BrowserModule } from '@angular/platform-browser';\nimport { NgModule } from '@angular/core';\n\nimport { NestedDataComponent } from './nested-data.component';\nimport { GenericTableCoreModule } from '@angular-generic-table/core';\n\n@NgModule({\n  declarations: [NestedDataComponent],\n  imports: [BrowserModule, GenericTableCoreModule],\n  bootstrap: [NestedDataComponent]\n})\nexport class AppModule {}`,\n    language: 'typescript',\n  },\n]"
             },
             {
                 "name": "Pagination",
@@ -3515,7 +3532,7 @@
                 "name": "require",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/docs/src/test.ts",
+                "file": "projects/core/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "literal type"
@@ -3524,7 +3541,7 @@
                 "name": "require",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/core/src/test.ts",
+                "file": "projects/docs/src/test.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "literal type"
@@ -3640,7 +3657,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story<AdvancedComponent>",
-                    "defaultValue": "(args: AdvancedComponent) => ({\n  props: args,\n  component: AdvancedComponent,\n})"
+                    "defaultValue": "(\n  args: AdvancedComponent\n) => ({\n  props: args,\n  component: AdvancedComponent,\n})"
                 }
             ],
             "projects/docs/src/app/examples/advanced/advanced.snippets.ts": [
@@ -3652,7 +3669,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "[]",
-                    "defaultValue": "[\n  {\n    name: 'advanced.component.html',\n    code: `<div class=\"form-row mb-3\">\n  <div class=\"col col-sm-auto\">\n    <button class=\"btn btn-primary w-100\" (click)=\"addData()\">Add random data</button>\n  </div>\n  <div class=\"col col-sm-auto\">\n    <button class=\"btn btn-danger w-100\" (click)=\"removeData()\">Remove data</button>\n  </div>\n  <div class=\"col col-sm-auto\">\n    <button class=\"btn btn-secondary w-100\" (click)=\"simulateLoad()\">Load</button>\n  </div>\n</div>\n<form [formGroup]=\"paginationForm\">\n  <div class=\"form-row\">\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"length_input\">Length</label>\n      <input id=\"length_input\" formControlName=\"length\" type=\"number\" class=\"form-control\">\n    </div>\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"search_input\">Search</label>\n      <input id=\"search_input\" formControlName=\"search\" type=\"text\" class=\"form-control\">\n    </div>\n  </div>\n</form>\n<div class=\"mx-n3 mx-sm-0\">\n  <angular-generic-table [data]=\"data$\" [config]=\"tableConfig$\" [page]=\"(currentPage$ | async)!\" [search]=\"search$\" [loading]=\"loading$\" #table>\n    <div class=\"table-loading skeleton-loader skeleton-loader-table\"></div>\n    <div class=\"table-no-data alert alert-info mt-3\">\n      Table is empty\n    </div>\n  </angular-generic-table>\n</div>\n<div class=\"row justify-content-between justify-content-sm-center align-items-center mt-3\" *ngIf=\"{current: (currentPage$ | async) || 0,total: (table.table$ | async)?.info?.pageTotal || 1\n} as pagination\">\n  <div class=\"col-auto\">\n    <button class=\"btn btn-primary\" (click)=\"prev()\" [disabled]=\"pagination.current === 0\">Prev</button>\n  </div>\n  <div class=\"col-auto\">\n    <button class=\"btn btn-primary\" (click)=\"next()\" [disabled]=\"pagination.total -1 === pagination.current\">Next</button>\n  </div>\n  <div class=\"col-auto\">Current page: {{pagination.current +1}}</div>\n  <div class=\"col-auto\">Total pages: {{pagination.total}}</div>\n  <div class=\"col-auto\">\n    Records: {{(data$ | async).length}}\n  </div>\n  <div class=\"col-auto\">\n    {{clicked}}\n  </div>\n</div>\n<ng-template #actions let-row=\"row\" let-col=\"col\" let-index=\"index\">\n  <button class=\"btn btn-outline-primary btn-sm my-sm-n3\" (click)=\"clickAction(row, col, index)\">Click me!</button>\n</ng-template>\n<ng-template #color let-row=\"row\" let-col=\"col\">\n  <div [style.background]=\"row[col.key]\" style=\"width: 1.5rem; height: 1.5rem; border-radius: 50%\"></div>\n</ng-template>`,\n    language: 'xml',\n  },\n  {\n    name: 'advanced.component.ts',\n    code: `import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';\nimport { FormBuilder } from '@angular/forms';\nimport { TableColumn, TableConfig, TableRow } from '@angular-generic-table/core';\nimport { withLatestFrom } from 'rxjs/operators';\n\n@Component({\n  selector: 'docs-advanced',\n  templateUrl: './advanced.component.html',\n  styles: [],\n})\nexport class AdvancedComponent implements OnInit {\n  get currentPage$(): Observable<number> {\n    return this._currentPage$.asObservable();\n  }\n\n  set currentPage(value: number) {\n    this._currentPage$.next(value);\n  }\n  constructor(private fb: FormBuilder) {}\n  @ViewChild('actions', { static: true }) actions: TemplateRef<any> | undefined;\n  @ViewChild('color', { static: true }) color: TemplateRef<any> | undefined;\n  paginationForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.paginationForm.get('search')?.valueChanges as Observable<string>;\n  loading$ = new BehaviorSubject(true);\n  data$: BehaviorSubject<any> = new BehaviorSubject([\n    {\n      firstName: 'Peter',\n      lastName: 'Parker',\n      gender: 'male',\n      favoriteColor: '#26BFAF',\n      favoriteFood: 'Pasta',\n    },\n    {\n      firstName: 'Mary Jane',\n      lastName: 'Watson',\n      gender: 'female',\n      favoriteColor: '#0f0',\n      favoriteFood: 'Pizza',\n    },\n  ]);\n\n  private _currentPage$ = new BehaviorSubject(0);\n\n  clicked: string = '';\n  maleFirstNames = ['Peter', 'Clark', 'Ruben', 'John', 'Jack', 'Roscoe'];\n  femaleFirstNames = ['Mary Jane', 'Kim', 'Sarah', 'Michelle', 'Ann'];\n  lastNames = ['Andersson', 'Smith', 'Parker', 'Kent', 'Rogers', 'Lane', 'Jackson'];\n  foods = ['Pizza', 'Pasta', 'Hamburger', 'Pancakes', 'Tacos', 'Lasagna', 'Meatloaf'];\n  colors = ['#33d60b', '#dcafff', '#3fc9ff', '#ff1600', '#5238b1', '#fff'];\n\n  tableConfig$: ReplaySubject<TableConfig> = new ReplaySubject(1);\n\n  addData(): void {\n    this.data$.next([...this.data$.getValue(), this.randomRecord()]);\n  }\n\n  removeData(): void {\n    this.data$.next([]);\n  }\n\n  simulateLoad(): void {\n    this.loading$.next(true);\n    // set loading state to false after 2 seconds\n    setTimeout(() => this.loading$.next(false), 2000);\n  }\n\n  clickAction(row: TableRow, column: { key: string; value: TableColumn }, index: number): void {\n    console.log('clicked row:', row, 'col:', column);\n    this.clicked = \\`clicked row number: \\${index}\\`;\n  }\n\n  randomRecord(): TableRow {\n    const random = Math.floor(Math.random() * 2);\n    const newRecord = {\n      firstName: random\n        ? this.maleFirstNames[Math.floor(Math.random() * this.maleFirstNames.length)]\n        : this.femaleFirstNames[Math.floor(Math.random() * this.femaleFirstNames.length)],\n      lastName: this.lastNames[Math.floor(Math.random() * this.lastNames.length)],\n      gender: random ? 'male' : 'female',\n      favoriteColor: this.colors[Math.floor(Math.random() * this.colors.length)],\n      favoriteFood: this.foods[Math.floor(Math.random() * this.foods.length)],\n    };\n    console.log('added new random record:', newRecord);\n\n    return newRecord;\n  }\n\n  next = () => {\n    this.currentPage = this._currentPage$.value + 1;\n  };\n  prev = () => {\n    this.currentPage = this._currentPage$.value - 1;\n  };\n\n  ngOnInit(): void {\n    this.simulateLoad();\n    this.paginationForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n    this.tableConfig$.next({\n      class: 'table table-mobile text-nowrap mb-0',\n      columns: {\n        firstName: {\n          header: 'First name',\n          mobileHeader: true,\n          sortable: true,\n          order: 0,\n        },\n        lastName: {\n          header: 'Last name',\n          mobileHeader: true,\n          hidden: false,\n          sortable: true,\n        },\n        gender: {\n          mobileHeader: 'Sex',\n          sortable: true,\n          order: 1,\n        },\n        favoriteColor: {\n          header: 'Favorite color',\n          mobileHeader: true,\n          templateRef: this.color,\n          sortable: false,\n          order: 2,\n          search: false,\n          class: 'custom-class',\n        },\n        favoriteFood: {\n          mobileHeader: true,\n          header: 'Favorite food',\n          hidden: false,\n          sortable: true,\n          order: 0,\n        },\n        action: {\n          mobileHeader: false,\n          header: false,\n          templateRef: this.actions,\n          order: 6,\n        },\n      },\n      pagination: {\n        length: this.paginationForm.get('length')?.value || 0,\n      },\n    });\n  }\n}`,\n    language: 'typescript',\n  },\n  {\n    name: 'app.module.ts',\n    code: `import { BrowserModule } from '@angular/platform-browser';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\n\nimport { AdvancedComponent } from './advanced.component';\nimport { GenericTableCoreModule } from '@angular-generic-table/core';\n\n@NgModule({\n  declarations: [AdvancedComponent],\n  imports: [BrowserModule, ReactiveFormsModule, GenericTableCoreModule],\n  bootstrap: [AdvancedComponent]\n})\nexport class AppModule {}`,\n    language: 'typescript',\n  },\n]"
+                    "defaultValue": "[\n  {\n    name: 'advanced.component.html',\n    code: `<div class=\"row mb-3\">\n  <div class=\"col col-sm-auto\">\n    <button class=\"btn btn-primary w-100\" (click)=\"addData()\">Add random data</button>\n  </div>\n  <div class=\"col col-sm-auto\">\n    <button class=\"btn btn-danger w-100\" (click)=\"removeData()\">Remove data</button>\n  </div>\n  <div class=\"col col-sm-auto\">\n    <button class=\"btn btn-secondary w-100\" (click)=\"simulateLoad()\">Load</button>\n  </div>\n</div>\n<form [formGroup]=\"paginationForm\">\n  <div class=\"row\">\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"length_input\">Length</label>\n      <input id=\"length_input\" formControlName=\"length\" type=\"number\" class=\"form-control\">\n    </div>\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"search_input\">Search</label>\n      <input id=\"search_input\" formControlName=\"search\" type=\"text\" class=\"form-control\">\n    </div>\n  </div>\n</form>\n<div class=\"mx-n3 mx-sm-0\">\n  <angular-generic-table [data]=\"data$\" [config]=\"tableConfig$\" [page]=\"(currentPage$ | async)!\" [search]=\"search$\" [loading]=\"loading$\" #table>\n    <div class=\"table-loading skeleton-loader skeleton-loader-table\"></div>\n    <div class=\"table-no-data alert alert-info mt-3\">\n      Table is empty\n    </div>\n  </angular-generic-table>\n</div>\n<div class=\"row justify-content-between justify-content-sm-center align-items-center mt-3\" *ngIf=\"{current: (currentPage$ | async) || 0,total: (table.table$ | async)?.info?.pageTotal || 1\n} as pagination\">\n  <div class=\"col-auto\">\n    <button class=\"btn btn-primary\" (click)=\"prev()\" [disabled]=\"pagination.current === 0\">Prev</button>\n  </div>\n  <div class=\"col-auto\">\n    <button class=\"btn btn-primary\" (click)=\"next()\" [disabled]=\"pagination.total -1 === pagination.current\">Next</button>\n  </div>\n  <div class=\"col-auto\">Current page: {{pagination.current +1}}</div>\n  <div class=\"col-auto\">Total pages: {{pagination.total}}</div>\n  <div class=\"col-auto\">\n    Records: {{(data$ | async).length}}\n  </div>\n  <div class=\"col-auto\">\n    {{clicked}}\n  </div>\n</div>\n<ng-template #actions let-row=\"row\" let-col=\"col\" let-index=\"index\">\n  <button class=\"btn btn-outline-primary btn-sm my-sm-n3\" (click)=\"clickAction(row, col, index)\">Click me!</button>\n</ng-template>\n<ng-template #color let-row=\"row\" let-col=\"col\">\n  <div [style.background]=\"row[col.key]\" style=\"width: 1.5rem; height: 1.5rem; border-radius: 50%\"></div>\n</ng-template>`,\n    language: 'xml',\n  },\n  {\n    name: 'advanced.component.ts',\n    code: `import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';\nimport { FormBuilder } from '@angular/forms';\nimport { TableColumn, TableConfig, TableRow } from '@angular-generic-table/core';\nimport { withLatestFrom } from 'rxjs/operators';\n\n@Component({\n  selector: 'docs-advanced',\n  templateUrl: './advanced.component.html',\n  styles: [],\n})\nexport class AdvancedComponent implements OnInit {\n  get currentPage$(): Observable<number> {\n    return this._currentPage$.asObservable();\n  }\n\n  set currentPage(value: number) {\n    this._currentPage$.next(value);\n  }\n  constructor(private fb: FormBuilder) {}\n  @ViewChild('actions', { static: true }) actions: TemplateRef<any> | undefined;\n  @ViewChild('color', { static: true }) color: TemplateRef<any> | undefined;\n  paginationForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.paginationForm.get('search')?.valueChanges as Observable<string>;\n  loading$ = new BehaviorSubject(true);\n  data$: BehaviorSubject<any> = new BehaviorSubject([\n    {\n      firstName: 'Peter',\n      lastName: 'Parker',\n      gender: 'male',\n      favoriteColor: '#26BFAF',\n      favoriteFood: 'Pasta',\n    },\n    {\n      firstName: 'Mary Jane',\n      lastName: 'Watson',\n      gender: 'female',\n      favoriteColor: '#0f0',\n      favoriteFood: 'Pizza',\n    },\n  ]);\n\n  private _currentPage$ = new BehaviorSubject(0);\n\n  clicked: string = '';\n  maleFirstNames = ['Peter', 'Clark', 'Ruben', 'John', 'Jack', 'Roscoe'];\n  femaleFirstNames = ['Mary Jane', 'Kim', 'Sarah', 'Michelle', 'Ann'];\n  lastNames = ['Andersson', 'Smith', 'Parker', 'Kent', 'Rogers', 'Lane', 'Jackson'];\n  foods = ['Pizza', 'Pasta', 'Hamburger', 'Pancakes', 'Tacos', 'Lasagna', 'Meatloaf'];\n  colors = ['#33d60b', '#dcafff', '#3fc9ff', '#ff1600', '#5238b1', '#fff'];\n\n  tableConfig$: ReplaySubject<TableConfig> = new ReplaySubject(1);\n\n  addData(): void {\n    this.data$.next([...this.data$.getValue(), this.randomRecord()]);\n  }\n\n  removeData(): void {\n    this.data$.next([]);\n  }\n\n  simulateLoad(): void {\n    this.loading$.next(true);\n    // set loading state to false after 2 seconds\n    setTimeout(() => this.loading$.next(false), 2000);\n  }\n\n  clickAction(row: TableRow, column: { key: string; value: TableColumn }, index: number): void {\n    console.log('clicked row:', row, 'col:', column);\n    this.clicked = \\`clicked row number: \\${index}\\`;\n  }\n\n  randomRecord(): TableRow {\n    const random = Math.floor(Math.random() * 2);\n    const newRecord = {\n      firstName: random\n        ? this.maleFirstNames[Math.floor(Math.random() * this.maleFirstNames.length)]\n        : this.femaleFirstNames[Math.floor(Math.random() * this.femaleFirstNames.length)],\n      lastName: this.lastNames[Math.floor(Math.random() * this.lastNames.length)],\n      gender: random ? 'male' : 'female',\n      favoriteColor: this.colors[Math.floor(Math.random() * this.colors.length)],\n      favoriteFood: this.foods[Math.floor(Math.random() * this.foods.length)],\n    };\n    console.log('added new random record:', newRecord);\n\n    return newRecord;\n  }\n\n  next = () => {\n    this.currentPage = this._currentPage$.value + 1;\n  };\n  prev = () => {\n    this.currentPage = this._currentPage$.value - 1;\n  };\n\n  ngOnInit(): void {\n    this.simulateLoad();\n    this.paginationForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n    this.tableConfig$.next({\n      class: 'table table-mobile text-nowrap mb-0',\n      columns: {\n        firstName: {\n          header: 'First name',\n          mobileHeader: true,\n          sortable: true,\n          order: 0,\n        },\n        lastName: {\n          header: 'Last name',\n          mobileHeader: true,\n          hidden: false,\n          sortable: true,\n        },\n        gender: {\n          mobileHeader: 'Sex',\n          sortable: true,\n          order: 1,\n        },\n        favoriteColor: {\n          header: 'Favorite color',\n          mobileHeader: true,\n          templateRef: this.color,\n          sortable: false,\n          order: 2,\n          search: false,\n          class: 'custom-class',\n        },\n        favoriteFood: {\n          mobileHeader: true,\n          header: 'Favorite food',\n          hidden: false,\n          sortable: true,\n          order: 0,\n        },\n        action: {\n          mobileHeader: false,\n          header: false,\n          templateRef: this.actions,\n          order: 6,\n        },\n      },\n      pagination: {\n        length: this.paginationForm.get('length')?.value || 0,\n      },\n    });\n  }\n}`,\n    language: 'typescript',\n  },\n  {\n    name: 'app.module.ts',\n    code: `import { BrowserModule } from '@angular/platform-browser';\nimport { NgModule } from '@angular/core';\nimport { ReactiveFormsModule } from '@angular/forms';\n\nimport { AdvancedComponent } from './advanced.component';\nimport { GenericTableCoreModule } from '@angular-generic-table/core';\n\n@NgModule({\n  declarations: [AdvancedComponent],\n  imports: [BrowserModule, ReactiveFormsModule, GenericTableCoreModule],\n  bootstrap: [AdvancedComponent]\n})\nexport class AppModule {}`,\n    language: 'typescript',\n  },\n]"
                 }
             ],
             "projects/docs/src/app/examples/pagination/pagination.snippets.ts": [
@@ -3664,7 +3681,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "[]",
-                    "defaultValue": "[\n  {\n    name: 'pagination.component.html',\n    code: `<form [formGroup]=\"paginationForm\">\n  <div class=\"form-row\">\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"length_input\">Length</label>\n      <input id=\"length_input\" formControlName=\"length\" type=\"number\" class=\"form-control\">\n    </div>\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"search_input\">Search</label>\n      <input id=\"search_input\" formControlName=\"search\" type=\"text\" class=\"form-control\">\n    </div>\n  </div>\n</form>\n<div class=\"mx-n3 mx-sm-0\">\n  <angular-generic-table [data]=\"data$\" [config]=\"tableConfig$\" [search]=\"search$\" [loading]=\"loading$\" #table>\n    <div class=\"table-loading skeleton-loader skeleton-loader-table\"></div>\n    <div class=\"table-no-data alert alert-info mt-3\">\n      Table is empty\n    </div>\n  </angular-generic-table>\n</div>\n<angular-generic-table-pagination [table]=\"table\">\n</angular-generic-table-pagination>`,\n    language: 'xml',\n  },\n  {\n    name: 'pagination.component.ts',\n    code: `import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';\nimport { FormBuilder } from '@angular/forms';\nimport { TableConfig } from '@angular-generic-table/core';\nimport { pluck, tap, withLatestFrom } from 'rxjs/operators';\nimport { HttpClient } from '@angular/common/http';\nimport { DatePipe } from '@angular/common';\n\n@Component({\n  selector: 'docs-pagination',\n  templateUrl: './pagination.component.html',\n  styles: [],\n})\nexport class PaginationComponent implements OnInit {\n  constructor(private fb: FormBuilder, private http: HttpClient) {}\n  @ViewChild('actions', { static: true }) actions: TemplateRef<any> | undefined;\n  @ViewChild('color', { static: true }) color: TemplateRef<any> | undefined;\n  paginationForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.paginationForm.get('search')?.valueChanges as Observable<string>;\n  loading$ = new BehaviorSubject(true);\n  data$: Observable<any> = this.http.get('https://private-730c61-generictable.apiary-mock.com/data').pipe(\n    pluck('data'),\n    tap((_) => this.loading$.next(false))\n  );\n\n  tableConfig$: ReplaySubject<TableConfig> = new ReplaySubject(1);\n\n  ngOnInit(): void {\n    this.paginationForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n    this.tableConfig$.next({\n      class: 'table table-mobile text-nowrap mb-0',\n      columns: {\n        first_name: {\n          mobileHeader: true,\n          sortable: true,\n        },\n        last_name: {\n          mobileHeader: true,\n          sortable: true,\n        },\n        gender: {\n          mobileHeader: 'Sex',\n          sortable: true,\n        },\n        birthday: {\n          mobileHeader: true,\n          sortable: true,\n          class: 'text-right',\n          transform: {\n            pipe: DatePipe,\n            args: ['longDate'],\n          },\n        },\n      },\n      pagination: {\n        length: this.paginationForm.get('length')?.value || 0,\n      },\n    });\n  }\n}`,\n    language: 'typescript',\n  },\n  {\n    name: 'app.module.ts',\n    code: `import { BrowserModule } from '@angular/platform-browser';\nimport { NgModule } from '@angular/core';\nimport { HttpClientModule } from '@angular/common/http';\nimport { ReactiveFormsModule } from '@angular/forms';\n\nimport { PaginationComponent } from './pagination.component';\nimport { GenericTableCoreModule, GenericTablePaginationModule } from '@angular-generic-table/core';\n\n@NgModule({\n  declarations: [PaginationComponent],\n  imports: [\n    BrowserModule,\n    GenericTableCoreModule,\n    GenericTablePaginationModule,\n    ReactiveFormsModule,\n    HttpClientModule\n  ],\n  bootstrap: [PaginationComponent]\n})\nexport class AppModule {}`,\n    language: 'typescript',\n  },\n]"
+                    "defaultValue": "[\n  {\n    name: 'pagination.component.html',\n    code: `<form [formGroup]=\"paginationForm\">\n  <div class=\"row\">\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"length_input\">Length</label>\n      <input id=\"length_input\" formControlName=\"length\" type=\"number\" class=\"form-control\">\n    </div>\n    <div class=\"form-group col-12 col-sm-auto\">\n      <label for=\"search_input\">Search</label>\n      <input id=\"search_input\" formControlName=\"search\" type=\"text\" class=\"form-control\">\n    </div>\n  </div>\n</form>\n<div class=\"mx-n3 mx-sm-0\">\n  <angular-generic-table [data]=\"data$\" [config]=\"tableConfig$\" [search]=\"search$\" [loading]=\"loading$\" #table>\n    <div class=\"table-loading skeleton-loader skeleton-loader-table\"></div>\n    <div class=\"table-no-data alert alert-info mt-3\">\n      Table is empty\n    </div>\n  </angular-generic-table>\n</div>\n<angular-generic-table-pagination [table]=\"table\">\n</angular-generic-table-pagination>`,\n    language: 'xml',\n  },\n  {\n    name: 'pagination.component.ts',\n    code: `import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';\nimport { FormBuilder } from '@angular/forms';\nimport { TableConfig } from '@angular-generic-table/core';\nimport { pluck, tap, withLatestFrom } from 'rxjs/operators';\nimport { HttpClient } from '@angular/common/http';\nimport { DatePipe } from '@angular/common';\n\n@Component({\n  selector: 'docs-pagination',\n  templateUrl: './pagination.component.html',\n  styles: [],\n})\nexport class PaginationComponent implements OnInit {\n  constructor(private fb: FormBuilder, private http: HttpClient) {}\n  @ViewChild('actions', { static: true }) actions: TemplateRef<any> | undefined;\n  @ViewChild('color', { static: true }) color: TemplateRef<any> | undefined;\n  paginationForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.paginationForm.get('search')?.valueChanges as Observable<string>;\n  loading$ = new BehaviorSubject(true);\n  data$: Observable<any> = this.http.get('https://private-730c61-generictable.apiary-mock.com/data').pipe(\n    pluck('data'),\n    tap((_) => this.loading$.next(false))\n  );\n\n  tableConfig$: ReplaySubject<TableConfig> = new ReplaySubject(1);\n\n  ngOnInit(): void {\n    this.paginationForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n    this.tableConfig$.next({\n      class: 'table table-mobile text-nowrap mb-0',\n      columns: {\n        first_name: {\n          mobileHeader: true,\n          sortable: true,\n        },\n        last_name: {\n          mobileHeader: true,\n          sortable: true,\n        },\n        gender: {\n          mobileHeader: 'Sex',\n          sortable: true,\n        },\n        birthday: {\n          mobileHeader: true,\n          sortable: true,\n          class: 'text-right',\n          transform: {\n            pipe: DatePipe,\n            args: ['longDate'],\n          },\n        },\n      },\n      pagination: {\n        length: this.paginationForm.get('length')?.value || 0,\n      },\n    });\n  }\n}`,\n    language: 'typescript',\n  },\n  {\n    name: 'app.module.ts',\n    code: `import { BrowserModule } from '@angular/platform-browser';\nimport { NgModule } from '@angular/core';\nimport { HttpClientModule } from '@angular/common/http';\nimport { ReactiveFormsModule } from '@angular/forms';\n\nimport { PaginationComponent } from './pagination.component';\nimport { GenericTableCoreModule, GenericTablePaginationModule } from '@angular-generic-table/core';\n\n@NgModule({\n  declarations: [PaginationComponent],\n  imports: [\n    BrowserModule,\n    GenericTableCoreModule,\n    GenericTablePaginationModule,\n    ReactiveFormsModule,\n    HttpClientModule\n  ],\n  bootstrap: [PaginationComponent]\n})\nexport class AppModule {}`,\n    language: 'typescript',\n  },\n]"
                 }
             ],
             "projects/core/src/lib/utilities/utilities.ts": [
@@ -3705,27 +3722,6 @@
                     "type": "TableRow[]"
                 }
             ],
-            "projects/docs/src/test.ts": [
-                {
-                    "name": "context",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/docs/src/test.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
-                },
-                {
-                    "name": "require",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/docs/src/test.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "literal type"
-                }
-            ],
             "projects/core/src/test.ts": [
                 {
                     "name": "context",
@@ -3742,6 +3738,27 @@
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "projects/core/src/test.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "literal type"
+                }
+            ],
+            "projects/docs/src/test.ts": [
+                {
+                    "name": "context",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/docs/src/test.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
+                },
+                {
+                    "name": "require",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "projects/docs/src/test.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "literal type"
@@ -3804,7 +3821,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Story<TransposeComponent>",
-                    "defaultValue": "(args: TransposeComponent) => ({\n  props: args,\n  component: TransposeComponent,\n})"
+                    "defaultValue": "(\n  args: TransposeComponent\n) => ({\n  props: args,\n  component: TransposeComponent,\n})"
                 }
             ],
             "projects/docs/src/app/examples/mobile-layout/mobile-layout.component.ts": [
@@ -3852,7 +3869,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "[]",
-                    "defaultValue": "[\n  {\n    name: 'nested-data.component.ts',\n    code: `import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';\nimport {TableConfig, TableRows} from \"@angular-generic-table/core\";\n\n@Component({\n  selector: 'nested-data',\n  template: \\`\n    <button class=\"btn btn-secondary\" (click)=\"loadData()\">Load other data</button>\n    <angular-generic-table [data]=\"data\" [config]=\"config\"></angular-generic-table>\n    <docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n    <ng-template #gender let-row=\"row\" let-col=\"col\">\n      <div [ngSwitch]=\"row[col.key]\">\n        <ng-container *ngSwitchCase=\"'male'\">♂️</ng-container>\n        <ng-container *ngSwitchCase=\"'female'\">♀️</ng-container>\n      </div>\n    </ng-template>\n  \\`,\n  styles: [],\n})\nexport class NestedDataComponent implements OnInit {\n  @ViewChild(/'gender/', { static: true }) gender: TemplateRef<any> | undefined;\n\n  config: TableConfig = {};\n  data: TableRows = [];\n  ngOnInit(): void {\n    this.data = [\n      {\n        name: {\n          first: 'Peter',\n          last: 'Parker',\n        },\n        data: {\n          details: {\n            gender: 'male',\n            favoriteFood: 'Pasta',\n          }\n        },\n      },\n      {\n        name: {\n          first: 'Mary Jane',\n          last: 'Watson',\n        },\n        data: {\n          details: {\n            gender: 'female',\n            favoriteFood: 'Pizza',\n          }\n        }\n      },\n    ];\n    this.config = {\n      columns: {\n        firstName: {\n          sortable: true,\n          mapTo: { path: 'name.first' }\n        },\n        lastName: {\n          mapTo: { path: 'name.last' }\n        },\n        gender: {\n          mapTo: { path: 'data.details.gender' },\n          templateRef: this.gender,\n\n        },\n        favoriteFood: {\n          mapTo: { path: 'data.details.favoriteFood' }\n        },\n        missing: {\n          mapTo: { path: 'data.missingKey.noMatch', missingValue: 'n/a' }\n        },\n      },\n    };\n  }\n\n  loadData(): void {\n    this.data = [\n      {\n        name: {\n          first: 'John',\n          last: 'Doe',\n        },\n        data: {\n          details: {\n            gender: 'male',\n            favoriteFood: 'Pasta',\n          }\n        },\n      },\n      {\n        name: {\n          first: 'Jane',\n          last: 'Doe',\n        },\n        data: {\n          details: {\n            gender: 'female',\n            favoriteFood: 'Pizza',\n          }\n        }\n      },\n      {\n        name: {\n          first: 'Foo',\n          last: 'Bar',\n        },\n        data: {}\n      },\n    ];\n  }\n}`,\n    language: 'typescript',\n  },\n  {\n    name: 'app.module.ts',\n    code: `import { BrowserModule } from '@angular/platform-browser';\nimport { NgModule } from '@angular/core';\n\nimport { NestedDataComponent } from './nested-data.component';\nimport { GenericTableCoreModule } from '@angular-generic-table/core';\n\n@NgModule({\n  declarations: [NestedDataComponent],\n  imports: [BrowserModule, GenericTableCoreModule],\n  bootstrap: [NestedDataComponent]\n})\nexport class AppModule {}`,\n    language: 'typescript',\n  },\n]"
+                    "defaultValue": "[\n  {\n    name: 'nested-data.component.ts',\n    code: `import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';\nimport {TableConfig, TableRows} from \"@angular-generic-table/core\";\n\n@Component({\n  selector: 'nested-data',\n  template: \\`\n    <button class=\"btn btn-outline-primary mb-3\" (click)=\"loadData()\">Load other data</button>\n    <angular-generic-table [data]=\"data\" [config]=\"config\"></angular-generic-table>\n    <docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n    <ng-template #gender let-row=\"row\" let-col=\"col\">\n      <div [ngSwitch]=\"row[col.key]\">\n        <ng-container *ngSwitchCase=\"'male'\">♂️</ng-container>\n        <ng-container *ngSwitchCase=\"'female'\">♀️</ng-container>\n      </div>\n    </ng-template>\n  \\`,\n  styles: [],\n})\nexport class NestedDataComponent implements OnInit {\n  @ViewChild(/'gender/', { static: true }) gender: TemplateRef<any> | undefined;\n\n  config: TableConfig = {};\n  data: TableRows = [];\n  ngOnInit(): void {\n    this.data = [\n      {\n        name: {\n          first: 'Peter',\n          last: 'Parker',\n        },\n        data: {\n          details: {\n            gender: 'male',\n            favoriteFood: 'Pasta',\n          }\n        },\n      },\n      {\n        name: {\n          first: 'Mary Jane',\n          last: 'Watson',\n        },\n        data: {\n          details: {\n            gender: 'female',\n            favoriteFood: 'Pizza',\n          }\n        }\n      },\n    ];\n    this.config = {\n      columns: {\n        firstName: {\n          sortable: true,\n          mapTo: { path: 'name.first' }\n        },\n        lastName: {\n          mapTo: { path: 'name.last' }\n        },\n        gender: {\n          mapTo: { path: 'data.details.gender' },\n          templateRef: this.gender,\n\n        },\n        favoriteFood: {\n          mapTo: { path: 'data.details.favoriteFood' }\n        },\n        missing: {\n          mapTo: { path: 'data.missingKey.noMatch', missingValue: 'n/a' }\n        },\n      },\n    };\n  }\n\n  loadData(): void {\n    this.data = [\n      {\n        name: {\n          first: 'John',\n          last: 'Doe',\n        },\n        data: {\n          details: {\n            gender: 'male',\n            favoriteFood: 'Pasta',\n          }\n        },\n      },\n      {\n        name: {\n          first: 'Jane',\n          last: 'Doe',\n        },\n        data: {\n          details: {\n            gender: 'female',\n            favoriteFood: 'Pizza',\n          }\n        }\n      },\n      {\n        name: {\n          first: 'Foo',\n          last: 'Bar',\n        },\n        data: {}\n      },\n    ];\n  }\n}`,\n    language: 'typescript',\n  },\n  {\n    name: 'app.module.ts',\n    code: `import { BrowserModule } from '@angular/platform-browser';\nimport { NgModule } from '@angular/core';\n\nimport { NestedDataComponent } from './nested-data.component';\nimport { GenericTableCoreModule } from '@angular-generic-table/core';\n\n@NgModule({\n  declarations: [NestedDataComponent],\n  imports: [BrowserModule, GenericTableCoreModule],\n  bootstrap: [NestedDataComponent]\n})\nexport class AppModule {}`,\n    language: 'typescript',\n  },\n]"
                 }
             ],
             "projects/docs/src/app/examples/pagination/pagination.component.ts": [

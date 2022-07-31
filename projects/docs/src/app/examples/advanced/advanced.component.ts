@@ -184,6 +184,7 @@ export class AdvancedComponent implements OnInit {
           header: false,
           templateRef: this.actions,
           order: 6,
+          class: 'py-1 text-end',
         },
       },
       pagination: {

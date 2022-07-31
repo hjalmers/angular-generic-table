@@ -25,7 +25,7 @@ export class GenderPipe implements PipeTransform {
       <angular-generic-table [data]="data" [config]="config$"></angular-generic-table>
     </div>
     <ng-template #actions let-row="row" let-col="col" let-index="index">
-      <button class="btn btn-outline-primary btn-sm my-sm-n3" (click)="clickAction(row, col, index)">Click me!</button>
+      <button class="btn btn-outline-primary btn-sm my-sm-n3 text-nowrap" (click)="clickAction(row, col, index)">Click me!</button>
     </ng-template>
   \`,
   styles: [\`

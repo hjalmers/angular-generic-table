@@ -14,9 +14,13 @@ hljs.registerLanguage('xml', xml);
 @Component({
   selector: 'docs-tabs',
   template: `
-    <ul class="nav nav-tabs mt-4">
+    <ul class="nav nav-tabs mt-4 flex-nowrap text-nowrap overflow-auto">
       <li class="nav-item" *ngFor="let item of content; let i = index">
-        <button class="nav-link btn-link" [class.active]="activeIndex === i" (click)="view(i)">
+        <button
+          class="nav-link btn-link"
+          [class.active]="activeIndex === i"
+          (click)="view(i)"
+        >
           {{ item.name }}
         </button>
       </li>
@@ -48,7 +52,9 @@ export class TabsComponent implements OnInit {
 
   view(index: number): void {
     this.activeIndex = index;
-    this.activeContent = hljs.highlight(this.content[index].code, { language: this.content[index].language });
+    this.activeContent = hljs.highlight(this.content[index].code, {
+      language: this.content[index].language,
+    });
   }
 }
 

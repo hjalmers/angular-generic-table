@@ -1,19 +1,19 @@
 export const ADVANCED_DOCS = [
   {
     name: 'advanced.component.html',
-    code: `<div class="form-row mb-3">
-  <div class="col col-sm-auto">
+    code: `<div class="row gx-2 gy-3 mb-3">
+  <div class="col-12 col-sm-auto">
     <button class="btn btn-primary w-100" (click)="addData()">Add random data</button>
   </div>
-  <div class="col col-sm-auto">
+  <div class="col-12 col-sm-auto">
     <button class="btn btn-danger w-100" (click)="removeData()">Remove data</button>
   </div>
-  <div class="col col-sm-auto">
+  <div class="col-12 col-sm-auto">
     <button class="btn btn-secondary w-100" (click)="simulateLoad()">Load</button>
   </div>
 </div>
 <form [formGroup]="paginationForm">
-  <div class="form-row">
+  <div class="row">
     <div class="form-group col-12 col-sm-auto">
       <label for="length_input">Length</label>
       <input id="length_input" formControlName="length" type="number" class="form-control">
@@ -26,7 +26,7 @@ export const ADVANCED_DOCS = [
 </form>
 <div class="mx-n3 mx-sm-0">
   <angular-generic-table [data]="data$" [config]="tableConfig$" [page]="(currentPage$ | async)!" [search]="search$" [loading]="loading$" #table>
-    <div class="table-loading skeleton-loader skeleton-loader-table"></div>
+    <div class="table-loading gt-skeleton-loader"></div>
     <div class="table-no-data alert alert-info mt-3">
       Table is empty
     </div>

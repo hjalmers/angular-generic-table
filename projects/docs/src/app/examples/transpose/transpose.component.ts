@@ -8,13 +8,21 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'docs-transpose',
   template: `
-    <button class="btn btn-outline-primary" (click)="simulateLoad()">Simulate load</button>
+    <button class="btn btn-outline-primary" (click)="simulateLoad()">
+      Simulate load
+    </button>
     <button class="btn btn-outline-danger mx-3" (click)="empty()">Empty</button>
     <button class="btn btn-outline-primary" (click)="load()">Reset</button>
-    <angular-generic-table [data]="data" [config]="config" [loading]="loading$">
-      <div class="table-loading skeleton-loader skeleton-loader-table"></div>
-      <div class="table-no-data alert alert-info mt-3">Table is empty</div>
-    </angular-generic-table>
+    <div class="overflow-auto">
+      <angular-generic-table
+        [data]="data"
+        [config]="config"
+        [loading]="loading$"
+      >
+        <div class="table-loading gt-skeleton-loader"></div>
+        <div class="table-no-data alert alert-info mt-3">Table is empty</div>
+      </angular-generic-table>
+    </div>
     <ng-template #feelings let-row="row" let-col="col">
       <div [ngSwitch]="row[col.key]">
         <ng-container *ngSwitchCase="'thrilled'">😀</ng-container>
@@ -28,13 +36,16 @@ import { BehaviorSubject } from 'rxjs';
   styles: [],
 })
 export class TransposeComponent implements OnInit {
-  @ViewChild('feelings', { static: true }) feelings: TemplateRef<any> | undefined;
+  @ViewChild('feelings', { static: true }) feelings:
+    | TemplateRef<any>
+    | undefined;
   loading$ = new BehaviorSubject(false);
   config: TableConfig = {};
   data: TableRows = [];
 
   ngOnInit(): void {
     this.config = {
+      mobileLayout: true,
       rows: {
         year: {
           class: 'text-right',
@@ -105,7 +116,9 @@ export class TransposeComponent implements OnInit {
   SNIPPETS = TRANSPOSE_SNIPPETS;
 }
 
-export const Horizontal: Story<TransposeComponent> = (args: TransposeComponent) => ({
+export const Horizontal: Story<TransposeComponent> = (
+  args: TransposeComponent
+) => ({
   props: args,
   component: TransposeComponent,
 });
