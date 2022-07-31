@@ -2,12 +2,14 @@
   [ngClass]="(tableConfig$ | async)?.class || 'table'"
   [class.table-mobile]="(tableConfig$ | async)?.mobileLayout"
   [class.table-horizontal]="(tableConfig$ | async)?.rows"
+  [class.table-loading]="loading$ | async"
+  [attr.aria-busy]="(loading$ | async) === true ? true : null"
 >
   <thead>
     <tr
       *ngIf="{
         config: (tableConfig$ | async)!,
-        loading: loading$ | async
+        isLoading: loading$ | async
       } as table"
     >
       <ng-container
@@ -15,16 +17,29 @@
       >
         <th
           *ngIf="!column.value?.hidden"
-          ngClass="{{ column.value?.sortable ? 'sort ' : '' }} {{
-            sortBy$ | async | sortClass: column.key
-          }} {{ (column.key | dashCase) + '-column' }} {{ column.value.class }}"
-          [class.disabled]="table.loading"
-          (click)="table.loading || !column.value?.sortable || sort(column.key)"
+          ngClass="{{ (column.key | dashCase) + '-column' }} {{
+            column.value.class
+          }}"
+          [class.disabled]="table.isLoading"
           [attr.aria-sort]="sortBy$ | async | sortClass: column.key:true"
+          [class.gt-sortable]="true"
+          scope="col"
         >
-          <span *ngIf="column.value?.header !== false">{{
-            column.value?.header || column.key | capitalCase
-          }}</span>
+          <button
+            *ngIf="column.value?.sortable"
+            class="gt-sort"
+            (click)="
+              table.isLoading || !column.value?.sortable || sort(column.key)
+            "
+          >
+            <span *ngIf="column.value?.header !== false">{{
+              column.value?.header || column.key | capitalCase
+            }}</span>
+          </button>
+          <span
+            *ngIf="!column.value?.sortable && column.value?.header !== false"
+            >{{ column.value?.header || column.key | capitalCase }}</span
+          >
         </th>
       </ng-container>
       <ng-container
@@ -39,8 +54,9 @@
             sortBy$ | async | sortClass: headerRow.key
           }} {{ (headerRow.key | dashCase) + '-column' }}"
           (click)="
-            table.loading || !headerRow.value?.sortable || sort(headerRow.key)
+            table.isLoading || !headerRow.value?.sortable || sort(headerRow.key)
           "
+          scope="col"
         >
           <ng-container *ngIf="headerRow?.value?.header !== false">{{
             headerRow?.value?.header || headerRow.key | capitalCase

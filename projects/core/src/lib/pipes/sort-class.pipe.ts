@@ -12,7 +12,7 @@ export class SortClassPipe implements PipeTransform {
   ): string | null {
     return selection?.sortBy === property
       ? !aria
-        ? 'sort-' + selection.sortByOrder
+        ? 'gt-sort-' + selection.sortByOrder
         : selection.sortByOrder + 'ending'
       : !aria
       ? ''
