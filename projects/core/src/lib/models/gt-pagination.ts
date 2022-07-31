@@ -6,6 +6,6 @@ export interface GtPaginationClasses {
 }
 
 export interface GtPaginationAriaLabels {
-  nav?: string;
-  button?: string;
+  nav: string;
+  button: string;
 }
