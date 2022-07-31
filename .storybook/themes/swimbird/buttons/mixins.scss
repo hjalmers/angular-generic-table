@@ -1,0 +1,296 @@
+//@use '../../tokens';
+//@use '../../functions';
+@use 'sass:math';
+@use 'sass:map';
+
+$btn-primary-color: var(--button-primary-color);
+$btn-primary-border: var(--button-primary-border);
+$btn-primary-bg: var(--button-primary-background);
+$btn-primary-color-hover: var(--button-primary-color-hover);
+$btn-primary-bg-hover: var(--button-primary-background-hover);
+$btn-primary-color-active: var(--button-primary-color-active);
+$btn-primary-bg-active: var(--button-primary-background-active);
+$btn-secondary-color: var(--button-secondary-color);
+$btn-secondary-border: var(--button-secondary-border);
+$btn-secondary-bg: var(--button-secondary-bg);
+$btn-secondary-color-hover: var(--button-secondary-color-hover);
+$btn-secondary-bg-hover: var(--button-secondary-background-hover);
+$btn-secondary-color-active: var(--button-secondary-color-active);
+$btn-secondary-bg-active: var(--button-secondary-background-active);
+$btn-border-radius: var(--button-border-radius);
+$focus-color: var(--focus-color);
+$disabled-opacity: 0.3;
+$font-family: var(--font-family);
+
+@mixin add-base-button() {
+    background: none;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: $btn-border-radius; // 1.5rem;
+    font-family: #{$font-family};
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 300ms ease-in-out;
+    overflow: hidden;
+    position: relative;
+    z-index: 0;
+    line-height: normal;
+}
+
+@mixin add-small-button-modifier {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+}
+@mixin add-primary-button() {
+    background-color: var(--background);
+    border: solid 1px $btn-primary-border;
+    color: var(--color);
+    --color: #{$btn-primary-color};
+    --background: #{$btn-primary-bg};
+    @include add-states(
+        $base: (
+            color: $btn-primary-color,
+            bg: $btn-primary-bg
+        ),
+        $hover: (
+            color: $btn-primary-color-hover,
+            border: $btn-primary-bg-hover,
+            bg: $btn-primary-bg-hover
+        ),
+        $active: (
+            color: $btn-primary-color-active,
+            bg: $btn-primary-bg-active
+        )
+    );
+}
+@mixin add-secondary-button() {
+    background-color: var(--background);
+    color: var(--color);
+    border: solid 1px $btn-secondary-border;
+    --background: #{$btn-secondary-bg};
+    --color: #{$btn-secondary-color};
+    @include add-states(
+        $base: (
+            color: $btn-secondary-color,
+            bg: $btn-secondary-bg
+        ),
+        $hover: (
+            color: $btn-secondary-color-hover,
+            border: $btn-secondary-bg-hover,
+            bg: $btn-secondary-bg-hover
+        ),
+        $active: (
+            color: $btn-secondary-color-active,
+            bg: $btn-secondary-bg-active
+        )
+    );
+}
+@mixin add-states(
+    $base: (
+        color: #ffffff,
+        bg: lighten(desaturate(#038a91, 50%), 15%)
+    ),
+    $hover: (
+        color: #ffffff,
+        border: #ffffff,
+        bg: darken(desaturate(#038a91, 50%), 5%)
+    ),
+    $active: (
+        color: fade-out(#ffffff, 0.2),
+        border: fade-out(#ffffff, 0.2),
+        bg: darken(desaturate(#038a91, 50%), 5%)
+    )
+) {
+    &::before {
+        opacity: 0;
+        content: '';
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-color: map.get($hover, bg); //lighten(desaturate(#038a91, 50%), 15%);
+        top: 0;
+        left: 0;
+        transition: all 300ms ease-in-out, outline 0s;
+        border-radius: inherit;
+        transform: scale3d(0.3, 0.8, 1);
+        z-index: -1;
+    }
+    &:hover:not([disabled], .disabled),
+    &:active:not([disabled], .disabled),
+    &.active:not([disabled], .disabled) {
+        --background: #{map.get($hover, bg)}; //darken(desaturate(#038a91, 50%), 5%);
+        border-color: map.get($hover, border);
+        &::before {
+            opacity: 1;
+            transform: scale3d(1.5, 2.5, 1);
+        }
+        --color: #{map.get($hover, color)};
+    }
+    &:active:not([disabled], .disabled),
+    &.active:not([disabled], .disabled) {
+        --background: #{map.get($active, bg)}; //darken(desaturate(#038a91, 50%), 5%);
+        border-color: map.get($active, border);
+
+        &::before {
+            opacity: 0.4;
+        }
+        --color: #{map.get($active, color)}; //fade-out($color, 0.2);
+    }
+    &:focus:not(:focus-visible) {
+        outline: 0;
+    }
+
+    &:focus-visible:not([disabled], .disabled) {
+        outline: $focus-color solid 3px;
+    }
+    &:disabled,
+    &.disabled {
+        opacity: $disabled-opacity;
+        cursor: not-allowed;
+    }
+}
+
+$close-height: 42px;
+$close-width: $close-height;
+$close-height-sm: 34px;
+$close-width-sm: $close-height-sm;
+$close-padding: 20px;
+$close-padding-sm: 16px;
+$close-thickness: 2px;
+$close-bg-hover: #8C8C8C;
+@mixin close {
+    color: var(--text-color);
+    background-color: transparent;
+    border: 0;
+    border-radius: 50%;
+    content: '';
+    cursor: pointer;
+    font-family: inherit;
+    height: $close-height;
+    position: relative;
+    width: $close-width;
+    font-size: 0;
+
+    &::after,
+    &::before {
+        background: var(--color);
+        content: '';
+        display: block;
+        height: $close-height - $close-padding;
+        left: calc(50% - #{math.div($close-thickness, 2)});
+        position: absolute;
+        top: math.div($close-padding, 2);
+        width: $close-thickness;
+    }
+
+    &::after {
+        transform: rotateZ(45deg);
+    }
+
+    &::before {
+        transform: rotateZ(-45deg);
+    }
+}
+
+@mixin loading() {
+    svg {
+        height: 18px;
+        g.loading {
+            animation: 2s linear infinite loading-animation;
+            transform-origin: center;
+            circle {
+                animation: 1.4s ease-in-out infinite both circle-animation;
+                display: block;
+                fill: transparent;
+                stroke: var(--color);
+                stroke-linecap: round;
+                stroke-dasharray: 283;
+                stroke-dashoffset: 280;
+                stroke-width: 12;
+                transform-origin: 50% 50%;
+            }
+        }
+
+        path.success {
+            fill: none;
+            stroke: var(--color);
+            stroke-width: 4;
+            stroke-miterlimit: 10;
+            transform: scale(3);
+            transform-origin: 26px 26px;
+            stroke-linejoin: miter;
+            stroke-linecap: butt;
+            stroke-dasharray: 36;
+            stroke-dashoffset: 0;
+        }
+        path.close {
+            fill: none;
+            stroke: var(--color);
+            stroke-width: 4;
+            stroke-miterlimit: 10;
+            transform: scale(3);
+            transform-origin: 24px 16px;
+            stroke-linejoin: miter;
+            stroke-linecap: butt;
+            stroke-dasharray: 29;
+            stroke-dashoffset: 0;
+        }
+        g.error {
+            path,
+            circle.outer {
+                fill: none;
+                stroke: var(--color);
+                stroke-width: 10;
+                stroke-miterlimit: 10;
+                stroke-linejoin: round;
+            }
+            path {
+                stroke-dasharray: 36;
+                stroke-dashoffset: 0;
+            }
+            circle.outer {
+                stroke-dasharray: 280;
+                stroke-dashoffset: 0;
+                stroke-width: 12;
+            }
+            circle.dot {
+                fill: var(--color);
+                stroke: none;
+                stroke-dashoffset: 0;
+            }
+            transform-origin: center;
+        }
+    }
+}
+
+@keyframes loading-animation {
+    0% {
+        transform: rotateZ(0deg);
+    }
+    100% {
+        transform: rotateZ(360deg);
+    }
+}
+
+@keyframes circle-animation {
+    0%,
+    25% {
+        stroke-dashoffset: 280;
+        transform: rotate(0);
+    }
+
+    50%,
+    75% {
+        stroke-dashoffset: 75;
+        transform: rotate(45deg);
+    }
+
+    100% {
+        stroke-dashoffset: 280;
+        transform: rotate(360deg);
+    }
+}

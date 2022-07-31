@@ -1,0 +1,275 @@
+@use 'functions';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:string';
+
+@function to-number($value) {
+    @if type-of($value) == 'number' {
+        @return $value;
+    } @else if type-of($value) != 'string' {
+        @error 'Value for `to-number` should be a number or a string.';
+    }
+
+    $result: 0;
+    $digits: 0;
+    $minus: str-slice($value, 1, 1) == '-';
+    $numbers: (
+        '0': 0,
+        '1': 1,
+        '2': 2,
+        '3': 3,
+        '4': 4,
+        '5': 5,
+        '6': 6,
+        '7': 7,
+        '8': 8,
+        '9': 9
+    );
+
+    @for $i from if($minus, 2, 1) through str-length($value) {
+        $character: str-slice($value, $i, $i);
+
+        @if (index(map-keys($numbers), $character) or $character == '.') {
+            @if $character == '.' {
+                $digits: 1;
+            } @else if $digits == 0 {
+                $result: $result * 10 + map.get($numbers, $character);
+            } @else {
+                $digits: $digits * 10;
+                $result: $result + math.div(map.get($numbers, $character),$digits);
+            }
+        }
+    }
+
+    @return if($minus, -$result, $result);
+}
+$grey: (
+    0: rgb(20, 20, 20),
+    1: rgb(30, 30, 30),
+    2: rgb(40, 40, 40),
+    3: rgb(80, 80, 80),
+    4: rgb(100, 100, 100),
+    5: rgb(120, 120, 120),
+    6: rgb(140, 140, 140),
+    7: rgb(160, 160, 160),
+    8: rgb(180, 180, 180),
+    9: rgb(200, 200, 200),
+    10: rgb(240, 240, 240),
+    11: rgb(247, 247, 247)
+);
+
+$black: #000;
+$white: #fff;
+
+$purple: #ac586f;
+//$teal: #40cda0;
+$new-teal: #038a91;
+
+// intention
+$info-color: #00989e;
+$critical-color: #b45869;
+$success-color: #0ad406;
+$warning-color: #ffb103;
+
+// from design
+$super-light-teal: #b5d7d8;
+$light-teal: #76b7bd;
+$teal: #00989e;
+$dark-teal: #028085;
+$super-light-petrol: #c6dbe1;
+$light-petrol: #80b4be;
+$petrol: #208a9a;
+$dark-petrol: #006371;
+$super-light-purple: #c0adbf;
+$light-purple: #ae94ac;
+$purple: #7e627d;
+$dark-purple: #614a61;
+$super-light-red: #e3bec1;
+$light-red: #c06d7a;
+$red: #b45869;
+$dark-red: #960338;
+$super-light-orange: #fcd6c0;
+$light-orange: #f6b088;
+$orange: #f08655;
+$dark-orange: #e8501d;
+$super-light-yellow: #ffe9c6;
+$light-yellow: #fed898;
+$yellow: #fbc75f;
+$dark-yellow: #f8af00;
+
+$colors: (
+    0: (
+        0: $super-light-teal,
+        1: $light-teal,
+        2: $teal,
+        3: $dark-teal
+    ),
+    1: (
+        0: $super-light-petrol,
+        1: $light-petrol,
+        2: $petrol,
+        3: $dark-petrol
+    ),
+    2: (
+        0: $super-light-purple,
+        1: $light-purple,
+        2: $purple,
+        3: $dark-purple
+    ),
+    3: (
+        0: $super-light-red,
+        1: $light-red,
+        2: $red,
+        3: $dark-red
+    ),
+    4: (
+        0: $super-light-orange,
+        1: $light-orange,
+        2: $orange,
+        3: $dark-orange
+    ),
+    5: (
+        0: $super-light-yellow,
+        1: $light-yellow,
+        2: $yellow,
+        3: $dark-yellow
+    )
+);
+
+$number-of-chart-shades: 10;
+
+/* use $count as number of child elements */
+@function tonal-transition($color-start, $color-end, $count) {
+    $map: ();
+    @for $i from 1 through $count {
+        $map: map-merge(
+            $map,
+            (#{$i}: mix($color-end, $color-start, 100% * math.div($i, $count)))
+        );
+    }
+    @return $map;
+}
+
+@function generate-color-maps($theme, $shades: $number-of-chart-shades) {
+    $map: ();
+    @each $key, $value in $theme {
+        $map: map-merge(
+            $map,
+            (
+                #{$key}:
+                    tonal-transition(map.get($value, max), map.get($value, min), $shades)
+            )
+        );
+    }
+    @return $map;
+}
+
+$base-chart-colors: (
+    'dark': (
+        1: (
+            min: $super-light-petrol,
+            max: $dark-petrol
+        ),
+        2: (
+            min: $super-light-purple,
+            max: $dark-purple
+        ),
+        3: (
+            min: $super-light-red,
+            max: $dark-red
+        ),
+        4: (
+            min: $super-light-orange,
+            max: $dark-orange
+        ),
+        5: (
+            min: $super-light-yellow,
+            max: $dark-yellow
+        ),
+        6: (
+            min: $super-light-teal,
+            max: $dark-teal
+        )
+    ),
+    'light': (
+        1: (
+            min: $super-light-petrol,
+            max: $dark-petrol
+        ),
+        2: (
+            min: $super-light-purple,
+            max: $dark-purple
+        ),
+        3: (
+            min: $super-light-red,
+            max: $dark-red
+        ),
+        4: (
+            min: $super-light-orange,
+            max: $dark-orange
+        ),
+        5: (
+            min: $super-light-yellow,
+            max: $dark-yellow
+        ),
+        6: (
+            min: $super-light-teal,
+            max: $dark-teal
+        )
+    )
+);
+
+$generated-chart-colors: (
+    'light': generate-color-maps(map.get($base-chart-colors, 'light')),
+    'dark': generate-color-maps(map.get($base-chart-colors, 'dark'))
+);
+
+@mixin generate-chart-color-variables($generated-chart-colors) {
+    @each $series, $map in $generated-chart-colors {
+        @each $color, $value in $map {
+            --bb-chart-serie-#{$series}-color-#{$color}: #{$value};
+            --bb-chart-serie-#{$series}-color-contrast-#{$color}: #{functions.most-legible-color(
+                    $value
+                )};
+            @if (to-number($color) == math.div(length($map), 2)) {
+                $next: #{(to-number($series) + 6)};
+                --bb-chart-serie-#{$next}-color-1: #{$value};
+            } @else if(to-number($color) == length($map)) {
+                $next: #{(to-number($series) + 12)};
+                --bb-chart-serie-#{$next}-color-1: #{$value};
+            }
+        }
+    }
+}
+
+@mixin generate-variables($map, $prefix: '') {
+    @if ($prefix != '') {
+        $prefix: #{$prefix}-;
+    }
+    @each $key, $value in $map {
+        --#{$prefix}#{$key}: #{$value};
+    }
+}
+
+@mixin generate-map-variables($maps, $prefix: '', $hsl: false) {
+    @if ($prefix != '') {
+        $prefix: #{$prefix}-;
+    }
+
+    @each $name, $map in $maps {
+        @if ($hsl) {
+            $map: functions.hsl-map($map);
+        }
+        @each $key, $value in $map {
+            --#{$prefix}#{$name}-#{$key}: #{$value};
+        }
+    }
+}
+
+@mixin generate-color-variables($map) {
+    @each $key, $value in $map {
+        --color-#{$key}-h: #{hue($value)};
+        --color-#{$key}-s: #{saturation($value)};
+        --color-#{$key}-l: #{lightness($value)};
+    }
+}
