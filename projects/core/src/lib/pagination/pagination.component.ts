@@ -2,6 +2,10 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { combineLatest, ReplaySubject } from 'rxjs';
 import { map, pluck, switchMap } from 'rxjs/operators';
 import { CoreComponent } from '../core.component';
+import {
+  GtPaginationAriaLabels,
+  GtPaginationClasses,
+} from '../models/gt-pagination';
 
 @Component({
   selector: 'angular-generic-table-pagination',
@@ -9,6 +13,27 @@ import { CoreComponent } from '../core.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginationComponent {
+  get paginationLength(): number {
+    return this._paginationLength;
+  }
+
+  @Input() set paginationLength(value: number) {
+    this._paginationLength = +value;
+  }
+  get classes(): GtPaginationClasses {
+    return this._classes;
+  }
+
+  @Input() set classes(value: GtPaginationClasses) {
+    this._classes = value;
+  }
+  get ariaLabels(): GtPaginationAriaLabels {
+    return this._ariaLabels;
+  }
+
+  @Input() set ariaLabels(value: GtPaginationAriaLabels) {
+    this._ariaLabels = value;
+  }
   get table(): CoreComponent | undefined {
     return this._table;
   }
@@ -19,6 +44,16 @@ export class PaginationComponent {
 
   table$: ReplaySubject<CoreComponent> = new ReplaySubject(1);
   private _table: CoreComponent | undefined;
+  private _ariaLabels: GtPaginationAriaLabels = {
+    nav: 'Table pagination',
+    button: 'Go to page ',
+  };
+  private _classes: GtPaginationClasses = {
+    ul: 'pagination',
+    li: 'page-item',
+    button: 'page-link',
+  };
+  private _paginationLength: number = 5;
   pagination$ = this.table$.pipe(
     switchMap((core) =>
       combineLatest([core?.table$.pipe(pluck('info')), core?.currentPage$])
@@ -27,14 +62,14 @@ export class PaginationComponent {
   );
 
   generateList(pages: number, currentPosition: number): Array<number> {
-    const paginationLength: 5 | 7 = 5;
-    const middle = Math.floor(paginationLength / 2);
-    const length = pages < paginationLength ? pages : paginationLength;
+    const middle = Math.floor(this.paginationLength / 2);
+    const length =
+      pages < this.paginationLength ? pages : this.paginationLength;
 
     return Array.from({ length }, (_, i) => {
       if (i === 0) {
         return 1;
-      } else if (pages < paginationLength) {
+      } else if (pages < this.paginationLength) {
         return i + 1;
       } else if (i + 1 === length) {
         return pages;

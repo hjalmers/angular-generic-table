@@ -1,15 +1,44 @@
-<ng-container *ngIf="{
-  links: pagination$ | async,
-  currentPosition: table?.currentPage$ | async
-  } as pagination">
-  <nav *ngIf="pagination.links && pagination.links.length > 1" role="navigation" aria-label="Table Pagination Navigation" class="gt-pagination">
-  <ul>
-    <li *ngFor="let position of pagination!.links; let i = index; let last = last"
-    [class.ellipsis]="position + 1 !== pagination!.links![i+1] && !last"
-    [class.active]="position === (pagination!.currentPosition || 0) + 1"
-    >
-      <button class="btn btn-link" [attr.aria-label]="'Goto Page ' + position" (click)="goto(position)">{{position}}</button>
-    </li>
-  </ul>
-</nav>
+<ng-container
+  *ngIf="{
+    links: pagination$ | async,
+    currentPosition: table?.currentPage$ | async
+  } as pagination"
+>
+  <nav
+    *ngIf="pagination.links && pagination.links.length > 1"
+    role="navigation"
+    [attr.aria-label]="ariaLabels?.nav"
+    class="gt-pagination"
+    [class]="classes?.nav"
+  >
+    <ul [class]="classes?.ul">
+      <ng-container
+        *ngFor="
+          let position of pagination!.links;
+          let i = index;
+          let last = last
+        "
+      >
+        <li
+          [class]="classes?.li"
+          [class.active]="position === (pagination!.currentPosition || 0) + 1"
+        >
+          <button
+            [class]="classes?.button"
+            [attr.aria-label]="ariaLabels?.button + position"
+            (click)="goto(position)"
+          >
+            {{ position }}
+          </button>
+        </li>
+        <li
+          [class]="classes?.li"
+          class="gt-ellipsis"
+          *ngIf="position + 1 !== pagination!.links![i + 1] && !last"
+        >
+          <button [class]="classes?.button" disabled tabindex="-1"></button>
+        </li>
+      </ng-container>
+    </ul>
+  </nav>
 </ng-container>

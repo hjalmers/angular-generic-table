@@ -84,7 +84,7 @@ $pagination-justify-content: center !default;
       margin: 0;
       padding: 0;
       li {
-        &.ellipsis::after {
+        &.gt-ellipsis > button::after {
           content: $pagination-ellipsis-content;
           display: inline-flex;
         }
