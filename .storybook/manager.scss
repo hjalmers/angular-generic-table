@@ -7,8 +7,6 @@ body[data-theme="theme-bootstrap"] {
 }
 
 body[data-theme="theme-sb-dark"] {
-  //@import 'themes/bootstrap';
-  //--sb-bg-color: #1a1a1a;
   @include swimbird.dark-theme;
 }
 body[data-theme="theme-sb-light"] {

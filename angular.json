@@ -153,7 +153,8 @@
           "builder": "@storybook/angular:build-storybook",
           "options": {
             "browserTarget": "docs:build",
-            "outputDir": "dist/storybook"
+            "outputDir": "dist/storybook",
+            "styles": [".storybook/scss-loader.scss"]
           }
         }
       }
