@@ -32,27 +32,27 @@ import { TableMeta } from './models/table-meta.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoreComponent {
-  @Input() set loading(value: Observable<boolean> | boolean) {
-    this._loading$.next(value);
+  @Input() set loading(isLoading: Observable<boolean> | boolean) {
+    this._loading$.next(isLoading);
   }
   @Input()
-  set page(value: number) {
-    this._currentPage$.next(value);
-  }
-
-  @Input()
-  set search(value: Observable<string> | string | null) {
-    this._searchBy$.next(value);
+  set page(page: number) {
+    this._currentPage$.next(page);
   }
 
   @Input()
-  set config(value: Observable<TableConfig> | TableConfig) {
-    this._tableConfig$.next(value);
+  set search(string: Observable<string> | string | null) {
+    this._searchBy$.next(string);
   }
 
   @Input()
-  set data(value: Observable<Array<TableRow>> | Array<TableRow>) {
-    this._data$.next(value);
+  set config(config: Observable<TableConfig> | TableConfig) {
+    this._tableConfig$.next(config);
+  }
+
+  @Input()
+  set data(data: Observable<Array<TableRow>> | Array<TableRow>) {
+    this._data$.next(data);
   }
 
   get loading$(): Observable<boolean> {

@@ -6,6 +6,7 @@ import { DashCasePipe } from './pipes/dash-case.pipe';
 import { HighlightPipe } from './pipes/highlight.pipe';
 import { CapitalCasePipe } from './pipes/capital-case.pipe';
 import { DynamicPipe } from './pipes/dynamic.pipe';
+import { GtDeltaComponent } from './gt-delta/gt-delta.component';
 
 @NgModule({
   declarations: [
@@ -16,8 +17,9 @@ import { DynamicPipe } from './pipes/dynamic.pipe';
     CapitalCasePipe,
     CapitalCasePipe,
     DynamicPipe,
+    GtDeltaComponent,
   ],
   imports: [CommonModule],
-  exports: [CoreComponent],
+  exports: [CoreComponent, GtDeltaComponent],
 })
 export class GenericTableCoreModule {}

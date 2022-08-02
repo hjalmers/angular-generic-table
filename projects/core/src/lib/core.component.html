@@ -148,7 +148,8 @@
                     .transform,
                   templateRef: (table.config?.columns || {})[column.key]
                     .templateRef,
-                  index: i
+                  index: i,
+                  data: table.data[(currentPage$ | async) || 0]
                 }"
               ></ng-container>
             </td>
@@ -171,7 +172,7 @@
               {{ row.value?.header || row.key | capitalCase }}
             </th>
             <td
-              *ngFor="let column of (table?.data || [])[0]"
+              *ngFor="let column of (table?.data || [])[0]; let y = index"
               ngClass="{{ row.value?.class }}"
             >
               <ng-container
@@ -187,7 +188,8 @@
                   column: row,
                   transform: (table.config?.rows || {})[row.key].transform,
                   templateRef: (table.config?.rows || {})[row.key].templateRef,
-                  index: i
+                  index: table.config?.rows ? y : i,
+                  data: table.data[(currentPage$ | async) || 0]
                 }"
               >
               </ng-container>
@@ -218,6 +220,7 @@
   let-row="row"
   let-column="column"
   let-transform="transform"
+  let-data="data"
 >
   {{ row[column.key] | dynamicPipe: transform.pipe:transform?.args }}
 </ng-template>
@@ -227,9 +230,15 @@
   let-column="column"
   let-index="index"
   let-templateRef="templateRef"
+  let-data="data"
 >
   <ng-container
     [ngTemplateOutlet]="templateRef"
-    [ngTemplateOutletContext]="{ row: row, col: column, index: index }"
+    [ngTemplateOutletContext]="{
+      row: row,
+      col: column,
+      index: index,
+      data: data
+    }"
   ></ng-container>
 </ng-template>
