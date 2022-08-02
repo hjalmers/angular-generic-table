@@ -3,6 +3,12 @@
   [class.table-mobile]="(tableConfig$ | async)?.mobileLayout"
   [class.table-horizontal]="(tableConfig$ | async)?.rows"
   [class.table-loading]="loading$ | async"
+  [class.gt-sticky-row-header]="
+    (tableConfig$ | async)?.stickyHeaders?.row && (tableConfig$ | async)?.rows
+  "
+  [class.gt-sticky-column-header]="
+    (tableConfig$ | async)?.stickyHeaders?.column
+  "
   [attr.aria-busy]="(loading$ | async) === true ? true : null"
 >
   <thead>

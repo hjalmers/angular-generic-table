@@ -1,8 +1,11 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Story } from '@storybook/angular/types-6-0';
 import { TRANSPOSE_SNIPPETS } from './transpose.snippets';
-import { PercentPipe } from '@angular/common';
-import { TableConfig, TableRows } from '@angular-generic-table/core';
+import {
+  GtDeltaComponent,
+  TableConfig,
+  TableRows,
+} from '@angular-generic-table/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -31,6 +34,12 @@ import { BehaviorSubject } from 'rxjs';
         <ng-container *ngSwitchCase="'negative'">😭</ng-container>
       </div>
     </ng-template>
+    <ng-template #delta let-data="data" let-index="index">
+      <gt-delta [index]="index" [data]="data"></gt-delta>
+    </ng-template>
+    <ng-template #deltaIndex let-data="data" let-index="index">
+      <gt-delta [index]="index" [baseIndex]="0" [data]="data"></gt-delta>
+    </ng-template>
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
   `,
   styles: [],
@@ -39,32 +48,43 @@ export class TransposeComponent implements OnInit {
   @ViewChild('feelings', { static: true }) feelings:
     | TemplateRef<any>
     | undefined;
+  @ViewChild('delta', { static: true }) delta:
+    | TemplateRef<GtDeltaComponent>
+    | undefined;
+  @ViewChild('deltaIndex', { static: true }) deltaIndex:
+    | TemplateRef<GtDeltaComponent>
+    | undefined;
   loading$ = new BehaviorSubject(false);
   config: TableConfig = {};
   data: TableRows = [];
 
   ngOnInit(): void {
     this.config = {
+      stickyHeaders: {
+        row: true,
+      },
       mobileLayout: true,
       rows: {
         year: {
-          class: 'text-right',
+          class: 'text-end',
           header: false,
         },
         value: {
-          class: 'text-right',
+          class: 'text-end',
         },
-        change: {
-          header: 'Change %',
-          transform: {
-            pipe: PercentPipe,
-            args: [],
-          },
-          class: 'text-right',
+        delta: {
+          header: 'Delta %',
+          templateRef: this.delta,
+          class: 'text-end',
+        },
+        deltaIndex: {
+          header: 'Since inception %',
+          templateRef: this.deltaIndex,
+          class: 'text-end',
         },
         feeling: {
           templateRef: this.feelings,
-          class: 'text-right',
+          class: 'text-end',
         },
       },
     };
@@ -83,32 +103,27 @@ export class TransposeComponent implements OnInit {
       {
         year: '2017',
         value: 50,
-        change: 0.5,
-        feeling: 'thrilled',
+        feeling: 'neutral',
       },
       {
         year: '2018',
         value: 75,
-        change: 0.33,
         feeling: 'positive',
       },
       {
         year: '2019',
         value: 100,
-        change: 1.5,
         feeling: 'thrilled',
       },
       {
         year: '2020',
         value: 250,
-        change: -0.8,
-        feeling: 'negative',
+        feeling: 'thrilled',
       },
       {
         year: '2021',
         value: 50,
-        change: null,
-        feeling: 'neutral',
+        feeling: 'negative',
       },
     ];
   }
