@@ -15,7 +15,7 @@ jobs:
         id: branch
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Build library
         run: npm run build
