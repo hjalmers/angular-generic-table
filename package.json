@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host=0.0.0.0",
-    "build": "ng build --configuration production",
+    "build": "ng build core --configuration production",
     "postbuild": "npx copyfiles projects/core/src/lib/scss/**/* dist/core/scss -f",
     "build:docs": "ng build docs --configuration production",
     "test": "ng test",
