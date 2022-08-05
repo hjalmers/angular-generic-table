@@ -5,7 +5,12 @@ import { SIMPLE_SNIPPETS } from './simple.snippets';
 @Component({
   selector: 'docs-simple',
   template: `
-    <angular-generic-table [data]="data" [config]="config"></angular-generic-table>
+    <div class="overflow-auto">
+      <angular-generic-table
+        [data]="data"
+        [config]="config"
+      ></angular-generic-table>
+    </div>
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
   `,
   styles: [],

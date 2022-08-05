@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'highlight'
+  name: 'highlight',
 })
 export class HighlightPipe implements PipeTransform {
   transform(text: any, searchTerm: string | null): string {
@@ -15,14 +15,14 @@ export class HighlightPipe implements PipeTransform {
     try {
       searchPattern = new RegExp(
         '(' +
-        // @ts-ignore
-        searchTerm
-          .toLowerCase()
-          .match(/".*?"|[^ ]+/g) // extract words
-          .map(
-            needle => needle.replace(/"(.*?)"/, '$1') // strip away '"'
-          )
-          .join('|') + // combine words
+          // @ts-ignore
+          searchTerm
+            .toLowerCase()
+            .match(/".*?"|[^ ]+/g) // extract words
+            .map(
+              (needle) => needle.replace(/"(.*?)"/, '$1') // strip away '"'
+            )
+            .join('|') + // combine words
           ')',
         'ig'
       );
@@ -37,10 +37,16 @@ export class HighlightPipe implements PipeTransform {
       // tag exists in haystack
       highlightedText =
         containsTagMatches[1] +
-        containsTagMatches[2].replace(searchPattern, '<span class="gt-highlight-search">$1</span>') +
+        containsTagMatches[2].replace(
+          searchPattern,
+          '<span class="gt-highlight-search">$1</span>'
+        ) +
         containsTagMatches[3];
     } else {
-      highlightedText = haystackAlwaysString.replace(searchPattern, '<span class="gt-highlight-search">$1</span>');
+      highlightedText = haystackAlwaysString.replace(
+        searchPattern,
+        '<span class="gt-highlight-search">$1</span>'
+      );
     }
 
     return highlightedText;

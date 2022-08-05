@@ -1,55 +1,99 @@
-<div class="form-row mb-3">
-  <div class="col col-sm-auto">
-    <button class="btn btn-primary w-100" (click)="addData()">Add random data</button>
+<div class="row mb-3 gy-3 gx-2">
+  <div class="col-12 col-sm-auto">
+    <button class="btn btn-primary w-100" (click)="addData()">
+      Add random data
+    </button>
   </div>
-  <div class="col col-sm-auto">
-    <button class="btn btn-danger w-100" (click)="removeData()">Remove data</button>
+  <div class="col-12 col-sm-auto">
+    <button class="btn btn-danger w-100" (click)="removeData()">
+      Remove data
+    </button>
   </div>
-  <div class="col col-sm-auto">
-    <button class="btn btn-secondary w-100" (click)="simulateLoad()">Load</button>
+  <div class="col-12 col-sm-auto">
+    <button class="btn btn-secondary w-100" (click)="simulateLoad()">
+      Load
+    </button>
   </div>
 </div>
 <form [formGroup]="paginationForm">
-  <div class="form-row">
-    <div class="form-group col-12 col-sm-auto">
+  <div class="row gy-3">
+    <div class="form-group col-6 col-sm-auto">
       <label for="length_input">Length</label>
-      <input id="length_input" formControlName="length" type="number" class="form-control">
+      <input
+        id="length_input"
+        formControlName="length"
+        type="number"
+        class="form-control"
+      />
     </div>
-    <div class="form-group col-12 col-sm-auto">
+    <div class="form-group col-6 col-sm-auto">
       <label for="search_input">Search</label>
-      <input id="search_input" formControlName="search" type="text" class="form-control">
+      <input
+        id="search_input"
+        formControlName="search"
+        type="text"
+        class="form-control"
+      />
     </div>
   </div>
 </form>
-<div class="mx-n3 mx-sm-0">
-  <angular-generic-table [data]="data$" [config]="tableConfig$" [page]="(currentPage$ | async)!" [search]="search$" [loading]="loading$" #table>
-    <div class="table-loading skeleton-loader skeleton-loader-table"></div>
-    <div class="table-no-data alert alert-info mt-3">
-      Table is empty
-    </div>
+<div class="overflow-scroll mt-3 pb-3">
+  <angular-generic-table
+    [data]="data$"
+    [config]="tableConfig$"
+    [page]="(currentPage$ | async)!"
+    [search]="search$"
+    [loading]="loading$"
+    #table
+  >
+    <div class="table-loading gt-skeleton-loader"></div>
+    <div class="table-no-data alert alert-info mt-3">Table is empty</div>
   </angular-generic-table>
 </div>
-<div class="row justify-content-between justify-content-sm-center align-items-center mt-3" *ngIf="{current: (currentPage$ | async) || 0,total: (table.table$ | async)?.info?.pageTotal || 1
-} as pagination">
-  <div class="col-auto">
-    <button class="btn btn-primary" (click)="prev()" [disabled]="pagination.current === 0">Prev</button>
+<div
+  class="row justify-content-center align-items-center gy-3"
+  *ngIf="{
+    current: (currentPage$ | async) || 0,
+    total: (table.table$ | async)?.info?.pageTotal || 1
+  } as pagination"
+>
+  <div class="col-6 col-sm-auto">
+    <button
+      class="btn btn-primary w-100"
+      (click)="prev()"
+      [disabled]="pagination.current === 0"
+    >
+      Prev
+    </button>
   </div>
-  <div class="col-auto">
-    <button class="btn btn-primary" (click)="next()" [disabled]="pagination.total -1 === pagination.current">Next</button>
+  <div class="col-6 col-sm-auto">
+    <button
+      class="btn btn-primary w-100"
+      (click)="next()"
+      [disabled]="pagination.total - 1 === pagination.current"
+    >
+      Next
+    </button>
   </div>
-  <div class="col-auto">Current page: {{pagination.current +1}}</div>
-  <div class="col-auto">Total pages: {{pagination.total}}</div>
+  <div class="col-auto">Current page: {{ pagination.current + 1 }}</div>
+  <div class="col-auto">Total pages: {{ pagination.total }}</div>
+  <div class="col-auto">Records: {{ (data$ | async).length }}</div>
   <div class="col-auto">
-    Records: {{(data$ | async).length}}
-  </div>
-  <div class="col-auto">
-    {{clicked}}
+    {{ clicked }}
   </div>
 </div>
 <ng-template #actions let-row="row" let-col="col" let-index="index">
-  <button class="btn btn-outline-primary btn-sm my-sm-n3" (click)="clickAction(row, col, index)">Click me!</button>
+  <button
+    class="btn btn-outline-primary btn-sm"
+    (click)="clickAction(row, col, index)"
+  >
+    Click me!
+  </button>
 </ng-template>
 <ng-template #color let-row="row" let-col="col">
-  <div [style.background]="row[col.key]" style="width: 1.5rem; height: 1.5rem; border-radius: 50%"></div>
+  <div
+    [style.background]="row[col.key]"
+    style="width: 1.5rem; height: 1.5rem; border-radius: 50%"
+  ></div>
 </ng-template>
 <docs-tabs [content]="SNIPPETS"></docs-tabs>

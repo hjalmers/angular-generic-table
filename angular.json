@@ -21,12 +21,13 @@
             }
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "main": "projects/core/src/test.ts",
-            "tsConfig": "projects/core/tsconfig.spec.json",
-            "karmaConfig": "projects/core/karma.conf.js"
+            "lintFilePatterns": [
+              "projects/core/src/**/*.ts",
+              "projects/core/src/**/*.html"
+            ]
           }
         }
       }
@@ -108,28 +109,20 @@
             "browserTarget": "docs:build"
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
           "options": {
-            "main": "projects/docs/src/test.ts",
-            "polyfills": "projects/docs/src/polyfills.ts",
-            "tsConfig": "projects/docs/tsconfig.spec.json",
-            "karmaConfig": "projects/docs/karma.conf.js",
-            "assets": ["projects/docs/src/favicon.ico", "projects/docs/src/assets"],
-            "styles": ["projects/docs/src/styles.scss"],
-            "scripts": []
+            "browserTarget": "docs:build",
+            "port": 4400,
+            "styles": [".storybook/scss-loader.scss"]
           }
         },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
           "options": {
-            "protractorConfig": "projects/docs/e2e/protractor.conf.js",
-            "devServerTarget": "docs:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "docs:serve:production"
-            }
+            "browserTarget": "docs:build",
+            "outputDir": "dist/storybook",
+            "styles": [".storybook/scss-loader.scss"]
           }
         }
       }

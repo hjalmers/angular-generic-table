@@ -1,0 +1,23 @@
+// load global styles used by storybook
+@use "themes/swimbird";
+@use "themes/bootstrap/css-variables" as bootstrap;
+
+body[data-theme="theme-bootstrap"] {
+  @include bootstrap.add-variables;
+}
+
+body[data-theme="theme-sb-dark"] {
+  @include swimbird.dark-theme;
+}
+body[data-theme="theme-sb-light"] {
+  @include swimbird.light-theme;
+}
+@include swimbird.add-typography;
+
+body {
+  background: var(--sb-body-bg) !important;
+
+  div#storybook-explorer-tree * {
+    color: var(--sb-body-color);
+  }
+}

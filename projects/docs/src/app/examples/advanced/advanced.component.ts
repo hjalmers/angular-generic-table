@@ -1,7 +1,11 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { FormBuilder } from '@angular/forms';
-import { TableConfig, TableRow, TableColumn } from '@angular-generic-table/core';
+import {
+  TableConfig,
+  TableRow,
+  TableColumn,
+} from '@angular-generic-table/core';
 import { withLatestFrom } from 'rxjs/operators';
 import { Story } from '@storybook/angular/types-6-0';
 import { ADVANCED_DOCS } from './advanced.snippets';
@@ -26,7 +30,8 @@ export class AdvancedComponent implements OnInit {
     length: [10],
     search: [''],
   });
-  search$ = this.paginationForm.get('search')?.valueChanges as Observable<string>;
+  search$ = this.paginationForm.get('search')
+    ?.valueChanges as Observable<string>;
   loading$ = new BehaviorSubject(true);
   data$: BehaviorSubject<any> = new BehaviorSubject([
     {
@@ -50,8 +55,24 @@ export class AdvancedComponent implements OnInit {
   clicked: string = '';
   maleFirstNames = ['Peter', 'Clark', 'Ruben', 'John', 'Jack', 'Roscoe'];
   femaleFirstNames = ['Mary Jane', 'Kim', 'Sarah', 'Michelle', 'Ann'];
-  lastNames = ['Andersson', 'Smith', 'Parker', 'Kent', 'Rogers', 'Lane', 'Jackson'];
-  foods = ['Pizza', 'Pasta', 'Hamburger', 'Pancakes', 'Tacos', 'Lasagna', 'Meatloaf'];
+  lastNames = [
+    'Andersson',
+    'Smith',
+    'Parker',
+    'Kent',
+    'Rogers',
+    'Lane',
+    'Jackson',
+  ];
+  foods = [
+    'Pizza',
+    'Pasta',
+    'Hamburger',
+    'Pancakes',
+    'Tacos',
+    'Lasagna',
+    'Meatloaf',
+  ];
   colors = ['#33d60b', '#dcafff', '#3fc9ff', '#ff1600', '#5238b1', '#fff'];
 
   tableConfig$: ReplaySubject<TableConfig> = new ReplaySubject(1);
@@ -71,7 +92,11 @@ export class AdvancedComponent implements OnInit {
     setTimeout(() => this.loading$.next(false), 2000);
   }
 
-  clickAction(row: TableRow, column: { key: string; value: TableColumn }, index: number): void {
+  clickAction(
+    row: TableRow,
+    column: { key: string; value: TableColumn },
+    index: number
+  ): void {
     console.log('clicked row:', row, 'col:', column);
     this.clicked = `clicked row number: ${index}`;
   }
@@ -80,11 +105,17 @@ export class AdvancedComponent implements OnInit {
     const random = Math.floor(Math.random() * 2);
     const newRecord = {
       firstName: random
-        ? this.maleFirstNames[Math.floor(Math.random() * this.maleFirstNames.length)]
-        : this.femaleFirstNames[Math.floor(Math.random() * this.femaleFirstNames.length)],
-      lastName: this.lastNames[Math.floor(Math.random() * this.lastNames.length)],
+        ? this.maleFirstNames[
+            Math.floor(Math.random() * this.maleFirstNames.length)
+          ]
+        : this.femaleFirstNames[
+            Math.floor(Math.random() * this.femaleFirstNames.length)
+          ],
+      lastName:
+        this.lastNames[Math.floor(Math.random() * this.lastNames.length)],
       gender: random ? 'male' : 'female',
-      favoriteColor: this.colors[Math.floor(Math.random() * this.colors.length)],
+      favoriteColor:
+        this.colors[Math.floor(Math.random() * this.colors.length)],
       favoriteFood: this.foods[Math.floor(Math.random() * this.foods.length)],
     };
     console.log('added new random record:', newRecord);
@@ -112,7 +143,8 @@ export class AdvancedComponent implements OnInit {
         });
       });
     this.tableConfig$.next({
-      class: 'table table-mobile text-nowrap mb-0',
+      class: 'table text-nowrap mb-0',
+      mobileLayout: true,
       columns: {
         firstName: {
           header: 'First name',
@@ -152,6 +184,7 @@ export class AdvancedComponent implements OnInit {
           header: false,
           templateRef: this.actions,
           order: 6,
+          class: 'py-1 text-end',
         },
       },
       pagination: {
@@ -161,7 +194,9 @@ export class AdvancedComponent implements OnInit {
   }
 }
 
-export const Advanced: Story<AdvancedComponent> = (args: AdvancedComponent) => ({
+export const Advanced: Story<AdvancedComponent> = (
+  args: AdvancedComponent
+) => ({
   props: args,
   component: AdvancedComponent,
 });

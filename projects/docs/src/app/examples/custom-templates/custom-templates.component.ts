@@ -1,18 +1,35 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Story } from '@storybook/angular/types-6-0';
-import { TableConfig, TableRow, TableColumn } from '@angular-generic-table/core';
+import {
+  TableConfig,
+  TableRow,
+  TableColumn,
+} from '@angular-generic-table/core';
 import { ReplaySubject } from 'rxjs';
 import { CUSTOM_TEMPLATES_DOCS } from './custom-templates.snippets';
 
 @Component({
   selector: 'docs-custom-templates',
   template: `
-    <angular-generic-table [data]="data" [config]="config$"></angular-generic-table>
+    <div class="overflow-auto">
+      <angular-generic-table
+        [data]="data"
+        [config]="config$"
+      ></angular-generic-table>
+    </div>
     <ng-template #actions let-row="row" let-col="col" let-index="index">
-      <button class="btn btn-outline-primary btn-sm my-sm-n3" (click)="clickAction(row, col, index)">Click me!</button>
+      <button
+        class="btn btn-outline-primary btn-sm my-sm-n3 text-nowrap"
+        (click)="clickAction(row, col, index)"
+      >
+        Click me!
+      </button>
     </ng-template>
     <ng-template #color let-row="row" let-col="col">
-      <div [style.background]="row[col.key]" style="width: 1.5rem; height: 1.5rem; border-radius: 50%"></div>
+      <div
+        [style.background]="row[col.key]"
+        style="width: 1.5rem; height: 1.5rem; border-radius: 50%"
+      ></div>
     </ng-template>
     {{ clicked }}
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
@@ -58,13 +75,19 @@ export class CustomTemplatesComponent implements OnInit {
       },
     });
   }
-  clickAction(row: TableRow, column: { key: string; value: TableColumn }, index: number): void {
+  clickAction(
+    row: TableRow,
+    column: { key: string; value: TableColumn },
+    index: number
+  ): void {
     console.log('clicked row:', row, 'col:', column);
     this.clicked = `clicked row number: ${index}`;
   }
 }
 
-export const CustomTemplates: Story<CustomTemplatesComponent> = (args: CustomTemplatesComponent) => ({
+export const CustomTemplates: Story<CustomTemplatesComponent> = (
+  args: CustomTemplatesComponent
+) => ({
   props: args,
   component: CustomTemplatesComponent,
 });

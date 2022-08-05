@@ -74,7 +74,7 @@ export class AppModule {}`,
     name: 'custom-templates.component.html',
     code: `<angular-generic-table [data]="data" [config]="config$"></angular-generic-table>
 <ng-template #actions let-row="row" let-col="col" let-index="index">
- <button class="btn btn-outline-primary btn-sm my-sm-n3" (click)="clickAction(row, col, index)">Click me!</button>
+ <button class="btn btn-outline-primary btn-sm my-sm-n3 text-nowrap" (click)="clickAction(row, col, index)">Click me!</button>
 </ng-template>
 <ng-template #color let-row="row" let-col="col">
  <div [style.background]="row[col.key]" style="width: 1.5rem; height: 1.5rem; border-radius: 50%"></div>

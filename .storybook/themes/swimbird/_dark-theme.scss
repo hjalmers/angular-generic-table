@@ -1,0 +1,344 @@
+@use 'tokens';
+@use 'colors';
+@use 'functions';
+@use 'sass:map';
+@use 'sass:color';
+
+@mixin add(
+    // colors
+    $primary-color: tokens.$dark-teal,
+    $secondary-color: $primary-color,
+    $accent-color: $primary-color,
+    $colors: (primary: $primary-color, secondary: $secondary-color),
+    $purple: colors.$purple,
+    $bg-color: map.get(tokens.$grey, 0),
+    $bg-color-1: map.get(tokens.$grey, 1),
+    $bg-color-fadable: functions.stripped-rgb($bg-color),
+    $bg-image-color: transparentize(tokens.$black, 0.85),
+    $accent-color-contrast: tokens.$white,
+    //functions.most-legible-color($accent-color);
+    $accent-color-contrast-fadable: functions.stripped-rgb($accent-color-contrast),
+    // brand
+    $logo-sm-path: url('^./assets/images/swimbird-logo.svg'),
+    $logo-path: url('^./assets/images/swimbird-logo.svg'),
+    $login-logo-path: url('^./assets/images/swimbird-logo-horisontal-light.svg'),
+    $brand-text: 'SWIMBIRD',
+    $font-family: 'Thicccboi, sans-serif',
+    $border-radius: 1.5rem,
+    $box-shadow-sm: 0 0 0.5rem 0 rgba(0, 0, 0, 0.0675),
+    // links
+    $link-color: functions.a11y-color($primary-color, $bg-color-1),
+    $link-color-hover: functions.a11y-color(lighten($primary-color, 15%), $bg-color-1),
+    $link-color-visited: functions.a11y-color($purple, $bg-color-1),
+    $link-font-weight: bold,
+    // buttons
+    $button-border-radius: 1.5rem,
+    $button-primary-bg: $primary-color,
+    $button-primary-border: $primary-color,
+    $button-primary-color: functions.most-legible-color($button-primary-bg),
+    $button-primary-bg-hover: darken($button-primary-bg, 10.5%),
+    $button-primary-color-hover: functions.most-legible-color($button-primary-bg-hover),
+    $button-primary-bg-active: darken($button-primary-bg, 20.5%),
+    $button-primary-color-active: functions.most-legible-color($button-primary-bg-active),
+    $button-secondary-bg: transparent,
+    $button-secondary-border: darken($button-primary-bg, 10.5%),
+    //functions.most-legible-color($button-secondary-bg),
+    $button-secondary-color: $primary-color,
+    //functions.most-legible-color($button-secondary-bg),
+    $button-secondary-bg-hover: $button-primary-bg-hover,
+    $button-secondary-color-hover:
+        functions.most-legible-color($button-secondary-bg-hover),
+    $button-secondary-bg-active: $button-primary-bg-active,
+    $button-secondary-color-active:
+        functions.most-legible-color($button-secondary-bg-active),
+    $buttons: (
+        primary: (
+            color: $button-primary-color,
+            border: $button-primary-border,
+            background: $button-primary-bg,
+            color-hover: $button-primary-color-hover,
+            background-hover: $button-primary-bg-hover,
+            color-active: $button-primary-color-active,
+            background-active: $button-primary-bg-active
+        ),
+        secondary: (
+            color: $button-secondary-color,
+            border: $button-secondary-border,
+            background: $button-secondary-bg,
+            color-hover: $button-secondary-color-hover,
+            background-hover: $button-secondary-bg-hover,
+            color-active: $button-secondary-color-active,
+            background-active: $button-secondary-bg-active
+        )
+    ),
+    $footer-bg: map.get(tokens.$grey, 1),
+    $footer-color: functions.most-legible-color($footer-bg),
+    $focus-color:
+        hsla(var(--color-primary-h), var(--color-primary-s), var(--color-primary-l), 0.35),
+    // alerts
+    $alert-border-radius: 0.5rem,
+    //$border-radius,
+    $teal: #00989e,
+    $blue: #3f939e,
+    $green: #3f9e7e,
+    $petrol: #208a9a,
+    $yellow: #fbc75f,
+    $red: #a63d50,
+    $intent: (info: $blue, success: $green, warning: $yellow, critical: $red),
+    $alerts: (
+        info: (
+            text:
+                functions.a11y-color(map.get($intent, 'info'), $bg-color-1, $level: 'AAA'),
+            border-color: map.get($intent, 'info'),
+            background: map.get($intent, 'info'),
+            contrast:
+                functions.a11y-color(
+                    #fff,
+                    map.get($intent, 'info'),
+                    $bold: true,
+                    $graphic: true,
+                    $force: 'lighten'
+                )
+        ),
+        success: (
+            text:
+                functions.a11y-color(
+                    map.get($intent, 'success'),
+                    $bg-color-1,
+                    $level: 'AAA'
+                ),
+            border-color: map.get($intent, 'success'),
+            background: map.get($intent, 'success'),
+            contrast:
+                functions.a11y-color(
+                    #fff,
+                    map.get($intent, 'success'),
+                    $bold: true,
+                    $graphic: true,
+                    $force: 'lighten'
+                )
+        ),
+        warning: (
+            text:
+                functions.a11y-color(
+                    map.get($intent, 'warning'),
+                    $bg-color-1,
+                    $level: 'AAA'
+                ),
+            border-color: map.get($intent, 'warning'),
+            background: map.get($intent, 'warning'),
+            contrast:
+                functions.a11y-color(
+                    #fff,
+                    map.get($intent, 'warning'),
+                    $bold: true,
+                    $graphic: true,
+                    $force: 'lighten'
+                )
+        ),
+        critical: (
+            text:
+                functions.a11y-color(
+                    map.get($intent, 'critical'),
+                    $bg-color-1,
+                    $level: 'AAA'
+                ),
+            border-color: map.get($intent, 'critical'),
+            background: map.get($intent, 'critical'),
+            contrast:
+                functions.a11y-color(
+                    #fff,
+                    map.get($intent, 'critical'),
+                    $bold: true,
+                    $graphic: true,
+                    $force: 'lighten'
+                )
+        )
+    ),
+    $badges: (
+        critical: (
+            background: map.get($intent, 'critical'),
+            contrast:
+                functions.a11y-color(
+                    #fff,
+                    map.get($intent, 'critical'),
+                    $bold: true,
+                    $graphic: true,
+                    $force: 'lighten'
+                )
+        )
+    ),
+    $nav: (
+        bg: tokens.$navbar-bg,
+        box-shadow: tokens.$shadow-md,
+        menu-category-font-weight: tokens.$menu-category-font-weight,
+        menu-category-font-size: tokens.$font-size-md,
+        menu-category-text-decoration: none,
+        menu-category-color: tokens.$label-color,
+        menu-item-color: tokens.$menubar-item-color,
+        menu-item-color-hover: tokens.$menubar-item-color-hover,
+        menu-item-bg-hover: tokens.$menubar-item-bg-hover,
+        menu-item-font-weight: tokens.$menubar-item-font-weight,
+        menu-item-underline-color: tokens.$menubar-item-accent-color,
+        mega-menu-item-font-weight: tokens.$menu-item-font-weight,
+        mega-menu-item-color: tokens.$menu-item-color,
+        mega-menu-item-color-hover: tokens.$menu-item-color-hover,
+        mega-menu-item-bg-hover: tokens.$menu-item-bg-hover,
+        mega-menu-bg: tokens.$popover-bg,
+        mega-menu-box-shadow: tokens.$shadow-md
+    ),
+    $card: (
+        bg: tokens.$level-1-bg,
+        nested-bg: tokens.$level-2-bg,
+        nested-border: none,
+        border-radius: $border-radius,
+        mobile-border-radius: 0,
+        box-shadow: $box-shadow-sm,
+        box-shadow-hover: var(--shadow-md),
+        border: none
+    ),
+    $pills: (
+        border-radius: $border-radius,
+        padding: 0.75rem 1rem,
+        //color: $button-primary-color,
+        border: none,
+        background: transparent,
+        //color-hover: $button-primary-color-hover,
+        border-hover: none,
+        background-hover: $button-primary-bg-hover,
+        color-active: functions.most-legible-color(map.get(tokens.$grey, 3)),
+        border-active: none,
+        background-active: map.get(tokens.$grey, 3)
+    ),
+    $modal: (
+        box-shadow: tokens.$shadow-md,
+        color: tokens.$text-color,
+        bg: tokens.$level-1-bg,
+        border-radius: 1.5rem,
+        dialog-border-radius: 1.5rem,
+        aside-border-radius: 1rem 1rem 0 0,
+        aside-border-radius-sm: 1.5rem 0 0 1.5rem,
+        aside-left-border-radius-sm: 0 1.5rem 1.5rem 0
+    ),
+    $chart: (
+        fill-opacity: 0.25,
+        fill-opacity-hover: 1,
+        stroke-width: 2px,
+        line-stroke-width: 2px,
+        bubble-stroke-width: 2px,
+        bubble-stroke-opacity: 0.35,
+        bubble-fill-opacity: 0.1,
+        bubble-fill-opacity-hover: 0.4
+    ),
+    $chart-colors: (
+        1: (
+            min: tokens.$super-light-petrol,
+            max: tokens.$dark-petrol
+        ),
+        2: (
+            min: tokens.$super-light-purple,
+            max: tokens.$dark-purple
+        ),
+        3: (
+            min: tokens.$super-light-red,
+            max: tokens.$dark-red
+        ),
+        4: (
+            min: tokens.$super-light-orange,
+            max: tokens.$dark-orange
+        ),
+        5: (
+            min: tokens.$super-light-yellow,
+            max: tokens.$dark-yellow
+        ),
+        6: (
+            min: tokens.$super-light-teal,
+            max: tokens.$dark-teal
+        )
+    )
+) {
+    --border-radius: #{$border-radius};
+    --alert-border-radius: #{$alert-border-radius};
+    // card
+    @include colors.generate-variables($card, 'card');
+    // pills
+    @include colors.generate-variables($pills, 'pills');
+    --font-family: #{$font-family};
+    --focus-color: #{$focus-color};
+    --button-border-radius: #{$button-border-radius};
+    --bb-chart-colors: url('#{tokens.$petrol};#{tokens.$purple};#{tokens.$red};#{tokens.$orange};#{tokens.$yellow};#{tokens.$teal};#{tokens.$light-petrol};#{tokens.$light-purple};#{tokens.$light-red};#{tokens.$light-orange};#{tokens.$light-yellow};#{tokens.$light-teal}');
+    --bg-color: #{$bg-color};
+    --bg-border-color: #{map.get(tokens.$grey, 1)};
+    --bg-color-fadable: #{$bg-color-fadable};
+    --bg-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 261.46 193.49'%3E%3Cpath d='M216.3 96.87c7.33.77 14.67 1.42 22 2l2.45.18c1.85.14 3.7.28 5.55.4l.95.06q12.35.8 24.65 1.21-8.89-5.57-18-10.81l-4.48-2.53c-1.15-.65-2.31-1.29-3.46-1.92q-5.53-3-11.15-6A89.44 89.44 0 0 0 151 25.79a130.13 130.13 0 0 0-23.61-15.15 89.86 89.86 0 0 0-31.23 18.91l-3.52-.76-3-.6-2.88-.58q-15.21-3-30.38-5.14-23.07-3.25-46-4.53Q39.89 43.5 72 66.17l4.24 3v.06a89.37 89.37 0 0 0-5 9.68 87.08 87.08 0 0 0-3.08 8 89.36 89.36 0 0 0 66.51 115.68A74.33 74.33 0 0 0 217.23 161a89.62 89.62 0 0 1-27.17 17c-1.44.57-2.89 1.11-4.36 1.61a47.71 47.71 0 0 0 5.3-13.94c.26-1.26.46-2.52.62-3.78a89.39 89.39 0 0 1-92.91-19.33 47.61 47.61 0 0 1 55.41-33.23 80.52 80.52 0 0 0 44.09-3.13 81.08 81.08 0 0 0 18.14-9.33Z' transform='translate(-10.42 -10.64)' style='fill:#{functions.escape-hex-color(#{$bg-image-color})}' /%3E%3C/svg%3E");
+    --bg-color-hover: #{map.get(tokens.$grey, 2)};
+    --table-border-color: #{map.get(tokens.$grey, 2)};
+    --level-0-bg-color: #{$bg-color-1};
+    --level-0-color: #{tokens.$white};
+    --level-1-bg-color: #{map.get(tokens.$grey, 2)};
+    --level-1-color: #{tokens.$white};
+    --level-2-bg-color: #{map.get(tokens.$grey, 2)};
+    --label-color: #{map.get(tokens.$grey, 12)};
+    --text-color: #{tokens.$white};
+    --text-color-fadable: #{functions.stripped-rgb(tokens.$white)};
+    --text-positive-color: #{tokens.$teal};
+    --text-negative-color: #{tokens.$light-red};
+    --text-muted-color: #{map.get(tokens.$grey, 2)};
+    --text-color-inverted: #{tokens.$black};
+    // highchart colors start
+    --chart-color-0: #{tokens.$petrol};
+    --chart-color-1: #{tokens.$purple};
+    --chart-color-2: #{tokens.$red};
+    --chart-color-3: #{tokens.$orange};
+    --chart-color-4: #{tokens.$yellow};
+    --chart-color-5: #{tokens.$teal};
+    --chart-color-6: #{tokens.$light-petrol};
+    --chart-color-7: #{tokens.$light-purple};
+    --chart-color-8: #{tokens.$light-red};
+    --chart-color-9: #{tokens.$light-orange};
+    --chart-color-10: #{tokens.$light-yellow};
+    --chart-color-11: #{tokens.$light-teal};
+    // highchart colors end
+    --chart-benchmark: #{tokens.$yellow};
+    --accent-color: #{$accent-color};
+    --accent-color-contrast: #{$accent-color-contrast};
+    --accent-color-contrast-fadable: #{$accent-color-contrast-fadable};
+    --hr-color: #{transparentize(map.get(tokens.$grey, 10), 0.75)};
+    --link-color: #{$link-color};
+    --link-color-hover: #{$link-color-hover};
+    --link-color-visited: #{$link-color-visited};
+    --link-font-weight: #{$link-font-weight};
+    --scroll-thumb-color: #{map.get(tokens.$grey, 2)};
+    --footer-bg: #{$footer-bg};
+    --footer-color: #{$footer-color};
+    --shadow-sm: 0 0 0.5rem 0.25rem rgba(0, 0, 0, 0.25);
+    --shadow-md: 0 0 1rem 0.5rem rgba(0, 0, 0, 0.25);
+    --logo-sm-path: #{$logo-sm-path};
+    --logo-path: #{$logo-path};
+    --login-logo-path: #{$login-logo-path};
+    --brand-text: #{$brand-text};
+    --skeleton-loader-highlight-color: #333333;
+    --skeleton-loader-bg-color: #{map.get(tokens.$grey, 2)};
+    @include colors.generate-variables($chart, 'chart');
+    @include colors.generate-variables($nav, 'nav');
+    @include colors.generate-variables($modal, 'modal');
+    @include colors.generate-map-variables($buttons, 'button');
+    @include colors.generate-map-variables($alerts, 'alert');
+    @include colors.generate-map-variables($badges, 'badge');
+    @include colors.generate-color-variables($colors);
+    @include colors.generate-chart-color-variables(
+        colors.generate-color-maps($chart-colors)
+    );
+
+    @include colors.generate-map-variables($alerts, 'alert', true);
+}
+
+/* mixin for generating css variables from map with optional prefix */
+@mixin _generate-variables($map, $prefix: '') {
+    @if ($prefix != '') {
+        $prefix: #{$prefix}-;
+    }
+    @each $key, $value in $map {
+        --#{$prefix}#{$key}: #{$value};
+    }
+}

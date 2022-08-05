@@ -21,12 +21,15 @@ export class PaginationComponent implements OnInit {
     length: [10],
     search: [''],
   });
-  search$ = this.paginationForm.get('search')?.valueChanges as Observable<string>;
+  search$ = this.paginationForm.get('search')
+    ?.valueChanges as Observable<string>;
   loading$ = new BehaviorSubject(true);
-  data$: Observable<any> = this.http.get('https://private-730c61-generictable.apiary-mock.com/data').pipe(
-    pluck('data'),
-    tap((_) => this.loading$.next(false))
-  );
+  data$: Observable<any> = this.http
+    .get('https://private-730c61-generictable.apiary-mock.com/data')
+    .pipe(
+      pluck('data'),
+      tap((_) => this.loading$.next(false))
+    );
 
   tableConfig$: ReplaySubject<TableConfig> = new ReplaySubject(1);
   SNIPPETS = ADVANCED_DOCS;
@@ -43,24 +46,20 @@ export class PaginationComponent implements OnInit {
         });
       });
     this.tableConfig$.next({
-      class: 'table table-mobile text-nowrap mb-0',
+      class: 'table text-nowrap',
       columns: {
         first_name: {
-          mobileHeader: true,
           sortable: true,
         },
         last_name: {
-          mobileHeader: true,
           sortable: true,
         },
         gender: {
-          mobileHeader: 'Sex',
           sortable: true,
         },
         birthday: {
-          mobileHeader: true,
           sortable: true,
-          class: 'text-right',
+          class: 'text-end',
           transform: {
             pipe: DatePipe,
             args: ['longDate'],
@@ -74,7 +73,9 @@ export class PaginationComponent implements OnInit {
   }
 }
 
-export const Pagination: Story<PaginationComponent> = (args: PaginationComponent) => ({
+export const Pagination: Story<PaginationComponent> = (
+  args: PaginationComponent
+) => ({
   props: args,
   component: PaginationComponent,
 });

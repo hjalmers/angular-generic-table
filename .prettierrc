@@ -1,8 +1,15 @@
 {
-  "printWidth": 120,
-  "singleQuote": true,
-  "useTabs": false,
-  "tabWidth": 2,
-  "semi": true,
-  "bracketSpacing": true
+  "extends": ["prettier"],
+  "plugins": ["prettier"],
+  "rules": {
+    "prettier/prettier": "error",
+    "arrow-body-style": "off",
+    "prefer-arrow-callback": "off",
+    "printWidth": 120,
+    "singleQuote": true,
+    "useTabs": false,
+    "tabWidth": 2,
+    "semi": true,
+    "bracketSpacing": true
+  }
 }

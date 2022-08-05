@@ -1,7 +1,7 @@
 <!--<div class="card mt-3">
   <h4 class="card-header">Table</h4>
   <div class="card-body">
-    <div class="form-row mb-3">
+    <div class="row mb-3">
       <div class="col col-sm-auto">
         <button class="btn btn-primary w-100" (click)="addData()">Add random data</button>
       </div>
@@ -13,7 +13,7 @@
       </div>
     </div>
     <form [formGroup]="paginationForm">
-      <div class="form-row">
+      <div class="row">
         <div class="form-group col-12 col-sm-auto">
           <label for="length_input">Length</label>
           <input id="length_input" formControlName="length" type="number" class="form-control">
@@ -26,7 +26,7 @@
     </form>
     <div class="mx-n3 mx-sm-0">
     <angular-generic-table [data]="data$" [config]="tableConfig$" [page]="currentPage$" [search]="search$" [loading]="loading$">
-      <div class="table-loading skeleton-loader skeleton-loader-table"></div>
+      <div class="table-loading gt-skeleton-loader"></div>
       <div class="table-no-data alert alert-info mt-3">
         Table is empty
       </div>

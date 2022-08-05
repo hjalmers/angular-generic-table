@@ -13,7 +13,10 @@ capitalize = (s) =>
     .replace(/\s{2,}/g, ' ')
     .trim();
 
-export let chunk: (array: Array<any>, chunkSize: number) => Array<Array<TableRow>>;
+export let chunk: (
+  array: Array<any>,
+  chunkSize: number
+) => Array<Array<TableRow>>;
 chunk = (array, chunkSize) => {
   if (chunkSize < 0) {
     throw new Error('Invalid chunk size');
@@ -28,24 +31,46 @@ chunk = (array, chunkSize) => {
   return CHUNK;
 };
 
-export let search: (text: string, caseSensitive: boolean, data: Array<TableRow>, config: TableConfig) => TableRow[];
-search = (text: string, caseSensitive: boolean, data: Array<TableRow>, config: TableConfig) => {
+export let search: (
+  text: string,
+  caseSensitive: boolean,
+  data: Array<TableRow>,
+  config: TableConfig
+) => TableRow[];
+search = (
+  text: string,
+  caseSensitive: boolean,
+  data: Array<TableRow>,
+  config: TableConfig
+) => {
   if (config.columns) {
     const searchColumns = Object.keys(config.columns).filter(
       // @ts-ignore
-      (key) => !config.columns[key].hidden && config.columns[key].search !== false
+      (key) =>
+        config.columns &&
+        !config.columns[key]?.hidden &&
+        config.columns[key]?.search !== false
     );
-    return data.filter(
-      (row) =>
+
+    const FILTERED = [];
+    for (let i = 0; i < data.length; i++) {
+      const row = data[i];
+      const match =
         Object.entries(row)
           .filter(([key, value]) => searchColumns.indexOf(key) !== -1)
-          .reduce(
-            (prev, [key, value]): string =>
-              prev + (prev === '' ? '' : ' & ') + (caseSensitive ? value + '' : (value + '').toLowerCase()),
-            ''
-          )
-          .indexOf(text) !== -1
-    );
+          .reduce((acc, [key, value], index): string => {
+            return (
+              acc +
+              (index === 0 ? '' : ' ? ') +
+              (caseSensitive ? value + '' : (value + '').toLowerCase())
+            );
+          }, '')
+          .indexOf(text) !== -1;
+      if (match) {
+        FILTERED[FILTERED.length] = row;
+      }
+    }
+    return FILTERED;
   } else {
     return data;
   }

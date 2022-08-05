@@ -5,10 +5,14 @@ import { Order } from '../enums/order.enum';
   name: 'sortClass',
 })
 export class SortClassPipe implements PipeTransform {
-  transform(selection: { sortBy: string; sortByOrder: Order } | any, property: string, aria = false): string | null {
+  transform(
+    selection: { sortBy: string; sortByOrder: Order } | any,
+    property: string,
+    aria = false
+  ): string | null {
     return selection?.sortBy === property
       ? !aria
-        ? 'sort-' + selection.sortByOrder
+        ? 'gt-sort-' + selection.sortByOrder
         : selection.sortByOrder + 'ending'
       : !aria
       ? ''

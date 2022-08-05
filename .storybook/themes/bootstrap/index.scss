@@ -1,0 +1,73 @@
+@use '../../../node_modules/bootstrap/scss/bootstrap' with (
+  $enable-negative-margins: true
+);
+@use 'css-variables' as bootstrap-variables;
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+@import "../../../node_modules/bootstrap/scss/maps";
+@import "../../../node_modules/bootstrap/scss/mixins";
+@import "../../../node_modules/bootstrap/scss/utilities";
+
+& {
+  @include bootstrap-variables.add-variables;
+}
+// stylelint-disable declaration-no-important, selector-no-qualifying-type, property-no-vendor-prefix
+
+
+// Reboot
+//
+// Normalization of HTML elements, manually forked from Normalize.css to remove
+// styles targeting irrelevant browsers while applying new styles.
+//
+// Normalize is licensed MIT. https://github.com/necolas/normalize.css
+
+
+// Document
+//
+// Change from `box-sizing: content-box` so that `width` is not affected by `padding` or `border`.
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+// Root
+//
+// Ability to the value of the root font sizes, affecting the value of `rem`.
+// null by default, thus nothing is generated.
+
+& {
+  @if $font-size-root != null {
+    font-size: var(--#{$variable-prefix}root-font-size);
+  }
+
+  @if $enable-smooth-scroll {
+    @media (prefers-reduced-motion: no-preference) {
+      scroll-behavior: smooth;
+    }
+  }
+}
+
+
+// Body
+//
+// 1. Remove the margin in all browsers.
+// 2. As a best practice, apply a default `background-color`.
+// 3. Prevent adjustments of font size after orientation changes in iOS.
+// 4. Change the default tap highlight to be completely transparent in iOS.
+
+// scss-docs-start reboot-body-rules
+& {
+  margin: 0; // 1
+  font-family: var(--#{$variable-prefix}body-font-family);
+  @include font-size(var(--#{$variable-prefix}body-font-size));
+  font-weight: var(--#{$variable-prefix}body-font-weight);
+  line-height: var(--#{$variable-prefix}body-line-height);
+  color: var(--#{$variable-prefix}body-color);
+  text-align: var(--#{$variable-prefix}body-text-align);
+  background-color: var(--#{$variable-prefix}body-bg); // 2
+  -webkit-text-size-adjust: 100%; // 3
+  -webkit-tap-highlight-color: rgba($black, 0); // 4
+}

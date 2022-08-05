@@ -1,0 +1,24 @@
+@use 'mixins';
+
+.btn {
+    @include mixins.add-base-button;
+}
+
+.btn-sm {
+    @include mixins.add-small-button-modifier;
+}
+
+.primary {
+    @include mixins.add-primary-button;
+}
+
+.secondary {
+    @include mixins.add-secondary-button;
+}
+
+.close {
+    @include mixins.close;
+}
+sb-pending-button-indicator {
+    @include mixins.loading;
+}

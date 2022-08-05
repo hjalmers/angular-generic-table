@@ -1,3 +1,49 @@
 // load global styles used by storybook
+@use 'themes/swimbird' with (
+  $font-path: '/static/media/.storybook/assets/'
+);
+@use 'bootstrap/scss/bootstrap-grid' with (
+  $enable-negative-margins: true
+);
+
 @use 'projects/core/src/lib/scss' as generic-table;
 @include generic-table.styles;
+
+@include swimbird.add-typography;
+
+.theme-bootstrap {
+    @import 'themes/bootstrap';
+}
+
+.theme-sb-dark {
+  @include swimbird.dark-theme
+}
+
+.theme-sb-light {
+  @include swimbird.light-theme
+}
+//@import 'bootstrap/scss/tables';
+
+
+
+.sbdocs {
+  &.sbdocs-wrapper, &.sbdocs-h1, &.sbdocs-h2, &.sbdocs-h3, &.sbdocs-p, &.sbdocs-p > code {
+    background: var(--sb-body-bg);
+    color: var(--sb-body-color);
+  }
+}
+docs-tabs pre, .sbdocs-pre .prismjs {
+  background-image: linear-gradient(0deg, var(--sb-code-even) 25%, var(--sb-code-odd) 25%, var(--sb-code-odd) 50%, var(--sb-code-even) 50%, var(--sb-code-even) 75%, var(--sb-code-odd) 75%, var(--sb-code-odd) 100%) !important;
+  background-size: 84px 84px !important;
+  padding: 21px 1rem !important;
+  font-family: var(--bs-font-monospace);
+  font-size: 0.875em;
+}
+
+.sbdocs-pre .prismjs {
+  font-size: 14px;
+  line-height: 21px;
+  * {
+    font-family: var(--bs-font-monospace) !important;
+  }
+}

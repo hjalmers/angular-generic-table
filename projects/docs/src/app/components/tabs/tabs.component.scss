@@ -3,3 +3,10 @@ pre {
   background-size: 84.00px 84.00px;
   padding: 21px 1rem;
 }
+ul {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

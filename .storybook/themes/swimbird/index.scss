@@ -1,0 +1,409 @@
+$font-path: './assets/' !default;
+$background-color-hover: #282828;//rgba(tokens.$text-color-fadable, 0.1);
+$table-border-color: #282828;
+
+@use 'sass:map';
+@use 'buttons/mixins' as button;
+@mixin _add-theme($background: #141414, $color: #ffffff, $code-odd: #1e1e1e) {
+  background: $background;
+  --sb-body-bg: #{$background};
+  --sb-code-even: var(--sb-body-bg);
+  --sb-code-odd: #{$code-odd};
+  --sb-body-color: #{$color};
+  --sb-font-family: Thicccboi, sans-serif;
+  --bs-font-monospace: JetBrainsMono, monospace;
+
+  & {
+    font-family: var(--sb-font-family) !important;
+  }
+
+  pre, code {
+    font-family: var(--bs-font-monospace) !important;
+    font-size: 13px;
+    line-height: 21px;
+  }
+
+  h1,
+  .h1,
+  h2,
+  .h2,
+  h3,
+  .h3 {
+    font-family: inherit !important;
+    font-weight: 700 !important;
+  }
+
+  h2,
+  .h2 {
+    font-size: 2rem;
+  }
+
+  h3,
+  .h3 {
+    font-size: 1.25rem !important;
+  }
+  .table {
+    @include add-table;
+  }
+  .btn {
+    @include button.add-base-button;
+  }
+
+  .btn-sm {
+    @include button.add-small-button-modifier;
+  }
+
+  .primary {
+    @include button.add-primary-button;
+  }
+
+  .secondary {
+    @include button.add-secondary-button;
+  }
+
+  .close {
+    @include button.close;
+  }
+}
+
+@mixin add-table() {
+  width: 100%;
+  border-collapse: collapse;
+  //margin: 0 -0.5rem 1rem -0.5rem;
+  color: var(--sb-body-color);
+  th {
+    text-align: left;
+    &.sort {
+      transition: color 200ms ease-in-out;
+      &:hover {
+        color: var(--link-color);
+      }
+      cursor: pointer;
+      > span {
+        display: inline-flex;
+        align-items: center;
+        padding-right: 0;
+        transition: padding 200ms ease-out;
+        &::after {
+          content: '';
+          width: 0;
+          height: 0;
+          display: block;
+          border-bottom: solid var(--accent-color) 2px;
+          border-left: solid var(--accent-color) 2px;
+          opacity: 0;
+          transform: translate(75%, 2px) rotate3d(0, 0, 1, -45deg)
+          scale3d(-1, -1, 1);
+          transition: transform 400ms, opacity 400ms;
+        }
+      }
+      &.sort-desc > span,
+      &.sort-asc > span {
+        padding-right: 0.75rem;
+        &::after {
+          opacity: 1;
+          width: 8px;
+          height: 8px;
+        }
+      }
+      &.sort-desc > span::after {
+        transform: translate(75%, -2px) rotate3d(0, 0, 1, -45deg)
+        scale3d(1, 1, -1);
+      }
+
+      &.sort-asc > span::after {
+        transform: translate(75%, 2px) rotate3d(0, 0, 1, -45deg)
+        scale3d(-1, -1, 1);
+      }
+    }
+  }
+  tbody {
+    @media screen and (min-width: 576px) {
+      tr.active,
+      tr:hover {
+        background: $background-color-hover;
+      }
+    }
+
+    tr.link {
+      //@include mixins.link-style(td a);
+      cursor: pointer;
+    }
+    tr > td > img {
+      height: 5rem;
+      width: 7.5rem;
+      object-fit: cover;
+      vertical-align: middle;
+      border-radius: 0.25rem;
+    }
+    tr > td .image-placeholder > button {
+      height: 5rem;
+      width: 7.5rem;
+      border-radius: 0.25rem;
+    }
+    tr > td .badge {
+      position: absolute;
+      margin: 1.25rem 2rem;
+      z-index: 1;
+      ~ .image-placeholder .btn {
+        opacity: 0.1;
+        filter: grayscale(1);
+      }
+      ~ img {
+        filter: saturate(0.5);
+        opacity: 0.25;
+      }
+    }
+  }
+  th,
+  td {
+    white-space: nowrap;
+    border-bottom: solid 1px $table-border-color;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .table-no-data {
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    background: $background-color-hover;
+    text-align: center;
+  }
+}
+
+@mixin add-mobile-table() {
+  width: 100%;
+  @media screen and (max-width: 576px) {
+    thead {
+      top: 50px;
+      border-bottom: 3px solid $table-border-color;
+      font-size: 1rem;
+    }
+    tr {
+      th,
+      td {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+      }
+    }
+  }
+}
+
+// TODO: refactor - pagination button should get active class
+// button states
+$base: (
+  color:  red, // tokens.$white,
+  bg: lighten(desaturate(#038a91, 50%), 15%)
+);
+$hover: (
+  color: red, // tokens.$white,
+  border: red, // tokens.$white,
+  bg: darken(desaturate(#038a91, 50%), 5%)
+);
+$active: (
+  color: red, // fade-out(tokens.$white, 0.2),
+  border: red, // fade-out(tokens.$white, 0.2),
+  bg: darken(desaturate(#038a91, 50%), 5%)
+);
+
+@mixin add-table-pagination() {
+  margin: 1rem 0;
+  .btn.btn-link {
+    //@include button.add-secondary-button();
+    //@include button.add-small-button-modifier();
+  }
+  li + li {
+    margin-left: 0.5rem;
+  }
+
+  li {
+    &.active .btn:not([disabled], .disabled) {
+      --background: #{map.get($hover, bg)}; //darken(desaturate(#038a91, 50%), 5%);
+      border-color: map.get($hover, border);
+      &::before {
+        opacity: 1;
+        transform: scale3d(1.5, 2.5, 1);
+      }
+      --color: #{map.get($hover, color)};
+    }
+    &.active .btn:not([disabled], .disabled) {
+      --background: #{map.get($active, bg)}; //darken(desaturate(#038a91, 50%), 5%);
+      border-color: map.get($active, border);
+
+      &::before {
+        opacity: 0.4;
+      }
+      --color: #{map.get($active, color)}; //fade-out($color, 0.2);
+    }
+  }
+}
+
+
+@mixin add-typography() {
+  @font-face {
+    font-family: Thicccboi;
+    src: url('#{$font-path}THICCCBOI-Thin.woff2') format('woff2');
+    font-weight: 100;
+  }
+  @font-face {
+    font-family: Thicccboi;
+    src: url('#{$font-path}THICCCBOI-Light.woff2') format('woff2');
+    font-weight: 200;
+  }
+  @font-face {
+    font-family: Thicccboi;
+    src: url('#{$font-path}THICCCBOI-Regular.woff2') format('woff2');
+    font-weight: 300;
+  }
+  @font-face {
+    font-family: Thicccboi;
+    src: url('#{$font-path}THICCCBOI-Medium.woff2') format('woff2');
+    font-weight: 400;
+  }
+  @font-face {
+    font-family: Thicccboi;
+    src: url('#{$font-path}THICCCBOI-SemiBold.woff2') format('woff2');
+    font-weight: 500;
+  }
+  @font-face {
+    font-family: Thicccboi;
+    src: url('#{$font-path}THICCCBOI-Bold.woff2') format('woff2');
+    font-weight: 600;
+  }
+  @font-face {
+    font-family: Thicccboi;
+    src: url('#{$font-path}THICCCBOI-ExtraBold.woff2') format('woff2');
+    font-weight: 700;
+  }
+  @font-face {
+    font-family: Thicccboi;
+    src: url('#{$font-path}THICCCBOI-Black.woff2') format('woff2');
+    font-weight: 800;
+  }
+  @font-face {
+    font-family: Thicccboi;
+    src: url('#{$font-path}THICCCBOI-ThicccAF.woff2') format('woff2');
+    font-weight: 900;
+  }
+
+  // normal fonts
+
+  @font-face {
+    font-family: JetBrainsMono;
+    font-style: normal;
+    font-weight: 100;
+    src: url('#{$font-path}JetBrainsMono-Thin.woff2') format("woff2");
+  }
+  @font-face {
+    font-family: JetBrainsMono;
+    font-style: normal;
+    font-weight: 200;
+    src: url('#{$font-path}JetBrainsMono-ExtraLight.woff2')
+    format("woff2");
+  }
+  @font-face {
+    font-family: JetBrainsMono;
+    font-style: normal;
+    font-weight: 300;
+    src: url('#{$font-path}JetBrainsMono-Light.woff2') format("woff2");
+  }
+  @font-face {
+    font-family: JetBrainsMono;
+    font-style: normal;
+    font-weight: 400;
+    src: url('#{$font-path}JetBrainsMono-Regular.woff2')
+    format("woff2");
+  }
+  @font-face {
+    font-family: JetBrainsMono;
+    font-style: normal;
+    font-weight: 500;
+    src: url('#{$font-path}JetBrainsMono-Medium.woff2') format("woff2");
+  }
+  @font-face {
+    font-family: JetBrainsMono;
+    font-style: normal;
+    font-weight: 600;
+    src: url('#{$font-path}JetBrainsMono-SemiBold.woff2')
+    format("woff2");
+  }
+  @font-face {
+    font-family: JetBrainsMono;
+    font-style: normal;
+    font-weight: 700;
+    src: url('#{$font-path}JetBrainsMono-Bold.woff2') format("woff2");
+  }
+  @font-face {
+    font-family: JetBrainsMono;
+    font-style: normal;
+    font-weight: 800;
+    src: url('#{$font-path}JetBrainsMono-ExtraBold.woff2')
+    format("woff2");
+  }
+
+  // italic fonts
+
+  @font-face {
+    font-family: JetBrainsMono;
+    font-style: italic;
+    font-weight: 100;
+    src: url('#{$font-path}JetBrainsMono-ThinItalic.woff2')
+    format("woff2");
+  }
+  @font-face {
+    font-family: JetBrainsMono;
+    font-style: italic;
+    font-weight: 200;
+    src: url('#{$font-path}JetBrainsMono-ExtraLightItalic.woff2')
+    format("woff2");
+  }
+  @font-face {
+    font-family: JetBrainsMono;
+    font-style: italic;
+    font-weight: 300;
+    src: url('#{$font-path}JetBrainsMono-LightItalic.woff2')
+    format("woff2");
+  }
+  @font-face {
+    font-family: JetBrainsMono;
+    font-style: italic;
+    font-weight: 400;
+    src: url('#{$font-path}JetBrainsMono-Italic.woff2') format("woff2");
+  }
+  @font-face {
+    font-family: JetBrainsMono;
+    font-style: italic;
+    font-weight: 500;
+    src: url('#{$font-path}JetBrainsMono-MediumItalic.woff2')
+    format("woff2");
+  }
+  @font-face {
+    font-family: JetBrainsMono;
+    font-style: italic;
+    font-weight: 600;
+    src: url('#{$font-path}JetBrainsMono-SemiBoldItalic.woff2')
+    format("woff2");
+  }
+  @font-face {
+    font-family: JetBrainsMono;
+    font-style: italic;
+    font-weight: 700;
+    src: url('#{$font-path}JetBrainsMono-BoldItalic.woff2')
+    format("woff2");
+  }
+  @font-face {
+    font-family: JetBrainsMono;
+    font-style: italic;
+    font-weight: 800;
+    src: url('#{$font-path}JetBrainsMono-ExtraBoldItalic.woff2')
+    format("woff2");
+  }
+}
+
+
+@mixin dark-theme() {
+  @include _add-theme();
+}
+
+@mixin light-theme() {
+  @include _add-theme();
+}

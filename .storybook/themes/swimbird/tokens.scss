@@ -1,0 +1,111 @@
+@use 'sass:map';
+@use 'colors';
+@forward 'functions';
+@forward 'colors';
+
+// logo
+$logo-path: var(--logo-path);
+$logo-sm-path: var(--logo-sm-path);
+$brand-text: var(--brand-text);
+
+$bg-color: var(--bg-color);
+$bg-border-color: var(--bg-border-color);
+$bg-color-fadable: var(--bg-color-fadable);
+$bg-image: var(--bg-image);
+$bg-color-hover: var(--bg-color-hover);
+
+$text-color-fadable: var(--text-color-fadable);
+
+$label-color: var(--text-color);
+
+// levels
+$level-0-bg: var(--bg-color);
+$level-0-color: var(--level-0-color);
+
+$level-1-bg: var(--level-0-bg-color);
+$level-1-color: var(--level-0-color);
+
+$level-2-bg: var(--level-1-bg-color);
+$level-2-color: var(--level-1-color);
+
+$accent-color: var(--accent-color);
+$accent-color-contrast: var(--accent-color-contrast);
+$link-color: var(--link-color);
+$link-color-hover: var(--link-color-hover);
+
+$label-color: var(--text-color);
+
+$text-color: var(--text-color);
+$text-secondary-color: rgba(var(--text-color-fadable), 0.3);
+$text-positive-color: var(--text-positive-color);
+$text-negative-color: var(--text-negative-color);
+$text-muted-color: var(--text-muted-color);
+
+$heading-color: $text-color;
+$label-color: $label-color;
+
+$hr-color: var(--hr-color);
+$chart-colors: var(--chart-colors);
+$chart-benchmark-color: var(--chart-benchmark);
+
+$shadow-sm: var(--shadow-sm);
+$shadow-md: var(--shadow-md);
+
+$dark: map.get(colors.$grey, 0);
+$light: map.get(colors.$grey, 8);
+
+// table
+$table-border-color: var(--table-border-color);
+
+// skeleton-loader
+$skeleton-loader-highlight-color: var(--skeleton-loader-highlight-color);
+
+// popover
+$popover-bg: var(--level-1-bg-color);
+
+$font-size-lg: 2rem;
+$font-size-md: 1rem;
+$font-size-sm: 0.75rem;
+
+// footer
+$footer-color: var(--footer-color);
+$footer-bg: var(--footer-bg);
+
+// navbar
+$navbar-bg: var(--level-0-bg-color);
+
+// dropdown
+$dropdown-item-color: $label-color;
+$dropdown-item-bg: transparent;
+$dropdown-item-hover-color: $accent-color-contrast;
+$dropdown-item-hover-bg: $accent-color;
+
+$menubar-item-color: $label-color; //black !default;
+$menubar-item-color-hover: $link-color-hover;
+$menubar-item-bg-hover: var(--bg-color-hover);
+$menubar-item-font-weight: 600;
+$menubar-item-accent-color: $accent-color; // #d05378;
+
+$menu-category-font-weight: $menubar-item-font-weight;
+
+$menu-item-color: $link-color;
+$menu-item-color-hover: $link-color-hover;
+$menu-item-bg-hover: transparent;
+$menu-item-font-weight: $menubar-item-font-weight;
+
+$grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+    lg: 992px,
+    xl: 1200px,
+    xxl: 1400px
+);
+
+// Scrollbar
+$scrollbar-track-bg: $bg-color; //$gray-100;
+$scrollbar-thumb-bg: var(--scroll-thumb-color); //$gray-400;
+$scrollbar-thumb-active-bg: $accent-color;
+$scrollbar-thickness: 10px;
+
+$border-radius: 5px;

@@ -4,9 +4,10 @@ import { AdvancedComponent } from './examples/advanced/advanced.component';
 import { SimpleComponent } from './examples/simple/simple.component';
 import { CustomTemplatesComponent } from './examples/custom-templates/custom-templates.component';
 import { PaginationComponent } from './examples/pagination/pagination.component';
+import { HorizontalTableComponent } from './examples/horizontal-table/horizontal-table.component';
+import { MobileLayoutComponent } from './examples/mobile-layout/mobile-layout.component';
+import { NestedDataComponent } from './examples/nested-data/nested-data.component';
 import { TransposeComponent } from './examples/transpose/transpose.component';
-import {MobileLayoutComponent} from "./examples/mobile-layout/mobile-layout.component";
-import {NestedDataComponent} from "./examples/nested-data/nested-data.component";
 
 const routes: Routes = [
   {
@@ -22,8 +23,8 @@ const routes: Routes = [
     component: SimpleComponent,
   },
   {
-    path: 'transpose',
-    component: TransposeComponent,
+    path: 'horizontal-table',
+    component: HorizontalTableComponent,
   },
   {
     path: 'custom-templates',
@@ -36,6 +37,10 @@ const routes: Routes = [
   {
     path: 'nested',
     component: NestedDataComponent,
+  },
+  {
+    path: 'transpose',
+    component: TransposeComponent,
   },
 ];
 

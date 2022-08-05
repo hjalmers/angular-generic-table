@@ -2,7 +2,7 @@ export const ADVANCED_DOCS = [
   {
     name: 'pagination.component.html',
     code: `<form [formGroup]="paginationForm">
-  <div class="form-row">
+  <div class="row gy-3">
     <div class="form-group col-12 col-sm-auto">
       <label for="length_input">Length</label>
       <input id="length_input" formControlName="length" type="number" class="form-control">
@@ -13,9 +13,9 @@ export const ADVANCED_DOCS = [
     </div>
   </div>
 </form>
-<div class="mx-n3 mx-sm-0">
+<div class="mx-n3 mx-sm-0 my-3 overflow-auto">
   <angular-generic-table [data]="data$" [config]="tableConfig$" [search]="search$" [loading]="loading$" #table>
-    <div class="table-loading skeleton-loader skeleton-loader-table"></div>
+    <div class="table-loading gt-skeleton-loader"></div>
     <div class="table-no-data alert alert-info mt-3">
       Table is empty
     </div>
@@ -69,24 +69,20 @@ export class PaginationComponent implements OnInit {
         });
       });
     this.tableConfig$.next({
-      class: 'table table-mobile text-nowrap mb-0',
+      class: 'table text-nowrap',
       columns: {
         first_name: {
-          mobileHeader: true,
           sortable: true,
         },
         last_name: {
-          mobileHeader: true,
           sortable: true,
         },
         gender: {
-          mobileHeader: 'Sex',
           sortable: true,
         },
         birthday: {
-          mobileHeader: true,
           sortable: true,
-          class: 'text-right',
+          class: 'text-end',
           transform: {
             pipe: DatePipe,
             args: ['longDate'],

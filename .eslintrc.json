@@ -1,0 +1,41 @@
+{
+  "ignorePatterns": ["!**/*"],
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "extends": [
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:prettier/recommended"
+      ],
+      "rules": {
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "gt",
+            "style": "camelCase"
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "angular-generic",
+            "style": "kebab-case"
+          }
+        ],
+        "prettier/prettier": "error"
+      }
+    },
+    {
+      "files": ["*.html"],
+      "rules": {}
+    }
+  ],
+  "plugins": [
+    "@angular-eslint",
+    "prettier",
+    "html"
+  ]
+}
