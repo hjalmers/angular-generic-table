@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import {
   TableConfig,
   TableRow,
@@ -23,7 +23,7 @@ export class AdvancedComponent implements OnInit {
   set currentPage(value: number) {
     this._currentPage$.next(value);
   }
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: UntypedFormBuilder) {}
   @ViewChild('actions', { static: true }) actions: TemplateRef<any> | undefined;
   @ViewChild('color', { static: true }) color: TemplateRef<any> | undefined;
   paginationForm = this.fb.group({

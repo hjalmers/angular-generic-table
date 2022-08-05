@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { TableConfig, TableRow, TableColumn } from '@angular-generic-table/core';
 import { withLatestFrom } from 'rxjs/operators';
 import { Story } from '@storybook/angular/types-6-0';
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
   set currentPage(value: number) {
     this._currentPage$.next(value);
   }
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: UntypedFormBuilder) {}
   @ViewChild('actions', { static: true }) actions: TemplateRef<any> | undefined;
   @ViewChild('color', { static: true }) color: TemplateRef<any> | undefined;
   paginationForm = this.fb.group({
