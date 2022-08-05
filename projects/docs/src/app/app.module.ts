@@ -3,7 +3,10 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { GenericTableCoreModule, GenericTablePaginationModule } from '@angular-generic-table/core';
+import {
+  GenericTableCoreModule,
+  GenericTablePaginationModule,
+} from '@angular-generic-table/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdvancedComponent } from './examples/advanced/advanced.component';
 import { SimpleComponent } from './examples/simple/simple.component';
@@ -12,21 +15,23 @@ import { CustomTemplatesComponent } from './examples/custom-templates/custom-tem
 import { PaginationComponent } from './examples/pagination/pagination.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { TransposeComponent } from './examples/transpose/transpose.component';
+import { HorizontalTableComponent } from './examples/horizontal-table/horizontal-table.component';
 import { MobileLayoutComponent } from './examples/mobile-layout/mobile-layout.component';
 import { NestedDataComponent } from './examples/nested-data/nested-data.component';
+import { TransposeComponent } from './examples/transpose/transpose.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AdvancedComponent,
     SimpleComponent,
-    TransposeComponent,
+    HorizontalTableComponent,
     PaginationComponent,
     TabsComponent,
     CustomTemplatesComponent,
     MobileLayoutComponent,
     NestedDataComponent,
+    TransposeComponent,
   ],
   imports: [
     BrowserModule,

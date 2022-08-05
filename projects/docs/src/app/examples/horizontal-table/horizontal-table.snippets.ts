@@ -1,4 +1,4 @@
-export const TRANSPOSE_SNIPPETS = [
+export const HORIZONTAL_TABLE_SNIPPETS = [
   {
     name: 'horizontal-table.component.ts',
     code: `import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';

@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Story } from '@storybook/angular/types-6-0';
-import { TRANSPOSE_SNIPPETS } from './transpose.snippets';
+import { HORIZONTAL_TABLE_SNIPPETS } from './horizontal-table.snippets';
 import {
   GtDeltaComponent,
   TableConfig,
@@ -9,7 +9,7 @@ import {
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
-  selector: 'docs-transpose',
+  selector: 'docs-horizontal-table',
   template: `
     <button class="btn btn-outline-primary" (click)="simulateLoad()">
       Simulate load
@@ -44,7 +44,7 @@ import { BehaviorSubject } from 'rxjs';
   `,
   styles: [],
 })
-export class TransposeComponent implements OnInit {
+export class HorizontalTableComponent implements OnInit {
   @ViewChild('feelings', { static: true }) feelings:
     | TemplateRef<any>
     | undefined;
@@ -128,12 +128,12 @@ export class TransposeComponent implements OnInit {
     ];
   }
 
-  SNIPPETS = TRANSPOSE_SNIPPETS;
+  SNIPPETS = HORIZONTAL_TABLE_SNIPPETS;
 }
 
-export const Horizontal: Story<TransposeComponent> = (
-  args: TransposeComponent
+export const Horizontal: Story<HorizontalTableComponent> = (
+  args: HorizontalTableComponent
 ) => ({
   props: args,
-  component: TransposeComponent,
+  component: HorizontalTableComponent,
 });

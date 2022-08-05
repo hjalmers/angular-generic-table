@@ -59,7 +59,7 @@ export class PaginationComponent implements OnInit {
         },
         birthday: {
           sortable: true,
-          class: 'text-right',
+          class: 'text-end',
           transform: {
             pipe: DatePipe,
             args: ['longDate'],

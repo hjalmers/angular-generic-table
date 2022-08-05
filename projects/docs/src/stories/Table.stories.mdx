@@ -13,12 +13,14 @@ import {CustomTemplates, CustomTemplatesComponent} from "../app/examples/custom-
 import {Pagination, PaginationComponent} from "../app/examples/pagination/pagination.component";
 import {HttpClientModule} from "@angular/common/http";
 import {GenericTablePaginationModule} from "../../../core/src/lib/pagination/pagination.module";
-import {Horizontal, TransposeComponent} from "../app/examples/transpose/transpose.component";
-import {Nested, NestedDataComponent} from "../app/examples/nested-data/nested-data.component";
+import {Horizontal, HorizontalTableComponent} from "../app/examples/horizontal-table/horizontal-table.component";
+import {Nested, NestedDataComponent} from "../app/examples/nested-data/nested-data.component"; import {
+  Transpose
+} from '../app/examples/transpose/transpose.component';
 
 <Meta title="Examples" decorators={[
   moduleMetadata({
-    declarations: [CustomTemplatesComponent, SimpleComponent, AdvancedComponent, PaginationComponent, TransposeComponent, TabsComponent, MobileLayoutComponent, NestedDataComponent],
+    declarations: [CustomTemplatesComponent, SimpleComponent, AdvancedComponent, PaginationComponent, HorizontalTableComponent, TabsComponent, MobileLayoutComponent, NestedDataComponent],
     imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
   })]}/>
 
@@ -186,11 +188,11 @@ What would a table be without pagination? To simplify things for you, Angular Ge
       <td><code>classes</code></td>
       <td>Classes for pagination elements. Pass an object with key values, where key is element and value is classes to be applied.</td>
       <td><code>GtPaginationClasses</code></td>
-      <td><code>&#123;
-        nav: null,
-        ul: 'pagination',
-        li: 'page-item',
-        button: 'page-link'
+      <td><code>&#123;<br/>
+        &nbsp;nav: null,<br/>
+        &nbsp;ul: 'pagination',<br/>
+        &nbsp;li: 'page-item',<br/>
+        &nbsp;button: 'page-link'<br/>
         &#125;
       </code></td>
     </tr>
@@ -199,9 +201,9 @@ What would a table be without pagination? To simplify things for you, Angular Ge
       <td>Aria labels for pagination elements. Pass an object with key values, where key is element and value is aria label to use.</td>
       <td><code>GtPaginationAriaLabels</code></td>
       <td><code>
-        &#123;
-        nav: 'Table navigation',
-        button: 'Go to page '
+        &#123;<br/>
+        &nbsp;nav: 'Table navigation',<br/>
+        &nbsp;button: 'Go to page '<br/>
         &#125;
       </code></td>
     </tr>
@@ -237,10 +239,17 @@ export class SharedModule {}
 
 ## Horizontal example
 
-Declare `rows` instead of `columns` to get a horizontal table where records are added as columns instead of rows.
+Declare `rows` instead of `columns` to get a horizontal table where records are added as columns instead of rows. The example below freezes the first column by setting `stickyHeaders.row` to true, it also uses `<gt-delta>` which is a helper component to display the delta between two values (by default it compares against previous row or column).
 
 <Story name="Horizontal table">
   {Horizontal.bind({})}
+</Story>
+
+### Transpose table (flip layout)
+
+Here's a similar example with <code>search</code> and <code>pagination</code>, that let the user switch from row-layout to column-layout.
+<Story name="Transpose table">
+  {Transpose.bind({})}
 </Story>
 
 
