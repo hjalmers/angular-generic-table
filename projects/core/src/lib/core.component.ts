@@ -104,23 +104,25 @@ export class CoreComponent {
           !!Object.values(config.rows).find((column) => !!column.mapTo))
       ) {
         // ...map data to new keys on row...
-        data = data.map((row) => {
+        const newData: TableRow[] = [];
+        for (let i = 0; i < data.length; i++) {
+          const row = data[i];
           const newKeys = Object.entries(config.columns || config.rows || [])
             .filter(([key, value]) => !!value.mapTo) // add keys for columns with mapTo config...
             .reduce(
-              (previousValue, currentValue) => ({
+              (previousValue, [key, value]) => ({
                 ...previousValue,
-                // tslint:disable-next-line:no-non-null-assertion
-                [currentValue[0]]: this.nestedValue(
+                [key]: this.nestedValue(
                   row,
-                  currentValue[1].mapTo!.path,
-                  currentValue[1].mapTo?.missingValue
+                  value.mapTo!.path,
+                  value.mapTo?.missingValue
                 ),
               }),
               {}
             );
-          return { ...row, ...newKeys };
-        });
+          newData[i] = { ...row, ...newKeys };
+        }
+        data = newData;
       }
       return { data, config };
     }),
