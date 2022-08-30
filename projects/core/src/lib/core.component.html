@@ -112,6 +112,10 @@
             let i = index
           "
           [attr.id]="'tableRow_' + i"
+          (click)="table?.config?.rowClick && _rowClick(row, i, $event)"
+          (mouseover)="table?.config?.rowHover && _hoverRow(row, i, $event)"
+          (mouseout)="table?.config?.rowHover && _hoverRow(null, null, $event)"
+          [class.gt-hover]="(rowHover$ | async)?.index === i"
         >
           <ng-container
             *ngFor="let column of table.config?.columns | keyvalue: columnOrder"
@@ -167,6 +171,12 @@
             *ngIf="!row.value?.hidden"
             [attr.id]="'tableRow_' + i"
             ngClass="{{ (row.key | dashCase) + '-row' }}"
+            (click)="table?.config?.rowClick && _rowClick(row, i, $event)"
+            (mouseover)="table?.config?.rowHover && _hoverRow(row, i, $event)"
+            (mouseout)="
+              table?.config?.rowHover && _hoverRow(null, null, $event)
+            "
+            [class.gt-hover]="(rowHover$ | async)?.index === i"
           >
             <th class="row-header" scope="row">
               {{ row.value?.header || row.key | capitalCase }}

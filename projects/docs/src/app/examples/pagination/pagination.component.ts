@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { TableConfig } from '@angular-generic-table/core';
 import { pluck, tap, withLatestFrom } from 'rxjs/operators';
 import { Story } from '@storybook/angular/types-6-0';
@@ -14,7 +14,7 @@ import { DatePipe } from '@angular/common';
   styles: [],
 })
 export class PaginationComponent implements OnInit {
-  constructor(private fb: FormBuilder, private http: HttpClient) {}
+  constructor(private fb: UntypedFormBuilder, private http: HttpClient) {}
   @ViewChild('actions', { static: true }) actions: TemplateRef<any> | undefined;
   @ViewChild('color', { static: true }) color: TemplateRef<any> | undefined;
   paginationForm = this.fb.group({

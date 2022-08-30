@@ -1,4 +1,5 @@
 import { TableColumn } from './table-column.interface';
+import { TableRow } from './table-row.interface';
 
 export interface TableConfig {
   hidden?: boolean;
@@ -17,4 +18,6 @@ export interface TableConfig {
   pagination?: {
     length?: number;
   };
+  rowClick?: boolean;
+  rowHover?: boolean;
 }

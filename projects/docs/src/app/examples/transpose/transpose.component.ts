@@ -5,7 +5,7 @@ import {
   TableRows,
   GtDeltaComponent,
 } from '@angular-generic-table/core';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { withLatestFrom } from 'rxjs/operators';
 import { Story } from '@storybook/angular/types-6-0';
 import { TRANSPOSE_SNIPPETS } from './transpose.snippets';
@@ -115,7 +115,7 @@ export class TransposeComponent implements OnInit {
   );
   data: TableRows = [];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: UntypedFormBuilder) {}
 
   ngOnInit(): void {
     this.transpose();
