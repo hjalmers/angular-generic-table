@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import {
   BehaviorSubject,
   combineLatest,
@@ -12,10 +18,14 @@ import {
 import { TableConfig } from './models/table-config.interface';
 import { KeyValue } from '@angular/common';
 import {
+  debounceTime,
+  distinctUntilChanged,
   map,
   shareReplay,
   startWith,
   switchMap,
+  take,
+  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 import { TableColumn } from './models/table-column.interface';
@@ -24,6 +34,10 @@ import { chunk, search } from './utilities/utilities';
 import { TableRow } from './models/table-row.interface';
 import { TableSort } from './models/table-sort.interface';
 import { TableMeta } from './models/table-meta.interface';
+import {
+  GtRowClickEvent,
+  GtRowHoverEvent,
+} from './models/table-events.interface';
 
 @Component({
   selector: 'angular-generic-table',
@@ -53,6 +67,46 @@ export class CoreComponent {
   @Input()
   set data(data: Observable<Array<TableRow>> | Array<TableRow>) {
     this._data$.next(data);
+  }
+
+  @Output() rowClick = new EventEmitter<GtRowClickEvent>();
+
+  _rowClick(row: TableRow, index: number, event: MouseEvent): void {
+    this.rowClick.emit({ row, index, event });
+  }
+
+  private _rowHover$ = new ReplaySubject<GtRowHoverEvent>(1);
+  @Output() rowHover = new EventEmitter<GtRowHoverEvent>();
+  rowHover$ = this._rowHover$.asObservable().pipe(
+    debounceTime(50),
+    distinctUntilChanged((p, q) => p.index === q.index),
+    tap((event) => this.rowHover.emit(event)),
+    shareReplay(1)
+  );
+
+  hoverRow(id: string): void;
+  hoverRow(index: number): void;
+  hoverRow(none: null): void;
+  hoverRow(arg: string | number | null): void {
+    if (typeof arg === 'number') {
+      this.data$
+        .pipe(
+          map((data) => data[arg]),
+          take(1)
+        )
+        .subscribe((row) => this._hoverRow(row, arg));
+    } else if (typeof arg === 'string') {
+      // TODO: implement hover by id
+    } else {
+      this._hoverRow(null, null);
+    }
+  }
+  _hoverRow(
+    row: TableRow | null,
+    index: number | null,
+    event?: MouseEvent
+  ): void {
+    this._rowHover$.next({ row, index, event });
   }
 
   get loading$(): Observable<boolean> {

@@ -14,3 +14,4 @@ export * from './lib/models/table-info.interface';
 export * from './lib/models/table-row.interface';
 export * from './lib/models/table-sort.interface';
 export * from './lib/models/table-meta.interface';
+export * from './lib/models/table-events.interface';
