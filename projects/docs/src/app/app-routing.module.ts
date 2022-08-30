@@ -8,6 +8,7 @@ import { HorizontalTableComponent } from './examples/horizontal-table/horizontal
 import { MobileLayoutComponent } from './examples/mobile-layout/mobile-layout.component';
 import { NestedDataComponent } from './examples/nested-data/nested-data.component';
 import { TransposeComponent } from './examples/transpose/transpose.component';
+import { RowHoverClickComponent } from './examples/row-hover-click/row-hover-click.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'simple',
     component: SimpleComponent,
+  },
+  {
+    path: 'row-hover-click',
+    component: RowHoverClickComponent,
   },
   {
     path: 'horizontal-table',

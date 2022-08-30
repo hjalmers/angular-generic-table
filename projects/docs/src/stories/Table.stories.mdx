@@ -14,13 +14,15 @@ import {Pagination, PaginationComponent} from "../app/examples/pagination/pagina
 import {HttpClientModule} from "@angular/common/http";
 import {GenericTablePaginationModule} from "../../../core/src/lib/pagination/pagination.module";
 import {Horizontal, HorizontalTableComponent} from "../app/examples/horizontal-table/horizontal-table.component";
-import {Nested, NestedDataComponent} from "../app/examples/nested-data/nested-data.component"; import {
-  Transpose
-} from '../app/examples/transpose/transpose.component';
+import {Nested, NestedDataComponent} from "../app/examples/nested-data/nested-data.component";
+import {Transpose} from '../app/examples/transpose/transpose.component'; import {
+  RowHoverClick,
+  RowHoverClickComponent
+} from '../app/examples/row-hover-click/row-hover-click.component';
 
 <Meta title="Examples" decorators={[
   moduleMetadata({
-    declarations: [CustomTemplatesComponent, SimpleComponent, AdvancedComponent, PaginationComponent, HorizontalTableComponent, TabsComponent, MobileLayoutComponent, NestedDataComponent],
+    declarations: [CustomTemplatesComponent, SimpleComponent, AdvancedComponent, PaginationComponent, HorizontalTableComponent, TabsComponent, MobileLayoutComponent, NestedDataComponent, RowHoverClickComponent],
     imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
   })]}/>
 
@@ -236,6 +238,14 @@ export class SharedModule {}
   {Pagination.bind({})}
 </Story>
 
+
+## Row click and hover
+
+Set `rowClick` and `rowHover` to `true` in `config` to enable row click and hover events which can be used to trigger actions when rows are clicked or hovered. These events are emitted and declared using `@Output rowClick` and `@Output() rowHover`. It's also possible to set hover state on a row using `rowHover` method on the table component (currently it takes a row index as argument), pass null to remove hover state. The later might come in handy when you want to highlight something in the table based on an external source like a chart etc. Note that you should use css if you're only interested in styling the row on row hover, no need to listen to events or set hover state to do that.
+
+<Story name="Row click/hover">
+  {RowHoverClick.bind({})}
+</Story>
 
 ## Horizontal example
 
