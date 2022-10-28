@@ -26,7 +26,7 @@ hljs.registerLanguage('xml', xml);
       </li>
     </ul>
     <ng-container *ngIf="activeContent">
-      <pre><code [innerHTML]="activeContent?.value" class="{{'language-' + activeContent?.language}}"></code></pre>
+      <pre><code [innerHTML]="activeContent.value" class="{{'language-' + activeContent.language}}"></code></pre>
     </ng-container>
   `,
   styleUrls: ['./tabs.component.scss'],
