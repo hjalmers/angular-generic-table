@@ -2,7 +2,7 @@ export const HORIZONTAL_TABLE_SNIPPETS = [
   {
     name: 'horizontal-table.component.ts',
     code: `import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { GtDeltaComponent, TableConfig, TableRows } from '@angular-generic-table/core';
+import { GtDeltaComponent, TableConfig } from '@angular-generic-table/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -20,7 +20,7 @@ export class TransposeComponent implements OnInit {
     | undefined;
   loading$ = new BehaviorSubject(false);
   config: TableConfig = {};
-  data: TableRows = [];
+  data: any = [];
 
   ngOnInit(): void {
     this.config = {

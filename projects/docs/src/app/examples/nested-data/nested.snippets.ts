@@ -4,6 +4,26 @@ export const NESTED_SNIPPETS = [
     code: `import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {TableConfig, TableRows} from "@angular-generic-table/core";
 
+interface NestedData {
+  name: {
+    first: string;
+    last: string;
+  };
+  data: {
+    details?: {
+      gender: 'male' | 'female';
+      favoriteFood: 'Pasta' | 'Pizza';
+    };
+  };
+}
+
+interface Data {
+  firstName: string;
+  lastName: string;
+  gender: 'male' | 'female';
+  favoriteFood: 'Pasta' | 'Pizza';
+  missing: string;
+}
 @Component({
   selector: 'nested-data',
   template: \`
@@ -33,8 +53,8 @@ import {TableConfig, TableRows} from "@angular-generic-table/core";
 export class NestedDataComponent implements OnInit {
   @ViewChild('gender', { static: true }) gender: TemplateRef<any> | undefined;
 
-  config: TableConfig = {};
-  data: TableRows = [];
+  config: TableConfig<Data> = {};
+  data: Array<NestedData> = [];
   ngOnInit(): void {
     this.resetData();
     this.config = {

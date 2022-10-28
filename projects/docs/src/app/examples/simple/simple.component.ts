@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
 import { Story } from '@storybook/angular/types-6-0';
 import { SIMPLE_SNIPPETS } from './simple.snippets';
-
+import { TableConfig } from '@angular-generic-table/core';
+interface BasicData {
+  firstName: string;
+  lastName: string;
+  gender: 'male' | 'female';
+  favoriteFood: string;
+}
 @Component({
-  selector: 'docs-simple',
   template: `
     <div class="overflow-auto">
       <angular-generic-table
@@ -16,7 +21,7 @@ import { SIMPLE_SNIPPETS } from './simple.snippets';
   styles: [],
 })
 export class SimpleComponent {
-  data = [
+  data: Array<BasicData> = [
     {
       firstName: 'Peter',
       lastName: 'Parker',
@@ -30,7 +35,7 @@ export class SimpleComponent {
       favoriteFood: 'Pizza',
     },
   ];
-  config = {
+  config: TableConfig<BasicData> = {
     columns: {
       firstName: {},
       lastName: {},
