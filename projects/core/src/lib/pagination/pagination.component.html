@@ -7,11 +7,11 @@
   <nav
     *ngIf="pagination.links && pagination.links.length > 1"
     role="navigation"
-    [attr.aria-label]="ariaLabels?.nav"
+    [attr.aria-label]="ariaLabels.nav"
     class="gt-pagination"
-    [class]="classes?.nav"
+    [class]="classes.nav"
   >
-    <ul [class]="classes?.ul">
+    <ul [class]="classes.ul">
       <ng-container
         *ngFor="
           let position of pagination!.links;
@@ -20,11 +20,11 @@
         "
       >
         <li
-          [class]="classes?.li"
+          [class]="classes.li"
           [class.active]="position === (pagination!.currentPosition || 0) + 1"
         >
           <button
-            [class]="classes?.button"
+            [class]="classes.button"
             [attr.aria-label]="ariaLabels.button + position"
             (click)="goto(position)"
           >
@@ -32,11 +32,11 @@
           </button>
         </li>
         <li
-          [class]="classes?.li"
+          [class]="classes.li"
           class="gt-ellipsis"
           *ngIf="position + 1 !== pagination!.links![i + 1] && !last"
         >
-          <button [class]="classes?.button" disabled tabindex="-1"></button>
+          <button [class]="classes.button" disabled tabindex="-1"></button>
         </li>
       </ng-container>
     </ul>
