@@ -9,6 +9,7 @@ import { MobileLayoutComponent } from './examples/mobile-layout/mobile-layout.co
 import { NestedDataComponent } from './examples/nested-data/nested-data.component';
 import { TransposeComponent } from './examples/transpose/transpose.component';
 import { RowHoverClickComponent } from './examples/row-hover-click/row-hover-click.component';
+import { FooterComponent } from './examples/footer/footer.component';
 
 const routes: Routes = [
   {
@@ -46,6 +47,10 @@ const routes: Routes = [
   {
     path: 'transpose',
     component: TransposeComponent,
+  },
+  {
+    path: 'footer',
+    component: FooterComponent,
   },
 ];
 
