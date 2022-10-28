@@ -34,10 +34,10 @@ export class PaginationComponent {
   @Input() set ariaLabels(value: GtPaginationAriaLabels) {
     this._ariaLabels = value;
   }
-  get table(): CoreComponent | undefined {
-    return this._table;
+  get table(): CoreComponent {
+    return <CoreComponent>this._table;
   }
-  @Input() set table(value: any) {
+  @Input() set table(value: CoreComponent) {
     this._table = value;
     this.table$.next(value);
   }

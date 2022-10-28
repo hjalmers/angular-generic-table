@@ -1,13 +1,13 @@
 import { TableRow } from './table-row.interface';
 
-export interface GtRowClickEvent {
-  row: TableRow;
+export interface GtRowClickEvent<R = TableRow> {
+  row: R;
   index: number;
   event: MouseEvent;
 }
 
-export interface GtRowHoverEvent {
-  row: TableRow | null;
+export interface GtRowHoverEvent<R = TableRow> {
+  row: R | null;
   index: number | null;
   event?: MouseEvent;
 }

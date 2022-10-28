@@ -1,13 +1,12 @@
 import { TemplateRef } from '@angular/core';
 import { TableRow } from './table-row.interface';
-
-export interface TableColumn {
+export interface TableColumn<R = TableRow> {
   header?: string | false;
   mobileHeader?: string | boolean;
   hidden?: boolean;
   sortable?: boolean;
   order?: number;
-  search?: boolean | SearchFunction;
+  search?: boolean | SearchFunction<R>;
   templateRef?: TemplateRef<any>;
   transform?: {
     pipe: any;
@@ -20,8 +19,8 @@ export interface TableColumn {
   };
 }
 
-export type SearchFunction = (
-  row: TableRow,
-  column: string,
-  value: any
+export type SearchFunction<R = TableRow> = (
+  row: R,
+  column: keyof R,
+  value: typeof row[keyof R]
 ) => string;

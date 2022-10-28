@@ -60,7 +60,7 @@ export class CoreComponent {
   }
 
   @Input()
-  set config(config: Observable<TableConfig> | TableConfig) {
+  set config(config: Observable<TableConfig<any>> | TableConfig<any>) {
     this._tableConfig$.next(config);
   }
 
@@ -135,9 +135,10 @@ export class CoreComponent {
   );
 
   // tslint:disable-next-line:variable-name
-  private _tableConfig$: ReplaySubject<TableConfig | Observable<TableConfig>> =
-    new ReplaySubject(1);
-  tableConfig$: Observable<TableConfig> = this._tableConfig$.pipe(
+  private _tableConfig$: ReplaySubject<
+    TableConfig<any> | Observable<TableConfig<any>>
+  > = new ReplaySubject(1);
+  tableConfig$ = this._tableConfig$.pipe(
     map((value) => (isObservable(value) ? value : of(value))),
     switchMap((obs) => obs),
     shareReplay(1)

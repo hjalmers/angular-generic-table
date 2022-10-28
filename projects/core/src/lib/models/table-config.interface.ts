@@ -1,7 +1,7 @@
 import { TableColumn } from './table-column.interface';
 import { TableRow } from './table-row.interface';
 
-export interface TableConfig {
+export interface TableConfig<R = TableRow> {
   hidden?: boolean;
   mobileLayout?: boolean;
   stickyHeaders?: {
@@ -10,10 +10,10 @@ export interface TableConfig {
   };
   class?: string;
   rows?: {
-    [key: string]: TableColumn;
+    [Property in keyof R]: TableColumn<R>;
   };
   columns?: {
-    [key: string]: TableColumn;
+    [Property in keyof R]: TableColumn<R>;
   };
   pagination?: {
     length?: number;
@@ -25,17 +25,17 @@ export interface TableConfig {
       [key: FooterCalculation | string]: string | boolean;
     };
     columns?: {
-      [key: string]: Partial<TableFooterColumn>;
+      [Property in keyof R]: Partial<TableFooterColumn<R>>;
     };
-    rowOrder?: Array<FooterCalculation | string>;
+    rowOrder?: Array<keyof R | FooterCalculation>;
     emptyContent?: string;
   };
 }
 
-interface TableFooterColumn {
-  [key: FooterCalculation | string]: boolean | number | string | CalcFunc;
+interface TableFooterColumn<R> {
+  [key: FooterCalculation | string]: boolean | number | string | CalcFunc<R>;
 }
-interface CalcFunc {
-  (data: Array<TableRow>, key: string): number | string;
+interface CalcFunc<R> {
+  (data: Array<R>, key: keyof R): number | string;
 }
 type FooterCalculation = 'sum' | 'avg' | 'count' | 'max' | 'min';
