@@ -101,6 +101,66 @@
       </td>
     </tr>
   </tbody>
+  <tfoot *ngIf="(table$ | async)! as table">
+    <ng-container *ngIf="table.data.length > 0 && !(loading$ | async)">
+      <ng-container *ngIf="(calculations$ | async)! as calculations">
+        <tr
+          *ngFor="let calculation of calculations.calculations; let i = index"
+        >
+          <ng-container
+            *ngIf="{
+              showHeader: (colspan$ | async) !== (footerColspan$ | async)
+            } as footerRow"
+          >
+            <th
+              *ngIf="footerRow.showHeader"
+              [colSpan]="
+                ((colspan$ | async) || 0) - ((footerColspan$ | async) || 0)
+              "
+              scope="row"
+            >
+              <ng-container
+                *ngIf="table.config?.footer?.headers?.[calculation] as showHeader"
+                >{{showHeader === true ? (calculation | capitalCase): table.config?.footer?.headers?.[calculation]}}
+              </ng-container>
+            </th>
+            <ng-container
+              *ngFor="
+                let column of table.config?.columns | keyvalue: columnOrder
+              "
+            >
+              <td
+                *ngIf="
+                  !column.value?.hidden && calculations.calculated[column.key]
+                "
+                ngClass="{{ (column.key | dashCase) + '-column' }} {{
+                  column.value?.class
+                }}"
+                [attr.data-header]="
+                  !footerRow.showHeader && table.config?.footer?.headers?.[calculation]
+                    ? table.config?.footer?.headers?.[calculation] === true ? (calculation | capitalCase) : table.config?.footer?.headers?.[calculation]
+                    : null
+                "
+              >
+                <ng-container
+                  [ngTemplateOutlet]="
+                    (table.config?.columns || {})[column.key].transform
+                      ? transformFooter
+                      : rawFooter
+                  "
+                  [ngTemplateOutletContext]="{
+                    value: calculations.calculated[column.key][calculation],
+                    transform: (table.config?.columns || {})[column.key]
+                      .transform
+                  }"
+                ></ng-container>
+              </td>
+            </ng-container>
+          </ng-container>
+        </tr>
+      </ng-container>
+    </ng-container>
+  </tfoot>
 </table>
 <ng-template #tableContent>
   <ng-container *ngIf="(table$ | async)! as table">
@@ -233,6 +293,15 @@
   let-data="data"
 >
   {{ row[column.key] | dynamicPipe: transform.pipe:transform?.args }}
+</ng-template>
+<ng-template #transformFooter let-value="value" let-transform="transform">
+  {{
+    (value | dynamicPipe: transform.pipe:transform?.args) ||
+      (tableConfig$ | async)?.footer?.emptyContent
+  }}
+</ng-template>
+<ng-template #rawFooter let-value="value">
+  {{ value || (tableConfig$ | async)?.footer?.emptyContent }}
 </ng-template>
 <ng-template
   #templateRef

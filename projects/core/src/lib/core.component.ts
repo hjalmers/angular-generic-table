@@ -30,7 +30,7 @@ import {
 } from 'rxjs/operators';
 import { TableColumn } from './models/table-column.interface';
 import { Order } from './enums/order.enum';
-import { chunk, search } from './utilities/utilities';
+import { calculate, chunk, search } from './utilities/utilities';
 import { TableRow } from './models/table-row.interface';
 import { TableSort } from './models/table-sort.interface';
 import { TableMeta } from './models/table-meta.interface';
@@ -214,6 +214,11 @@ export class CoreComponent {
     shareReplay(1)
   );
 
+  calculations$ = combineLatest([this.data$, this.tableConfig$]).pipe(
+    map(([data, config]) => calculate(data, config)),
+    shareReplay(1)
+  );
+
   table$: Observable<TableMeta> = combineLatest([
     this.data$,
     this.tableConfig$,
@@ -267,7 +272,24 @@ export class CoreComponent {
             ).length
           )
         : this.data$.pipe(map((data) => data.length + 1))
-    )
+    ),
+    shareReplay(1)
+  );
+
+  footerColspan$ = this.tableConfig$.pipe(
+    map((config) => {
+      let colspan = 0;
+      Object.values(config?.footer?.columns || {}).forEach((calculations) => {
+        if (
+          Object.values(calculations).filter((value) => value !== false)
+            .length >= 0
+        ) {
+          colspan += 1;
+        }
+      }, {});
+      return colspan;
+    }),
+    shareReplay(1)
   );
 
   sort(property: string): void {
