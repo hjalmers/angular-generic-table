@@ -6,7 +6,7 @@ import { pluck, tap, withLatestFrom } from 'rxjs/operators';
 import { Story } from '@storybook/angular/types-6-0';
 import { ADVANCED_DOCS } from './pagination.snippets';
 import { HttpClient } from '@angular/common/http';
-import { DatePipe } from '@angular/common';
+import { DatePipe, formatDate } from '@angular/common';
 
 @Component({
   selector: 'docs-pagination',
@@ -59,7 +59,8 @@ export class PaginationComponent implements OnInit {
         },
         birthday: {
           sortable: true,
-          class: 'text-end',
+          class: 'text-end justify-content-end',
+          search: (row, column) => formatDate(row[column], 'longDate', 'en'),
           transform: {
             pipe: DatePipe,
             args: ['longDate'],
