@@ -59,13 +59,19 @@ search = (
         Object.entries(row)
           .filter(([key, value]) => searchColumns.indexOf(key) !== -1)
           .reduce((acc, [key, value], index): string => {
+            const search = config?.columns![key]?.search;
+            // if search is a function...
+            if (typeof search === 'function') {
+              // ...use search function to return value to search
+              value = search(row, key, value);
+            }
             return (
               acc +
               (index === 0 ? '' : ' ? ') +
               (caseSensitive ? value + '' : (value + '').toLowerCase())
             );
           }, '')
-          .indexOf(text) !== -1;
+          .indexOf(caseSensitive ? text : text.toLowerCase()) !== -1;
       if (match) {
         FILTERED[FILTERED.length] = row;
       }

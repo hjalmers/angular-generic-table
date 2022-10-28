@@ -279,8 +279,25 @@
     </tr>
   </tbody>
 </ng-template>
-<ng-template #highlighted let-row="row" let-column="column" let-search="search">
-  <div [innerHTML]="row[column.key] | highlight: search"></div>
+<ng-template
+  #highlighted
+  let-row="row"
+  let-column="column"
+  let-search="search"
+  let-transform="transform"
+>
+  <div
+    *ngIf="!transform"
+    [innerHTML]="row[column.key] | highlight: search"
+  ></div>
+  <div
+    *ngIf="transform"
+    [innerHTML]="
+      row[column.key]
+        | dynamicPipe: transform.pipe:transform?.args
+        | highlight: search
+    "
+  ></div>
 </ng-template>
 <ng-template #rawData let-row="row" let-column="column">
   {{ row[column.key] }}
