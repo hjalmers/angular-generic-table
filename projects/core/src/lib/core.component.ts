@@ -16,7 +16,16 @@ import {
   Subject,
 } from 'rxjs';
 import { TableConfig } from './models/table-config.interface';
-import { KeyValue } from '@angular/common';
+import {
+  AsyncPipe,
+  KeyValue,
+  KeyValuePipe,
+  NgClass,
+  NgForOf,
+  NgIf,
+  NgTemplateOutlet,
+  SlicePipe,
+} from '@angular/common';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -38,12 +47,31 @@ import {
   GtRowClickEvent,
   GtRowHoverEvent,
 } from './models/table-events.interface';
+import { CapitalCasePipe } from './pipes/capital-case.pipe';
+import { SortClassPipe } from './pipes/sort-class.pipe';
+import { DashCasePipe } from './pipes/dash-case.pipe';
+import { DynamicPipe } from './pipes/dynamic.pipe';
+import { HighlightPipe } from './pipes/highlight.pipe';
 
 @Component({
   selector: 'angular-generic-table',
   templateUrl: './core.component.html',
-  styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [
+    CapitalCasePipe,
+    KeyValuePipe,
+    SortClassPipe,
+    DashCasePipe,
+    AsyncPipe,
+    NgTemplateOutlet,
+    SlicePipe,
+    DynamicPipe,
+    HighlightPipe,
+    NgClass,
+    NgIf,
+    NgForOf,
+  ],
 })
 export class CoreComponent {
   @Input() set loading(isLoading: Observable<boolean> | boolean) {

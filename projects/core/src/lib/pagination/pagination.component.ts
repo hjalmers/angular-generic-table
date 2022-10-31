@@ -6,11 +6,14 @@ import {
   GtPaginationAriaLabels,
   GtPaginationClasses,
 } from '../models/gt-pagination';
+import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 
 @Component({
   selector: 'angular-generic-table-pagination',
   templateUrl: './pagination.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, NgIf, NgForOf],
 })
 export class PaginationComponent {
   get paginationLength(): number {

@@ -3,6 +3,7 @@ import { capitalize } from '../utilities/utilities';
 
 @Pipe({
   name: 'capitalCase',
+  standalone: true,
 })
 export class CapitalCasePipe implements PipeTransform {
   transform(s: string): any {

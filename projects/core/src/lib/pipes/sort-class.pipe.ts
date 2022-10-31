@@ -3,6 +3,7 @@ import { Order } from '../enums/order.enum';
 
 @Pipe({
   name: 'sortClass',
+  standalone: true,
 })
 export class SortClassPipe implements PipeTransform {
   transform(
