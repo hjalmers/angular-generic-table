@@ -2,7 +2,7 @@
     "pipes": [
         {
             "name": "CapitalCasePipe",
-            "id": "pipe-CapitalCasePipe-1a2786791881795d76714ed9d11173ef9f1f64d10866bff4b877782c505533338ded637288725c4cc519306246a1dcce3c04438aa1605195506b11a92d282eb6",
+            "id": "pipe-CapitalCasePipe-96bcb6bce70367e79731d26c84db241c4ce18f66daf640a6451058a35df21a3999d4524db1320b735cb653807fedbf3940ac8eef02d517c60317af70f6e1aee0",
             "file": "projects/core/src/lib/pipes/capital-case.pipe.ts",
             "type": "pipe",
             "deprecated": false,
@@ -24,7 +24,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 8,
+                    "line": 9,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -41,11 +41,11 @@
                 }
             ],
             "ngname": "capitalCase",
-            "sourceCode": "import { Pipe, PipeTransform } from '@angular/core';\nimport { capitalize } from '../utilities/utilities';\n\n@Pipe({\n  name: 'capitalCase',\n})\nexport class CapitalCasePipe implements PipeTransform {\n  transform(s: string): any {\n    return capitalize(s);\n  }\n}\n"
+            "sourceCode": "import { Pipe, PipeTransform } from '@angular/core';\nimport { capitalize } from '../utilities/utilities';\n\n@Pipe({\n  name: 'capitalCase',\n  standalone: true,\n})\nexport class CapitalCasePipe implements PipeTransform {\n  transform(s: string): any {\n    return capitalize(s);\n  }\n}\n"
         },
         {
             "name": "DashCasePipe",
-            "id": "pipe-DashCasePipe-67844698d38f46a703c8055efff81a2825551f27d8f2c5403c4fb2b9865d5d0daf5bbdf34c9ece4087820abd4e96301019762eeb2dfca2fefd2fa95a6c28a776",
+            "id": "pipe-DashCasePipe-4b881ec0c37bd1d0b192e1ad42c2ec93254176a9668f8911bda81a7f576253351f74e50ba8ff7b5f1f01ce45403bb209952c139275916103a3d2ee5b47f15cbc",
             "file": "projects/core/src/lib/pipes/dash-case.pipe.ts",
             "type": "pipe",
             "deprecated": false,
@@ -67,7 +67,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 8,
+                    "line": 9,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -84,11 +84,11 @@
                 }
             ],
             "ngname": "dashCase",
-            "sourceCode": "import { Pipe, PipeTransform } from '@angular/core';\nimport { dashed } from '../utilities/utilities';\n\n@Pipe({\n  name: 'dashCase',\n})\nexport class DashCasePipe implements PipeTransform {\n  transform(s: string): any {\n    return dashed(s);\n  }\n}\n"
+            "sourceCode": "import { Pipe, PipeTransform } from '@angular/core';\nimport { dashed } from '../utilities/utilities';\n\n@Pipe({\n  name: 'dashCase',\n  standalone: true,\n})\nexport class DashCasePipe implements PipeTransform {\n  transform(s: string): any {\n    return dashed(s);\n  }\n}\n"
         },
         {
             "name": "DynamicPipe",
-            "id": "pipe-DynamicPipe-e8c9dae19a27f240f375daf3568c75b05da3d89bd84badf7e6b8112f0f0ea17c85ee355bba67e45b2798c9f3993048b20aeff6c8113f236f9a37727b525720d2",
+            "id": "pipe-DynamicPipe-9410f04590a5057e37c4936afcce2e30c5c79cb1a458c0cf34a9335ab0ccf3a07cdfa981c9a03c91e296b2b220211aa0f8bc4b5c95aa94343feb759183088c76",
             "file": "projects/core/src/lib/pipes/dynamic.pipe.ts",
             "type": "pipe",
             "deprecated": false,
@@ -122,7 +122,7 @@
                     "optional": false,
                     "returnType": "any",
                     "typeParameters": [],
-                    "line": 9,
+                    "line": 10,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -157,7 +157,7 @@
                 }
             ],
             "ngname": "dynamicPipe",
-            "sourceCode": "import { Injector, Pipe, PipeTransform, Type } from '@angular/core';\n\n@Pipe({\n  name: 'dynamicPipe',\n})\nexport class DynamicPipe implements PipeTransform {\n  constructor(private injector: Injector) {}\n\n  transform(value: any, requiredPipe: Type<any>, pipeArgs: any[]): any {\n    const injector = Injector.create({\n      name: 'DynamicPipe',\n      parent: this.injector,\n      providers: [{ provide: requiredPipe }],\n    });\n    const pipe = injector.get(requiredPipe);\n    return pipe.transform(value, ...(pipeArgs || []));\n  }\n}\n"
+            "sourceCode": "import { Injector, Pipe, PipeTransform, Type } from '@angular/core';\n\n@Pipe({\n  name: 'dynamicPipe',\n  standalone: true,\n})\nexport class DynamicPipe implements PipeTransform {\n  constructor(private injector: Injector) {}\n\n  transform(value: any, requiredPipe: Type<any>, pipeArgs: any[]): any {\n    const injector = Injector.create({\n      name: 'DynamicPipe',\n      parent: this.injector,\n      providers: [{ provide: requiredPipe }],\n    });\n    const pipe = injector.get(requiredPipe);\n    return pipe.transform(value, ...(pipeArgs || []));\n  }\n}\n"
         },
         {
             "name": "GenderPipe",
@@ -204,7 +204,7 @@
         },
         {
             "name": "HighlightPipe",
-            "id": "pipe-HighlightPipe-170b3fde5f924488434a54204079f9bc641bc6b1d553bfc3b0db6b86024c027a9e715dce4cdbc029dc645ae8bcc80db5288a7f91dd34db27fb7015f58690bfc6",
+            "id": "pipe-HighlightPipe-c640cfacbaa8ab6377ac6b98273c18898ed01e151a03e64d2dd508fe2a2c875a40c61302433bb02f3da110ed882e4562d989c211d8727ba88ce9576c7bbe2cc4",
             "file": "projects/core/src/lib/pipes/highlight.pipe.ts",
             "type": "pipe",
             "deprecated": false,
@@ -232,7 +232,7 @@
                     "optional": false,
                     "returnType": "string",
                     "typeParameters": [],
-                    "line": 7,
+                    "line": 8,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -258,11 +258,11 @@
                 }
             ],
             "ngname": "highlight",
-            "sourceCode": "import { Pipe, PipeTransform } from '@angular/core';\n\n@Pipe({\n  name: 'highlight',\n})\nexport class HighlightPipe implements PipeTransform {\n  transform(text: any, searchTerm: string | null): string {\n    if (!searchTerm) {\n      return text;\n    }\n    const haystackAlwaysString = text + '';\n    let highlightedText = haystackAlwaysString; // fallback\n\n    let searchPattern;\n    try {\n      searchPattern = new RegExp(\n        '(' +\n          // @ts-ignore\n          searchTerm\n            .toLowerCase()\n            .match(/\".*?\"|[^ ]+/g) // extract words\n            .map(\n              (needle) => needle.replace(/\"(.*?)\"/, '$1') // strip away '\"'\n            )\n            .join('|') + // combine words\n          ')',\n        'ig'\n      );\n    } catch (error) {\n      return highlightedText;\n    }\n\n    const containsTagPattern = /(<.*?>)(.*)(<\\/.*?>)/gi;\n    const containsTagMatches = containsTagPattern.exec(haystackAlwaysString);\n\n    if (containsTagMatches) {\n      // tag exists in haystack\n      highlightedText =\n        containsTagMatches[1] +\n        containsTagMatches[2].replace(\n          searchPattern,\n          '<span class=\"gt-highlight-search\">$1</span>'\n        ) +\n        containsTagMatches[3];\n    } else {\n      highlightedText = haystackAlwaysString.replace(\n        searchPattern,\n        '<span class=\"gt-highlight-search\">$1</span>'\n      );\n    }\n\n    return highlightedText;\n  }\n}\n"
+            "sourceCode": "import { Pipe, PipeTransform } from '@angular/core';\n\n@Pipe({\n  name: 'highlight',\n  standalone: true,\n})\nexport class HighlightPipe implements PipeTransform {\n  transform(text: any, searchTerm: string | null): string {\n    if (!searchTerm) {\n      return text;\n    }\n    const haystackAlwaysString = text + '';\n    let highlightedText = haystackAlwaysString; // fallback\n\n    let searchPattern;\n    try {\n      searchPattern = new RegExp(\n        '(' +\n          // @ts-ignore\n          searchTerm\n            .toLowerCase()\n            .match(/\".*?\"|[^ ]+/g) // extract words\n            .map(\n              (needle) => needle.replace(/\"(.*?)\"/, '$1') // strip away '\"'\n            )\n            .join('|') + // combine words\n          ')',\n        'ig'\n      );\n    } catch (error) {\n      return highlightedText;\n    }\n\n    const containsTagPattern = /(<.*?>)(.*)(<\\/.*?>)/gi;\n    const containsTagMatches = containsTagPattern.exec(haystackAlwaysString);\n\n    if (containsTagMatches) {\n      // tag exists in haystack\n      highlightedText =\n        containsTagMatches[1] +\n        containsTagMatches[2].replace(\n          searchPattern,\n          '<span class=\"gt-highlight-search\">$1</span>'\n        ) +\n        containsTagMatches[3];\n    } else {\n      highlightedText = haystackAlwaysString.replace(\n        searchPattern,\n        '<span class=\"gt-highlight-search\">$1</span>'\n      );\n    }\n\n    return highlightedText;\n  }\n}\n"
         },
         {
             "name": "SortClassPipe",
-            "id": "pipe-SortClassPipe-a55105d02f9568c517c39af2393d1378995a5ccddc579f68199abd1ca1ff9656fbe7ac800e67ed2e8098953ea641b08e67b8f5168c76ef2ba04ca38117e51c7c",
+            "id": "pipe-SortClassPipe-ec48e1affa814db19d433e437e48b5aeb3ae3999dcd48f6031b1d6809a69959da67e9a3b193e922fe467c489ca7bc58413b90238fae0b12047b0678ed4da3b64",
             "file": "projects/core/src/lib/pipes/sort-class.pipe.ts",
             "type": "pipe",
             "deprecated": false,
@@ -297,7 +297,7 @@
                     "optional": false,
                     "returnType": "string | null",
                     "typeParameters": [],
-                    "line": 8,
+                    "line": 9,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -333,18 +333,18 @@
                 }
             ],
             "ngname": "sortClass",
-            "sourceCode": "import { Pipe, PipeTransform } from '@angular/core';\nimport { Order } from '../enums/order.enum';\n\n@Pipe({\n  name: 'sortClass',\n})\nexport class SortClassPipe implements PipeTransform {\n  transform(\n    selection: { sortBy: string; sortByOrder: Order } | any,\n    property: string,\n    aria = false\n  ): string | null {\n    return selection?.sortBy === property\n      ? !aria\n        ? 'gt-sort-' + selection.sortByOrder\n        : selection.sortByOrder + 'ending'\n      : !aria\n      ? ''\n      : null;\n  }\n}\n"
+            "sourceCode": "import { Pipe, PipeTransform } from '@angular/core';\nimport { Order } from '../enums/order.enum';\n\n@Pipe({\n  name: 'sortClass',\n  standalone: true,\n})\nexport class SortClassPipe implements PipeTransform {\n  transform(\n    selection: { sortBy: string; sortByOrder: Order } | any,\n    property: string,\n    aria = false\n  ): string | null {\n    return selection?.sortBy === property\n      ? !aria\n        ? 'gt-sort-' + selection.sortByOrder\n        : selection.sortByOrder + 'ending'\n      : !aria\n      ? ''\n      : null;\n  }\n}\n"
         }
     ],
     "interfaces": [
         {
             "name": "BasicData",
-            "id": "interface-BasicData-c185f5c181258617396af0ad363af52973835e499ad396a8393a4e021da378d6221181be3a588632658d7be6bb85d4c74574faf0a5ce1f84e241b9e77701d713",
+            "id": "interface-BasicData-8515e3c89d472c563c3e24656c9ee3ed0eac2e9be3caadc22bad0c4060b7d15035052a3c4ed432b100fb8b932142b7c686e60412c1a3d43dea8729afdd6e536a",
             "file": "projects/docs/src/app/examples/simple/simple.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { Component } from '@angular/core';\nimport { Story } from '@storybook/angular/types-6-0';\nimport { SIMPLE_SNIPPETS } from './simple.snippets';\nimport { TableConfig } from '@angular-generic-table/core';\ninterface BasicData {\n  firstName: string;\n  lastName: string;\n  gender: 'male' | 'female';\n  favoriteFood: string;\n}\n@Component({\n  template: `\n    <div class=\"overflow-auto\">\n      <angular-generic-table\n        [data]=\"data\"\n        [config]=\"config\"\n      ></angular-generic-table>\n    </div>\n    <docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n  `,\n  styles: [],\n})\nexport class SimpleComponent {\n  data: Array<BasicData> = [\n    {\n      firstName: 'Peter',\n      lastName: 'Parker',\n      gender: 'male',\n      favoriteFood: 'Pasta',\n    },\n    {\n      firstName: 'Mary Jane',\n      lastName: 'Watson',\n      gender: 'female',\n      favoriteFood: 'Pizza',\n    },\n  ];\n  config: TableConfig<BasicData> = {\n    columns: {\n      firstName: {},\n      lastName: {},\n      gender: {},\n      favoriteFood: {},\n    },\n    footer: {\n      rowOrder: ['firstName', 'min'],\n    },\n  };\n\n  SNIPPETS = SIMPLE_SNIPPETS;\n}\n\nexport const Simple: Story<SimpleComponent> = (args: SimpleComponent) => ({\n  props: args,\n  component: SimpleComponent,\n});\n",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { Story } from '@storybook/angular/types-6-0';\nimport { SIMPLE_SNIPPETS } from './simple.snippets';\nimport { TableConfig } from '@angular-generic-table/core';\ninterface BasicData {\n  firstName: string;\n  lastName: string;\n  gender: 'male' | 'female';\n  favoriteFood: string;\n}\n@Component({\n  template: `\n    <div class=\"overflow-auto\">\n      <angular-generic-table\n        [data]=\"data\"\n        [config]=\"config\"\n      ></angular-generic-table>\n    </div>\n    <docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n  `,\n  styles: [],\n})\nexport class SimpleComponent {\n  data: Array<BasicData> = [\n    {\n      firstName: 'Peter',\n      lastName: 'Parker',\n      gender: 'male',\n      favoriteFood: 'Pasta',\n    },\n    {\n      firstName: 'Mary Jane',\n      lastName: 'Watson',\n      gender: 'female',\n      favoriteFood: 'Pizza',\n    },\n  ];\n  config: TableConfig<BasicData> = {\n    columns: {\n      firstName: {},\n      lastName: {},\n      gender: {},\n      favoriteFood: {},\n    },\n  };\n\n  SNIPPETS = SIMPLE_SNIPPETS;\n}\n\nexport const Simple: Story<SimpleComponent> = (args: SimpleComponent) => ({\n  props: args,\n  component: SimpleComponent,\n});\n",
             "properties": [
                 {
                     "name": "favoriteFood",
@@ -679,12 +679,12 @@
         },
         {
             "name": "RawData",
-            "id": "interface-RawData-31b894716d4d128fb0edbb199d5d16718ca2bda57f611cec46bb904fd7433c6996fd12be8b7af43575bcaa427a2d97b5bb88534d3fc81d1559f84e6104349105",
+            "id": "interface-RawData-63e6bfdecdc1f7465c785a857abe0c8f43846698ced72650de16568c30a0464419a76ae786fcdc2e71dec02ddc13b6f60e411c0855fbd30a3e8486e82bfd4c3f",
             "file": "projects/docs/src/app/examples/transpose/transpose.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable } from 'rxjs';\nimport { TableConfig, GtDeltaComponent } from '@angular-generic-table/core';\nimport { UntypedFormBuilder } from '@angular/forms';\nimport { withLatestFrom } from 'rxjs/operators';\nimport { Story } from '@storybook/angular/types-6-0';\nimport { TRANSPOSE_SNIPPETS } from './transpose.snippets';\ninterface RawData {\n  year: string;\n  value: number;\n}\ninterface YearData extends RawData {\n  delta: number;\n  deltaIndex: number;\n  combined: number;\n}\n@Component({\n  selector: 'docs-transpose',\n  template: `\n    <form [formGroup]=\"reactiveForm\">\n      <div class=\"row gy-3 gx-3 align-items-end mb-3\">\n        <div class=\"form-group col-6 col-sm-auto\">\n          <label for=\"length_input\">Number of rows</label>\n          <input\n            id=\"length_input\"\n            formControlName=\"length\"\n            type=\"number\"\n            class=\"form-control\"\n          />\n        </div>\n        <div class=\"form-group col-6 col-sm-auto\">\n          <label for=\"search_input\">Search</label>\n          <input\n            id=\"search_input\"\n            formControlName=\"search\"\n            type=\"text\"\n            class=\"form-control\"\n          />\n        </div>\n        <div class=\"col-auto\">\n          <button\n            class=\"btn btn-outline-primary w-100\"\n            (click)=\"simulateLoad()\"\n          >\n            Simulate load\n          </button>\n        </div>\n        <div class=\"col col-sm-auto\">\n          <button class=\"btn btn-outline-danger w-100\" (click)=\"empty()\">\n            Empty\n          </button>\n        </div>\n        <div class=\"col col-sm-auto\">\n          <button class=\"btn btn-outline-primary w-100\" (click)=\"load()\">\n            Reset\n          </button>\n        </div>\n        <div class=\"col col-sm-auto\">\n          <button class=\"btn btn-outline-primary w-100\" (click)=\"transpose()\">\n            Transpose\n          </button>\n        </div>\n      </div>\n      <div class=\"overflow-auto\">\n        <angular-generic-table\n          #table\n          [data]=\"data\"\n          [config]=\"tableConfig$\"\n          [loading]=\"loading$\"\n          [search]=\"search$\"\n        >\n          <div class=\"table-loading gt-skeleton-loader\"></div>\n          <div class=\"table-no-data alert alert-info mt-3\">Table is empty</div>\n        </angular-generic-table>\n      </div>\n      <angular-generic-table-pagination [table]=\"table\">\n      </angular-generic-table-pagination>\n      <ng-template #delta let-index=\"index\" let-data=\"data\">\n        <gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>\n      </ng-template>\n      <ng-template #deltaIndex let-index=\"index\" let-data=\"data\">\n        <gt-delta [index]=\"index\" [data]=\"data\" [baseIndex]=\"0\"></gt-delta>\n      </ng-template>\n      <ng-template\n        #combined\n        let-index=\"index\"\n        let-data=\"data\"\n        let-row=\"row\"\n        let-col=\"col\"\n      >\n        {{ row.value }}\n        <ng-container *ngIf=\"index > 0\">\n          (<gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>)\n        </ng-container>\n      </ng-template>\n      <docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n    </form>\n  `,\n  styles: [],\n})\nexport class TransposeComponent implements OnInit {\n  @ViewChild('delta', { static: true }) delta:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('deltaIndex', { static: true }) deltaIndex:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('combined', { static: true }) combined:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  loading$ = new BehaviorSubject(false);\n  reactiveForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.reactiveForm.get('search')?.valueChanges as Observable<string>;\n  tableConfig$: BehaviorSubject<TableConfig<YearData>> = new BehaviorSubject<\n    TableConfig<YearData>\n  >({});\n  data: Array<RawData> = [];\n\n  constructor(private fb: UntypedFormBuilder) {}\n\n  ngOnInit(): void {\n    this.transpose();\n    this.load();\n    this.reactiveForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n  }\n\n  simulateLoad(): void {\n    this.loading$.next(true);\n    // set loading state to false after 2 seconds\n    setTimeout(() => this.loading$.next(false), 2000);\n  }\n  empty(): void {\n    this.data = [];\n  }\n  load(): void {\n    this.data = [\n      {\n        year: '2010',\n        value: 15,\n      },\n      {\n        year: '2011',\n        value: 30,\n      },\n      {\n        year: '2012',\n        value: 25,\n      },\n      {\n        year: '2013',\n        value: 0,\n      },\n      {\n        year: '2014',\n        value: 40,\n      },\n      {\n        year: '2015',\n        value: 60,\n      },\n      {\n        year: '2016',\n        value: -5,\n      },\n      {\n        year: '2018',\n        value: 75,\n      },\n      {\n        year: '2019',\n        value: 100,\n      },\n      {\n        year: '2020',\n        value: 250,\n      },\n      {\n        year: '2021',\n        value: 50,\n      },\n      {\n        year: '2022',\n        value: 60,\n      },\n    ];\n  }\n  transpose(): void {\n    if (this.tableConfig$.value.columns) {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        rows: {\n          year: {\n            sortable: true,\n            header: false,\n            class: 'text-end',\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n      } as TableConfig<YearData>);\n    } else {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        columns: {\n          year: {\n            sortable: true,\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n        pagination: { length: this.reactiveForm.get('length')?.value },\n      } as TableConfig<YearData>);\n    }\n  }\n  SNIPPETS = TRANSPOSE_SNIPPETS;\n}\n\nexport const Transpose: Story<TransposeComponent> = (\n  args: TransposeComponent\n) => ({\n  props: args,\n  component: TransposeComponent,\n});\n",
+            "sourceCode": "import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable } from 'rxjs';\nimport { TableConfig, GtDeltaComponent } from '@angular-generic-table/core';\nimport { UntypedFormBuilder } from '@angular/forms';\nimport { withLatestFrom } from 'rxjs/operators';\nimport { Story } from '@storybook/angular/types-6-0';\nimport { TRANSPOSE_SNIPPETS } from './transpose.snippets';\ninterface RawData {\n  year: string;\n  value: number;\n}\ninterface YearData extends RawData {\n  delta: number;\n  deltaIndex: number;\n  combined: number;\n}\n@Component({\n  selector: 'docs-transpose',\n  template: `\n    <form [formGroup]=\"reactiveForm\">\n      <div class=\"row gy-3 gx-3 align-items-end mb-3\">\n        <div class=\"form-group col-6 col-sm-auto\">\n          <label for=\"length_input\">Number of rows</label>\n          <input\n            id=\"length_input\"\n            formControlName=\"length\"\n            type=\"number\"\n            class=\"form-control\"\n          />\n        </div>\n        <div class=\"form-group col-6 col-sm-auto\">\n          <label for=\"search_input\">Search</label>\n          <input\n            id=\"search_input\"\n            formControlName=\"search\"\n            type=\"text\"\n            class=\"form-control\"\n          />\n        </div>\n        <div class=\"col-auto\">\n          <button\n            class=\"btn btn-outline-primary w-100\"\n            (click)=\"simulateLoad()\"\n          >\n            Simulate load\n          </button>\n        </div>\n        <div class=\"col col-sm-auto\">\n          <button class=\"btn btn-outline-danger w-100\" (click)=\"empty()\">\n            Empty\n          </button>\n        </div>\n        <div class=\"col col-sm-auto\">\n          <button class=\"btn btn-outline-primary w-100\" (click)=\"load()\">\n            Reset\n          </button>\n        </div>\n        <div class=\"col col-sm-auto\">\n          <button class=\"btn btn-outline-primary w-100\" (click)=\"transpose()\">\n            Transpose\n          </button>\n        </div>\n      </div>\n      <div class=\"overflow-auto\">\n        <angular-generic-table\n          #table\n          [data]=\"data\"\n          [config]=\"tableConfig$\"\n          [loading]=\"loading$\"\n          [search]=\"search$\"\n        >\n          <div class=\"table-loading gt-skeleton-loader\"></div>\n          <div class=\"table-no-data alert alert-info mt-3\">Table is empty</div>\n        </angular-generic-table>\n      </div>\n      <angular-generic-table-pagination [table]=\"table\">\n      </angular-generic-table-pagination>\n      <ng-template #delta let-index=\"index\" let-data=\"data\">\n        <gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>\n      </ng-template>\n      <ng-template #deltaIndex let-index=\"index\" let-data=\"data\">\n        <gt-delta [index]=\"index\" [data]=\"data\" [baseIndex]=\"0\"></gt-delta>\n      </ng-template>\n      <ng-template\n        #combined\n        let-index=\"index\"\n        let-data=\"data\"\n        let-row=\"row\"\n        let-col=\"col\"\n      >\n        {{ row.value }}\n        <ng-container *ngIf=\"index > 0\">\n          (<gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>)\n        </ng-container>\n      </ng-template>\n      <docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n    </form>\n  `,\n  styles: [],\n})\nexport class TransposeComponent implements OnInit {\n  @ViewChild('delta', { static: true }) delta:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('deltaIndex', { static: true }) deltaIndex:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('combined', { static: true }) combined:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  loading$ = new BehaviorSubject(false);\n  reactiveForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.reactiveForm.get('search')?.valueChanges as Observable<string>;\n  tableConfig$: BehaviorSubject<TableConfig<YearData>> = new BehaviorSubject<\n    TableConfig<YearData>\n  >({});\n  data: Array<RawData> = [];\n\n  constructor(private fb: UntypedFormBuilder) {}\n\n  ngOnInit(): void {\n    this.transpose();\n    this.load();\n    this.reactiveForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n  }\n\n  simulateLoad(): void {\n    this.loading$.next(true);\n    // set loading state to false after 2 seconds\n    setTimeout(() => this.loading$.next(false), 2000);\n  }\n  empty(): void {\n    this.data = [];\n  }\n  load(): void {\n    this.data = [\n      {\n        year: '2010',\n        value: 15,\n      },\n      {\n        year: '2011',\n        value: 30,\n      },\n      {\n        year: '2012',\n        value: 25,\n      },\n      {\n        year: '2013',\n        value: 0,\n      },\n      {\n        year: '2014',\n        value: 40,\n      },\n      {\n        year: '2015',\n        value: 60,\n      },\n      {\n        year: '2016',\n        value: -5,\n      },\n      {\n        year: '2018',\n        value: 75,\n      },\n      {\n        year: '2019',\n        value: 100,\n      },\n      {\n        year: '2020',\n        value: 250,\n      },\n      {\n        year: '2021',\n        value: 50,\n      },\n      {\n        year: '2022',\n        value: 60,\n      },\n    ];\n  }\n  transpose(): void {\n    if (this.tableConfig$.value.columns) {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        rows: {\n          year: {\n            sortable: true,\n            header: false,\n            class: 'text-end',\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n      });\n    } else {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        columns: {\n          year: {\n            sortable: true,\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n        pagination: { length: this.reactiveForm.get('length')?.value },\n      });\n    }\n  }\n  SNIPPETS = TRANSPOSE_SNIPPETS;\n}\n\nexport const Transpose: Story<TransposeComponent> = (\n  args: TransposeComponent\n) => ({\n  props: args,\n  component: TransposeComponent,\n});\n",
             "properties": [
                 {
                     "name": "value",
@@ -1082,12 +1082,12 @@
         },
         {
             "name": "YearData",
-            "id": "interface-YearData-31b894716d4d128fb0edbb199d5d16718ca2bda57f611cec46bb904fd7433c6996fd12be8b7af43575bcaa427a2d97b5bb88534d3fc81d1559f84e6104349105",
+            "id": "interface-YearData-63e6bfdecdc1f7465c785a857abe0c8f43846698ced72650de16568c30a0464419a76ae786fcdc2e71dec02ddc13b6f60e411c0855fbd30a3e8486e82bfd4c3f",
             "file": "projects/docs/src/app/examples/transpose/transpose.component.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable } from 'rxjs';\nimport { TableConfig, GtDeltaComponent } from '@angular-generic-table/core';\nimport { UntypedFormBuilder } from '@angular/forms';\nimport { withLatestFrom } from 'rxjs/operators';\nimport { Story } from '@storybook/angular/types-6-0';\nimport { TRANSPOSE_SNIPPETS } from './transpose.snippets';\ninterface RawData {\n  year: string;\n  value: number;\n}\ninterface YearData extends RawData {\n  delta: number;\n  deltaIndex: number;\n  combined: number;\n}\n@Component({\n  selector: 'docs-transpose',\n  template: `\n    <form [formGroup]=\"reactiveForm\">\n      <div class=\"row gy-3 gx-3 align-items-end mb-3\">\n        <div class=\"form-group col-6 col-sm-auto\">\n          <label for=\"length_input\">Number of rows</label>\n          <input\n            id=\"length_input\"\n            formControlName=\"length\"\n            type=\"number\"\n            class=\"form-control\"\n          />\n        </div>\n        <div class=\"form-group col-6 col-sm-auto\">\n          <label for=\"search_input\">Search</label>\n          <input\n            id=\"search_input\"\n            formControlName=\"search\"\n            type=\"text\"\n            class=\"form-control\"\n          />\n        </div>\n        <div class=\"col-auto\">\n          <button\n            class=\"btn btn-outline-primary w-100\"\n            (click)=\"simulateLoad()\"\n          >\n            Simulate load\n          </button>\n        </div>\n        <div class=\"col col-sm-auto\">\n          <button class=\"btn btn-outline-danger w-100\" (click)=\"empty()\">\n            Empty\n          </button>\n        </div>\n        <div class=\"col col-sm-auto\">\n          <button class=\"btn btn-outline-primary w-100\" (click)=\"load()\">\n            Reset\n          </button>\n        </div>\n        <div class=\"col col-sm-auto\">\n          <button class=\"btn btn-outline-primary w-100\" (click)=\"transpose()\">\n            Transpose\n          </button>\n        </div>\n      </div>\n      <div class=\"overflow-auto\">\n        <angular-generic-table\n          #table\n          [data]=\"data\"\n          [config]=\"tableConfig$\"\n          [loading]=\"loading$\"\n          [search]=\"search$\"\n        >\n          <div class=\"table-loading gt-skeleton-loader\"></div>\n          <div class=\"table-no-data alert alert-info mt-3\">Table is empty</div>\n        </angular-generic-table>\n      </div>\n      <angular-generic-table-pagination [table]=\"table\">\n      </angular-generic-table-pagination>\n      <ng-template #delta let-index=\"index\" let-data=\"data\">\n        <gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>\n      </ng-template>\n      <ng-template #deltaIndex let-index=\"index\" let-data=\"data\">\n        <gt-delta [index]=\"index\" [data]=\"data\" [baseIndex]=\"0\"></gt-delta>\n      </ng-template>\n      <ng-template\n        #combined\n        let-index=\"index\"\n        let-data=\"data\"\n        let-row=\"row\"\n        let-col=\"col\"\n      >\n        {{ row.value }}\n        <ng-container *ngIf=\"index > 0\">\n          (<gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>)\n        </ng-container>\n      </ng-template>\n      <docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n    </form>\n  `,\n  styles: [],\n})\nexport class TransposeComponent implements OnInit {\n  @ViewChild('delta', { static: true }) delta:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('deltaIndex', { static: true }) deltaIndex:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('combined', { static: true }) combined:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  loading$ = new BehaviorSubject(false);\n  reactiveForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.reactiveForm.get('search')?.valueChanges as Observable<string>;\n  tableConfig$: BehaviorSubject<TableConfig<YearData>> = new BehaviorSubject<\n    TableConfig<YearData>\n  >({});\n  data: Array<RawData> = [];\n\n  constructor(private fb: UntypedFormBuilder) {}\n\n  ngOnInit(): void {\n    this.transpose();\n    this.load();\n    this.reactiveForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n  }\n\n  simulateLoad(): void {\n    this.loading$.next(true);\n    // set loading state to false after 2 seconds\n    setTimeout(() => this.loading$.next(false), 2000);\n  }\n  empty(): void {\n    this.data = [];\n  }\n  load(): void {\n    this.data = [\n      {\n        year: '2010',\n        value: 15,\n      },\n      {\n        year: '2011',\n        value: 30,\n      },\n      {\n        year: '2012',\n        value: 25,\n      },\n      {\n        year: '2013',\n        value: 0,\n      },\n      {\n        year: '2014',\n        value: 40,\n      },\n      {\n        year: '2015',\n        value: 60,\n      },\n      {\n        year: '2016',\n        value: -5,\n      },\n      {\n        year: '2018',\n        value: 75,\n      },\n      {\n        year: '2019',\n        value: 100,\n      },\n      {\n        year: '2020',\n        value: 250,\n      },\n      {\n        year: '2021',\n        value: 50,\n      },\n      {\n        year: '2022',\n        value: 60,\n      },\n    ];\n  }\n  transpose(): void {\n    if (this.tableConfig$.value.columns) {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        rows: {\n          year: {\n            sortable: true,\n            header: false,\n            class: 'text-end',\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n      } as TableConfig<YearData>);\n    } else {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        columns: {\n          year: {\n            sortable: true,\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n        pagination: { length: this.reactiveForm.get('length')?.value },\n      } as TableConfig<YearData>);\n    }\n  }\n  SNIPPETS = TRANSPOSE_SNIPPETS;\n}\n\nexport const Transpose: Story<TransposeComponent> = (\n  args: TransposeComponent\n) => ({\n  props: args,\n  component: TransposeComponent,\n});\n",
+            "sourceCode": "import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable } from 'rxjs';\nimport { TableConfig, GtDeltaComponent } from '@angular-generic-table/core';\nimport { UntypedFormBuilder } from '@angular/forms';\nimport { withLatestFrom } from 'rxjs/operators';\nimport { Story } from '@storybook/angular/types-6-0';\nimport { TRANSPOSE_SNIPPETS } from './transpose.snippets';\ninterface RawData {\n  year: string;\n  value: number;\n}\ninterface YearData extends RawData {\n  delta: number;\n  deltaIndex: number;\n  combined: number;\n}\n@Component({\n  selector: 'docs-transpose',\n  template: `\n    <form [formGroup]=\"reactiveForm\">\n      <div class=\"row gy-3 gx-3 align-items-end mb-3\">\n        <div class=\"form-group col-6 col-sm-auto\">\n          <label for=\"length_input\">Number of rows</label>\n          <input\n            id=\"length_input\"\n            formControlName=\"length\"\n            type=\"number\"\n            class=\"form-control\"\n          />\n        </div>\n        <div class=\"form-group col-6 col-sm-auto\">\n          <label for=\"search_input\">Search</label>\n          <input\n            id=\"search_input\"\n            formControlName=\"search\"\n            type=\"text\"\n            class=\"form-control\"\n          />\n        </div>\n        <div class=\"col-auto\">\n          <button\n            class=\"btn btn-outline-primary w-100\"\n            (click)=\"simulateLoad()\"\n          >\n            Simulate load\n          </button>\n        </div>\n        <div class=\"col col-sm-auto\">\n          <button class=\"btn btn-outline-danger w-100\" (click)=\"empty()\">\n            Empty\n          </button>\n        </div>\n        <div class=\"col col-sm-auto\">\n          <button class=\"btn btn-outline-primary w-100\" (click)=\"load()\">\n            Reset\n          </button>\n        </div>\n        <div class=\"col col-sm-auto\">\n          <button class=\"btn btn-outline-primary w-100\" (click)=\"transpose()\">\n            Transpose\n          </button>\n        </div>\n      </div>\n      <div class=\"overflow-auto\">\n        <angular-generic-table\n          #table\n          [data]=\"data\"\n          [config]=\"tableConfig$\"\n          [loading]=\"loading$\"\n          [search]=\"search$\"\n        >\n          <div class=\"table-loading gt-skeleton-loader\"></div>\n          <div class=\"table-no-data alert alert-info mt-3\">Table is empty</div>\n        </angular-generic-table>\n      </div>\n      <angular-generic-table-pagination [table]=\"table\">\n      </angular-generic-table-pagination>\n      <ng-template #delta let-index=\"index\" let-data=\"data\">\n        <gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>\n      </ng-template>\n      <ng-template #deltaIndex let-index=\"index\" let-data=\"data\">\n        <gt-delta [index]=\"index\" [data]=\"data\" [baseIndex]=\"0\"></gt-delta>\n      </ng-template>\n      <ng-template\n        #combined\n        let-index=\"index\"\n        let-data=\"data\"\n        let-row=\"row\"\n        let-col=\"col\"\n      >\n        {{ row.value }}\n        <ng-container *ngIf=\"index > 0\">\n          (<gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>)\n        </ng-container>\n      </ng-template>\n      <docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n    </form>\n  `,\n  styles: [],\n})\nexport class TransposeComponent implements OnInit {\n  @ViewChild('delta', { static: true }) delta:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('deltaIndex', { static: true }) deltaIndex:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('combined', { static: true }) combined:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  loading$ = new BehaviorSubject(false);\n  reactiveForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.reactiveForm.get('search')?.valueChanges as Observable<string>;\n  tableConfig$: BehaviorSubject<TableConfig<YearData>> = new BehaviorSubject<\n    TableConfig<YearData>\n  >({});\n  data: Array<RawData> = [];\n\n  constructor(private fb: UntypedFormBuilder) {}\n\n  ngOnInit(): void {\n    this.transpose();\n    this.load();\n    this.reactiveForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n  }\n\n  simulateLoad(): void {\n    this.loading$.next(true);\n    // set loading state to false after 2 seconds\n    setTimeout(() => this.loading$.next(false), 2000);\n  }\n  empty(): void {\n    this.data = [];\n  }\n  load(): void {\n    this.data = [\n      {\n        year: '2010',\n        value: 15,\n      },\n      {\n        year: '2011',\n        value: 30,\n      },\n      {\n        year: '2012',\n        value: 25,\n      },\n      {\n        year: '2013',\n        value: 0,\n      },\n      {\n        year: '2014',\n        value: 40,\n      },\n      {\n        year: '2015',\n        value: 60,\n      },\n      {\n        year: '2016',\n        value: -5,\n      },\n      {\n        year: '2018',\n        value: 75,\n      },\n      {\n        year: '2019',\n        value: 100,\n      },\n      {\n        year: '2020',\n        value: 250,\n      },\n      {\n        year: '2021',\n        value: 50,\n      },\n      {\n        year: '2022',\n        value: 60,\n      },\n    ];\n  }\n  transpose(): void {\n    if (this.tableConfig$.value.columns) {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        rows: {\n          year: {\n            sortable: true,\n            header: false,\n            class: 'text-end',\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n      });\n    } else {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        columns: {\n          year: {\n            sortable: true,\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n        pagination: { length: this.reactiveForm.get('length')?.value },\n      });\n    }\n  }\n  SNIPPETS = TRANSPOSE_SNIPPETS;\n}\n\nexport const Transpose: Story<TransposeComponent> = (\n  args: TransposeComponent\n) => ({\n  props: args,\n  component: TransposeComponent,\n});\n",
             "properties": [
                 {
                     "name": "combined",
@@ -1943,7 +1943,7 @@
         },
         {
             "name": "CoreComponent",
-            "id": "component-CoreComponent-fea00ef0ebac8996f68206d465699d0199cf3ed9574157912c628df0698714943bf6301f7d085fdb3f76a959a21cf8847c406bcc6a1e8620a9ddab7dcc818a09",
+            "id": "component-CoreComponent-1a19553e283a3eaa5b40a4f963093c80662077f98e528737a98e0c6992f2f4f115041dc84d5a1f3d769f43c9e9cd451989d97141e79b4939efdc354b9692cc71",
             "file": "projects/core/src/lib/core.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -1963,7 +1963,7 @@
                     "name": "config",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 63,
+                    "line": 87,
                     "type": "Observable | TableConfig",
                     "decorators": []
                 },
@@ -1971,7 +1971,7 @@
                     "name": "data",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 68,
+                    "line": 92,
                     "type": "Observable | Array",
                     "decorators": []
                 },
@@ -1979,7 +1979,7 @@
                     "name": "loading",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 49,
+                    "line": 73,
                     "type": "Observable | boolean",
                     "decorators": []
                 },
@@ -1987,7 +1987,7 @@
                     "name": "page",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 53,
+                    "line": 77,
                     "type": "number",
                     "decorators": []
                 },
@@ -1995,7 +1995,7 @@
                     "name": "search",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 58,
+                    "line": 82,
                     "type": "Observable | string | null",
                     "decorators": []
                 }
@@ -2006,7 +2006,7 @@
                     "defaultValue": "new EventEmitter<GtRowClickEvent>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 72,
+                    "line": 96,
                     "type": "EventEmitter"
                 },
                 {
@@ -2014,7 +2014,7 @@
                     "defaultValue": "new EventEmitter<GtRowHoverEvent>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 79,
+                    "line": 103,
                     "type": "EventEmitter"
                 }
             ],
@@ -2027,7 +2027,7 @@
                     "type": "BehaviorSubject<number>",
                     "optional": false,
                     "description": "",
-                    "line": 252,
+                    "line": 276,
                     "modifierKind": [
                         121
                     ]
@@ -2040,7 +2040,7 @@
                     "type": "ReplaySubject<Array | Observable>",
                     "optional": false,
                     "description": "",
-                    "line": 147,
+                    "line": 171,
                     "modifierKind": [
                         121
                     ]
@@ -2053,7 +2053,7 @@
                     "type": "ReplaySubject<Observable | boolean>",
                     "optional": false,
                     "description": "",
-                    "line": 121,
+                    "line": 145,
                     "modifierKind": [
                         121
                     ]
@@ -2066,7 +2066,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 78,
+                    "line": 102,
                     "modifierKind": [
                         121
                     ]
@@ -2079,7 +2079,7 @@
                     "type": "ReplaySubject<Observable | string | null>",
                     "optional": false,
                     "description": "",
-                    "line": 128,
+                    "line": 152,
                     "modifierKind": [
                         121
                     ]
@@ -2091,7 +2091,7 @@
                     "type": "TableSort | undefined",
                     "optional": false,
                     "description": "",
-                    "line": 125,
+                    "line": 149,
                     "modifierKind": [
                         121
                     ]
@@ -2104,7 +2104,7 @@
                     "type": "ReplaySubject<TableConfig | Observable>",
                     "optional": false,
                     "description": "",
-                    "line": 138,
+                    "line": 162,
                     "modifierKind": [
                         121
                     ]
@@ -2117,7 +2117,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 218
+                    "line": 242
                 },
                 {
                     "name": "colspan$",
@@ -2127,7 +2127,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 267
+                    "line": 291
                 },
                 {
                     "name": "columnOrder",
@@ -2137,7 +2137,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 311
+                    "line": 335
                 },
                 {
                     "name": "currentPage$",
@@ -2147,7 +2147,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 253
+                    "line": 277
                 },
                 {
                     "name": "data$",
@@ -2157,7 +2157,7 @@
                     "type": "Observable<Array<TableRow>>",
                     "optional": false,
                     "description": "",
-                    "line": 149
+                    "line": 173
                 },
                 {
                     "name": "footerColspan$",
@@ -2167,7 +2167,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 280
+                    "line": 304
                 },
                 {
                     "name": "rowHover$",
@@ -2177,7 +2177,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 80
+                    "line": 104
                 },
                 {
                     "name": "searchBy$",
@@ -2187,7 +2187,7 @@
                     "type": "Observable<string | null>",
                     "optional": false,
                     "description": "",
-                    "line": 130
+                    "line": 154
                 },
                 {
                     "name": "sortBy$",
@@ -2197,7 +2197,7 @@
                     "type": "Subject<TableSort>",
                     "optional": false,
                     "description": "",
-                    "line": 123
+                    "line": 147
                 },
                 {
                     "name": "table$",
@@ -2207,7 +2207,7 @@
                     "type": "Observable<TableMeta>",
                     "optional": false,
                     "description": "",
-                    "line": 223
+                    "line": 247
                 },
                 {
                     "name": "tableConfig$",
@@ -2217,7 +2217,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 141
+                    "line": 165
                 }
             ],
             "methodsClass": [
@@ -2247,7 +2247,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 104,
+                    "line": 128,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2306,7 +2306,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 74,
+                    "line": 98,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2352,7 +2352,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 87,
+                    "line": 111,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2380,7 +2380,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 88,
+                    "line": 112,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2408,7 +2408,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 89,
+                    "line": 113,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2436,7 +2436,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 90,
+                    "line": 114,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2477,7 +2477,7 @@
                     "optional": false,
                     "returnType": "",
                     "typeParameters": [],
-                    "line": 318,
+                    "line": 342,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2524,7 +2524,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 296,
+                    "line": 320,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2547,7 +2547,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  EventEmitter,\n  Input,\n  Output,\n} from '@angular/core';\nimport {\n  BehaviorSubject,\n  combineLatest,\n  EMPTY,\n  isObservable,\n  Observable,\n  of,\n  ReplaySubject,\n  Subject,\n} from 'rxjs';\nimport { TableConfig } from './models/table-config.interface';\nimport { KeyValue } from '@angular/common';\nimport {\n  debounceTime,\n  distinctUntilChanged,\n  map,\n  shareReplay,\n  startWith,\n  switchMap,\n  take,\n  tap,\n  withLatestFrom,\n} from 'rxjs/operators';\nimport { TableColumn } from './models/table-column.interface';\nimport { Order } from './enums/order.enum';\nimport { calculate, chunk, search } from './utilities/utilities';\nimport { TableRow } from './models/table-row.interface';\nimport { TableSort } from './models/table-sort.interface';\nimport { TableMeta } from './models/table-meta.interface';\nimport {\n  GtRowClickEvent,\n  GtRowHoverEvent,\n} from './models/table-events.interface';\n\n@Component({\n  selector: 'angular-generic-table',\n  templateUrl: './core.component.html',\n  styles: [],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class CoreComponent {\n  @Input() set loading(isLoading: Observable<boolean> | boolean) {\n    this._loading$.next(isLoading);\n  }\n  @Input()\n  set page(page: number) {\n    this._currentPage$.next(page);\n  }\n\n  @Input()\n  set search(string: Observable<string> | string | null) {\n    this._searchBy$.next(string);\n  }\n\n  @Input()\n  set config(config: Observable<TableConfig<any>> | TableConfig<any>) {\n    this._tableConfig$.next(config);\n  }\n\n  @Input()\n  set data(data: Observable<Array<TableRow>> | Array<TableRow>) {\n    this._data$.next(data);\n  }\n\n  @Output() rowClick = new EventEmitter<GtRowClickEvent>();\n\n  _rowClick(row: TableRow, index: number, event: MouseEvent): void {\n    this.rowClick.emit({ row, index, event });\n  }\n\n  private _rowHover$ = new ReplaySubject<GtRowHoverEvent>(1);\n  @Output() rowHover = new EventEmitter<GtRowHoverEvent>();\n  rowHover$ = this._rowHover$.asObservable().pipe(\n    debounceTime(50),\n    distinctUntilChanged((p, q) => p.index === q.index),\n    tap((event) => this.rowHover.emit(event)),\n    shareReplay(1)\n  );\n\n  hoverRow(id: string): void;\n  hoverRow(index: number): void;\n  hoverRow(none: null): void;\n  hoverRow(arg: string | number | null): void {\n    if (typeof arg === 'number') {\n      this.data$\n        .pipe(\n          map((data) => data[arg]),\n          take(1)\n        )\n        .subscribe((row) => this._hoverRow(row, arg));\n    } else if (typeof arg === 'string') {\n      // TODO: implement hover by id\n    } else {\n      this._hoverRow(null, null);\n    }\n  }\n  _hoverRow(\n    row: TableRow | null,\n    index: number | null,\n    event?: MouseEvent\n  ): void {\n    this._rowHover$.next({ row, index, event });\n  }\n\n  get loading$(): Observable<boolean> {\n    return this._loading$.pipe(\n      startWith(false),\n      map((value) => (isObservable(value) ? value : of(value))),\n      switchMap((obs) => obs),\n      shareReplay(1)\n    );\n  }\n\n  private _loading$: ReplaySubject<Observable<boolean> | boolean> =\n    new ReplaySubject(1);\n  sortBy$: Subject<TableSort> = new Subject();\n  // tslint:disable-next-line:variable-name\n  private _sortBy: TableSort | undefined;\n\n  // tslint:disable-next-line:variable-name\n  private _searchBy$: ReplaySubject<Observable<string> | string | null> =\n    new ReplaySubject(1);\n  searchBy$: Observable<string | null> = this._searchBy$.pipe(\n    startWith(''),\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => obs),\n    shareReplay(1)\n  );\n\n  // tslint:disable-next-line:variable-name\n  private _tableConfig$: ReplaySubject<\n    TableConfig<any> | Observable<TableConfig<any>>\n  > = new ReplaySubject(1);\n  tableConfig$ = this._tableConfig$.pipe(\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => obs),\n    shareReplay(1)\n  );\n\n  private _data$: ReplaySubject<Array<TableRow> | Observable<Array<TableRow>>> =\n    new ReplaySubject(1);\n  data$: Observable<Array<TableRow>> = this._data$.pipe(\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => combineLatest([obs])),\n    withLatestFrom(this.tableConfig$),\n    map(([[data], config]) => {\n      // if columns or rows contains config for mapTo...\n      if (\n        (config.columns &&\n          !!Object.values(config.columns).find((column) => !!column.mapTo)) ||\n        (config.rows &&\n          !!Object.values(config.rows).find((column) => !!column.mapTo))\n      ) {\n        // ...map data to new keys on row...\n        const newData: TableRow[] = [];\n        for (let i = 0; i < data.length; i++) {\n          const row = data[i];\n          const newKeys = Object.entries(config.columns || config.rows || [])\n            .filter(([key, value]) => !!value.mapTo) // add keys for columns with mapTo config...\n            .reduce(\n              (previousValue, [key, value]) => ({\n                ...previousValue,\n                [key]: this.nestedValue(\n                  row,\n                  value.mapTo!.path,\n                  value.mapTo?.missingValue\n                ),\n              }),\n              {}\n            );\n          newData[i] = { ...row, ...newKeys };\n        }\n        data = newData;\n      }\n      return { data, config };\n    }),\n    switchMap((obs) =>\n      combineLatest([\n        of(obs),\n        this.sortBy$.pipe(startWith(EMPTY)),\n        this.searchBy$,\n      ])\n    ),\n    map(([table, sortBy, searchBy]) => {\n      // create a new array reference and sort new array (prevent mutating existing state)\n      table.data = [...table.data];\n      return !sortBy\n        ? searchBy\n          ? search(searchBy, false, table.data, table.config)\n          : table.data\n        : (searchBy\n            ? search(searchBy, false, table.data, table.config)\n            : table.data\n          )?.sort((a, b) => {\n            // TODO: improve logic\n            const typed = sortBy as TableSort;\n            return a[typed.sortBy] > b[typed.sortBy]\n              ? typed.sortByOrder === Order.ASC\n                ? 1\n                : -1\n              : b[typed.sortBy] > a[typed.sortBy]\n              ? typed.sortByOrder === Order.ASC\n                ? -1\n                : 1\n              : 0;\n          });\n    }),\n    shareReplay(1)\n  );\n\n  calculations$ = combineLatest([this.data$, this.tableConfig$]).pipe(\n    map(([data, config]) => calculate(data, config)),\n    shareReplay(1)\n  );\n\n  table$: Observable<TableMeta> = combineLatest([\n    this.data$,\n    this.tableConfig$,\n  ]).pipe(\n    map(([sorted, config]) => {\n      // if pagination is disabled...\n      if (!config.pagination || config.pagination.length === 0) {\n        // ...return unaltered array\n        return {\n          data: [sorted],\n          config,\n          info: { records: sorted.length, pageTotal: 1 },\n        };\n      }\n      // return record set\n      return {\n        data: chunk(sorted, +(config.pagination.length || 0)),\n        config,\n        info: {\n          records: sorted.length,\n          pageTotal: Math.ceil(\n            sorted.length / +(config.pagination.length || 0)\n          ),\n        },\n      };\n    }),\n    shareReplay(1)\n  );\n\n  private _currentPage$: BehaviorSubject<number> = new BehaviorSubject(0);\n  currentPage$ = combineLatest([this._currentPage$, this.table$]).pipe(\n    map(([page, table]: any) => {\n      // determine last page\n      const lastPage =\n        Math.ceil(\n          table.info.records /\n            (table.config?.pagination?.length || table.info.records)\n        ) - 1;\n      // determine max/min position\n      return +page < 0 ? 0 : +page > lastPage ? lastPage : +page;\n    }),\n    shareReplay(1)\n  );\n\n  colspan$ = this.tableConfig$.pipe(\n    switchMap((config) =>\n      config.columns\n        ? of(\n            Object.values(config.columns || config.rows || {}).filter(\n              (value) => value.hidden !== true\n            ).length\n          )\n        : this.data$.pipe(map((data) => data.length + 1))\n    ),\n    shareReplay(1)\n  );\n\n  footerColspan$ = this.tableConfig$.pipe(\n    map((config) => {\n      let colspan = 0;\n      Object.values(config?.footer?.columns || {}).forEach((calculations) => {\n        if (\n          Object.values(calculations).filter((value) => value !== false)\n            .length >= 0\n        ) {\n          colspan += 1;\n        }\n      }, {});\n      return colspan;\n    }),\n    shareReplay(1)\n  );\n\n  sort(property: string): void {\n    const newSortOrder =\n      this._sortBy?.sortBy !== property ||\n      this._sortBy?.sortByOrder === Order.DESC ||\n      !this._sortBy.sortByOrder\n        ? Order.ASC\n        : Order.DESC;\n    const newSortBy = {\n      sortBy: property,\n      sortByOrder: newSortOrder,\n    };\n    this.sortBy$.next(newSortBy);\n    this._sortBy = newSortBy;\n  }\n\n  columnOrder = (\n    a: KeyValue<string, TableColumn>,\n    b: KeyValue<string, TableColumn>\n  ): number => {\n    return (a.value.order || 0) - (b.value.order || 0);\n  };\n\n  nestedValue(\n    object: any,\n    mapTo: string,\n    missingValue: string | number | null = null\n  ): unknown {\n    const levels = mapTo.split('.');\n    return levels.reduce(\n      (previousValue, currentValue, index) =>\n        previousValue[currentValue] ||\n        (index === levels.length - 1 ? missingValue : {}),\n      object\n    );\n  }\n}\n",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  EventEmitter,\n  Input,\n  Output,\n} from '@angular/core';\nimport {\n  BehaviorSubject,\n  combineLatest,\n  EMPTY,\n  isObservable,\n  Observable,\n  of,\n  ReplaySubject,\n  Subject,\n} from 'rxjs';\nimport { TableConfig } from './models/table-config.interface';\nimport {\n  AsyncPipe,\n  KeyValue,\n  KeyValuePipe,\n  NgClass,\n  NgTemplateOutlet,\n  SlicePipe,\n} from '@angular/common';\nimport {\n  debounceTime,\n  distinctUntilChanged,\n  map,\n  shareReplay,\n  startWith,\n  switchMap,\n  take,\n  tap,\n  withLatestFrom,\n} from 'rxjs/operators';\nimport { TableColumn } from './models/table-column.interface';\nimport { Order } from './enums/order.enum';\nimport { calculate, chunk, search } from './utilities/utilities';\nimport { TableRow } from './models/table-row.interface';\nimport { TableSort } from './models/table-sort.interface';\nimport { TableMeta } from './models/table-meta.interface';\nimport {\n  GtRowClickEvent,\n  GtRowHoverEvent,\n} from './models/table-events.interface';\nimport { CapitalCasePipe } from './pipes/capital-case.pipe';\nimport { SortClassPipe } from './pipes/sort-class.pipe';\nimport { DashCasePipe } from './pipes/dash-case.pipe';\nimport { DynamicPipe } from './pipes/dynamic.pipe';\nimport { HighlightPipe } from './pipes/highlight.pipe';\n\n@Component({\n  selector: 'angular-generic-table',\n  templateUrl: './core.component.html',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  standalone: true,\n  imports: [\n    CapitalCasePipe,\n    KeyValuePipe,\n    SortClassPipe,\n    DashCasePipe,\n    AsyncPipe,\n    NgTemplateOutlet,\n    SlicePipe,\n    DynamicPipe,\n    HighlightPipe,\n    NgClass,\n  ],\n})\nexport class CoreComponent {\n  @Input() set loading(isLoading: Observable<boolean> | boolean) {\n    this._loading$.next(isLoading);\n  }\n  @Input()\n  set page(page: number) {\n    this._currentPage$.next(page);\n  }\n\n  @Input()\n  set search(string: Observable<string> | string | null) {\n    this._searchBy$.next(string);\n  }\n\n  @Input()\n  set config(config: Observable<TableConfig<any>> | TableConfig<any>) {\n    this._tableConfig$.next(config);\n  }\n\n  @Input()\n  set data(data: Observable<Array<TableRow>> | Array<TableRow>) {\n    this._data$.next(data);\n  }\n\n  @Output() rowClick = new EventEmitter<GtRowClickEvent>();\n\n  _rowClick(row: TableRow, index: number, event: MouseEvent): void {\n    this.rowClick.emit({ row, index, event });\n  }\n\n  private _rowHover$ = new ReplaySubject<GtRowHoverEvent>(1);\n  @Output() rowHover = new EventEmitter<GtRowHoverEvent>();\n  rowHover$ = this._rowHover$.asObservable().pipe(\n    debounceTime(50),\n    distinctUntilChanged((p, q) => p.index === q.index),\n    tap((event) => this.rowHover.emit(event)),\n    shareReplay(1)\n  );\n\n  hoverRow(id: string): void;\n  hoverRow(index: number): void;\n  hoverRow(none: null): void;\n  hoverRow(arg: string | number | null): void {\n    if (typeof arg === 'number') {\n      this.data$\n        .pipe(\n          map((data) => data[arg]),\n          take(1)\n        )\n        .subscribe((row) => this._hoverRow(row, arg));\n    } else if (typeof arg === 'string') {\n      // TODO: implement hover by id\n    } else {\n      this._hoverRow(null, null);\n    }\n  }\n  _hoverRow(\n    row: TableRow | null,\n    index: number | null,\n    event?: MouseEvent\n  ): void {\n    this._rowHover$.next({ row, index, event });\n  }\n\n  get loading$(): Observable<boolean> {\n    return this._loading$.pipe(\n      startWith(false),\n      map((value) => (isObservable(value) ? value : of(value))),\n      switchMap((obs) => obs),\n      shareReplay(1)\n    );\n  }\n\n  private _loading$: ReplaySubject<Observable<boolean> | boolean> =\n    new ReplaySubject(1);\n  sortBy$: Subject<TableSort> = new Subject();\n  // tslint:disable-next-line:variable-name\n  private _sortBy: TableSort | undefined;\n\n  // tslint:disable-next-line:variable-name\n  private _searchBy$: ReplaySubject<Observable<string> | string | null> =\n    new ReplaySubject(1);\n  searchBy$: Observable<string | null> = this._searchBy$.pipe(\n    startWith(''),\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => obs),\n    shareReplay(1)\n  );\n\n  // tslint:disable-next-line:variable-name\n  private _tableConfig$: ReplaySubject<\n    TableConfig<any> | Observable<TableConfig<any>>\n  > = new ReplaySubject(1);\n  tableConfig$ = this._tableConfig$.pipe(\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => obs),\n    shareReplay(1)\n  );\n\n  private _data$: ReplaySubject<Array<TableRow> | Observable<Array<TableRow>>> =\n    new ReplaySubject(1);\n  data$: Observable<Array<TableRow>> = this._data$.pipe(\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => combineLatest([obs])),\n    withLatestFrom(this.tableConfig$),\n    map(([[data], config]) => {\n      // if columns or rows contains config for mapTo...\n      if (\n        (config.columns &&\n          !!Object.values(config.columns).find((column) => !!column.mapTo)) ||\n        (config.rows &&\n          !!Object.values(config.rows).find((column) => !!column.mapTo))\n      ) {\n        // ...map data to new keys on row...\n        const newData: TableRow[] = [];\n        for (let i = 0; i < data.length; i++) {\n          const row = data[i];\n          const newKeys = Object.entries(config.columns || config.rows || [])\n            .filter(([key, value]) => !!value.mapTo) // add keys for columns with mapTo config...\n            .reduce(\n              (previousValue, [key, value]) => ({\n                ...previousValue,\n                [key]: this.nestedValue(\n                  row,\n                  value.mapTo!.path,\n                  value.mapTo?.missingValue\n                ),\n              }),\n              {}\n            );\n          newData[i] = { ...row, ...newKeys };\n        }\n        data = newData;\n      }\n      return { data, config };\n    }),\n    switchMap((obs) =>\n      combineLatest([\n        of(obs),\n        this.sortBy$.pipe(startWith(EMPTY)),\n        this.searchBy$,\n      ])\n    ),\n    map(([table, sortBy, searchBy]) => {\n      // create a new array reference and sort new array (prevent mutating existing state)\n      table.data = [...table.data];\n      return !sortBy\n        ? searchBy\n          ? search(searchBy, false, table.data, table.config)\n          : table.data\n        : (searchBy\n            ? search(searchBy, false, table.data, table.config)\n            : table.data\n          )?.sort((a, b) => {\n            // TODO: improve logic\n            const typed = sortBy as TableSort;\n            return a[typed.sortBy] > b[typed.sortBy]\n              ? typed.sortByOrder === Order.ASC\n                ? 1\n                : -1\n              : b[typed.sortBy] > a[typed.sortBy]\n              ? typed.sortByOrder === Order.ASC\n                ? -1\n                : 1\n              : 0;\n          });\n    }),\n    shareReplay(1)\n  );\n\n  calculations$ = combineLatest([this.data$, this.tableConfig$]).pipe(\n    map(([data, config]) => calculate(data, config)),\n    shareReplay(1)\n  );\n\n  table$: Observable<TableMeta> = combineLatest([\n    this.data$,\n    this.tableConfig$,\n  ]).pipe(\n    map(([sorted, config]) => {\n      // if pagination is disabled...\n      if (!config.pagination || config.pagination.length === 0) {\n        // ...return unaltered array\n        return {\n          data: [sorted],\n          config,\n          info: { records: sorted.length, pageTotal: 1 },\n        };\n      }\n      // return record set\n      return {\n        data: chunk(sorted, +(config.pagination.length || 0)),\n        config,\n        info: {\n          records: sorted.length,\n          pageTotal: Math.ceil(\n            sorted.length / +(config.pagination.length || 0)\n          ),\n        },\n      };\n    }),\n    shareReplay(1)\n  );\n\n  private _currentPage$: BehaviorSubject<number> = new BehaviorSubject(0);\n  currentPage$ = combineLatest([this._currentPage$, this.table$]).pipe(\n    map(([page, table]: any) => {\n      // determine last page\n      const lastPage =\n        Math.ceil(\n          table.info.records /\n            (table.config?.pagination?.length || table.info.records)\n        ) - 1;\n      // determine max/min position\n      return +page < 0 ? 0 : +page > lastPage ? lastPage : +page;\n    }),\n    shareReplay(1)\n  );\n\n  colspan$ = this.tableConfig$.pipe(\n    switchMap((config) =>\n      config.columns\n        ? of(\n            Object.values(config.columns || config.rows || {}).filter(\n              (value) => value.hidden !== true\n            ).length\n          )\n        : this.data$.pipe(map((data) => data.length + 1))\n    ),\n    shareReplay(1)\n  );\n\n  footerColspan$ = this.tableConfig$.pipe(\n    map((config) => {\n      let colspan = 0;\n      Object.values(config?.footer?.columns || {}).forEach((calculations) => {\n        if (\n          Object.values(calculations).filter((value) => value !== false)\n            .length >= 0\n        ) {\n          colspan += 1;\n        }\n      }, {});\n      return colspan;\n    }),\n    shareReplay(1)\n  );\n\n  sort(property: string): void {\n    const newSortOrder =\n      this._sortBy?.sortBy !== property ||\n      this._sortBy?.sortByOrder === Order.DESC ||\n      !this._sortBy.sortByOrder\n        ? Order.ASC\n        : Order.DESC;\n    const newSortBy = {\n      sortBy: property,\n      sortByOrder: newSortOrder,\n    };\n    this.sortBy$.next(newSortBy);\n    this._sortBy = newSortBy;\n  }\n\n  columnOrder = (\n    a: KeyValue<string, TableColumn>,\n    b: KeyValue<string, TableColumn>\n  ): number => {\n    return (a.value.order || 0) - (b.value.order || 0);\n  };\n\n  nestedValue(\n    object: any,\n    mapTo: string,\n    missingValue: string | number | null = null\n  ): unknown {\n    const levels = mapTo.split('.');\n    return levels.reduce(\n      (previousValue, currentValue, index) =>\n        previousValue[currentValue] ||\n        (index === levels.length - 1 ? missingValue : {}),\n      object\n    );\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -2568,7 +2568,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 49,
+                        "line": 73,
                         "jsdoctags": [
                             {
                                 "name": "isLoading",
@@ -2598,7 +2598,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 53,
+                        "line": 77,
                         "jsdoctags": [
                             {
                                 "name": "page",
@@ -2628,7 +2628,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 58,
+                        "line": 82,
                         "jsdoctags": [
                             {
                                 "name": "string",
@@ -2658,7 +2658,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 63,
+                        "line": 87,
                         "jsdoctags": [
                             {
                                 "name": "config",
@@ -2688,7 +2688,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 68,
+                        "line": 92,
                         "jsdoctags": [
                             {
                                 "name": "data",
@@ -2708,7 +2708,7 @@
                         "name": "loading$",
                         "type": "",
                         "returnType": "Observable<boolean>",
-                        "line": 112
+                        "line": 136
                     }
                 }
             },
@@ -2952,7 +2952,7 @@
         },
         {
             "name": "GtDeltaComponent",
-            "id": "component-GtDeltaComponent-01c6448ecbeb4b017348f70c0fdad50bba8bca1132f00f2380d94026a90da70744c61e9c49495c666c8360ae7681a03e331742ecd8dfe89d40099816e754fc94",
+            "id": "component-GtDeltaComponent-7045e546c931cbf287394f547351457efd98a977bf36c4883151fba7f18698680191989e8efd31f1552e4a263cdab5a4599e1939008180b0995ff7fc8c12c57b",
             "file": "projects/core/src/lib/gt-delta/gt-delta.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -2973,7 +2973,7 @@
                     "name": "baseIndex",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 54,
+                    "line": 57,
                     "type": "number",
                     "decorators": []
                 },
@@ -2982,7 +2982,7 @@
                     "defaultValue": "{\n    span: 'gt-delta',\n    positive: 'text-success',\n    negative: 'text-danger',\n  }",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 55,
+                    "line": 58,
                     "type": "{ span: string; positive: string; negative: string; }",
                     "decorators": []
                 },
@@ -2991,7 +2991,7 @@
                     "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 52,
+                    "line": 55,
                     "type": "Array<TableRow>",
                     "decorators": []
                 },
@@ -3000,7 +3000,7 @@
                     "defaultValue": "0",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 53,
+                    "line": 56,
                     "type": "number",
                     "decorators": []
                 },
@@ -3009,7 +3009,7 @@
                     "defaultValue": "'-'",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 62,
+                    "line": 65,
                     "type": "string",
                     "decorators": []
                 },
@@ -3018,7 +3018,7 @@
                     "defaultValue": "'value'",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 60,
+                    "line": 63,
                     "type": "string",
                     "decorators": []
                 },
@@ -3027,7 +3027,7 @@
                     "defaultValue": "'n/a'",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 61,
+                    "line": 64,
                     "type": "string",
                     "decorators": []
                 }
@@ -3042,7 +3042,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 50
+                    "line": 53
                 },
                 {
                     "name": "Number",
@@ -3052,7 +3052,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 51
+                    "line": 54
                 }
             ],
             "methodsClass": [],
@@ -3063,7 +3063,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { ChangeDetectionStrategy, Component, Input } from '@angular/core';\nimport { TableRow } from '../models/table-row.interface';\n\n@Component({\n  selector: 'gt-delta',\n  template: `<span\n    *ngIf=\"{\n      value:\n        index === 0\n          ? initialValue\n          : ((baseIndex === undefined\n              ? data[index - 1][key]\n              : data[baseIndex][key]) -\n              data[index][key]) /\n            -Math.abs(\n              baseIndex === undefined\n                ? data[index - 1][key]\n                : data[baseIndex][key]\n            )\n    } as delta\"\n    [class]=\"[\n      classes.span,\n      !delta.value || !Number.isFinite(delta.value)\n        ? null\n        : delta.value > 0\n        ? classes.positive\n        : classes.negative\n    ]\"\n    [class.gt-delta-positive]=\"delta.value > 0 && Number.isFinite(delta.value)\"\n    [class.gt-delta-negative]=\"delta.value < 0\"\n    >{{\n      Number.isFinite(delta.value)\n        ? (delta.value | percent)\n        : delta.value === initialValue\n        ? initialValue\n        : notApplicableValue\n    }}</span\n  >`,\n  styles: [\n    `\n      :host {\n        display: inline-block;\n      }\n    `,\n  ],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class GtDeltaComponent {\n  constructor() {}\n  Math = Math;\n  Number = Number;\n  @Input() data: Array<TableRow> = [];\n  @Input() index: number = 0;\n  @Input() baseIndex?: number;\n  @Input() classes = {\n    span: 'gt-delta',\n    positive: 'text-success',\n    negative: 'text-danger',\n  };\n  @Input() key: string = 'value';\n  @Input() notApplicableValue: string = 'n/a';\n  @Input() initialValue: string = '-';\n}\n",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, Input } from '@angular/core';\nimport { TableRow } from '../models/table-row.interface';\nimport { PercentPipe } from '@angular/common';\n\n@Component({\n  selector: 'gt-delta',\n  template: `<span\n    *ngIf=\"{\n      value:\n        index === 0\n          ? initialValue\n          : ((baseIndex === undefined\n              ? data[index - 1][key]\n              : data[baseIndex][key]) -\n              data[index][key]) /\n            -Math.abs(\n              baseIndex === undefined\n                ? data[index - 1][key]\n                : data[baseIndex][key]\n            )\n    } as delta\"\n    [class]=\"[\n      classes.span,\n      !delta.value || !Number.isFinite(delta.value)\n        ? null\n        : delta.value > 0\n        ? classes.positive\n        : classes.negative\n    ]\"\n    [class.gt-delta-positive]=\"delta.value > 0 && Number.isFinite(delta.value)\"\n    [class.gt-delta-negative]=\"delta.value < 0\"\n    >{{\n      Number.isFinite(delta.value)\n        ? (delta.value | percent)\n        : delta.value === initialValue\n        ? initialValue\n        : notApplicableValue\n    }}</span\n  >`,\n  styles: [\n    `\n      :host {\n        display: inline-block;\n      }\n    `,\n  ],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  standalone: true,\n  imports: [PercentPipe],\n})\nexport class GtDeltaComponent {\n  constructor() {}\n  Math = Math;\n  Number = Number;\n  @Input() data: Array<TableRow> = [];\n  @Input() index: number = 0;\n  @Input() baseIndex?: number;\n  @Input() classes = {\n    span: 'gt-delta',\n    positive: 'text-success',\n    negative: 'text-danger',\n  };\n  @Input() key: string = 'value';\n  @Input() notApplicableValue: string = 'n/a';\n  @Input() initialValue: string = '-';\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n      :host {\n        display: inline-block;\n      }\n    \n",
@@ -3073,7 +3073,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 48
+                "line": 51
             }
         },
         {
@@ -3520,7 +3520,7 @@
         },
         {
             "name": "PaginationComponent",
-            "id": "component-PaginationComponent-a0043cfb8b3cc78aebcb261cefe2edb1528e4d587682c64f763e3930048444ec525c32192d663c88f39cc1d5ae98b0b94a35eb18a64b777abc5998b0b45f27e1",
+            "id": "component-PaginationComponent-2a5c6b531a942e1a3a88a8df0b9008a10dd76be4bc7e2455d38af233b6d894c730e8d7274d65fa4d2b4c06a3cec58aee33b3da0184c9de5e4ac70819dfd5bafd",
             "file": "projects/core/src/lib/pagination/pagination.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -3540,7 +3540,7 @@
                     "name": "ariaLabels",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 34,
+                    "line": 35,
                     "type": "GtPaginationAriaLabels",
                     "decorators": []
                 },
@@ -3548,7 +3548,7 @@
                     "name": "classes",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 27,
+                    "line": 28,
                     "type": "GtPaginationClasses",
                     "decorators": []
                 },
@@ -3556,7 +3556,7 @@
                     "name": "paginationLength",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 20,
+                    "line": 21,
                     "type": "number",
                     "decorators": []
                 },
@@ -3564,7 +3564,7 @@
                     "name": "table",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 40,
+                    "line": 41,
                     "type": "CoreComponent",
                     "decorators": []
                 }
@@ -3579,7 +3579,7 @@
                     "type": "GtPaginationAriaLabels",
                     "optional": false,
                     "description": "",
-                    "line": 47,
+                    "line": 48,
                     "modifierKind": [
                         121
                     ]
@@ -3592,7 +3592,7 @@
                     "type": "GtPaginationClasses",
                     "optional": false,
                     "description": "",
-                    "line": 51,
+                    "line": 52,
                     "modifierKind": [
                         121
                     ]
@@ -3605,7 +3605,7 @@
                     "type": "number",
                     "optional": false,
                     "description": "",
-                    "line": 56,
+                    "line": 57,
                     "modifierKind": [
                         121
                     ]
@@ -3617,7 +3617,7 @@
                     "type": "CoreComponent | undefined",
                     "optional": false,
                     "description": "",
-                    "line": 46,
+                    "line": 47,
                     "modifierKind": [
                         121
                     ]
@@ -3630,7 +3630,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 57
+                    "line": 58
                 },
                 {
                     "name": "table$",
@@ -3640,7 +3640,7 @@
                     "type": "ReplaySubject<CoreComponent>",
                     "optional": false,
                     "description": "",
-                    "line": 45
+                    "line": 46
                 }
             ],
             "methodsClass": [
@@ -3663,7 +3663,7 @@
                     "optional": false,
                     "returnType": "Array<number>",
                     "typeParameters": [],
-                    "line": 64,
+                    "line": 65,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -3700,7 +3700,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 96,
+                    "line": 97,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -3723,7 +3723,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { ChangeDetectionStrategy, Component, Input } from '@angular/core';\nimport { combineLatest, ReplaySubject } from 'rxjs';\nimport { map, pluck, switchMap } from 'rxjs/operators';\nimport { CoreComponent } from '../core.component';\nimport {\n  GtPaginationAriaLabels,\n  GtPaginationClasses,\n} from '../models/gt-pagination';\n\n@Component({\n  selector: 'angular-generic-table-pagination',\n  templateUrl: './pagination.component.html',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class PaginationComponent {\n  get paginationLength(): number {\n    return this._paginationLength;\n  }\n\n  @Input() set paginationLength(value: number) {\n    this._paginationLength = +value;\n  }\n  get classes(): GtPaginationClasses {\n    return this._classes;\n  }\n\n  @Input() set classes(value: GtPaginationClasses) {\n    this._classes = value;\n  }\n  get ariaLabels(): GtPaginationAriaLabels {\n    return this._ariaLabels;\n  }\n\n  @Input() set ariaLabels(value: GtPaginationAriaLabels) {\n    this._ariaLabels = value;\n  }\n  get table(): CoreComponent {\n    return <CoreComponent>this._table;\n  }\n  @Input() set table(value: CoreComponent) {\n    this._table = value;\n    this.table$.next(value);\n  }\n\n  table$: ReplaySubject<CoreComponent> = new ReplaySubject(1);\n  private _table: CoreComponent | undefined;\n  private _ariaLabels: GtPaginationAriaLabels = {\n    nav: 'Table pagination',\n    button: 'Go to page ',\n  };\n  private _classes: GtPaginationClasses = {\n    ul: 'pagination',\n    li: 'page-item',\n    button: 'page-link',\n  };\n  private _paginationLength: number = 5;\n  pagination$ = this.table$.pipe(\n    switchMap((core) =>\n      combineLatest([core?.table$.pipe(pluck('info')), core?.currentPage$])\n    ),\n    map(([info, currentPage]) => this.generateList(info.pageTotal, currentPage))\n  );\n\n  generateList(pages: number, currentPosition: number): Array<number> {\n    const middle = Math.floor(this.paginationLength / 2);\n    const length =\n      pages < this.paginationLength ? pages : this.paginationLength;\n\n    return Array.from({ length }, (_, i) => {\n      if (i === 0) {\n        return 1;\n      } else if (pages < this.paginationLength) {\n        return i + 1;\n      } else if (i + 1 === length) {\n        return pages;\n      } else if (currentPosition > middle && currentPosition < pages - middle) {\n        return i + currentPosition - (middle - 1);\n      } else if (\n        currentPosition > middle &&\n        currentPosition < pages - (middle - 1)\n      ) {\n        return i + currentPosition - middle;\n      } else if (\n        currentPosition > middle &&\n        currentPosition === pages - (middle - 1)\n      ) {\n        return i + currentPosition - (middle + 1);\n      } else if (currentPosition > middle && currentPosition === pages - 1) {\n        return i + currentPosition - (middle + 2);\n      } else {\n        return i + 1;\n      }\n    });\n  }\n\n  goto(page: number): void {\n    if (this.table) {\n      this.table.page = page - 1;\n    }\n  }\n}\n",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, Input } from '@angular/core';\nimport { combineLatest, ReplaySubject } from 'rxjs';\nimport { map, pluck, switchMap } from 'rxjs/operators';\nimport { CoreComponent } from '../core.component';\nimport {\n  GtPaginationAriaLabels,\n  GtPaginationClasses,\n} from '../models/gt-pagination';\n\n@Component({\n  selector: 'angular-generic-table-pagination',\n  templateUrl: './pagination.component.html',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  standalone: true,\n})\nexport class PaginationComponent {\n  get paginationLength(): number {\n    return this._paginationLength;\n  }\n\n  @Input() set paginationLength(value: number) {\n    this._paginationLength = +value;\n  }\n  get classes(): GtPaginationClasses {\n    return this._classes;\n  }\n\n  @Input() set classes(value: GtPaginationClasses) {\n    this._classes = value;\n  }\n  get ariaLabels(): GtPaginationAriaLabels {\n    return this._ariaLabels;\n  }\n\n  @Input() set ariaLabels(value: GtPaginationAriaLabels) {\n    this._ariaLabels = value;\n  }\n  get table(): CoreComponent {\n    return <CoreComponent>this._table;\n  }\n  @Input() set table(value: CoreComponent) {\n    this._table = value;\n    this.table$.next(value);\n  }\n\n  table$: ReplaySubject<CoreComponent> = new ReplaySubject(1);\n  private _table: CoreComponent | undefined;\n  private _ariaLabels: GtPaginationAriaLabels = {\n    nav: 'Table pagination',\n    button: 'Go to page ',\n  };\n  private _classes: GtPaginationClasses = {\n    ul: 'pagination',\n    li: 'page-item',\n    button: 'page-link',\n  };\n  private _paginationLength: number = 5;\n  pagination$ = this.table$.pipe(\n    switchMap((core) =>\n      combineLatest([core?.table$.pipe(pluck('info')), core?.currentPage$])\n    ),\n    map(([info, currentPage]) => this.generateList(info.pageTotal, currentPage))\n  );\n\n  generateList(pages: number, currentPosition: number): Array<number> {\n    const middle = Math.floor(this.paginationLength / 2);\n    const length =\n      pages < this.paginationLength ? pages : this.paginationLength;\n\n    return Array.from({ length }, (_, i) => {\n      if (i === 0) {\n        return 1;\n      } else if (pages < this.paginationLength) {\n        return i + 1;\n      } else if (i + 1 === length) {\n        return pages;\n      } else if (currentPosition > middle && currentPosition < pages - middle) {\n        return i + currentPosition - (middle - 1);\n      } else if (\n        currentPosition > middle &&\n        currentPosition < pages - (middle - 1)\n      ) {\n        return i + currentPosition - middle;\n      } else if (\n        currentPosition > middle &&\n        currentPosition === pages - (middle - 1)\n      ) {\n        return i + currentPosition - (middle + 1);\n      } else if (currentPosition > middle && currentPosition === pages - 1) {\n        return i + currentPosition - (middle + 2);\n      } else {\n        return i + 1;\n      }\n    });\n  }\n\n  goto(page: number): void {\n    if (this.table) {\n      this.table.page = page - 1;\n    }\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -3744,7 +3744,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 20,
+                        "line": 21,
                         "jsdoctags": [
                             {
                                 "name": "value",
@@ -3761,7 +3761,7 @@
                         "name": "paginationLength",
                         "type": "number",
                         "returnType": "number",
-                        "line": 16
+                        "line": 17
                     }
                 },
                 "classes": {
@@ -3780,7 +3780,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 27,
+                        "line": 28,
                         "jsdoctags": [
                             {
                                 "name": "value",
@@ -3797,7 +3797,7 @@
                         "name": "classes",
                         "type": "",
                         "returnType": "GtPaginationClasses",
-                        "line": 23
+                        "line": 24
                     }
                 },
                 "ariaLabels": {
@@ -3816,7 +3816,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 34,
+                        "line": 35,
                         "jsdoctags": [
                             {
                                 "name": "value",
@@ -3833,7 +3833,7 @@
                         "name": "ariaLabels",
                         "type": "",
                         "returnType": "GtPaginationAriaLabels",
-                        "line": 30
+                        "line": 31
                     }
                 },
                 "table": {
@@ -3852,7 +3852,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 40,
+                        "line": 41,
                         "jsdoctags": [
                             {
                                 "name": "value",
@@ -3869,7 +3869,7 @@
                         "name": "table",
                         "type": "",
                         "returnType": "CoreComponent",
-                        "line": 37
+                        "line": 38
                     }
                 }
             },
@@ -4180,7 +4180,7 @@
         },
         {
             "name": "SimpleComponent",
-            "id": "component-SimpleComponent-c185f5c181258617396af0ad363af52973835e499ad396a8393a4e021da378d6221181be3a588632658d7be6bb85d4c74574faf0a5ce1f84e241b9e77701d713",
+            "id": "component-SimpleComponent-8515e3c89d472c563c3e24656c9ee3ed0eac2e9be3caadc22bad0c4060b7d15035052a3c4ed432b100fb8b932142b7c686e60412c1a3d43dea8729afdd6e536a",
             "file": "projects/docs/src/app/examples/simple/simple.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -4197,7 +4197,7 @@
             "propertiesClass": [
                 {
                     "name": "config",
-                    "defaultValue": "{\n    columns: {\n      firstName: {},\n      lastName: {},\n      gender: {},\n      favoriteFood: {},\n    },\n    footer: {\n      rowOrder: ['firstName', 'min'],\n    },\n  }",
+                    "defaultValue": "{\n    columns: {\n      firstName: {},\n      lastName: {},\n      gender: {},\n      favoriteFood: {},\n    },\n  }",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "TableConfig<BasicData>",
@@ -4223,7 +4223,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 50
+                    "line": 47
                 }
             ],
             "methodsClass": [],
@@ -4234,7 +4234,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\nimport { Story } from '@storybook/angular/types-6-0';\nimport { SIMPLE_SNIPPETS } from './simple.snippets';\nimport { TableConfig } from '@angular-generic-table/core';\ninterface BasicData {\n  firstName: string;\n  lastName: string;\n  gender: 'male' | 'female';\n  favoriteFood: string;\n}\n@Component({\n  template: `\n    <div class=\"overflow-auto\">\n      <angular-generic-table\n        [data]=\"data\"\n        [config]=\"config\"\n      ></angular-generic-table>\n    </div>\n    <docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n  `,\n  styles: [],\n})\nexport class SimpleComponent {\n  data: Array<BasicData> = [\n    {\n      firstName: 'Peter',\n      lastName: 'Parker',\n      gender: 'male',\n      favoriteFood: 'Pasta',\n    },\n    {\n      firstName: 'Mary Jane',\n      lastName: 'Watson',\n      gender: 'female',\n      favoriteFood: 'Pizza',\n    },\n  ];\n  config: TableConfig<BasicData> = {\n    columns: {\n      firstName: {},\n      lastName: {},\n      gender: {},\n      favoriteFood: {},\n    },\n    footer: {\n      rowOrder: ['firstName', 'min'],\n    },\n  };\n\n  SNIPPETS = SIMPLE_SNIPPETS;\n}\n\nexport const Simple: Story<SimpleComponent> = (args: SimpleComponent) => ({\n  props: args,\n  component: SimpleComponent,\n});\n",
+            "sourceCode": "import { Component } from '@angular/core';\nimport { Story } from '@storybook/angular/types-6-0';\nimport { SIMPLE_SNIPPETS } from './simple.snippets';\nimport { TableConfig } from '@angular-generic-table/core';\ninterface BasicData {\n  firstName: string;\n  lastName: string;\n  gender: 'male' | 'female';\n  favoriteFood: string;\n}\n@Component({\n  template: `\n    <div class=\"overflow-auto\">\n      <angular-generic-table\n        [data]=\"data\"\n        [config]=\"config\"\n      ></angular-generic-table>\n    </div>\n    <docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n  `,\n  styles: [],\n})\nexport class SimpleComponent {\n  data: Array<BasicData> = [\n    {\n      firstName: 'Peter',\n      lastName: 'Parker',\n      gender: 'male',\n      favoriteFood: 'Pasta',\n    },\n    {\n      firstName: 'Mary Jane',\n      lastName: 'Watson',\n      gender: 'female',\n      favoriteFood: 'Pizza',\n    },\n  ];\n  config: TableConfig<BasicData> = {\n    columns: {\n      firstName: {},\n      lastName: {},\n      gender: {},\n      favoriteFood: {},\n    },\n  };\n\n  SNIPPETS = SIMPLE_SNIPPETS;\n}\n\nexport const Simple: Story<SimpleComponent> = (args: SimpleComponent) => ({\n  props: args,\n  component: SimpleComponent,\n});\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": ""
@@ -4409,7 +4409,7 @@
         },
         {
             "name": "TransposeComponent",
-            "id": "component-TransposeComponent-31b894716d4d128fb0edbb199d5d16718ca2bda57f611cec46bb904fd7433c6996fd12be8b7af43575bcaa427a2d97b5bb88534d3fc81d1559f84e6104349105",
+            "id": "component-TransposeComponent-63e6bfdecdc1f7465c785a857abe0c8f43846698ced72650de16568c30a0464419a76ae786fcdc2e71dec02ddc13b6f60e411c0855fbd30a3e8486e82bfd4c3f",
             "file": "projects/docs/src/app/examples/transpose/transpose.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -4590,7 +4590,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable } from 'rxjs';\nimport { TableConfig, GtDeltaComponent } from '@angular-generic-table/core';\nimport { UntypedFormBuilder } from '@angular/forms';\nimport { withLatestFrom } from 'rxjs/operators';\nimport { Story } from '@storybook/angular/types-6-0';\nimport { TRANSPOSE_SNIPPETS } from './transpose.snippets';\ninterface RawData {\n  year: string;\n  value: number;\n}\ninterface YearData extends RawData {\n  delta: number;\n  deltaIndex: number;\n  combined: number;\n}\n@Component({\n  selector: 'docs-transpose',\n  template: `\n    <form [formGroup]=\"reactiveForm\">\n      <div class=\"row gy-3 gx-3 align-items-end mb-3\">\n        <div class=\"form-group col-6 col-sm-auto\">\n          <label for=\"length_input\">Number of rows</label>\n          <input\n            id=\"length_input\"\n            formControlName=\"length\"\n            type=\"number\"\n            class=\"form-control\"\n          />\n        </div>\n        <div class=\"form-group col-6 col-sm-auto\">\n          <label for=\"search_input\">Search</label>\n          <input\n            id=\"search_input\"\n            formControlName=\"search\"\n            type=\"text\"\n            class=\"form-control\"\n          />\n        </div>\n        <div class=\"col-auto\">\n          <button\n            class=\"btn btn-outline-primary w-100\"\n            (click)=\"simulateLoad()\"\n          >\n            Simulate load\n          </button>\n        </div>\n        <div class=\"col col-sm-auto\">\n          <button class=\"btn btn-outline-danger w-100\" (click)=\"empty()\">\n            Empty\n          </button>\n        </div>\n        <div class=\"col col-sm-auto\">\n          <button class=\"btn btn-outline-primary w-100\" (click)=\"load()\">\n            Reset\n          </button>\n        </div>\n        <div class=\"col col-sm-auto\">\n          <button class=\"btn btn-outline-primary w-100\" (click)=\"transpose()\">\n            Transpose\n          </button>\n        </div>\n      </div>\n      <div class=\"overflow-auto\">\n        <angular-generic-table\n          #table\n          [data]=\"data\"\n          [config]=\"tableConfig$\"\n          [loading]=\"loading$\"\n          [search]=\"search$\"\n        >\n          <div class=\"table-loading gt-skeleton-loader\"></div>\n          <div class=\"table-no-data alert alert-info mt-3\">Table is empty</div>\n        </angular-generic-table>\n      </div>\n      <angular-generic-table-pagination [table]=\"table\">\n      </angular-generic-table-pagination>\n      <ng-template #delta let-index=\"index\" let-data=\"data\">\n        <gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>\n      </ng-template>\n      <ng-template #deltaIndex let-index=\"index\" let-data=\"data\">\n        <gt-delta [index]=\"index\" [data]=\"data\" [baseIndex]=\"0\"></gt-delta>\n      </ng-template>\n      <ng-template\n        #combined\n        let-index=\"index\"\n        let-data=\"data\"\n        let-row=\"row\"\n        let-col=\"col\"\n      >\n        {{ row.value }}\n        <ng-container *ngIf=\"index > 0\">\n          (<gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>)\n        </ng-container>\n      </ng-template>\n      <docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n    </form>\n  `,\n  styles: [],\n})\nexport class TransposeComponent implements OnInit {\n  @ViewChild('delta', { static: true }) delta:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('deltaIndex', { static: true }) deltaIndex:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('combined', { static: true }) combined:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  loading$ = new BehaviorSubject(false);\n  reactiveForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.reactiveForm.get('search')?.valueChanges as Observable<string>;\n  tableConfig$: BehaviorSubject<TableConfig<YearData>> = new BehaviorSubject<\n    TableConfig<YearData>\n  >({});\n  data: Array<RawData> = [];\n\n  constructor(private fb: UntypedFormBuilder) {}\n\n  ngOnInit(): void {\n    this.transpose();\n    this.load();\n    this.reactiveForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n  }\n\n  simulateLoad(): void {\n    this.loading$.next(true);\n    // set loading state to false after 2 seconds\n    setTimeout(() => this.loading$.next(false), 2000);\n  }\n  empty(): void {\n    this.data = [];\n  }\n  load(): void {\n    this.data = [\n      {\n        year: '2010',\n        value: 15,\n      },\n      {\n        year: '2011',\n        value: 30,\n      },\n      {\n        year: '2012',\n        value: 25,\n      },\n      {\n        year: '2013',\n        value: 0,\n      },\n      {\n        year: '2014',\n        value: 40,\n      },\n      {\n        year: '2015',\n        value: 60,\n      },\n      {\n        year: '2016',\n        value: -5,\n      },\n      {\n        year: '2018',\n        value: 75,\n      },\n      {\n        year: '2019',\n        value: 100,\n      },\n      {\n        year: '2020',\n        value: 250,\n      },\n      {\n        year: '2021',\n        value: 50,\n      },\n      {\n        year: '2022',\n        value: 60,\n      },\n    ];\n  }\n  transpose(): void {\n    if (this.tableConfig$.value.columns) {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        rows: {\n          year: {\n            sortable: true,\n            header: false,\n            class: 'text-end',\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n      } as TableConfig<YearData>);\n    } else {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        columns: {\n          year: {\n            sortable: true,\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n        pagination: { length: this.reactiveForm.get('length')?.value },\n      } as TableConfig<YearData>);\n    }\n  }\n  SNIPPETS = TRANSPOSE_SNIPPETS;\n}\n\nexport const Transpose: Story<TransposeComponent> = (\n  args: TransposeComponent\n) => ({\n  props: args,\n  component: TransposeComponent,\n});\n",
+            "sourceCode": "import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable } from 'rxjs';\nimport { TableConfig, GtDeltaComponent } from '@angular-generic-table/core';\nimport { UntypedFormBuilder } from '@angular/forms';\nimport { withLatestFrom } from 'rxjs/operators';\nimport { Story } from '@storybook/angular/types-6-0';\nimport { TRANSPOSE_SNIPPETS } from './transpose.snippets';\ninterface RawData {\n  year: string;\n  value: number;\n}\ninterface YearData extends RawData {\n  delta: number;\n  deltaIndex: number;\n  combined: number;\n}\n@Component({\n  selector: 'docs-transpose',\n  template: `\n    <form [formGroup]=\"reactiveForm\">\n      <div class=\"row gy-3 gx-3 align-items-end mb-3\">\n        <div class=\"form-group col-6 col-sm-auto\">\n          <label for=\"length_input\">Number of rows</label>\n          <input\n            id=\"length_input\"\n            formControlName=\"length\"\n            type=\"number\"\n            class=\"form-control\"\n          />\n        </div>\n        <div class=\"form-group col-6 col-sm-auto\">\n          <label for=\"search_input\">Search</label>\n          <input\n            id=\"search_input\"\n            formControlName=\"search\"\n            type=\"text\"\n            class=\"form-control\"\n          />\n        </div>\n        <div class=\"col-auto\">\n          <button\n            class=\"btn btn-outline-primary w-100\"\n            (click)=\"simulateLoad()\"\n          >\n            Simulate load\n          </button>\n        </div>\n        <div class=\"col col-sm-auto\">\n          <button class=\"btn btn-outline-danger w-100\" (click)=\"empty()\">\n            Empty\n          </button>\n        </div>\n        <div class=\"col col-sm-auto\">\n          <button class=\"btn btn-outline-primary w-100\" (click)=\"load()\">\n            Reset\n          </button>\n        </div>\n        <div class=\"col col-sm-auto\">\n          <button class=\"btn btn-outline-primary w-100\" (click)=\"transpose()\">\n            Transpose\n          </button>\n        </div>\n      </div>\n      <div class=\"overflow-auto\">\n        <angular-generic-table\n          #table\n          [data]=\"data\"\n          [config]=\"tableConfig$\"\n          [loading]=\"loading$\"\n          [search]=\"search$\"\n        >\n          <div class=\"table-loading gt-skeleton-loader\"></div>\n          <div class=\"table-no-data alert alert-info mt-3\">Table is empty</div>\n        </angular-generic-table>\n      </div>\n      <angular-generic-table-pagination [table]=\"table\">\n      </angular-generic-table-pagination>\n      <ng-template #delta let-index=\"index\" let-data=\"data\">\n        <gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>\n      </ng-template>\n      <ng-template #deltaIndex let-index=\"index\" let-data=\"data\">\n        <gt-delta [index]=\"index\" [data]=\"data\" [baseIndex]=\"0\"></gt-delta>\n      </ng-template>\n      <ng-template\n        #combined\n        let-index=\"index\"\n        let-data=\"data\"\n        let-row=\"row\"\n        let-col=\"col\"\n      >\n        {{ row.value }}\n        <ng-container *ngIf=\"index > 0\">\n          (<gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>)\n        </ng-container>\n      </ng-template>\n      <docs-tabs [content]=\"SNIPPETS\"></docs-tabs>\n    </form>\n  `,\n  styles: [],\n})\nexport class TransposeComponent implements OnInit {\n  @ViewChild('delta', { static: true }) delta:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('deltaIndex', { static: true }) deltaIndex:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('combined', { static: true }) combined:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  loading$ = new BehaviorSubject(false);\n  reactiveForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.reactiveForm.get('search')?.valueChanges as Observable<string>;\n  tableConfig$: BehaviorSubject<TableConfig<YearData>> = new BehaviorSubject<\n    TableConfig<YearData>\n  >({});\n  data: Array<RawData> = [];\n\n  constructor(private fb: UntypedFormBuilder) {}\n\n  ngOnInit(): void {\n    this.transpose();\n    this.load();\n    this.reactiveForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n  }\n\n  simulateLoad(): void {\n    this.loading$.next(true);\n    // set loading state to false after 2 seconds\n    setTimeout(() => this.loading$.next(false), 2000);\n  }\n  empty(): void {\n    this.data = [];\n  }\n  load(): void {\n    this.data = [\n      {\n        year: '2010',\n        value: 15,\n      },\n      {\n        year: '2011',\n        value: 30,\n      },\n      {\n        year: '2012',\n        value: 25,\n      },\n      {\n        year: '2013',\n        value: 0,\n      },\n      {\n        year: '2014',\n        value: 40,\n      },\n      {\n        year: '2015',\n        value: 60,\n      },\n      {\n        year: '2016',\n        value: -5,\n      },\n      {\n        year: '2018',\n        value: 75,\n      },\n      {\n        year: '2019',\n        value: 100,\n      },\n      {\n        year: '2020',\n        value: 250,\n      },\n      {\n        year: '2021',\n        value: 50,\n      },\n      {\n        year: '2022',\n        value: 60,\n      },\n    ];\n  }\n  transpose(): void {\n    if (this.tableConfig$.value.columns) {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        rows: {\n          year: {\n            sortable: true,\n            header: false,\n            class: 'text-end',\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n      });\n    } else {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        columns: {\n          year: {\n            sortable: true,\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n        pagination: { length: this.reactiveForm.get('length')?.value },\n      });\n    }\n  }\n  SNIPPETS = TRANSPOSE_SNIPPETS;\n}\n\nexport const Transpose: Story<TransposeComponent> = (\n  args: TransposeComponent\n) => ({\n  props: args,\n  component: TransposeComponent,\n});\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -4748,13 +4748,13 @@
         },
         {
             "name": "GenericTableCoreModule",
-            "id": "module-GenericTableCoreModule-412838afb3fc8bd33204e72942b4202f97e8a2240e4cfecd65853725d6c8a7bcf4004af04049e6ade1d2a83bf866d462a2c7b1d2d977ff4a5b8f3a66b46e4ca7",
+            "id": "module-GenericTableCoreModule-5e6f26e77833c9b6ffb8891bf22611853d3ccf26b6e6ee93cda5d153827062eb2978ba993150a911f3250163a3355a4aa0cd09c64c0550915cde75217981a475",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "projects/core/src/lib/core.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CoreComponent } from './core.component';\nimport { CommonModule } from '@angular/common';\nimport { SortClassPipe } from './pipes/sort-class.pipe';\nimport { DashCasePipe } from './pipes/dash-case.pipe';\nimport { HighlightPipe } from './pipes/highlight.pipe';\nimport { CapitalCasePipe } from './pipes/capital-case.pipe';\nimport { DynamicPipe } from './pipes/dynamic.pipe';\nimport { GtDeltaComponent } from './gt-delta/gt-delta.component';\n\n@NgModule({\n  declarations: [\n    CoreComponent,\n    SortClassPipe,\n    DashCasePipe,\n    HighlightPipe,\n    CapitalCasePipe,\n    CapitalCasePipe,\n    DynamicPipe,\n    GtDeltaComponent,\n  ],\n  imports: [CommonModule],\n  exports: [CoreComponent, GtDeltaComponent],\n})\nexport class GenericTableCoreModule {}\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CoreComponent } from './core.component';\nimport { CommonModule } from '@angular/common';\nimport { SortClassPipe } from './pipes/sort-class.pipe';\nimport { DashCasePipe } from './pipes/dash-case.pipe';\nimport { HighlightPipe } from './pipes/highlight.pipe';\nimport { CapitalCasePipe } from './pipes/capital-case.pipe';\nimport { DynamicPipe } from './pipes/dynamic.pipe';\nimport { GtDeltaComponent } from './gt-delta/gt-delta.component';\n\n@NgModule({\n  imports: [\n    CommonModule,\n    CoreComponent,\n    SortClassPipe,\n    DashCasePipe,\n    HighlightPipe,\n    CapitalCasePipe,\n    CapitalCasePipe,\n    DynamicPipe,\n    GtDeltaComponent,\n  ],\n  exports: [CoreComponent, GtDeltaComponent],\n})\nexport class GenericTableCoreModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -4762,6 +4762,10 @@
                 },
                 {
                     "type": "declarations",
+                    "elements": []
+                },
+                {
+                    "type": "imports",
                     "elements": [
                         {
                             "name": "CapitalCasePipe"
@@ -4790,10 +4794,6 @@
                     ]
                 },
                 {
-                    "type": "imports",
-                    "elements": []
-                },
-                {
                     "type": "exports",
                     "elements": [
                         {
@@ -4816,13 +4816,13 @@
         },
         {
             "name": "GenericTablePaginationModule",
-            "id": "module-GenericTablePaginationModule-4bc1f2ff32c5ef89f9b49c103ec982791060de30b3b8e67c76e92bf4ab24d790153fbf7168ac565b06dc86471dcf93163a488edd215693012e6533d35a09fb09",
+            "id": "module-GenericTablePaginationModule-a4227080671cbaa73f2851b45140457f52248b2362cd6ee8d180e3ebf8f950307912b89e04fbcbcdf5cd82a6e0720cf164c1d5ddfb6c9f94ee347b7a54b53fa3",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "projects/core/src/lib/pagination/pagination.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { PaginationComponent } from './pagination.component';\n\n@NgModule({\n  declarations: [PaginationComponent],\n  imports: [CommonModule],\n  exports: [PaginationComponent],\n})\nexport class GenericTablePaginationModule {}\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { PaginationComponent } from './pagination.component';\n\n@NgModule({\n  imports: [CommonModule, PaginationComponent],\n  exports: [PaginationComponent],\n})\nexport class GenericTablePaginationModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -4830,15 +4830,15 @@
                 },
                 {
                     "type": "declarations",
+                    "elements": []
+                },
+                {
+                    "type": "imports",
                     "elements": [
                         {
                             "name": "PaginationComponent"
                         }
                     ]
-                },
-                {
-                    "type": "imports",
-                    "elements": []
                 },
                 {
                     "type": "exports",
@@ -5183,7 +5183,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "[]",
-                "defaultValue": "[\n  {\n    name: 'transpose.component.ts',\n    code: `import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable } from 'rxjs';\nimport { TableConfig, TableRows, GtDeltaComponent } from '@angular-generic-table/core';\nimport { FormBuilder } from '@angular/forms';\nimport { withLatestFrom } from 'rxjs/operators';\n\n@Component({\n  selector: 'docs-transpose',\n  templateUrl: './transpose.component.html',\n  styles: []\n})\nexport class TransposeComponent implements OnInit {\n  @ViewChild('delta', { static: true }) delta:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('deltaIndex', { static: true }) deltaIndex:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('combined', { static: true }) combined:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  loading$ = new BehaviorSubject(false);\n  reactiveForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.reactiveForm.get('search')?.valueChanges as Observable<string>;\n  tableConfig$: BehaviorSubject<TableConfig> = new BehaviorSubject<TableConfig>(\n    {}\n  );\n  data: TableRows = [];\n\n  constructor(private fb: FormBuilder) {}\n\n  ngOnInit(): void {\n    this.transpose();\n    this.load();\n    this.reactiveForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n  }\n\n  simulateLoad(): void {\n    this.loading$.next(true);\n    // set loading state to false after 2 seconds\n    setTimeout(() => this.loading$.next(false), 2000);\n  }\n  empty(): void {\n    this.data = [];\n  }\n  load(): void {\n    this.data = [\n      {\n        year: '2010',\n        value: 15,\n      },\n      {\n        year: '2011',\n        value: 30,\n      },\n      {\n        year: '2012',\n        value: 25,\n      },\n      {\n        year: '2013',\n        value: 0,\n      },\n      {\n        year: '2014',\n        value: 40,\n      },\n      {\n        year: '2015',\n        value: 60,\n      },\n      {\n        year: '2016',\n        value: -5,\n      },\n      {\n        year: '2018',\n        value: 75,\n      },\n      {\n        year: '2019',\n        value: 100,\n      },\n      {\n        year: '2020',\n        value: 250,\n      },\n      {\n        year: '2021',\n        value: 50,\n      },\n      {\n        year: '2022',\n        value: 60,\n      },\n    ];\n  }\n  transpose(): void {\n    if (this.tableConfig$.value.columns) {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        rows: {\n          year: {\n            sortable: true,\n            header: false,\n            class: 'text-end',\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n      });\n    } else {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        columns: {\n          year: {\n            sortable: true,\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n        pagination: { length: this.reactiveForm.get('length')?.value },\n      });\n    }\n  }\n}\n`,\n    language: 'typescript',\n  },\n  {\n    name: 'horizontal-table.component.html',\n    code: `<form [formGroup]=\"reactiveForm\">\n  <div class=\"row gy-3 gx-3 align-items-end mb-3\">\n    <div class=\"form-group col-6 col-sm-auto\">\n      <label for=\"length_input\">Number of rows</label>\n      <input\n        id=\"length_input\"\n        formControlName=\"length\"\n        type=\"number\"\n        class=\"form-control\"\n      />\n    </div>\n    <div class=\"form-group col-6 col-sm-auto\">\n      <label for=\"search_input\">Search</label>\n      <input\n        id=\"search_input\"\n        formControlName=\"search\"\n        type=\"text\"\n        class=\"form-control\"\n      />\n    </div>\n    <div class=\"col-auto\">\n      <button\n        class=\"btn btn-outline-primary w-100\"\n        (click)=\"simulateLoad()\"\n      >\n        Simulate load\n      </button>\n    </div>\n    <div class=\"col col-sm-auto\">\n      <button class=\"btn btn-outline-danger w-100\" (click)=\"empty()\">\n        Empty\n      </button>\n    </div>\n    <div class=\"col col-sm-auto\">\n      <button class=\"btn btn-outline-primary w-100\" (click)=\"load()\">\n        Reset\n      </button>\n    </div>\n    <div class=\"col col-sm-auto\">\n      <button class=\"btn btn-outline-primary w-100\" (click)=\"transpose()\">\n        Transpose\n      </button>\n    </div>\n  </div>\n  <div class=\"overflow-auto\">\n    <angular-generic-table\n      #table\n      [data]=\"data\"\n      [config]=\"tableConfig$\"\n      [loading]=\"loading$\"\n      [search]=\"search$\"\n    >\n      <div class=\"table-loading gt-skeleton-loader\"></div>\n      <div class=\"table-no-data alert alert-info mt-3\">Table is empty</div>\n    </angular-generic-table>\n  </div>\n  <angular-generic-table-pagination [table]=\"table\">\n  </angular-generic-table-pagination>\n  <ng-template #delta let-index=\"index\" let-data=\"data\">\n    <gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>\n  </ng-template>\n  <ng-template #deltaIndex let-index=\"index\" let-data=\"data\">\n    <gt-delta [index]=\"index\" [data]=\"data\" [baseIndex]=\"0\"></gt-delta>\n  </ng-template>\n  <ng-template\n    #combined\n    let-index=\"index\"\n    let-data=\"data\"\n    let-row=\"row\"\n    let-col=\"col\"\n  >\n    {{ row.value }}\n    <ng-container *ngIf=\"index > 0\">\n      (<gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>)\n    </ng-container>\n  </ng-template>\n</form>`,\n    language: 'xml',\n  },\n  {\n    name: 'app.module.ts',\n    code: `import { BrowserModule } from '@angular/platform-browser';\nimport { NgModule } from '@angular/core';\n\nimport { HorizontalTableComponent } from './horizontal-table.component';\nimport { GenericTableCoreModule } from '@angular-generic-table/core';\n\n@NgModule({\n  declarations: [HorizontalTableComponent],\n  imports: [BrowserModule, GenericTableCoreModule],\n  bootstrap: [HorizontalTableComponent]\n})\nexport class AppModule {}`,\n    language: 'typescript',\n  },\n]"
+                "defaultValue": "[\n  {\n    name: 'transpose.component.ts',\n    code: `import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable } from 'rxjs';\nimport { TableConfig, GtDeltaComponent } from '@angular-generic-table/core';\nimport { FormBuilder } from '@angular/forms';\nimport { withLatestFrom } from 'rxjs/operators';\n\ninterface RawData {\n  year: string;\n  value: number;\n}\ninterface YearData extends RawData {\n  delta: number;\n  deltaIndex: number;\n  combined: number;\n}\n\n@Component({\n  selector: 'docs-transpose',\n  templateUrl: './transpose.component.html',\n  styles: []\n})\nexport class TransposeComponent implements OnInit {\n  @ViewChild('delta', { static: true }) delta:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('deltaIndex', { static: true }) deltaIndex:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('combined', { static: true }) combined:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  loading$ = new BehaviorSubject(false);\n  reactiveForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.reactiveForm.get('search')?.valueChanges as Observable<string>;\n  tableConfig$: BehaviorSubject<TableConfig<YearData>> = new BehaviorSubject<\n    TableConfig<YearData>\n  >({});\n  data: Array<RawData> = [];\n\n  constructor(private fb: FormBuilder) {}\n\n  ngOnInit(): void {\n    this.transpose();\n    this.load();\n    this.reactiveForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n  }\n\n  simulateLoad(): void {\n    this.loading$.next(true);\n    // set loading state to false after 2 seconds\n    setTimeout(() => this.loading$.next(false), 2000);\n  }\n  empty(): void {\n    this.data = [];\n  }\n  load(): void {\n    this.data = [\n      {\n        year: '2010',\n        value: 15,\n      },\n      {\n        year: '2011',\n        value: 30,\n      },\n      {\n        year: '2012',\n        value: 25,\n      },\n      {\n        year: '2013',\n        value: 0,\n      },\n      {\n        year: '2014',\n        value: 40,\n      },\n      {\n        year: '2015',\n        value: 60,\n      },\n      {\n        year: '2016',\n        value: -5,\n      },\n      {\n        year: '2018',\n        value: 75,\n      },\n      {\n        year: '2019',\n        value: 100,\n      },\n      {\n        year: '2020',\n        value: 250,\n      },\n      {\n        year: '2021',\n        value: 50,\n      },\n      {\n        year: '2022',\n        value: 60,\n      },\n    ];\n  }\n  transpose(): void {\n    if (this.tableConfig$.value.columns) {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        rows: {\n          year: {\n            sortable: true,\n            header: false,\n            class: 'text-end',\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n      });\n    } else {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        columns: {\n          year: {\n            sortable: true,\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n        pagination: { length: this.reactiveForm.get('length')?.value },\n      });\n    }\n  }\n}\n`,\n    language: 'typescript',\n  },\n  {\n    name: 'horizontal-table.component.html',\n    code: `<form [formGroup]=\"reactiveForm\">\n  <div class=\"row gy-3 gx-3 align-items-end mb-3\">\n    <div class=\"form-group col-6 col-sm-auto\">\n      <label for=\"length_input\">Number of rows</label>\n      <input\n        id=\"length_input\"\n        formControlName=\"length\"\n        type=\"number\"\n        class=\"form-control\"\n      />\n    </div>\n    <div class=\"form-group col-6 col-sm-auto\">\n      <label for=\"search_input\">Search</label>\n      <input\n        id=\"search_input\"\n        formControlName=\"search\"\n        type=\"text\"\n        class=\"form-control\"\n      />\n    </div>\n    <div class=\"col-auto\">\n      <button\n        class=\"btn btn-outline-primary w-100\"\n        (click)=\"simulateLoad()\"\n      >\n        Simulate load\n      </button>\n    </div>\n    <div class=\"col col-sm-auto\">\n      <button class=\"btn btn-outline-danger w-100\" (click)=\"empty()\">\n        Empty\n      </button>\n    </div>\n    <div class=\"col col-sm-auto\">\n      <button class=\"btn btn-outline-primary w-100\" (click)=\"load()\">\n        Reset\n      </button>\n    </div>\n    <div class=\"col col-sm-auto\">\n      <button class=\"btn btn-outline-primary w-100\" (click)=\"transpose()\">\n        Transpose\n      </button>\n    </div>\n  </div>\n  <div class=\"overflow-auto\">\n    <angular-generic-table\n      #table\n      [data]=\"data\"\n      [config]=\"tableConfig$\"\n      [loading]=\"loading$\"\n      [search]=\"search$\"\n    >\n      <div class=\"table-loading gt-skeleton-loader\"></div>\n      <div class=\"table-no-data alert alert-info mt-3\">Table is empty</div>\n    </angular-generic-table>\n  </div>\n  <angular-generic-table-pagination [table]=\"table\">\n  </angular-generic-table-pagination>\n  <ng-template #delta let-index=\"index\" let-data=\"data\">\n    <gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>\n  </ng-template>\n  <ng-template #deltaIndex let-index=\"index\" let-data=\"data\">\n    <gt-delta [index]=\"index\" [data]=\"data\" [baseIndex]=\"0\"></gt-delta>\n  </ng-template>\n  <ng-template\n    #combined\n    let-index=\"index\"\n    let-data=\"data\"\n    let-row=\"row\"\n    let-col=\"col\"\n  >\n    {{ row.value }}\n    <ng-container *ngIf=\"index > 0\">\n      (<gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>)\n    </ng-container>\n  </ng-template>\n</form>`,\n    language: 'xml',\n  },\n  {\n    name: 'app.module.ts',\n    code: `import { BrowserModule } from '@angular/platform-browser';\nimport { NgModule } from '@angular/core';\n\nimport { HorizontalTableComponent } from './horizontal-table.component';\nimport { GenericTableCoreModule } from '@angular-generic-table/core';\n\n@NgModule({\n  declarations: [HorizontalTableComponent],\n  imports: [BrowserModule, GenericTableCoreModule],\n  bootstrap: [HorizontalTableComponent]\n})\nexport class AppModule {}`,\n    language: 'typescript',\n  },\n]"
             }
         ],
         "functions": [],
@@ -5612,7 +5612,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "[]",
-                    "defaultValue": "[\n  {\n    name: 'transpose.component.ts',\n    code: `import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable } from 'rxjs';\nimport { TableConfig, TableRows, GtDeltaComponent } from '@angular-generic-table/core';\nimport { FormBuilder } from '@angular/forms';\nimport { withLatestFrom } from 'rxjs/operators';\n\n@Component({\n  selector: 'docs-transpose',\n  templateUrl: './transpose.component.html',\n  styles: []\n})\nexport class TransposeComponent implements OnInit {\n  @ViewChild('delta', { static: true }) delta:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('deltaIndex', { static: true }) deltaIndex:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('combined', { static: true }) combined:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  loading$ = new BehaviorSubject(false);\n  reactiveForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.reactiveForm.get('search')?.valueChanges as Observable<string>;\n  tableConfig$: BehaviorSubject<TableConfig> = new BehaviorSubject<TableConfig>(\n    {}\n  );\n  data: TableRows = [];\n\n  constructor(private fb: FormBuilder) {}\n\n  ngOnInit(): void {\n    this.transpose();\n    this.load();\n    this.reactiveForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n  }\n\n  simulateLoad(): void {\n    this.loading$.next(true);\n    // set loading state to false after 2 seconds\n    setTimeout(() => this.loading$.next(false), 2000);\n  }\n  empty(): void {\n    this.data = [];\n  }\n  load(): void {\n    this.data = [\n      {\n        year: '2010',\n        value: 15,\n      },\n      {\n        year: '2011',\n        value: 30,\n      },\n      {\n        year: '2012',\n        value: 25,\n      },\n      {\n        year: '2013',\n        value: 0,\n      },\n      {\n        year: '2014',\n        value: 40,\n      },\n      {\n        year: '2015',\n        value: 60,\n      },\n      {\n        year: '2016',\n        value: -5,\n      },\n      {\n        year: '2018',\n        value: 75,\n      },\n      {\n        year: '2019',\n        value: 100,\n      },\n      {\n        year: '2020',\n        value: 250,\n      },\n      {\n        year: '2021',\n        value: 50,\n      },\n      {\n        year: '2022',\n        value: 60,\n      },\n    ];\n  }\n  transpose(): void {\n    if (this.tableConfig$.value.columns) {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        rows: {\n          year: {\n            sortable: true,\n            header: false,\n            class: 'text-end',\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n      });\n    } else {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        columns: {\n          year: {\n            sortable: true,\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n        pagination: { length: this.reactiveForm.get('length')?.value },\n      });\n    }\n  }\n}\n`,\n    language: 'typescript',\n  },\n  {\n    name: 'horizontal-table.component.html',\n    code: `<form [formGroup]=\"reactiveForm\">\n  <div class=\"row gy-3 gx-3 align-items-end mb-3\">\n    <div class=\"form-group col-6 col-sm-auto\">\n      <label for=\"length_input\">Number of rows</label>\n      <input\n        id=\"length_input\"\n        formControlName=\"length\"\n        type=\"number\"\n        class=\"form-control\"\n      />\n    </div>\n    <div class=\"form-group col-6 col-sm-auto\">\n      <label for=\"search_input\">Search</label>\n      <input\n        id=\"search_input\"\n        formControlName=\"search\"\n        type=\"text\"\n        class=\"form-control\"\n      />\n    </div>\n    <div class=\"col-auto\">\n      <button\n        class=\"btn btn-outline-primary w-100\"\n        (click)=\"simulateLoad()\"\n      >\n        Simulate load\n      </button>\n    </div>\n    <div class=\"col col-sm-auto\">\n      <button class=\"btn btn-outline-danger w-100\" (click)=\"empty()\">\n        Empty\n      </button>\n    </div>\n    <div class=\"col col-sm-auto\">\n      <button class=\"btn btn-outline-primary w-100\" (click)=\"load()\">\n        Reset\n      </button>\n    </div>\n    <div class=\"col col-sm-auto\">\n      <button class=\"btn btn-outline-primary w-100\" (click)=\"transpose()\">\n        Transpose\n      </button>\n    </div>\n  </div>\n  <div class=\"overflow-auto\">\n    <angular-generic-table\n      #table\n      [data]=\"data\"\n      [config]=\"tableConfig$\"\n      [loading]=\"loading$\"\n      [search]=\"search$\"\n    >\n      <div class=\"table-loading gt-skeleton-loader\"></div>\n      <div class=\"table-no-data alert alert-info mt-3\">Table is empty</div>\n    </angular-generic-table>\n  </div>\n  <angular-generic-table-pagination [table]=\"table\">\n  </angular-generic-table-pagination>\n  <ng-template #delta let-index=\"index\" let-data=\"data\">\n    <gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>\n  </ng-template>\n  <ng-template #deltaIndex let-index=\"index\" let-data=\"data\">\n    <gt-delta [index]=\"index\" [data]=\"data\" [baseIndex]=\"0\"></gt-delta>\n  </ng-template>\n  <ng-template\n    #combined\n    let-index=\"index\"\n    let-data=\"data\"\n    let-row=\"row\"\n    let-col=\"col\"\n  >\n    {{ row.value }}\n    <ng-container *ngIf=\"index > 0\">\n      (<gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>)\n    </ng-container>\n  </ng-template>\n</form>`,\n    language: 'xml',\n  },\n  {\n    name: 'app.module.ts',\n    code: `import { BrowserModule } from '@angular/platform-browser';\nimport { NgModule } from '@angular/core';\n\nimport { HorizontalTableComponent } from './horizontal-table.component';\nimport { GenericTableCoreModule } from '@angular-generic-table/core';\n\n@NgModule({\n  declarations: [HorizontalTableComponent],\n  imports: [BrowserModule, GenericTableCoreModule],\n  bootstrap: [HorizontalTableComponent]\n})\nexport class AppModule {}`,\n    language: 'typescript',\n  },\n]"
+                    "defaultValue": "[\n  {\n    name: 'transpose.component.ts',\n    code: `import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';\nimport { BehaviorSubject, Observable } from 'rxjs';\nimport { TableConfig, GtDeltaComponent } from '@angular-generic-table/core';\nimport { FormBuilder } from '@angular/forms';\nimport { withLatestFrom } from 'rxjs/operators';\n\ninterface RawData {\n  year: string;\n  value: number;\n}\ninterface YearData extends RawData {\n  delta: number;\n  deltaIndex: number;\n  combined: number;\n}\n\n@Component({\n  selector: 'docs-transpose',\n  templateUrl: './transpose.component.html',\n  styles: []\n})\nexport class TransposeComponent implements OnInit {\n  @ViewChild('delta', { static: true }) delta:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('deltaIndex', { static: true }) deltaIndex:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  @ViewChild('combined', { static: true }) combined:\n    | TemplateRef<GtDeltaComponent>\n    | undefined;\n  loading$ = new BehaviorSubject(false);\n  reactiveForm = this.fb.group({\n    length: [10],\n    search: [''],\n  });\n  search$ = this.reactiveForm.get('search')?.valueChanges as Observable<string>;\n  tableConfig$: BehaviorSubject<TableConfig<YearData>> = new BehaviorSubject<\n    TableConfig<YearData>\n  >({});\n  data: Array<RawData> = [];\n\n  constructor(private fb: FormBuilder) {}\n\n  ngOnInit(): void {\n    this.transpose();\n    this.load();\n    this.reactiveForm\n      .get('length')\n      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))\n      .subscribe(([length, config]) => {\n        length = +length;\n        this.tableConfig$.next({\n          ...config,\n          pagination: { ...config.pagination, length },\n        });\n      });\n  }\n\n  simulateLoad(): void {\n    this.loading$.next(true);\n    // set loading state to false after 2 seconds\n    setTimeout(() => this.loading$.next(false), 2000);\n  }\n  empty(): void {\n    this.data = [];\n  }\n  load(): void {\n    this.data = [\n      {\n        year: '2010',\n        value: 15,\n      },\n      {\n        year: '2011',\n        value: 30,\n      },\n      {\n        year: '2012',\n        value: 25,\n      },\n      {\n        year: '2013',\n        value: 0,\n      },\n      {\n        year: '2014',\n        value: 40,\n      },\n      {\n        year: '2015',\n        value: 60,\n      },\n      {\n        year: '2016',\n        value: -5,\n      },\n      {\n        year: '2018',\n        value: 75,\n      },\n      {\n        year: '2019',\n        value: 100,\n      },\n      {\n        year: '2020',\n        value: 250,\n      },\n      {\n        year: '2021',\n        value: 50,\n      },\n      {\n        year: '2022',\n        value: 60,\n      },\n    ];\n  }\n  transpose(): void {\n    if (this.tableConfig$.value.columns) {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        rows: {\n          year: {\n            sortable: true,\n            header: false,\n            class: 'text-end',\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n      });\n    } else {\n      this.tableConfig$.next({\n        stickyHeaders: {\n          row: true,\n          column: true,\n        },\n        columns: {\n          year: {\n            sortable: true,\n          },\n          value: {\n            class: 'text-end',\n          },\n          delta: {\n            header: 'Delta %',\n            templateRef: this.delta,\n            class: 'text-end',\n          },\n          deltaIndex: {\n            header: 'Since inception %',\n            templateRef: this.deltaIndex,\n            class: 'text-end',\n          },\n          combined: {\n            header: 'Value with change',\n            templateRef: this.combined,\n            class: 'text-end text-nowrap',\n          },\n        },\n        pagination: { length: this.reactiveForm.get('length')?.value },\n      });\n    }\n  }\n}\n`,\n    language: 'typescript',\n  },\n  {\n    name: 'horizontal-table.component.html',\n    code: `<form [formGroup]=\"reactiveForm\">\n  <div class=\"row gy-3 gx-3 align-items-end mb-3\">\n    <div class=\"form-group col-6 col-sm-auto\">\n      <label for=\"length_input\">Number of rows</label>\n      <input\n        id=\"length_input\"\n        formControlName=\"length\"\n        type=\"number\"\n        class=\"form-control\"\n      />\n    </div>\n    <div class=\"form-group col-6 col-sm-auto\">\n      <label for=\"search_input\">Search</label>\n      <input\n        id=\"search_input\"\n        formControlName=\"search\"\n        type=\"text\"\n        class=\"form-control\"\n      />\n    </div>\n    <div class=\"col-auto\">\n      <button\n        class=\"btn btn-outline-primary w-100\"\n        (click)=\"simulateLoad()\"\n      >\n        Simulate load\n      </button>\n    </div>\n    <div class=\"col col-sm-auto\">\n      <button class=\"btn btn-outline-danger w-100\" (click)=\"empty()\">\n        Empty\n      </button>\n    </div>\n    <div class=\"col col-sm-auto\">\n      <button class=\"btn btn-outline-primary w-100\" (click)=\"load()\">\n        Reset\n      </button>\n    </div>\n    <div class=\"col col-sm-auto\">\n      <button class=\"btn btn-outline-primary w-100\" (click)=\"transpose()\">\n        Transpose\n      </button>\n    </div>\n  </div>\n  <div class=\"overflow-auto\">\n    <angular-generic-table\n      #table\n      [data]=\"data\"\n      [config]=\"tableConfig$\"\n      [loading]=\"loading$\"\n      [search]=\"search$\"\n    >\n      <div class=\"table-loading gt-skeleton-loader\"></div>\n      <div class=\"table-no-data alert alert-info mt-3\">Table is empty</div>\n    </angular-generic-table>\n  </div>\n  <angular-generic-table-pagination [table]=\"table\">\n  </angular-generic-table-pagination>\n  <ng-template #delta let-index=\"index\" let-data=\"data\">\n    <gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>\n  </ng-template>\n  <ng-template #deltaIndex let-index=\"index\" let-data=\"data\">\n    <gt-delta [index]=\"index\" [data]=\"data\" [baseIndex]=\"0\"></gt-delta>\n  </ng-template>\n  <ng-template\n    #combined\n    let-index=\"index\"\n    let-data=\"data\"\n    let-row=\"row\"\n    let-col=\"col\"\n  >\n    {{ row.value }}\n    <ng-container *ngIf=\"index > 0\">\n      (<gt-delta [index]=\"index\" [data]=\"data\"></gt-delta>)\n    </ng-container>\n  </ng-template>\n</form>`,\n    language: 'xml',\n  },\n  {\n    name: 'app.module.ts',\n    code: `import { BrowserModule } from '@angular/platform-browser';\nimport { NgModule } from '@angular/core';\n\nimport { HorizontalTableComponent } from './horizontal-table.component';\nimport { GenericTableCoreModule } from '@angular-generic-table/core';\n\n@NgModule({\n  declarations: [HorizontalTableComponent],\n  imports: [BrowserModule, GenericTableCoreModule],\n  bootstrap: [HorizontalTableComponent]\n})\nexport class AppModule {}`,\n    language: 'typescript',\n  },\n]"
                 }
             ]
         },
