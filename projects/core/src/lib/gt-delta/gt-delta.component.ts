@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { TableRows } from '../models/table-row.interface';
+import { TableRow } from '../models/table-row.interface';
+import { NgIf, PercentPipe } from '@angular/common';
 
 @Component({
   selector: 'gt-delta',
@@ -44,12 +45,14 @@ import { TableRows } from '../models/table-row.interface';
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [PercentPipe, NgIf],
 })
 export class GtDeltaComponent {
   constructor() {}
   Math = Math;
   Number = Number;
-  @Input() data: TableRows = [];
+  @Input() data: Array<TableRow> = [];
   @Input() index: number = 0;
   @Input() baseIndex?: number;
   @Input() classes = {

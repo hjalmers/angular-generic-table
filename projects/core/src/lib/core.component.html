@@ -19,7 +19,7 @@
       } as table"
     >
       <ng-container
-        *ngFor="let column of table?.config?.columns | keyvalue: columnOrder"
+        *ngFor="let column of table.config?.columns | keyvalue: columnOrder"
       >
         <th
           *ngIf="!column.value?.hidden"
@@ -35,16 +35,16 @@
             *ngIf="column.value?.sortable"
             class="gt-sort"
             (click)="
-              table.isLoading || !column.value?.sortable || sort(column.key)
+              table.isLoading || !column.value.sortable || sort(column.key)
             "
           >
             <span *ngIf="column.value?.header !== false">{{
-              column.value?.header || column.key | capitalCase
+              column.value.header || column.key | capitalCase
             }}</span>
           </button>
           <span
             *ngIf="!column.value?.sortable && column.value?.header !== false"
-            >{{ column.value?.header || column.key | capitalCase }}</span
+            >{{ column.value.header || column.key | capitalCase }}</span
           >
         </th>
       </ng-container>
@@ -56,11 +56,11 @@
         <th
           class="row-header"
           [attr.aria-sort]="sortBy$ | async | sortClass: headerRow.key:true"
-          ngClass="{{ headerRow.value?.sortable ? 'sort ' : '' }} {{
+          ngClass="{{ headerRow.value.sortable ? 'sort ' : '' }} {{
             sortBy$ | async | sortClass: headerRow.key
           }} {{ (headerRow.key | dashCase) + '-column' }}"
           (click)="
-            table.isLoading || !headerRow.value?.sortable || sort(headerRow.key)
+            table.isLoading || !headerRow.value.sortable || sort(headerRow.key)
           "
           scope="col"
         >
@@ -70,22 +70,21 @@
         </th>
         <th
           *ngFor="let column of ((table$ | async)?.data || [])[0]"
-          ngClass="{{ headerRow.value?.class }}"
+          ngClass="{{ headerRow.value.class }}"
         >
           <ng-container
             [ngTemplateOutlet]="
-              (table.config?.rows || {})[headerRow.key].templateRef
+              (table.config.rows || {})[headerRow.key].templateRef
                 ? templateRef
-                : (table.config?.rows || {})[headerRow.key].transform
+                : (table.config.rows || {})[headerRow.key].transform
                 ? transformData
                 : rawData
             "
             [ngTemplateOutletContext]="{
               row: column,
               column: headerRow,
-              transform: (table.config?.rows || {})[headerRow.key].transform,
-              templateRef: (table.config?.rows || {})[headerRow.key]
-                .templateRef,
+              transform: (table.config.rows || {})[headerRow.key].transform,
+              templateRef: (table.config.rows || {})[headerRow.key].templateRef,
               index: 0
             }"
           >
@@ -101,6 +100,66 @@
       </td>
     </tr>
   </tbody>
+  <tfoot *ngIf="(table$ | async)! as table">
+    <ng-container *ngIf="table.data.length > 0 && !(loading$ | async)">
+      <ng-container *ngIf="(calculations$ | async)! as calculations">
+        <tr
+          *ngFor="let calculation of calculations.calculations; let i = index"
+        >
+          <ng-container
+            *ngIf="{
+              showHeader: (colspan$ | async) !== (footerColspan$ | async)
+            } as footerRow"
+          >
+            <th
+              *ngIf="footerRow.showHeader"
+              [colSpan]="
+                ((colspan$ | async) || 0) - ((footerColspan$ | async) || 0)
+              "
+              scope="row"
+            >
+              <ng-container
+                *ngIf="table.config?.footer?.headers?.[calculation] as showHeader"
+                >{{showHeader === true ? (calculation | capitalCase): table.config.footer?.headers?.[calculation]}}
+              </ng-container>
+            </th>
+            <ng-container
+              *ngFor="
+                let column of table.config?.columns | keyvalue: columnOrder
+              "
+            >
+              <td
+                *ngIf="
+                  !column.value?.hidden && calculations.calculated[column.key]
+                "
+                ngClass="{{ (column.key | dashCase) + '-column' }} {{
+                  column.value.class
+                }}"
+                [attr.data-header]="
+                  !footerRow.showHeader && table.config.footer?.headers?.[calculation]
+                    ? table.config.footer?.headers?.[calculation] === true ? (calculation | capitalCase) : table.config.footer?.headers?.[calculation]
+                    : null
+                "
+              >
+                <ng-container
+                  [ngTemplateOutlet]="
+                    (table.config.columns || {})[column.key].transform
+                      ? transformFooter
+                      : rawFooter
+                  "
+                  [ngTemplateOutletContext]="{
+                    value: calculations.calculated[column.key][calculation],
+                    transform: (table.config.columns || {})[column.key]
+                      .transform
+                  }"
+                ></ng-container>
+              </td>
+            </ng-container>
+          </ng-container>
+        </tr>
+      </ng-container>
+    </ng-container>
+  </tfoot>
 </table>
 <ng-template #tableContent>
   <ng-container *ngIf="(table$ | async)! as table">
@@ -123,24 +182,24 @@
             <td
               *ngIf="!column.value?.hidden"
               ngClass="{{ (column.key | dashCase) + '-column' }} {{
-                column.value?.class
+                column.value.class
               }}"
               [attr.data-label]="
-                table.config?.mobileLayout && column.value?.mobileHeader
-                  ? column.value?.mobileHeader !== true
-                    ? column.value?.mobileHeader
-                    : (column.value?.header || column.key | capitalCase)
+                table.config.mobileLayout && column.value.mobileHeader
+                  ? column.value.mobileHeader !== true
+                    ? column.value.mobileHeader
+                    : (column.value.header || column.key | capitalCase)
                   : null
               "
             >
               <ng-container
                 [ngTemplateOutlet]="
                   (searchBy$ | async) &&
-                  !(table.config?.columns || {})[column.key].templateRef
+                  !(table.config.columns || {})[column.key].templateRef
                     ? highlighted
-                    : (table.config?.columns || {})[column.key].templateRef
+                    : (table.config.columns || {})[column.key].templateRef
                     ? templateRef
-                    : (table.config?.columns || {})[column.key].transform
+                    : (table.config.columns || {})[column.key].transform
                     ? transformData
                     : rawData
                 "
@@ -148,9 +207,8 @@
                   row: row,
                   column: column,
                   search: (searchBy$ | async),
-                  transform: (table.config?.columns || {})[column.key]
-                    .transform,
-                  templateRef: (table.config?.columns || {})[column.key]
+                  transform: (table.config.columns || {})[column.key].transform,
+                  templateRef: (table.config.columns || {})[column.key]
                     .templateRef,
                   index: i,
                   data: table.data[(currentPage$ | async) || 0]
@@ -179,26 +237,26 @@
             [class.gt-hover]="(rowHover$ | async)?.index === i"
           >
             <th class="row-header" scope="row">
-              {{ row.value?.header || row.key | capitalCase }}
+              {{ row.value.header || row.key | capitalCase }}
             </th>
             <td
               *ngFor="let column of (table?.data || [])[0]; let y = index"
-              ngClass="{{ row.value?.class }}"
+              ngClass="{{ row.value.class }}"
             >
               <ng-container
                 [ngTemplateOutlet]="
-                  (table.config?.rows || {})[row.key].templateRef
+                  (table.config.rows || {})[row.key].templateRef
                     ? templateRef
-                    : (table.config?.rows || {})[row.key].transform
+                    : (table.config.rows || {})[row.key].transform
                     ? transformData
                     : rawData
                 "
                 [ngTemplateOutletContext]="{
                   row: column,
                   column: row,
-                  transform: (table.config?.rows || {})[row.key].transform,
-                  templateRef: (table.config?.rows || {})[row.key].templateRef,
-                  index: table.config?.rows ? y : i,
+                  transform: (table.config.rows || {})[row.key].transform,
+                  templateRef: (table.config.rows || {})[row.key].templateRef,
+                  index: table.config.rows ? y : i,
                   data: table.data[(currentPage$ | async) || 0]
                 }"
               >
@@ -219,8 +277,25 @@
     </tr>
   </tbody>
 </ng-template>
-<ng-template #highlighted let-row="row" let-column="column" let-search="search">
-  <div [innerHTML]="row[column.key] | highlight: search"></div>
+<ng-template
+  #highlighted
+  let-row="row"
+  let-column="column"
+  let-search="search"
+  let-transform="transform"
+>
+  <div
+    *ngIf="!transform"
+    [innerHTML]="row[column.key] | highlight: search"
+  ></div>
+  <div
+    *ngIf="transform"
+    [innerHTML]="
+      row[column.key]
+        | dynamicPipe: transform.pipe:transform?.args
+        | highlight: search
+    "
+  ></div>
 </ng-template>
 <ng-template #rawData let-row="row" let-column="column">
   {{ row[column.key] }}
@@ -233,6 +308,15 @@
   let-data="data"
 >
   {{ row[column.key] | dynamicPipe: transform.pipe:transform?.args }}
+</ng-template>
+<ng-template #transformFooter let-value="value" let-transform="transform">
+  {{
+    (value | dynamicPipe: transform.pipe:transform?.args) ||
+      (tableConfig$ | async)?.footer?.emptyContent
+  }}
+</ng-template>
+<ng-template #rawFooter let-value="value">
+  {{ value || (tableConfig$ | async)?.footer?.emptyContent }}
 </ng-template>
 <ng-template
   #templateRef

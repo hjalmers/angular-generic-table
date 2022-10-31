@@ -2,13 +2,20 @@ export const SIMPLE_SNIPPETS = [
   {
     name: 'basic-table.component.ts',
     code: `import { Component } from '@angular/core';
+import { TableConfig } from '@angular-generic-table/core';
+
+interface BasicData {
+  firstName: string;
+  lastName: string;
+  gender: 'male' | 'female';
+  favoriteFood: string;
+}
 
 @Component({
-  selector: 'basic-table',
   template: '<angular-generic-table [data]="data" [config]="config"></angular-generic-table>'
 })
 export class SimpleComponent {
-  data = [
+  data: Array<BasicData> = [
     {
       firstName: 'Peter',
       lastName: 'Parker',
@@ -22,7 +29,7 @@ export class SimpleComponent {
       favoriteFood: 'Pizza',
     },
   ];
-  config = {
+  config: TableConfig<BasicData> = {
     columns: {
       firstName: {},
       lastName: {},

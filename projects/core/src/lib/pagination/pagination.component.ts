@@ -6,11 +6,14 @@ import {
   GtPaginationAriaLabels,
   GtPaginationClasses,
 } from '../models/gt-pagination';
+import { AsyncPipe, NgForOf, NgIf } from '@angular/common';
 
 @Component({
   selector: 'angular-generic-table-pagination',
   templateUrl: './pagination.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [AsyncPipe, NgIf, NgForOf],
 })
 export class PaginationComponent {
   get paginationLength(): number {
@@ -34,10 +37,10 @@ export class PaginationComponent {
   @Input() set ariaLabels(value: GtPaginationAriaLabels) {
     this._ariaLabels = value;
   }
-  get table(): CoreComponent | undefined {
-    return this._table;
+  get table(): CoreComponent {
+    return <CoreComponent>this._table;
   }
-  @Input() set table(value: any) {
+  @Input() set table(value: CoreComponent) {
     this._table = value;
     this.table$.next(value);
   }

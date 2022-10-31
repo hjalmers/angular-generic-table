@@ -3,9 +3,19 @@ export const TRANSPOSE_SNIPPETS = [
     name: 'transpose.component.ts',
     code: `import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { TableConfig, TableRows, GtDeltaComponent } from '@angular-generic-table/core';
+import { TableConfig, GtDeltaComponent } from '@angular-generic-table/core';
 import { FormBuilder } from '@angular/forms';
 import { withLatestFrom } from 'rxjs/operators';
+
+interface RawData {
+  year: string;
+  value: number;
+}
+interface YearData extends RawData {
+  delta: number;
+  deltaIndex: number;
+  combined: number;
+}
 
 @Component({
   selector: 'docs-transpose',
@@ -28,10 +38,10 @@ export class TransposeComponent implements OnInit {
     search: [''],
   });
   search$ = this.reactiveForm.get('search')?.valueChanges as Observable<string>;
-  tableConfig$: BehaviorSubject<TableConfig> = new BehaviorSubject<TableConfig>(
-    {}
-  );
-  data: TableRows = [];
+  tableConfig$: BehaviorSubject<TableConfig<YearData>> = new BehaviorSubject<
+    TableConfig<YearData>
+  >({});
+  data: Array<RawData> = [];
 
   constructor(private fb: FormBuilder) {}
 

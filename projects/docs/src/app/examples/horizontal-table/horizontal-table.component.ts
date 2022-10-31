@@ -1,11 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Story } from '@storybook/angular/types-6-0';
 import { HORIZONTAL_TABLE_SNIPPETS } from './horizontal-table.snippets';
-import {
-  GtDeltaComponent,
-  TableConfig,
-  TableRows,
-} from '@angular-generic-table/core';
+import { GtDeltaComponent, TableConfig } from '@angular-generic-table/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -56,7 +52,7 @@ export class HorizontalTableComponent implements OnInit {
     | undefined;
   loading$ = new BehaviorSubject(false);
   config: TableConfig = {};
-  data: TableRows = [];
+  data: any = [];
 
   ngOnInit(): void {
     this.config = {

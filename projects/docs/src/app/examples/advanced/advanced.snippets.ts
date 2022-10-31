@@ -66,9 +66,7 @@ import { TableColumn, TableConfig, TableRow } from '@angular-generic-table/core'
 import { withLatestFrom } from 'rxjs/operators';
 
 @Component({
-  selector: 'docs-advanced',
   templateUrl: './advanced.component.html',
-  styles: [],
 })
 export class AdvancedComponent implements OnInit {
   get currentPage$(): Observable<number> {
@@ -214,6 +212,26 @@ export class AdvancedComponent implements OnInit {
       },
       pagination: {
         length: this.paginationForm.get('length')?.value || 0,
+      },
+      footer: {
+        columns: {
+          gender: {
+            count: (data, key) => {
+              let men = 0;
+              let women = 0;
+              for (let i = 0; i < data.length; i++) {
+                if (data[i][key] === 'female') {
+                  women++;
+                } else if (data[i][key] === 'male') {
+                  men++;
+                }
+              }
+              return \`♂ \${men} ♀ \${women}\`;
+            },
+          },
+          favoriteColor: {},
+          action: { count: (data, key) => \`Total: \${data.length}\` },
+        },
       },
     });
   }

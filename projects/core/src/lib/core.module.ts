@@ -9,7 +9,8 @@ import { DynamicPipe } from './pipes/dynamic.pipe';
 import { GtDeltaComponent } from './gt-delta/gt-delta.component';
 
 @NgModule({
-  declarations: [
+  imports: [
+    CommonModule,
     CoreComponent,
     SortClassPipe,
     DashCasePipe,
@@ -19,7 +20,6 @@ import { GtDeltaComponent } from './gt-delta/gt-delta.component';
     DynamicPipe,
     GtDeltaComponent,
   ],
-  imports: [CommonModule],
   exports: [CoreComponent, GtDeltaComponent],
 })
 export class GenericTableCoreModule {}

@@ -1,15 +1,19 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import {
-  TableConfig,
-  TableRows,
-  GtDeltaComponent,
-} from '@angular-generic-table/core';
+import { TableConfig, GtDeltaComponent } from '@angular-generic-table/core';
 import { UntypedFormBuilder } from '@angular/forms';
 import { withLatestFrom } from 'rxjs/operators';
 import { Story } from '@storybook/angular/types-6-0';
 import { TRANSPOSE_SNIPPETS } from './transpose.snippets';
-
+interface RawData {
+  year: string;
+  value: number;
+}
+interface YearData extends RawData {
+  delta: number;
+  deltaIndex: number;
+  combined: number;
+}
 @Component({
   selector: 'docs-transpose',
   template: `
@@ -110,10 +114,10 @@ export class TransposeComponent implements OnInit {
     search: [''],
   });
   search$ = this.reactiveForm.get('search')?.valueChanges as Observable<string>;
-  tableConfig$: BehaviorSubject<TableConfig> = new BehaviorSubject<TableConfig>(
-    {}
-  );
-  data: TableRows = [];
+  tableConfig$: BehaviorSubject<TableConfig<YearData>> = new BehaviorSubject<
+    TableConfig<YearData>
+  >({});
+  data: Array<RawData> = [];
 
   constructor(private fb: UntypedFormBuilder) {}
 
