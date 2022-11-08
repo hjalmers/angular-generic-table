@@ -4800,7 +4800,10 @@ nav.gt-pagination ul li.active button {
 .gt-delta {
   display: flex;
 }
-.gt-delta.gt-delta-positive::before {
+.gt-delta.gt-delta-positive > span {
+  display: inline-flex;
+}
+.gt-delta.gt-delta-positive > span::before {
   display: block;
   content: "+";
 }
