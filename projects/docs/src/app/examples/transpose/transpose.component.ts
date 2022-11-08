@@ -13,6 +13,7 @@ interface YearData extends RawData {
   delta: number;
   deltaIndex: number;
   combined: number;
+  deltaAbsolute: number;
 }
 @Component({
   selector: 'docs-transpose',
@@ -78,6 +79,13 @@ interface YearData extends RawData {
       <ng-template #delta let-index="index" let-data="data">
         <gt-delta [index]="index" [data]="data"></gt-delta>
       </ng-template>
+      <ng-template #deltaAbsolute let-index="index" let-data="data">
+        <gt-delta
+          [index]="index"
+          [data]="data"
+          [deltaTemplate]="deltaTemplate"
+        ></gt-delta>
+      </ng-template>
       <ng-template #deltaIndex let-index="index" let-data="data">
         <gt-delta [index]="index" [data]="data" [baseIndex]="0"></gt-delta>
       </ng-template>
@@ -90,9 +98,12 @@ interface YearData extends RawData {
       >
         {{ row.value }}
         <ng-container *ngIf="index > 0">
-          (<gt-delta [index]="index" [data]="data"></gt-delta>)
+          <gt-delta [index]="index" [data]="data"></gt-delta>
         </ng-container>
       </ng-template>
+      <ng-template #deltaTemplate let-delta="delta">
+        <span>{{ delta.absolute }}</span></ng-template
+      >
       <docs-tabs [content]="SNIPPETS"></docs-tabs>
     </form>
   `,
@@ -100,6 +111,9 @@ interface YearData extends RawData {
 })
 export class TransposeComponent implements OnInit {
   @ViewChild('delta', { static: true }) delta:
+    | TemplateRef<GtDeltaComponent>
+    | undefined;
+  @ViewChild('deltaAbsolute', { static: true }) deltaAbsolute:
     | TemplateRef<GtDeltaComponent>
     | undefined;
   @ViewChild('deltaIndex', { static: true }) deltaIndex:
@@ -168,7 +182,7 @@ export class TransposeComponent implements OnInit {
       },
       {
         year: '2015',
-        value: 60,
+        value: 0,
       },
       {
         year: '2016',
@@ -222,6 +236,11 @@ export class TransposeComponent implements OnInit {
             templateRef: this.deltaIndex,
             class: 'text-end',
           },
+          deltaAbsolute: {
+            header: 'Delta',
+            templateRef: this.deltaAbsolute,
+            class: 'text-end',
+          },
           combined: {
             header: 'Value with change',
             templateRef: this.combined,
@@ -250,6 +269,11 @@ export class TransposeComponent implements OnInit {
           deltaIndex: {
             header: 'Since inception %',
             templateRef: this.deltaIndex,
+            class: 'text-end',
+          },
+          deltaAbsolute: {
+            header: 'Delta',
+            templateRef: this.deltaAbsolute,
             class: 'text-end',
           },
           combined: {
