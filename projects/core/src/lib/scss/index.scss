@@ -234,9 +234,12 @@ $skeleton-loader-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2
 @mixin delta-style() {
   .gt-delta {
     display: flex;
-    &.gt-delta-positive::before {
-      display: block;
-      content: $delta-positive-prefix;
+    &.gt-delta-positive > span {
+      display: inline-flex;
+      &::before {
+        display: block;
+        content: $delta-positive-prefix;
+      }
     }
   }
 }
