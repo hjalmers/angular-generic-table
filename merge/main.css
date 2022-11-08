@@ -22,7 +22,7 @@
   }
 }
 /*!
- * Bootstrap Grid v5.2.0 (https://getbootstrap.com/)
+ * Bootstrap Grid v5.2.2 (https://getbootstrap.com/)
  * Copyright 2011-2022 The Bootstrap Authors
  * Copyright 2011-2022 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
@@ -4665,6 +4665,7 @@ $descending-sort-gradient: linear-gradient(0.75turn,
   text-align: left;
   display: flex;
   align-items: center;
+  justify-content: inherit;
   transition: box-shadow 0.25s ease-in-out;
 }
 .table thead tr th[aria-sort] > .gt-sort::after, .table thead tr th.gt-sortable > .gt-sort::after {
@@ -4697,6 +4698,30 @@ $descending-sort-gradient: linear-gradient(0.75turn,
 }
 .table tr th, .table tr td {
   padding: 0.5rem 0.5rem;
+}
+.table tfoot th {
+  font-weight: 400;
+  text-align: end;
+}
+.table tfoot td[data-header]:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: none !important;
+}
+.table tfoot td[data-header]:first-child::before {
+  content: attr(data-header);
+  display: block;
+  font-weight: 400;
+}
+tfoot tr:first-child {
+  border-top: solid 2px var(--bs-table-color, #000);
+}
+tfoot tr th {
+  font-weight: 400;
+}
+tfoot tr td {
+  font-weight: 500;
 }
 .gt-highlight-search {
   background: #ffdd00;
@@ -4775,7 +4800,10 @@ nav.gt-pagination ul li.active button {
 .gt-delta {
   display: flex;
 }
-.gt-delta.gt-delta-positive::before {
+.gt-delta.gt-delta-positive > span {
+  display: inline-flex;
+}
+.gt-delta.gt-delta-positive > span::before {
   display: block;
   content: "+";
 }
@@ -4960,7 +4988,7 @@ nav.gt-pagination ul li.active button {
 }
 .theme-bootstrap {
   /*!
-   * Bootstrap  v5.2.0 (https://getbootstrap.com/)
+   * Bootstrap  v5.2.2 (https://getbootstrap.com/)
    * Copyright 2011-2022 The Bootstrap Authors
    * Copyright 2011-2022 Twitter, Inc.
    * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
@@ -5378,10 +5406,6 @@ nav.gt-pagination ul li.active button {
 }
 .theme-bootstrap ::-webkit-color-swatch-wrapper {
   padding: 0;
-}
-.theme-bootstrap ::-webkit-file-upload-button {
-  font: inherit;
-  -webkit-appearance: button;
 }
 .theme-bootstrap ::file-selector-button {
   font: inherit;
@@ -6864,21 +6888,6 @@ nav.gt-pagination ul li.active button {
   background-color: #e9ecef;
   opacity: 1;
 }
-.theme-bootstrap .form-control::-webkit-file-upload-button {
-  padding: 0.375rem 0.75rem;
-  margin: -0.375rem -0.75rem;
-  margin-inline-end: 0.75rem;
-  color: #212529;
-  background-color: #e9ecef;
-  pointer-events: none;
-  border-color: inherit;
-  border-style: solid;
-  border-width: 0;
-  border-inline-end-width: 1px;
-  border-radius: 0;
-  -webkit-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
 .theme-bootstrap .form-control::file-selector-button {
   padding: 0.375rem 0.75rem;
   margin: -0.375rem -0.75rem;
@@ -6894,16 +6903,9 @@ nav.gt-pagination ul li.active button {
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 @media (prefers-reduced-motion: reduce) {
-  .theme-bootstrap .form-control::-webkit-file-upload-button {
-    -webkit-transition: none;
-    transition: none;
-  }
   .theme-bootstrap .form-control::file-selector-button {
     transition: none;
   }
-}
-.theme-bootstrap .form-control:hover:not(:disabled):not([readonly])::-webkit-file-upload-button {
-  background-color: #dde0e3;
 }
 .theme-bootstrap .form-control:hover:not(:disabled):not([readonly])::file-selector-button {
   background-color: #dde0e3;
@@ -6932,11 +6934,6 @@ nav.gt-pagination ul li.active button {
   font-size: 0.875rem;
   border-radius: 0.25rem;
 }
-.theme-bootstrap .form-control-sm::-webkit-file-upload-button {
-  padding: 0.25rem 0.5rem;
-  margin: -0.25rem -0.5rem;
-  margin-inline-end: 0.5rem;
-}
 .theme-bootstrap .form-control-sm::file-selector-button {
   padding: 0.25rem 0.5rem;
   margin: -0.25rem -0.5rem;
@@ -6947,11 +6944,6 @@ nav.gt-pagination ul li.active button {
   padding: 0.5rem 1rem;
   font-size: 1.25rem;
   border-radius: 0.5rem;
-}
-.theme-bootstrap .form-control-lg::-webkit-file-upload-button {
-  padding: 0.5rem 1rem;
-  margin: -0.5rem -1rem;
-  margin-inline-end: 1rem;
 }
 .theme-bootstrap .form-control-lg::file-selector-button {
   padding: 0.5rem 1rem;
@@ -7076,7 +7068,6 @@ nav.gt-pagination ul li.active button {
   -webkit-appearance: none;
           appearance: none;
   -webkit-print-color-adjust: exact;
-     color-adjust: exact;
           print-color-adjust: exact;
 }
 .theme-bootstrap .form-check-input[type=checkbox] {
@@ -7266,6 +7257,7 @@ nav.gt-pagination ul li.active button {
   height: 100%;
   padding: 1rem 0.75rem;
   overflow: hidden;
+  text-align: start;
   text-overflow: ellipsis;
   white-space: nowrap;
   pointer-events: none;
@@ -7333,14 +7325,14 @@ nav.gt-pagination ul li.active button {
 .theme-bootstrap .input-group > .form-control:focus,
 .theme-bootstrap .input-group > .form-select:focus,
 .theme-bootstrap .input-group > .form-floating:focus-within {
-  z-index: 3;
+  z-index: 5;
 }
 .theme-bootstrap .input-group .btn {
   position: relative;
   z-index: 2;
 }
 .theme-bootstrap .input-group .btn:focus {
-  z-index: 3;
+  z-index: 5;
 }
 .theme-bootstrap .input-group-text {
   display: flex;
@@ -7390,10 +7382,13 @@ nav.gt-pagination ul li.active button {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
-.theme-bootstrap .input-group > :not(:first-child):not(.dropdown-menu):not(.form-floating):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback),
+.theme-bootstrap .input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+  margin-left: -1px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
 .theme-bootstrap .input-group > .form-floating:not(:first-child) > .form-control,
 .theme-bootstrap .input-group > .form-floating:not(:first-child) > .form-select {
-  margin-left: -1px;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -7470,14 +7465,11 @@ nav.gt-pagination ul li.active button {
 .theme-bootstrap .form-check-inline .form-check-input ~ .valid-feedback {
   margin-left: 0.5em;
 }
-.theme-bootstrap .was-validated .input-group .form-control:valid, .theme-bootstrap .input-group .form-control.is-valid,
-.theme-bootstrap .was-validated .input-group .form-select:valid,
-.theme-bootstrap .input-group .form-select.is-valid {
-  z-index: 1;
-}
-.theme-bootstrap .was-validated .input-group .form-control:valid:focus, .theme-bootstrap .input-group .form-control.is-valid:focus,
-.theme-bootstrap .was-validated .input-group .form-select:valid:focus,
-.theme-bootstrap .input-group .form-select.is-valid:focus {
+.theme-bootstrap .was-validated .input-group > .form-control:not(:focus):valid, .theme-bootstrap .input-group > .form-control:not(:focus).is-valid,
+.theme-bootstrap .was-validated .input-group > .form-select:not(:focus):valid,
+.theme-bootstrap .input-group > .form-select:not(:focus).is-valid,
+.theme-bootstrap .was-validated .input-group > .form-floating:not(:focus-within):valid,
+.theme-bootstrap .input-group > .form-floating:not(:focus-within).is-valid {
   z-index: 3;
 }
 .theme-bootstrap .invalid-feedback {
@@ -7553,15 +7545,12 @@ nav.gt-pagination ul li.active button {
 .theme-bootstrap .form-check-inline .form-check-input ~ .invalid-feedback {
   margin-left: 0.5em;
 }
-.theme-bootstrap .was-validated .input-group .form-control:invalid, .theme-bootstrap .input-group .form-control.is-invalid,
-.theme-bootstrap .was-validated .input-group .form-select:invalid,
-.theme-bootstrap .input-group .form-select.is-invalid {
-  z-index: 2;
-}
-.theme-bootstrap .was-validated .input-group .form-control:invalid:focus, .theme-bootstrap .input-group .form-control.is-invalid:focus,
-.theme-bootstrap .was-validated .input-group .form-select:invalid:focus,
-.theme-bootstrap .input-group .form-select.is-invalid:focus {
-  z-index: 3;
+.theme-bootstrap .was-validated .input-group > .form-control:not(:focus):invalid, .theme-bootstrap .input-group > .form-control:not(:focus).is-invalid,
+.theme-bootstrap .was-validated .input-group > .form-select:not(:focus):invalid,
+.theme-bootstrap .input-group > .form-select:not(:focus).is-invalid,
+.theme-bootstrap .was-validated .input-group > .form-floating:not(:focus-within):invalid,
+.theme-bootstrap .input-group > .form-floating:not(:focus-within).is-invalid {
+  z-index: 4;
 }
 .theme-bootstrap .btn {
   --bs-btn-padding-x: 0.75rem;
@@ -7575,6 +7564,7 @@ nav.gt-pagination ul li.active button {
   --bs-btn-border-width: 1px;
   --bs-btn-border-color: transparent;
   --bs-btn-border-radius: 0.375rem;
+  --bs-btn-hover-border-color: transparent;
   --bs-btn-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
   --bs-btn-disabled-opacity: 0.65;
   --bs-btn-focus-box-shadow: 0 0 0 0.25rem rgba(var(--bs-btn-focus-shadow-rgb), .5);
@@ -7606,19 +7596,29 @@ nav.gt-pagination ul li.active button {
   background-color: var(--bs-btn-hover-bg);
   border-color: var(--bs-btn-hover-border-color);
 }
-.theme-bootstrap .btn-check:focus + .btn, .theme-bootstrap .btn:focus {
+.theme-bootstrap .btn-check + .btn:hover {
+  color: var(--bs-btn-color);
+  background-color: var(--bs-btn-bg);
+  border-color: var(--bs-btn-border-color);
+}
+.theme-bootstrap .btn:focus-visible {
   color: var(--bs-btn-hover-color);
   background-color: var(--bs-btn-hover-bg);
   border-color: var(--bs-btn-hover-border-color);
   outline: 0;
   box-shadow: var(--bs-btn-focus-box-shadow);
 }
-.theme-bootstrap .btn-check:checked + .btn, .theme-bootstrap .btn-check:active + .btn, .theme-bootstrap .btn:active, .theme-bootstrap .btn.active, .theme-bootstrap .btn.show {
+.theme-bootstrap .btn-check:focus-visible + .btn {
+  border-color: var(--bs-btn-hover-border-color);
+  outline: 0;
+  box-shadow: var(--bs-btn-focus-box-shadow);
+}
+.theme-bootstrap .btn-check:checked + .btn, .theme-bootstrap :not(.btn-check) + .btn:active, .theme-bootstrap .btn:first-child:active, .theme-bootstrap .btn.active, .theme-bootstrap .btn.show {
   color: var(--bs-btn-active-color);
   background-color: var(--bs-btn-active-bg);
   border-color: var(--bs-btn-active-border-color);
 }
-.theme-bootstrap .btn-check:checked + .btn:focus, .theme-bootstrap .btn-check:active + .btn:focus, .theme-bootstrap .btn:active:focus, .theme-bootstrap .btn.active:focus, .theme-bootstrap .btn.show:focus {
+.theme-bootstrap .btn-check:checked + .btn:focus-visible, .theme-bootstrap :not(.btn-check) + .btn:active:focus-visible, .theme-bootstrap .btn:first-child:active:focus-visible, .theme-bootstrap .btn.active:focus-visible, .theme-bootstrap .btn.show:focus-visible {
   box-shadow: var(--bs-btn-focus-box-shadow);
 }
 .theme-bootstrap .btn:disabled, .theme-bootstrap .btn.disabled, .theme-bootstrap fieldset:disabled .btn {
@@ -7899,7 +7899,7 @@ nav.gt-pagination ul li.active button {
   --bs-btn-focus-shadow-rgb: 49, 132, 253;
   text-decoration: underline;
 }
-.theme-bootstrap .btn-link:focus {
+.theme-bootstrap .btn-link:focus-visible {
   color: var(--bs-btn-color);
 }
 .theme-bootstrap .btn-link:hover {
@@ -7976,6 +7976,7 @@ nav.gt-pagination ul li.active button {
   margin-left: 0;
 }
 .theme-bootstrap .dropdown-menu {
+  --bs-dropdown-zindex: 1000;
   --bs-dropdown-min-width: 10rem;
   --bs-dropdown-padding-x: 0;
   --bs-dropdown-padding-y: 0.5rem;
@@ -8002,7 +8003,7 @@ nav.gt-pagination ul li.active button {
   --bs-dropdown-header-padding-x: 1rem;
   --bs-dropdown-header-padding-y: 0.5rem;
   position: absolute;
-  z-index: 1000;
+  z-index: var(--bs-dropdown-zindex);
   display: none;
   min-width: var(--bs-dropdown-min-width);
   padding: var(--bs-dropdown-padding-y) var(--bs-dropdown-padding-x);
@@ -8288,7 +8289,7 @@ nav.gt-pagination ul li.active button {
 .theme-bootstrap .btn-group {
   border-radius: 0.375rem;
 }
-.theme-bootstrap .btn-group > .btn:not(:first-child),
+.theme-bootstrap .btn-group > :not(.btn-check:first-child) + .btn,
 .theme-bootstrap .btn-group > .btn-group:not(:first-child) {
   margin-left: -1px;
 }
@@ -8391,7 +8392,7 @@ nav.gt-pagination ul li.active button {
   border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
 }
 .theme-bootstrap .nav-tabs .nav-link {
-  margin-bottom: calc(var(--bs-nav-tabs-border-width) * -1);
+  margin-bottom: calc(-1 * var(--bs-nav-tabs-border-width));
   background: none;
   border: var(--bs-nav-tabs-border-width) solid transparent;
   border-top-left-radius: var(--bs-nav-tabs-border-radius);
@@ -8413,7 +8414,7 @@ nav.gt-pagination ul li.active button {
   border-color: var(--bs-nav-tabs-link-active-border-color);
 }
 .theme-bootstrap .nav-tabs .dropdown-menu {
-  margin-top: calc(var(--bs-nav-tabs-border-width) * -1);
+  margin-top: calc(-1 * var(--bs-nav-tabs-border-width));
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
@@ -9040,7 +9041,7 @@ nav.gt-pagination ul li.active button {
   }
 }
 .theme-bootstrap .accordion {
-  --bs-accordion-color: #000;
+  --bs-accordion-color: #212529;
   --bs-accordion-bg: #fff;
   --bs-accordion-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, border-radius 0.15s ease;
   --bs-accordion-border-color: var(--bs-border-color);
@@ -9049,9 +9050,9 @@ nav.gt-pagination ul li.active button {
   --bs-accordion-inner-border-radius: calc(0.375rem - 1px);
   --bs-accordion-btn-padding-x: 1.25rem;
   --bs-accordion-btn-padding-y: 1rem;
-  --bs-accordion-btn-color: var(--bs-body-color);
+  --bs-accordion-btn-color: #212529;
   --bs-accordion-btn-bg: var(--bs-accordion-bg);
-  --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='var%28--bs-body-color%29'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+  --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
   --bs-accordion-btn-icon-width: 1.25rem;
   --bs-accordion-btn-icon-transform: rotate(-180deg);
   --bs-accordion-btn-icon-transition: transform 0.2s ease-in-out;
@@ -9086,7 +9087,7 @@ nav.gt-pagination ul li.active button {
 .theme-bootstrap .accordion-button:not(.collapsed) {
   color: var(--bs-accordion-active-color);
   background-color: var(--bs-accordion-active-bg);
-  box-shadow: inset 0 calc(var(--bs-accordion-border-width) * -1) 0 var(--bs-accordion-border-color);
+  box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
 }
 .theme-bootstrap .accordion-button:not(.collapsed)::after {
   background-image: var(--bs-accordion-btn-active-icon);
@@ -9165,7 +9166,7 @@ nav.gt-pagination ul li.active button {
 .theme-bootstrap .accordion-flush .accordion-item:last-child {
   border-bottom: 0;
 }
-.theme-bootstrap .accordion-flush .accordion-item .accordion-button {
+.theme-bootstrap .accordion-flush .accordion-item .accordion-button, .theme-bootstrap .accordion-flush .accordion-item .accordion-button.collapsed {
   border-radius: 0;
 }
 .theme-bootstrap .breadcrumb {
@@ -9537,17 +9538,17 @@ nav.gt-pagination ul li.active button {
   border-top-width: 0;
 }
 .theme-bootstrap .list-group-item + .list-group-item.active {
-  margin-top: calc(var(--bs-list-group-border-width) * -1);
+  margin-top: calc(-1 * var(--bs-list-group-border-width));
   border-top-width: var(--bs-list-group-border-width);
 }
 .theme-bootstrap .list-group-horizontal {
   flex-direction: row;
 }
-.theme-bootstrap .list-group-horizontal > .list-group-item:first-child {
+.theme-bootstrap .list-group-horizontal > .list-group-item:first-child:not(:last-child) {
   border-bottom-left-radius: var(--bs-list-group-border-radius);
   border-top-right-radius: 0;
 }
-.theme-bootstrap .list-group-horizontal > .list-group-item:last-child {
+.theme-bootstrap .list-group-horizontal > .list-group-item:last-child:not(:first-child) {
   border-top-right-radius: var(--bs-list-group-border-radius);
   border-bottom-left-radius: 0;
 }
@@ -9559,18 +9560,18 @@ nav.gt-pagination ul li.active button {
   border-left-width: 0;
 }
 .theme-bootstrap .list-group-horizontal > .list-group-item + .list-group-item.active {
-  margin-left: calc(var(--bs-list-group-border-width) * -1);
+  margin-left: calc(-1 * var(--bs-list-group-border-width));
   border-left-width: var(--bs-list-group-border-width);
 }
 @media (min-width: 576px) {
   .theme-bootstrap .list-group-horizontal-sm {
     flex-direction: row;
   }
-  .theme-bootstrap .list-group-horizontal-sm > .list-group-item:first-child {
+  .theme-bootstrap .list-group-horizontal-sm > .list-group-item:first-child:not(:last-child) {
     border-bottom-left-radius: var(--bs-list-group-border-radius);
     border-top-right-radius: 0;
   }
-  .theme-bootstrap .list-group-horizontal-sm > .list-group-item:last-child {
+  .theme-bootstrap .list-group-horizontal-sm > .list-group-item:last-child:not(:first-child) {
     border-top-right-radius: var(--bs-list-group-border-radius);
     border-bottom-left-radius: 0;
   }
@@ -9582,7 +9583,7 @@ nav.gt-pagination ul li.active button {
     border-left-width: 0;
   }
   .theme-bootstrap .list-group-horizontal-sm > .list-group-item + .list-group-item.active {
-    margin-left: calc(var(--bs-list-group-border-width) * -1);
+    margin-left: calc(-1 * var(--bs-list-group-border-width));
     border-left-width: var(--bs-list-group-border-width);
   }
 }
@@ -9590,11 +9591,11 @@ nav.gt-pagination ul li.active button {
   .theme-bootstrap .list-group-horizontal-md {
     flex-direction: row;
   }
-  .theme-bootstrap .list-group-horizontal-md > .list-group-item:first-child {
+  .theme-bootstrap .list-group-horizontal-md > .list-group-item:first-child:not(:last-child) {
     border-bottom-left-radius: var(--bs-list-group-border-radius);
     border-top-right-radius: 0;
   }
-  .theme-bootstrap .list-group-horizontal-md > .list-group-item:last-child {
+  .theme-bootstrap .list-group-horizontal-md > .list-group-item:last-child:not(:first-child) {
     border-top-right-radius: var(--bs-list-group-border-radius);
     border-bottom-left-radius: 0;
   }
@@ -9606,7 +9607,7 @@ nav.gt-pagination ul li.active button {
     border-left-width: 0;
   }
   .theme-bootstrap .list-group-horizontal-md > .list-group-item + .list-group-item.active {
-    margin-left: calc(var(--bs-list-group-border-width) * -1);
+    margin-left: calc(-1 * var(--bs-list-group-border-width));
     border-left-width: var(--bs-list-group-border-width);
   }
 }
@@ -9614,11 +9615,11 @@ nav.gt-pagination ul li.active button {
   .theme-bootstrap .list-group-horizontal-lg {
     flex-direction: row;
   }
-  .theme-bootstrap .list-group-horizontal-lg > .list-group-item:first-child {
+  .theme-bootstrap .list-group-horizontal-lg > .list-group-item:first-child:not(:last-child) {
     border-bottom-left-radius: var(--bs-list-group-border-radius);
     border-top-right-radius: 0;
   }
-  .theme-bootstrap .list-group-horizontal-lg > .list-group-item:last-child {
+  .theme-bootstrap .list-group-horizontal-lg > .list-group-item:last-child:not(:first-child) {
     border-top-right-radius: var(--bs-list-group-border-radius);
     border-bottom-left-radius: 0;
   }
@@ -9630,7 +9631,7 @@ nav.gt-pagination ul li.active button {
     border-left-width: 0;
   }
   .theme-bootstrap .list-group-horizontal-lg > .list-group-item + .list-group-item.active {
-    margin-left: calc(var(--bs-list-group-border-width) * -1);
+    margin-left: calc(-1 * var(--bs-list-group-border-width));
     border-left-width: var(--bs-list-group-border-width);
   }
 }
@@ -9638,11 +9639,11 @@ nav.gt-pagination ul li.active button {
   .theme-bootstrap .list-group-horizontal-xl {
     flex-direction: row;
   }
-  .theme-bootstrap .list-group-horizontal-xl > .list-group-item:first-child {
+  .theme-bootstrap .list-group-horizontal-xl > .list-group-item:first-child:not(:last-child) {
     border-bottom-left-radius: var(--bs-list-group-border-radius);
     border-top-right-radius: 0;
   }
-  .theme-bootstrap .list-group-horizontal-xl > .list-group-item:last-child {
+  .theme-bootstrap .list-group-horizontal-xl > .list-group-item:last-child:not(:first-child) {
     border-top-right-radius: var(--bs-list-group-border-radius);
     border-bottom-left-radius: 0;
   }
@@ -9654,7 +9655,7 @@ nav.gt-pagination ul li.active button {
     border-left-width: 0;
   }
   .theme-bootstrap .list-group-horizontal-xl > .list-group-item + .list-group-item.active {
-    margin-left: calc(var(--bs-list-group-border-width) * -1);
+    margin-left: calc(-1 * var(--bs-list-group-border-width));
     border-left-width: var(--bs-list-group-border-width);
   }
 }
@@ -9662,11 +9663,11 @@ nav.gt-pagination ul li.active button {
   .theme-bootstrap .list-group-horizontal-xxl {
     flex-direction: row;
   }
-  .theme-bootstrap .list-group-horizontal-xxl > .list-group-item:first-child {
+  .theme-bootstrap .list-group-horizontal-xxl > .list-group-item:first-child:not(:last-child) {
     border-bottom-left-radius: var(--bs-list-group-border-radius);
     border-top-right-radius: 0;
   }
-  .theme-bootstrap .list-group-horizontal-xxl > .list-group-item:last-child {
+  .theme-bootstrap .list-group-horizontal-xxl > .list-group-item:last-child:not(:first-child) {
     border-top-right-radius: var(--bs-list-group-border-radius);
     border-bottom-left-radius: 0;
   }
@@ -9678,7 +9679,7 @@ nav.gt-pagination ul li.active button {
     border-left-width: 0;
   }
   .theme-bootstrap .list-group-horizontal-xxl > .list-group-item + .list-group-item.active {
-    margin-left: calc(var(--bs-list-group-border-width) * -1);
+    margin-left: calc(-1 * var(--bs-list-group-border-width));
     border-left-width: var(--bs-list-group-border-width);
   }
 }
@@ -9826,6 +9827,7 @@ nav.gt-pagination ul li.active button {
   filter: invert(1) grayscale(100%) brightness(200%);
 }
 .theme-bootstrap .toast {
+  --bs-toast-zindex: 1090;
   --bs-toast-padding-x: 0.75rem;
   --bs-toast-padding-y: 0.5rem;
   --bs-toast-spacing: 1.5rem;
@@ -9858,8 +9860,9 @@ nav.gt-pagination ul li.active button {
   display: none;
 }
 .theme-bootstrap .toast-container {
+  --bs-toast-zindex: 1090;
   position: absolute;
-  z-index: 1090;
+  z-index: var(--bs-toast-zindex);
   width: max-content;
   max-width: 100%;
   pointer-events: none;
@@ -9879,7 +9882,7 @@ nav.gt-pagination ul li.active button {
   border-top-right-radius: calc(var(--bs-toast-border-radius) - var(--bs-toast-border-width));
 }
 .theme-bootstrap .toast-header .btn-close {
-  margin-right: calc(var(--bs-toast-padding-x) * -0.5);
+  margin-right: calc(-0.5 * var(--bs-toast-padding-x));
   margin-left: var(--bs-toast-padding-x);
 }
 .theme-bootstrap .toast-body {
@@ -9998,7 +10001,7 @@ nav.gt-pagination ul li.active button {
 }
 .theme-bootstrap .modal-header .btn-close {
   padding: calc(var(--bs-modal-header-padding-y) * 0.5) calc(var(--bs-modal-header-padding-x) * 0.5);
-  margin: calc(var(--bs-modal-header-padding-y) * -0.5) calc(var(--bs-modal-header-padding-x) * -0.5) calc(var(--bs-modal-header-padding-y) * -0.5) auto;
+  margin: calc(-0.5 * var(--bs-modal-header-padding-y)) calc(-0.5 * var(--bs-modal-header-padding-x)) calc(-0.5 * var(--bs-modal-header-padding-y)) auto;
 }
 .theme-bootstrap .modal-title {
   margin-bottom: 0;
@@ -10273,7 +10276,7 @@ nav.gt-pagination ul li.active button {
   --bs-popover-header-padding-x: 1rem;
   --bs-popover-header-padding-y: 0.5rem;
   --bs-popover-header-font-size:1rem;
-  --bs-popover-header-color: var(--bs-heading-color);
+  --bs-popover-header-color: ;
   --bs-popover-header-bg: #f0f0f0;
   --bs-popover-body-padding-x: 1rem;
   --bs-popover-body-padding-y: 1rem;
@@ -10319,7 +10322,7 @@ nav.gt-pagination ul li.active button {
   border-width: 0;
 }
 .theme-bootstrap .bs-popover-top > .popover-arrow, .theme-bootstrap .bs-popover-auto[data-popper-placement^=top] > .popover-arrow {
-  bottom: calc(var(--bs-popover-arrow-height) * -1 - var(--bs-popover-border-width));
+  bottom: calc(-1 * (var(--bs-popover-arrow-height)) - var(--bs-popover-border-width));
 }
 .theme-bootstrap .bs-popover-top > .popover-arrow::before, .theme-bootstrap .bs-popover-auto[data-popper-placement^=top] > .popover-arrow::before, .theme-bootstrap .bs-popover-top > .popover-arrow::after, .theme-bootstrap .bs-popover-auto[data-popper-placement^=top] > .popover-arrow::after {
   border-width: var(--bs-popover-arrow-height) calc(var(--bs-popover-arrow-width) * 0.5) 0;
@@ -10333,7 +10336,7 @@ nav.gt-pagination ul li.active button {
   border-top-color: var(--bs-popover-bg);
 }
 .theme-bootstrap .bs-popover-end > .popover-arrow, .theme-bootstrap .bs-popover-auto[data-popper-placement^=right] > .popover-arrow {
-  left: calc(var(--bs-popover-arrow-height) * -1 - var(--bs-popover-border-width));
+  left: calc(-1 * (var(--bs-popover-arrow-height)) - var(--bs-popover-border-width));
   width: var(--bs-popover-arrow-height);
   height: var(--bs-popover-arrow-width);
 }
@@ -10349,7 +10352,7 @@ nav.gt-pagination ul li.active button {
   border-right-color: var(--bs-popover-bg);
 }
 .theme-bootstrap .bs-popover-bottom > .popover-arrow, .theme-bootstrap .bs-popover-auto[data-popper-placement^=bottom] > .popover-arrow {
-  top: calc(var(--bs-popover-arrow-height) * -1 - var(--bs-popover-border-width));
+  top: calc(-1 * (var(--bs-popover-arrow-height)) - var(--bs-popover-border-width));
 }
 .theme-bootstrap .bs-popover-bottom > .popover-arrow::before, .theme-bootstrap .bs-popover-auto[data-popper-placement^=bottom] > .popover-arrow::before, .theme-bootstrap .bs-popover-bottom > .popover-arrow::after, .theme-bootstrap .bs-popover-auto[data-popper-placement^=bottom] > .popover-arrow::after {
   border-width: 0 calc(var(--bs-popover-arrow-width) * 0.5) var(--bs-popover-arrow-height);
@@ -10368,12 +10371,12 @@ nav.gt-pagination ul li.active button {
   left: 50%;
   display: block;
   width: var(--bs-popover-arrow-width);
-  margin-left: calc(var(--bs-popover-arrow-width) * -0.5);
+  margin-left: calc(-0.5 * var(--bs-popover-arrow-width));
   content: "";
   border-bottom: var(--bs-popover-border-width) solid var(--bs-popover-header-bg);
 }
 .theme-bootstrap .bs-popover-start > .popover-arrow, .theme-bootstrap .bs-popover-auto[data-popper-placement^=left] > .popover-arrow {
-  right: calc(var(--bs-popover-arrow-height) * -1 - var(--bs-popover-border-width));
+  right: calc(-1 * (var(--bs-popover-arrow-height)) - var(--bs-popover-border-width));
   width: var(--bs-popover-arrow-height);
   height: var(--bs-popover-arrow-width);
 }
@@ -10643,6 +10646,7 @@ nav.gt-pagination ul li.active button {
   }
 }
 .theme-bootstrap .offcanvas, .theme-bootstrap .offcanvas-xxl, .theme-bootstrap .offcanvas-xl, .theme-bootstrap .offcanvas-lg, .theme-bootstrap .offcanvas-md, .theme-bootstrap .offcanvas-sm {
+  --bs-offcanvas-zindex: 1045;
   --bs-offcanvas-width: 400px;
   --bs-offcanvas-height: 30vh;
   --bs-offcanvas-padding-x: 1rem;
@@ -10657,7 +10661,7 @@ nav.gt-pagination ul li.active button {
   .theme-bootstrap .offcanvas-sm {
     position: fixed;
     bottom: 0;
-    z-index: 1045;
+    z-index: var(--bs-offcanvas-zindex);
     display: flex;
     flex-direction: column;
     max-width: 100%;
@@ -10744,7 +10748,7 @@ nav.gt-pagination ul li.active button {
   .theme-bootstrap .offcanvas-md {
     position: fixed;
     bottom: 0;
-    z-index: 1045;
+    z-index: var(--bs-offcanvas-zindex);
     display: flex;
     flex-direction: column;
     max-width: 100%;
@@ -10831,7 +10835,7 @@ nav.gt-pagination ul li.active button {
   .theme-bootstrap .offcanvas-lg {
     position: fixed;
     bottom: 0;
-    z-index: 1045;
+    z-index: var(--bs-offcanvas-zindex);
     display: flex;
     flex-direction: column;
     max-width: 100%;
@@ -10918,7 +10922,7 @@ nav.gt-pagination ul li.active button {
   .theme-bootstrap .offcanvas-xl {
     position: fixed;
     bottom: 0;
-    z-index: 1045;
+    z-index: var(--bs-offcanvas-zindex);
     display: flex;
     flex-direction: column;
     max-width: 100%;
@@ -11005,7 +11009,7 @@ nav.gt-pagination ul li.active button {
   .theme-bootstrap .offcanvas-xxl {
     position: fixed;
     bottom: 0;
-    z-index: 1045;
+    z-index: var(--bs-offcanvas-zindex);
     display: flex;
     flex-direction: column;
     max-width: 100%;
@@ -11091,7 +11095,7 @@ nav.gt-pagination ul li.active button {
 .theme-bootstrap .offcanvas {
   position: fixed;
   bottom: 0;
-  z-index: 1045;
+  z-index: var(--bs-offcanvas-zindex);
   display: flex;
   flex-direction: column;
   max-width: 100%;
@@ -11167,9 +11171,9 @@ nav.gt-pagination ul li.active button {
 }
 .theme-bootstrap .offcanvas-header .btn-close {
   padding: calc(var(--bs-offcanvas-padding-y) * 0.5) calc(var(--bs-offcanvas-padding-x) * 0.5);
-  margin-top: calc(var(--bs-offcanvas-padding-y) * -0.5);
-  margin-right: calc(var(--bs-offcanvas-padding-x) * -0.5);
-  margin-bottom: calc(var(--bs-offcanvas-padding-y) * -0.5);
+  margin-top: calc(-0.5 * var(--bs-offcanvas-padding-y));
+  margin-right: calc(-0.5 * var(--bs-offcanvas-padding-x));
+  margin-bottom: calc(-0.5 * var(--bs-offcanvas-padding-y));
 }
 .theme-bootstrap .offcanvas-title {
   margin-bottom: 0;
