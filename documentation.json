@@ -1943,7 +1943,7 @@
         },
         {
             "name": "CoreComponent",
-            "id": "component-CoreComponent-1a19553e283a3eaa5b40a4f963093c80662077f98e528737a98e0c6992f2f4f115041dc84d5a1f3d769f43c9e9cd451989d97141e79b4939efdc354b9692cc71",
+            "id": "component-CoreComponent-204f654f2a0ff1efae22c9872632280427a5cca3c0152e364560ab60bb04e13db1eba6d84043f399d5c6725ec68e300b1bb5d431ddb01b266e9db12e84e519d1",
             "file": "projects/core/src/lib/core.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -1963,7 +1963,7 @@
                     "name": "config",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 87,
+                    "line": 91,
                     "type": "Observable | TableConfig",
                     "decorators": []
                 },
@@ -1971,7 +1971,7 @@
                     "name": "data",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 92,
+                    "line": 96,
                     "type": "Observable | Array",
                     "decorators": []
                 },
@@ -1979,7 +1979,7 @@
                     "name": "loading",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 73,
+                    "line": 77,
                     "type": "Observable | boolean",
                     "decorators": []
                 },
@@ -1987,7 +1987,7 @@
                     "name": "page",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 77,
+                    "line": 81,
                     "type": "number",
                     "decorators": []
                 },
@@ -1995,7 +1995,7 @@
                     "name": "search",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 82,
+                    "line": 86,
                     "type": "Observable | string | null",
                     "decorators": []
                 }
@@ -2006,7 +2006,7 @@
                     "defaultValue": "new EventEmitter<GtRowClickEvent>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 96,
+                    "line": 100,
                     "type": "EventEmitter"
                 },
                 {
@@ -2014,7 +2014,7 @@
                     "defaultValue": "new EventEmitter<GtRowHoverEvent>()",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 103,
+                    "line": 107,
                     "type": "EventEmitter"
                 }
             ],
@@ -2027,7 +2027,7 @@
                     "type": "BehaviorSubject<number>",
                     "optional": false,
                     "description": "",
-                    "line": 276,
+                    "line": 280,
                     "modifierKind": [
                         121
                     ]
@@ -2040,7 +2040,7 @@
                     "type": "ReplaySubject<Array | Observable>",
                     "optional": false,
                     "description": "",
-                    "line": 171,
+                    "line": 175,
                     "modifierKind": [
                         121
                     ]
@@ -2053,7 +2053,7 @@
                     "type": "ReplaySubject<Observable | boolean>",
                     "optional": false,
                     "description": "",
-                    "line": 145,
+                    "line": 149,
                     "modifierKind": [
                         121
                     ]
@@ -2066,7 +2066,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 102,
+                    "line": 106,
                     "modifierKind": [
                         121
                     ]
@@ -2079,7 +2079,7 @@
                     "type": "ReplaySubject<Observable | string | null>",
                     "optional": false,
                     "description": "",
-                    "line": 152,
+                    "line": 156,
                     "modifierKind": [
                         121
                     ]
@@ -2091,7 +2091,7 @@
                     "type": "TableSort | undefined",
                     "optional": false,
                     "description": "",
-                    "line": 149,
+                    "line": 153,
                     "modifierKind": [
                         121
                     ]
@@ -2104,7 +2104,7 @@
                     "type": "ReplaySubject<TableConfig | Observable>",
                     "optional": false,
                     "description": "",
-                    "line": 162,
+                    "line": 166,
                     "modifierKind": [
                         121
                     ]
@@ -2117,7 +2117,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 242
+                    "line": 246
                 },
                 {
                     "name": "colspan$",
@@ -2127,7 +2127,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 291
+                    "line": 295
                 },
                 {
                     "name": "columnOrder",
@@ -2137,7 +2137,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 335
+                    "line": 339
                 },
                 {
                     "name": "currentPage$",
@@ -2147,7 +2147,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 277
+                    "line": 281
                 },
                 {
                     "name": "data$",
@@ -2157,7 +2157,7 @@
                     "type": "Observable<Array<TableRow>>",
                     "optional": false,
                     "description": "",
-                    "line": 173
+                    "line": 177
                 },
                 {
                     "name": "footerColspan$",
@@ -2167,7 +2167,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 304
+                    "line": 308
                 },
                 {
                     "name": "rowHover$",
@@ -2177,7 +2177,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 104
+                    "line": 108
                 },
                 {
                     "name": "searchBy$",
@@ -2187,7 +2187,7 @@
                     "type": "Observable<string | null>",
                     "optional": false,
                     "description": "",
-                    "line": 154
+                    "line": 158
                 },
                 {
                     "name": "sortBy$",
@@ -2197,7 +2197,7 @@
                     "type": "Subject<TableSort>",
                     "optional": false,
                     "description": "",
-                    "line": 147
+                    "line": 151
                 },
                 {
                     "name": "table$",
@@ -2207,7 +2207,7 @@
                     "type": "Observable<TableMeta>",
                     "optional": false,
                     "description": "",
-                    "line": 247
+                    "line": 251
                 },
                 {
                     "name": "tableConfig$",
@@ -2217,7 +2217,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 165
+                    "line": 169
                 }
             ],
             "methodsClass": [
@@ -2247,7 +2247,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 128,
+                    "line": 132,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2306,7 +2306,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 98,
+                    "line": 102,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2352,7 +2352,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 111,
+                    "line": 115,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2380,7 +2380,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 112,
+                    "line": 116,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2408,7 +2408,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 113,
+                    "line": 117,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2436,7 +2436,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 114,
+                    "line": 118,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2477,7 +2477,7 @@
                     "optional": false,
                     "returnType": "",
                     "typeParameters": [],
-                    "line": 342,
+                    "line": 346,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2524,7 +2524,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 320,
+                    "line": 324,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -2547,7 +2547,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  EventEmitter,\n  Input,\n  Output,\n} from '@angular/core';\nimport {\n  BehaviorSubject,\n  combineLatest,\n  EMPTY,\n  isObservable,\n  Observable,\n  of,\n  ReplaySubject,\n  Subject,\n} from 'rxjs';\nimport { TableConfig } from './models/table-config.interface';\nimport {\n  AsyncPipe,\n  KeyValue,\n  KeyValuePipe,\n  NgClass,\n  NgTemplateOutlet,\n  SlicePipe,\n} from '@angular/common';\nimport {\n  debounceTime,\n  distinctUntilChanged,\n  map,\n  shareReplay,\n  startWith,\n  switchMap,\n  take,\n  tap,\n  withLatestFrom,\n} from 'rxjs/operators';\nimport { TableColumn } from './models/table-column.interface';\nimport { Order } from './enums/order.enum';\nimport { calculate, chunk, search } from './utilities/utilities';\nimport { TableRow } from './models/table-row.interface';\nimport { TableSort } from './models/table-sort.interface';\nimport { TableMeta } from './models/table-meta.interface';\nimport {\n  GtRowClickEvent,\n  GtRowHoverEvent,\n} from './models/table-events.interface';\nimport { CapitalCasePipe } from './pipes/capital-case.pipe';\nimport { SortClassPipe } from './pipes/sort-class.pipe';\nimport { DashCasePipe } from './pipes/dash-case.pipe';\nimport { DynamicPipe } from './pipes/dynamic.pipe';\nimport { HighlightPipe } from './pipes/highlight.pipe';\n\n@Component({\n  selector: 'angular-generic-table',\n  templateUrl: './core.component.html',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  standalone: true,\n  imports: [\n    CapitalCasePipe,\n    KeyValuePipe,\n    SortClassPipe,\n    DashCasePipe,\n    AsyncPipe,\n    NgTemplateOutlet,\n    SlicePipe,\n    DynamicPipe,\n    HighlightPipe,\n    NgClass,\n  ],\n})\nexport class CoreComponent {\n  @Input() set loading(isLoading: Observable<boolean> | boolean) {\n    this._loading$.next(isLoading);\n  }\n  @Input()\n  set page(page: number) {\n    this._currentPage$.next(page);\n  }\n\n  @Input()\n  set search(string: Observable<string> | string | null) {\n    this._searchBy$.next(string);\n  }\n\n  @Input()\n  set config(config: Observable<TableConfig<any>> | TableConfig<any>) {\n    this._tableConfig$.next(config);\n  }\n\n  @Input()\n  set data(data: Observable<Array<TableRow>> | Array<TableRow>) {\n    this._data$.next(data);\n  }\n\n  @Output() rowClick = new EventEmitter<GtRowClickEvent>();\n\n  _rowClick(row: TableRow, index: number, event: MouseEvent): void {\n    this.rowClick.emit({ row, index, event });\n  }\n\n  private _rowHover$ = new ReplaySubject<GtRowHoverEvent>(1);\n  @Output() rowHover = new EventEmitter<GtRowHoverEvent>();\n  rowHover$ = this._rowHover$.asObservable().pipe(\n    debounceTime(50),\n    distinctUntilChanged((p, q) => p.index === q.index),\n    tap((event) => this.rowHover.emit(event)),\n    shareReplay(1)\n  );\n\n  hoverRow(id: string): void;\n  hoverRow(index: number): void;\n  hoverRow(none: null): void;\n  hoverRow(arg: string | number | null): void {\n    if (typeof arg === 'number') {\n      this.data$\n        .pipe(\n          map((data) => data[arg]),\n          take(1)\n        )\n        .subscribe((row) => this._hoverRow(row, arg));\n    } else if (typeof arg === 'string') {\n      // TODO: implement hover by id\n    } else {\n      this._hoverRow(null, null);\n    }\n  }\n  _hoverRow(\n    row: TableRow | null,\n    index: number | null,\n    event?: MouseEvent\n  ): void {\n    this._rowHover$.next({ row, index, event });\n  }\n\n  get loading$(): Observable<boolean> {\n    return this._loading$.pipe(\n      startWith(false),\n      map((value) => (isObservable(value) ? value : of(value))),\n      switchMap((obs) => obs),\n      shareReplay(1)\n    );\n  }\n\n  private _loading$: ReplaySubject<Observable<boolean> | boolean> =\n    new ReplaySubject(1);\n  sortBy$: Subject<TableSort> = new Subject();\n  // tslint:disable-next-line:variable-name\n  private _sortBy: TableSort | undefined;\n\n  // tslint:disable-next-line:variable-name\n  private _searchBy$: ReplaySubject<Observable<string> | string | null> =\n    new ReplaySubject(1);\n  searchBy$: Observable<string | null> = this._searchBy$.pipe(\n    startWith(''),\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => obs),\n    shareReplay(1)\n  );\n\n  // tslint:disable-next-line:variable-name\n  private _tableConfig$: ReplaySubject<\n    TableConfig<any> | Observable<TableConfig<any>>\n  > = new ReplaySubject(1);\n  tableConfig$ = this._tableConfig$.pipe(\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => obs),\n    shareReplay(1)\n  );\n\n  private _data$: ReplaySubject<Array<TableRow> | Observable<Array<TableRow>>> =\n    new ReplaySubject(1);\n  data$: Observable<Array<TableRow>> = this._data$.pipe(\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => combineLatest([obs])),\n    withLatestFrom(this.tableConfig$),\n    map(([[data], config]) => {\n      // if columns or rows contains config for mapTo...\n      if (\n        (config.columns &&\n          !!Object.values(config.columns).find((column) => !!column.mapTo)) ||\n        (config.rows &&\n          !!Object.values(config.rows).find((column) => !!column.mapTo))\n      ) {\n        // ...map data to new keys on row...\n        const newData: TableRow[] = [];\n        for (let i = 0; i < data.length; i++) {\n          const row = data[i];\n          const newKeys = Object.entries(config.columns || config.rows || [])\n            .filter(([key, value]) => !!value.mapTo) // add keys for columns with mapTo config...\n            .reduce(\n              (previousValue, [key, value]) => ({\n                ...previousValue,\n                [key]: this.nestedValue(\n                  row,\n                  value.mapTo!.path,\n                  value.mapTo?.missingValue\n                ),\n              }),\n              {}\n            );\n          newData[i] = { ...row, ...newKeys };\n        }\n        data = newData;\n      }\n      return { data, config };\n    }),\n    switchMap((obs) =>\n      combineLatest([\n        of(obs),\n        this.sortBy$.pipe(startWith(EMPTY)),\n        this.searchBy$,\n      ])\n    ),\n    map(([table, sortBy, searchBy]) => {\n      // create a new array reference and sort new array (prevent mutating existing state)\n      table.data = [...table.data];\n      return !sortBy\n        ? searchBy\n          ? search(searchBy, false, table.data, table.config)\n          : table.data\n        : (searchBy\n            ? search(searchBy, false, table.data, table.config)\n            : table.data\n          )?.sort((a, b) => {\n            // TODO: improve logic\n            const typed = sortBy as TableSort;\n            return a[typed.sortBy] > b[typed.sortBy]\n              ? typed.sortByOrder === Order.ASC\n                ? 1\n                : -1\n              : b[typed.sortBy] > a[typed.sortBy]\n              ? typed.sortByOrder === Order.ASC\n                ? -1\n                : 1\n              : 0;\n          });\n    }),\n    shareReplay(1)\n  );\n\n  calculations$ = combineLatest([this.data$, this.tableConfig$]).pipe(\n    map(([data, config]) => calculate(data, config)),\n    shareReplay(1)\n  );\n\n  table$: Observable<TableMeta> = combineLatest([\n    this.data$,\n    this.tableConfig$,\n  ]).pipe(\n    map(([sorted, config]) => {\n      // if pagination is disabled...\n      if (!config.pagination || config.pagination.length === 0) {\n        // ...return unaltered array\n        return {\n          data: [sorted],\n          config,\n          info: { records: sorted.length, pageTotal: 1 },\n        };\n      }\n      // return record set\n      return {\n        data: chunk(sorted, +(config.pagination.length || 0)),\n        config,\n        info: {\n          records: sorted.length,\n          pageTotal: Math.ceil(\n            sorted.length / +(config.pagination.length || 0)\n          ),\n        },\n      };\n    }),\n    shareReplay(1)\n  );\n\n  private _currentPage$: BehaviorSubject<number> = new BehaviorSubject(0);\n  currentPage$ = combineLatest([this._currentPage$, this.table$]).pipe(\n    map(([page, table]: any) => {\n      // determine last page\n      const lastPage =\n        Math.ceil(\n          table.info.records /\n            (table.config?.pagination?.length || table.info.records)\n        ) - 1;\n      // determine max/min position\n      return +page < 0 ? 0 : +page > lastPage ? lastPage : +page;\n    }),\n    shareReplay(1)\n  );\n\n  colspan$ = this.tableConfig$.pipe(\n    switchMap((config) =>\n      config.columns\n        ? of(\n            Object.values(config.columns || config.rows || {}).filter(\n              (value) => value.hidden !== true\n            ).length\n          )\n        : this.data$.pipe(map((data) => data.length + 1))\n    ),\n    shareReplay(1)\n  );\n\n  footerColspan$ = this.tableConfig$.pipe(\n    map((config) => {\n      let colspan = 0;\n      Object.values(config?.footer?.columns || {}).forEach((calculations) => {\n        if (\n          Object.values(calculations).filter((value) => value !== false)\n            .length >= 0\n        ) {\n          colspan += 1;\n        }\n      }, {});\n      return colspan;\n    }),\n    shareReplay(1)\n  );\n\n  sort(property: string): void {\n    const newSortOrder =\n      this._sortBy?.sortBy !== property ||\n      this._sortBy?.sortByOrder === Order.DESC ||\n      !this._sortBy.sortByOrder\n        ? Order.ASC\n        : Order.DESC;\n    const newSortBy = {\n      sortBy: property,\n      sortByOrder: newSortOrder,\n    };\n    this.sortBy$.next(newSortBy);\n    this._sortBy = newSortBy;\n  }\n\n  columnOrder = (\n    a: KeyValue<string, TableColumn>,\n    b: KeyValue<string, TableColumn>\n  ): number => {\n    return (a.value.order || 0) - (b.value.order || 0);\n  };\n\n  nestedValue(\n    object: any,\n    mapTo: string,\n    missingValue: string | number | null = null\n  ): unknown {\n    const levels = mapTo.split('.');\n    return levels.reduce(\n      (previousValue, currentValue, index) =>\n        previousValue[currentValue] ||\n        (index === levels.length - 1 ? missingValue : {}),\n      object\n    );\n  }\n}\n",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  EventEmitter,\n  Input,\n  Output,\n} from '@angular/core';\nimport {\n  BehaviorSubject,\n  combineLatest,\n  EMPTY,\n  isObservable,\n  Observable,\n  of,\n  ReplaySubject,\n  Subject,\n} from 'rxjs';\nimport { TableConfig } from './models/table-config.interface';\nimport {\n  AsyncPipe,\n  KeyValue,\n  KeyValuePipe,\n  NgClass,\n  NgForOf,\n  NgIf,\n  NgTemplateOutlet,\n  SlicePipe,\n} from '@angular/common';\nimport {\n  debounceTime,\n  distinctUntilChanged,\n  map,\n  shareReplay,\n  startWith,\n  switchMap,\n  take,\n  tap,\n  withLatestFrom,\n} from 'rxjs/operators';\nimport { TableColumn } from './models/table-column.interface';\nimport { Order } from './enums/order.enum';\nimport { calculate, chunk, search } from './utilities/utilities';\nimport { TableRow } from './models/table-row.interface';\nimport { TableSort } from './models/table-sort.interface';\nimport { TableMeta } from './models/table-meta.interface';\nimport {\n  GtRowClickEvent,\n  GtRowHoverEvent,\n} from './models/table-events.interface';\nimport { CapitalCasePipe } from './pipes/capital-case.pipe';\nimport { SortClassPipe } from './pipes/sort-class.pipe';\nimport { DashCasePipe } from './pipes/dash-case.pipe';\nimport { DynamicPipe } from './pipes/dynamic.pipe';\nimport { HighlightPipe } from './pipes/highlight.pipe';\n\n@Component({\n  selector: 'angular-generic-table',\n  templateUrl: './core.component.html',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  standalone: true,\n  imports: [\n    CapitalCasePipe,\n    KeyValuePipe,\n    SortClassPipe,\n    DashCasePipe,\n    AsyncPipe,\n    NgTemplateOutlet,\n    SlicePipe,\n    DynamicPipe,\n    HighlightPipe,\n    NgClass,\n    NgIf,\n    NgForOf,\n  ],\n})\nexport class CoreComponent {\n  @Input() set loading(isLoading: Observable<boolean> | boolean) {\n    this._loading$.next(isLoading);\n  }\n  @Input()\n  set page(page: number) {\n    this._currentPage$.next(page);\n  }\n\n  @Input()\n  set search(string: Observable<string> | string | null) {\n    this._searchBy$.next(string);\n  }\n\n  @Input()\n  set config(config: Observable<TableConfig<any>> | TableConfig<any>) {\n    this._tableConfig$.next(config);\n  }\n\n  @Input()\n  set data(data: Observable<Array<TableRow>> | Array<TableRow>) {\n    this._data$.next(data);\n  }\n\n  @Output() rowClick = new EventEmitter<GtRowClickEvent>();\n\n  _rowClick(row: TableRow, index: number, event: MouseEvent): void {\n    this.rowClick.emit({ row, index, event });\n  }\n\n  private _rowHover$ = new ReplaySubject<GtRowHoverEvent>(1);\n  @Output() rowHover = new EventEmitter<GtRowHoverEvent>();\n  rowHover$ = this._rowHover$.asObservable().pipe(\n    debounceTime(50),\n    distinctUntilChanged((p, q) => p.index === q.index),\n    tap((event) => this.rowHover.emit(event)),\n    shareReplay(1)\n  );\n\n  hoverRow(id: string): void;\n  hoverRow(index: number): void;\n  hoverRow(none: null): void;\n  hoverRow(arg: string | number | null): void {\n    if (typeof arg === 'number') {\n      this.data$\n        .pipe(\n          map((data) => data[arg]),\n          take(1)\n        )\n        .subscribe((row) => this._hoverRow(row, arg));\n    } else if (typeof arg === 'string') {\n      // TODO: implement hover by id\n    } else {\n      this._hoverRow(null, null);\n    }\n  }\n  _hoverRow(\n    row: TableRow | null,\n    index: number | null,\n    event?: MouseEvent\n  ): void {\n    this._rowHover$.next({ row, index, event });\n  }\n\n  get loading$(): Observable<boolean> {\n    return this._loading$.pipe(\n      startWith(false),\n      map((value) => (isObservable(value) ? value : of(value))),\n      switchMap((obs) => obs),\n      shareReplay(1)\n    );\n  }\n\n  private _loading$: ReplaySubject<Observable<boolean> | boolean> =\n    new ReplaySubject(1);\n  sortBy$: Subject<TableSort> = new Subject();\n  // tslint:disable-next-line:variable-name\n  private _sortBy: TableSort | undefined;\n\n  // tslint:disable-next-line:variable-name\n  private _searchBy$: ReplaySubject<Observable<string> | string | null> =\n    new ReplaySubject(1);\n  searchBy$: Observable<string | null> = this._searchBy$.pipe(\n    startWith(''),\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => obs),\n    shareReplay(1)\n  );\n\n  // tslint:disable-next-line:variable-name\n  private _tableConfig$: ReplaySubject<\n    TableConfig<any> | Observable<TableConfig<any>>\n  > = new ReplaySubject(1);\n  tableConfig$ = this._tableConfig$.pipe(\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => obs),\n    shareReplay(1)\n  );\n\n  private _data$: ReplaySubject<Array<TableRow> | Observable<Array<TableRow>>> =\n    new ReplaySubject(1);\n  data$: Observable<Array<TableRow>> = this._data$.pipe(\n    map((value) => (isObservable(value) ? value : of(value))),\n    switchMap((obs) => combineLatest([obs])),\n    withLatestFrom(this.tableConfig$),\n    map(([[data], config]) => {\n      // if columns or rows contains config for mapTo...\n      if (\n        (config.columns &&\n          !!Object.values(config.columns).find((column) => !!column.mapTo)) ||\n        (config.rows &&\n          !!Object.values(config.rows).find((column) => !!column.mapTo))\n      ) {\n        // ...map data to new keys on row...\n        const newData: TableRow[] = [];\n        for (let i = 0; i < data.length; i++) {\n          const row = data[i];\n          const newKeys = Object.entries(config.columns || config.rows || [])\n            .filter(([key, value]) => !!value.mapTo) // add keys for columns with mapTo config...\n            .reduce(\n              (previousValue, [key, value]) => ({\n                ...previousValue,\n                [key]: this.nestedValue(\n                  row,\n                  value.mapTo!.path,\n                  value.mapTo?.missingValue\n                ),\n              }),\n              {}\n            );\n          newData[i] = { ...row, ...newKeys };\n        }\n        data = newData;\n      }\n      return { data, config };\n    }),\n    switchMap((obs) =>\n      combineLatest([\n        of(obs),\n        this.sortBy$.pipe(startWith(EMPTY)),\n        this.searchBy$,\n      ])\n    ),\n    map(([table, sortBy, searchBy]) => {\n      // create a new array reference and sort new array (prevent mutating existing state)\n      table.data = [...table.data];\n      return !sortBy\n        ? searchBy\n          ? search(searchBy, false, table.data, table.config)\n          : table.data\n        : (searchBy\n            ? search(searchBy, false, table.data, table.config)\n            : table.data\n          )?.sort((a, b) => {\n            // TODO: improve logic\n            const typed = sortBy as TableSort;\n            return a[typed.sortBy] > b[typed.sortBy]\n              ? typed.sortByOrder === Order.ASC\n                ? 1\n                : -1\n              : b[typed.sortBy] > a[typed.sortBy]\n              ? typed.sortByOrder === Order.ASC\n                ? -1\n                : 1\n              : 0;\n          });\n    }),\n    shareReplay(1)\n  );\n\n  calculations$ = combineLatest([this.data$, this.tableConfig$]).pipe(\n    map(([data, config]) => calculate(data, config)),\n    shareReplay(1)\n  );\n\n  table$: Observable<TableMeta> = combineLatest([\n    this.data$,\n    this.tableConfig$,\n  ]).pipe(\n    map(([sorted, config]) => {\n      // if pagination is disabled...\n      if (!config.pagination || config.pagination.length === 0) {\n        // ...return unaltered array\n        return {\n          data: [sorted],\n          config,\n          info: { records: sorted.length, pageTotal: 1 },\n        };\n      }\n      // return record set\n      return {\n        data: chunk(sorted, +(config.pagination.length || 0)),\n        config,\n        info: {\n          records: sorted.length,\n          pageTotal: Math.ceil(\n            sorted.length / +(config.pagination.length || 0)\n          ),\n        },\n      };\n    }),\n    shareReplay(1)\n  );\n\n  private _currentPage$: BehaviorSubject<number> = new BehaviorSubject(0);\n  currentPage$ = combineLatest([this._currentPage$, this.table$]).pipe(\n    map(([page, table]: any) => {\n      // determine last page\n      const lastPage =\n        Math.ceil(\n          table.info.records /\n            (table.config?.pagination?.length || table.info.records)\n        ) - 1;\n      // determine max/min position\n      return +page < 0 ? 0 : +page > lastPage ? lastPage : +page;\n    }),\n    shareReplay(1)\n  );\n\n  colspan$ = this.tableConfig$.pipe(\n    switchMap((config) =>\n      config.columns\n        ? of(\n            Object.values(config.columns || config.rows || {}).filter(\n              (value) => value.hidden !== true\n            ).length\n          )\n        : this.data$.pipe(map((data) => data.length + 1))\n    ),\n    shareReplay(1)\n  );\n\n  footerColspan$ = this.tableConfig$.pipe(\n    map((config) => {\n      let colspan = 0;\n      Object.values(config?.footer?.columns || {}).forEach((calculations) => {\n        if (\n          Object.values(calculations).filter((value) => value !== false)\n            .length >= 0\n        ) {\n          colspan += 1;\n        }\n      }, {});\n      return colspan;\n    }),\n    shareReplay(1)\n  );\n\n  sort(property: string): void {\n    const newSortOrder =\n      this._sortBy?.sortBy !== property ||\n      this._sortBy?.sortByOrder === Order.DESC ||\n      !this._sortBy.sortByOrder\n        ? Order.ASC\n        : Order.DESC;\n    const newSortBy = {\n      sortBy: property,\n      sortByOrder: newSortOrder,\n    };\n    this.sortBy$.next(newSortBy);\n    this._sortBy = newSortBy;\n  }\n\n  columnOrder = (\n    a: KeyValue<string, TableColumn>,\n    b: KeyValue<string, TableColumn>\n  ): number => {\n    return (a.value.order || 0) - (b.value.order || 0);\n  };\n\n  nestedValue(\n    object: any,\n    mapTo: string,\n    missingValue: string | number | null = null\n  ): unknown {\n    const levels = mapTo.split('.');\n    return levels.reduce(\n      (previousValue, currentValue, index) =>\n        previousValue[currentValue] ||\n        (index === levels.length - 1 ? missingValue : {}),\n      object\n    );\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -2568,7 +2568,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 73,
+                        "line": 77,
                         "jsdoctags": [
                             {
                                 "name": "isLoading",
@@ -2598,7 +2598,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 77,
+                        "line": 81,
                         "jsdoctags": [
                             {
                                 "name": "page",
@@ -2628,7 +2628,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 82,
+                        "line": 86,
                         "jsdoctags": [
                             {
                                 "name": "string",
@@ -2658,7 +2658,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 87,
+                        "line": 91,
                         "jsdoctags": [
                             {
                                 "name": "config",
@@ -2688,7 +2688,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 92,
+                        "line": 96,
                         "jsdoctags": [
                             {
                                 "name": "data",
@@ -2708,7 +2708,7 @@
                         "name": "loading$",
                         "type": "",
                         "returnType": "Observable<boolean>",
-                        "line": 136
+                        "line": 140
                     }
                 }
             },
@@ -2952,7 +2952,7 @@
         },
         {
             "name": "GtDeltaComponent",
-            "id": "component-GtDeltaComponent-7045e546c931cbf287394f547351457efd98a977bf36c4883151fba7f18698680191989e8efd31f1552e4a263cdab5a4599e1939008180b0995ff7fc8c12c57b",
+            "id": "component-GtDeltaComponent-8fb4a69a614da6479804bd8d9ba27b3b35fe7b57b3321db091a6aef9d41e4bdde17baf423feb26b2a6bf75a9cfde65ad67416f9043a1519d25b4e440db72a001",
             "file": "projects/core/src/lib/gt-delta/gt-delta.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -3063,7 +3063,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { ChangeDetectionStrategy, Component, Input } from '@angular/core';\nimport { TableRow } from '../models/table-row.interface';\nimport { PercentPipe } from '@angular/common';\n\n@Component({\n  selector: 'gt-delta',\n  template: `<span\n    *ngIf=\"{\n      value:\n        index === 0\n          ? initialValue\n          : ((baseIndex === undefined\n              ? data[index - 1][key]\n              : data[baseIndex][key]) -\n              data[index][key]) /\n            -Math.abs(\n              baseIndex === undefined\n                ? data[index - 1][key]\n                : data[baseIndex][key]\n            )\n    } as delta\"\n    [class]=\"[\n      classes.span,\n      !delta.value || !Number.isFinite(delta.value)\n        ? null\n        : delta.value > 0\n        ? classes.positive\n        : classes.negative\n    ]\"\n    [class.gt-delta-positive]=\"delta.value > 0 && Number.isFinite(delta.value)\"\n    [class.gt-delta-negative]=\"delta.value < 0\"\n    >{{\n      Number.isFinite(delta.value)\n        ? (delta.value | percent)\n        : delta.value === initialValue\n        ? initialValue\n        : notApplicableValue\n    }}</span\n  >`,\n  styles: [\n    `\n      :host {\n        display: inline-block;\n      }\n    `,\n  ],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  standalone: true,\n  imports: [PercentPipe],\n})\nexport class GtDeltaComponent {\n  constructor() {}\n  Math = Math;\n  Number = Number;\n  @Input() data: Array<TableRow> = [];\n  @Input() index: number = 0;\n  @Input() baseIndex?: number;\n  @Input() classes = {\n    span: 'gt-delta',\n    positive: 'text-success',\n    negative: 'text-danger',\n  };\n  @Input() key: string = 'value';\n  @Input() notApplicableValue: string = 'n/a';\n  @Input() initialValue: string = '-';\n}\n",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, Input } from '@angular/core';\nimport { TableRow } from '../models/table-row.interface';\nimport { NgIf, PercentPipe } from '@angular/common';\n\n@Component({\n  selector: 'gt-delta',\n  template: `<span\n    *ngIf=\"{\n      value:\n        index === 0\n          ? initialValue\n          : ((baseIndex === undefined\n              ? data[index - 1][key]\n              : data[baseIndex][key]) -\n              data[index][key]) /\n            -Math.abs(\n              baseIndex === undefined\n                ? data[index - 1][key]\n                : data[baseIndex][key]\n            )\n    } as delta\"\n    [class]=\"[\n      classes.span,\n      !delta.value || !Number.isFinite(delta.value)\n        ? null\n        : delta.value > 0\n        ? classes.positive\n        : classes.negative\n    ]\"\n    [class.gt-delta-positive]=\"delta.value > 0 && Number.isFinite(delta.value)\"\n    [class.gt-delta-negative]=\"delta.value < 0\"\n    >{{\n      Number.isFinite(delta.value)\n        ? (delta.value | percent)\n        : delta.value === initialValue\n        ? initialValue\n        : notApplicableValue\n    }}</span\n  >`,\n  styles: [\n    `\n      :host {\n        display: inline-block;\n      }\n    `,\n  ],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  standalone: true,\n  imports: [PercentPipe, NgIf],\n})\nexport class GtDeltaComponent {\n  constructor() {}\n  Math = Math;\n  Number = Number;\n  @Input() data: Array<TableRow> = [];\n  @Input() index: number = 0;\n  @Input() baseIndex?: number;\n  @Input() classes = {\n    span: 'gt-delta',\n    positive: 'text-success',\n    negative: 'text-danger',\n  };\n  @Input() key: string = 'value';\n  @Input() notApplicableValue: string = 'n/a';\n  @Input() initialValue: string = '-';\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "\n      :host {\n        display: inline-block;\n      }\n    \n",
@@ -3520,7 +3520,7 @@
         },
         {
             "name": "PaginationComponent",
-            "id": "component-PaginationComponent-2a5c6b531a942e1a3a88a8df0b9008a10dd76be4bc7e2455d38af233b6d894c730e8d7274d65fa4d2b4c06a3cec58aee33b3da0184c9de5e4ac70819dfd5bafd",
+            "id": "component-PaginationComponent-ddd8b790bc9cbe58cd8e1526a2a77bdaac97a9a997d4c817f2a2187e1c2ad8bd1f7676584620d7a6b02c63f333082e5e9b05b547d39a6f40c34816e2c918fb96",
             "file": "projects/core/src/lib/pagination/pagination.component.ts",
             "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
@@ -3540,7 +3540,7 @@
                     "name": "ariaLabels",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 35,
+                    "line": 37,
                     "type": "GtPaginationAriaLabels",
                     "decorators": []
                 },
@@ -3548,7 +3548,7 @@
                     "name": "classes",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 28,
+                    "line": 30,
                     "type": "GtPaginationClasses",
                     "decorators": []
                 },
@@ -3556,7 +3556,7 @@
                     "name": "paginationLength",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 21,
+                    "line": 23,
                     "type": "number",
                     "decorators": []
                 },
@@ -3564,7 +3564,7 @@
                     "name": "table",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 41,
+                    "line": 43,
                     "type": "CoreComponent",
                     "decorators": []
                 }
@@ -3579,7 +3579,7 @@
                     "type": "GtPaginationAriaLabels",
                     "optional": false,
                     "description": "",
-                    "line": 48,
+                    "line": 50,
                     "modifierKind": [
                         121
                     ]
@@ -3592,7 +3592,7 @@
                     "type": "GtPaginationClasses",
                     "optional": false,
                     "description": "",
-                    "line": 52,
+                    "line": 54,
                     "modifierKind": [
                         121
                     ]
@@ -3605,7 +3605,7 @@
                     "type": "number",
                     "optional": false,
                     "description": "",
-                    "line": 57,
+                    "line": 59,
                     "modifierKind": [
                         121
                     ]
@@ -3617,7 +3617,7 @@
                     "type": "CoreComponent | undefined",
                     "optional": false,
                     "description": "",
-                    "line": 47,
+                    "line": 49,
                     "modifierKind": [
                         121
                     ]
@@ -3630,7 +3630,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 58
+                    "line": 60
                 },
                 {
                     "name": "table$",
@@ -3640,7 +3640,7 @@
                     "type": "ReplaySubject<CoreComponent>",
                     "optional": false,
                     "description": "",
-                    "line": 46
+                    "line": 48
                 }
             ],
             "methodsClass": [
@@ -3663,7 +3663,7 @@
                     "optional": false,
                     "returnType": "Array<number>",
                     "typeParameters": [],
-                    "line": 65,
+                    "line": 67,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -3700,7 +3700,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 97,
+                    "line": 99,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -3723,7 +3723,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { ChangeDetectionStrategy, Component, Input } from '@angular/core';\nimport { combineLatest, ReplaySubject } from 'rxjs';\nimport { map, pluck, switchMap } from 'rxjs/operators';\nimport { CoreComponent } from '../core.component';\nimport {\n  GtPaginationAriaLabels,\n  GtPaginationClasses,\n} from '../models/gt-pagination';\n\n@Component({\n  selector: 'angular-generic-table-pagination',\n  templateUrl: './pagination.component.html',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  standalone: true,\n})\nexport class PaginationComponent {\n  get paginationLength(): number {\n    return this._paginationLength;\n  }\n\n  @Input() set paginationLength(value: number) {\n    this._paginationLength = +value;\n  }\n  get classes(): GtPaginationClasses {\n    return this._classes;\n  }\n\n  @Input() set classes(value: GtPaginationClasses) {\n    this._classes = value;\n  }\n  get ariaLabels(): GtPaginationAriaLabels {\n    return this._ariaLabels;\n  }\n\n  @Input() set ariaLabels(value: GtPaginationAriaLabels) {\n    this._ariaLabels = value;\n  }\n  get table(): CoreComponent {\n    return <CoreComponent>this._table;\n  }\n  @Input() set table(value: CoreComponent) {\n    this._table = value;\n    this.table$.next(value);\n  }\n\n  table$: ReplaySubject<CoreComponent> = new ReplaySubject(1);\n  private _table: CoreComponent | undefined;\n  private _ariaLabels: GtPaginationAriaLabels = {\n    nav: 'Table pagination',\n    button: 'Go to page ',\n  };\n  private _classes: GtPaginationClasses = {\n    ul: 'pagination',\n    li: 'page-item',\n    button: 'page-link',\n  };\n  private _paginationLength: number = 5;\n  pagination$ = this.table$.pipe(\n    switchMap((core) =>\n      combineLatest([core?.table$.pipe(pluck('info')), core?.currentPage$])\n    ),\n    map(([info, currentPage]) => this.generateList(info.pageTotal, currentPage))\n  );\n\n  generateList(pages: number, currentPosition: number): Array<number> {\n    const middle = Math.floor(this.paginationLength / 2);\n    const length =\n      pages < this.paginationLength ? pages : this.paginationLength;\n\n    return Array.from({ length }, (_, i) => {\n      if (i === 0) {\n        return 1;\n      } else if (pages < this.paginationLength) {\n        return i + 1;\n      } else if (i + 1 === length) {\n        return pages;\n      } else if (currentPosition > middle && currentPosition < pages - middle) {\n        return i + currentPosition - (middle - 1);\n      } else if (\n        currentPosition > middle &&\n        currentPosition < pages - (middle - 1)\n      ) {\n        return i + currentPosition - middle;\n      } else if (\n        currentPosition > middle &&\n        currentPosition === pages - (middle - 1)\n      ) {\n        return i + currentPosition - (middle + 1);\n      } else if (currentPosition > middle && currentPosition === pages - 1) {\n        return i + currentPosition - (middle + 2);\n      } else {\n        return i + 1;\n      }\n    });\n  }\n\n  goto(page: number): void {\n    if (this.table) {\n      this.table.page = page - 1;\n    }\n  }\n}\n",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, Input } from '@angular/core';\nimport { combineLatest, ReplaySubject } from 'rxjs';\nimport { map, pluck, switchMap } from 'rxjs/operators';\nimport { CoreComponent } from '../core.component';\nimport {\n  GtPaginationAriaLabels,\n  GtPaginationClasses,\n} from '../models/gt-pagination';\nimport { AsyncPipe, NgForOf, NgIf } from '@angular/common';\n\n@Component({\n  selector: 'angular-generic-table-pagination',\n  templateUrl: './pagination.component.html',\n  changeDetection: ChangeDetectionStrategy.OnPush,\n  standalone: true,\n  imports: [AsyncPipe, NgIf, NgForOf],\n})\nexport class PaginationComponent {\n  get paginationLength(): number {\n    return this._paginationLength;\n  }\n\n  @Input() set paginationLength(value: number) {\n    this._paginationLength = +value;\n  }\n  get classes(): GtPaginationClasses {\n    return this._classes;\n  }\n\n  @Input() set classes(value: GtPaginationClasses) {\n    this._classes = value;\n  }\n  get ariaLabels(): GtPaginationAriaLabels {\n    return this._ariaLabels;\n  }\n\n  @Input() set ariaLabels(value: GtPaginationAriaLabels) {\n    this._ariaLabels = value;\n  }\n  get table(): CoreComponent {\n    return <CoreComponent>this._table;\n  }\n  @Input() set table(value: CoreComponent) {\n    this._table = value;\n    this.table$.next(value);\n  }\n\n  table$: ReplaySubject<CoreComponent> = new ReplaySubject(1);\n  private _table: CoreComponent | undefined;\n  private _ariaLabels: GtPaginationAriaLabels = {\n    nav: 'Table pagination',\n    button: 'Go to page ',\n  };\n  private _classes: GtPaginationClasses = {\n    ul: 'pagination',\n    li: 'page-item',\n    button: 'page-link',\n  };\n  private _paginationLength: number = 5;\n  pagination$ = this.table$.pipe(\n    switchMap((core) =>\n      combineLatest([core?.table$.pipe(pluck('info')), core?.currentPage$])\n    ),\n    map(([info, currentPage]) => this.generateList(info.pageTotal, currentPage))\n  );\n\n  generateList(pages: number, currentPosition: number): Array<number> {\n    const middle = Math.floor(this.paginationLength / 2);\n    const length =\n      pages < this.paginationLength ? pages : this.paginationLength;\n\n    return Array.from({ length }, (_, i) => {\n      if (i === 0) {\n        return 1;\n      } else if (pages < this.paginationLength) {\n        return i + 1;\n      } else if (i + 1 === length) {\n        return pages;\n      } else if (currentPosition > middle && currentPosition < pages - middle) {\n        return i + currentPosition - (middle - 1);\n      } else if (\n        currentPosition > middle &&\n        currentPosition < pages - (middle - 1)\n      ) {\n        return i + currentPosition - middle;\n      } else if (\n        currentPosition > middle &&\n        currentPosition === pages - (middle - 1)\n      ) {\n        return i + currentPosition - (middle + 1);\n      } else if (currentPosition > middle && currentPosition === pages - 1) {\n        return i + currentPosition - (middle + 2);\n      } else {\n        return i + 1;\n      }\n    });\n  }\n\n  goto(page: number): void {\n    if (this.table) {\n      this.table.page = page - 1;\n    }\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -3744,7 +3744,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 21,
+                        "line": 23,
                         "jsdoctags": [
                             {
                                 "name": "value",
@@ -3761,7 +3761,7 @@
                         "name": "paginationLength",
                         "type": "number",
                         "returnType": "number",
-                        "line": 17
+                        "line": 19
                     }
                 },
                 "classes": {
@@ -3780,7 +3780,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 28,
+                        "line": 30,
                         "jsdoctags": [
                             {
                                 "name": "value",
@@ -3797,7 +3797,7 @@
                         "name": "classes",
                         "type": "",
                         "returnType": "GtPaginationClasses",
-                        "line": 24
+                        "line": 26
                     }
                 },
                 "ariaLabels": {
@@ -3816,7 +3816,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 35,
+                        "line": 37,
                         "jsdoctags": [
                             {
                                 "name": "value",
@@ -3833,7 +3833,7 @@
                         "name": "ariaLabels",
                         "type": "",
                         "returnType": "GtPaginationAriaLabels",
-                        "line": 31
+                        "line": 33
                     }
                 },
                 "table": {
@@ -3852,7 +3852,7 @@
                             }
                         ],
                         "returnType": "void",
-                        "line": 41,
+                        "line": 43,
                         "jsdoctags": [
                             {
                                 "name": "value",
@@ -3869,7 +3869,7 @@
                         "name": "table",
                         "type": "",
                         "returnType": "CoreComponent",
-                        "line": 38
+                        "line": 40
                     }
                 }
             },
