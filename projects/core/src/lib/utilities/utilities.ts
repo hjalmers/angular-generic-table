@@ -141,6 +141,11 @@ export let calculate = (data: Array<TableRow>, config: TableConfig) => {
     Object.entries(COLUMN_CALCULATIONS).forEach(([column, calculations]) => {
       if (calculations.indexOf('avg') !== -1) {
         CALCULATED[column].avg = CALCULATED[column]?.sum / data.length;
+        // if sum is not part of calculations config...
+        if (calculations.indexOf('sum') === -1 && CALCULATED[column].sum) {
+          // ...remove it
+          delete CALCULATED[column].sum;
+        }
       }
       if (calculations.indexOf('count') !== -1) {
         CALCULATED[column].count = data.length;
