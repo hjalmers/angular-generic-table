@@ -1,0 +1,37 @@
+import { Meta, Story } from '@storybook/addon-docs';
+
+import {moduleMetadata} from "@storybook/angular";
+import {BrowserModule} from "@angular/platform-browser";
+import {CommonModule} from "@angular/common";
+import {GenericTableCoreModule} from "../../../../core/src/lib/core.module";
+import {Advanced, AdvancedComponent} from "../../app/examples/advanced/advanced.component";
+import {ReactiveFormsModule} from "@angular/forms";
+import {TabsComponent} from "../../app/components/tabs/tabs.component";
+import {HttpClientModule} from "@angular/common/http";
+import {GenericTablePaginationModule} from "../../../../core/src/lib/pagination/pagination.module";
+
+<Meta title="Examples/Multiple features" decorators={[
+  moduleMetadata({
+    declarations: [AdvancedComponent, TabsComponent],
+    imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
+  })]}/>
+
+
+# Multiple features
+
+Example showcasing:
+* Sorting
+* Loading state
+* Empty state
+* Global search
+* Mobile table layout with sticky header (resize viewport to < 576px to view example)
+* Custom pagination
+* Add/remove data
+* Custom templates
+* Table footer
+
+### Example
+
+<Story name="Multiple features">
+  {Advanced.bind({})}
+</Story>

@@ -1,0 +1,39 @@
+import { Meta, Story } from '@storybook/addon-docs';
+
+import {moduleMetadata} from "@storybook/angular";
+import {BrowserModule} from "@angular/platform-browser";
+import {CommonModule} from "@angular/common";
+import {GenericTableCoreModule} from "../../../../core/src/lib/core.module";
+import {Mobile} from "../../app/examples/mobile-layout/mobile-layout.component";
+import {ReactiveFormsModule} from "@angular/forms";
+import {TabsComponent} from "../../app/components/tabs/tabs.component";
+import {HttpClientModule} from "@angular/common/http";
+import {GenericTablePaginationModule} from "../../../../core/src/lib/pagination/pagination.module";
+
+<Meta title="Examples/Mobile layout" decorators={[
+  moduleMetadata({
+    declarations: [TabsComponent],
+    imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
+  })]}/>
+
+
+# Mobile layout
+
+Use mobile layout for table by setting `mobileLayout` config option to `true` for table (or by adding class `.table-mobile` to table). Using config option is the preferred way as it will not only add the correct styling but also hide mobile headers automatically when option changes. Generic table uses CSS to create an layout optimized for mobiles, i.e the markup stays the same and it's still use table elements for rendering. Resize the window or view the example below on a small screen to checkout the mobile version as well as the ability toggle to desktop layout.
+
+### Set breakpoint for mobile layout
+Since Generic table relies solely on CSS and media queries to accomplish the mobile layout, it's just a matter of declaring a breakpoint using `SCSS`. Override the default value of `576px`
+(bootstrap breakpoint for small screens), by passing a new value for `$mobile-style-max-width` like this:
+
+```scss
+@use '@angular-generic-table/core/scss' as generic-table-styles with (
+  $mobile-style-max-width: 375px
+);
+@include generic-table-styles.styles();
+```
+
+### Example
+
+<Story name="Mobile layout">
+  {Mobile.bind({})}
+</Story>

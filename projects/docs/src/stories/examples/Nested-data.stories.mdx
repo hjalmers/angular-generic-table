@@ -1,0 +1,28 @@
+import { Meta, Story } from '@storybook/addon-docs';
+
+import {moduleMetadata} from "@storybook/angular";
+import {BrowserModule} from "@angular/platform-browser";
+import {CommonModule} from "@angular/common";
+import {GenericTableCoreModule} from "../../../../core/src/lib/core.module";
+import {ReactiveFormsModule} from "@angular/forms";
+import {TabsComponent} from "../../app/components/tabs/tabs.component";
+import {HttpClientModule} from "@angular/common/http";
+import {GenericTablePaginationModule} from "../../../../core/src/lib/pagination/pagination.module";
+import {Nested, NestedDataComponent} from "../../app/examples/nested-data/nested-data.component";
+
+<Meta title="Examples/Nested data" decorators={[
+  moduleMetadata({
+    declarations: [TabsComponent, NestedDataComponent],
+    imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
+  })]}/>
+
+
+
+
+# Nested data
+
+Generic table can generate tables based on nested JSON structures, just use `mapTo` option and pass string path to object value as `path` and optionally a `missingValue` value which will be used if key is undefined.
+
+<Story name="Nested data">
+  {Nested.bind({})}
+</Story>

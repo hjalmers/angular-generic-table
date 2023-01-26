@@ -50,10 +50,19 @@ export const ADVANCED_DOCS = [
   </div>
 </div>
 <ng-template #actions let-row="row" let-col="col" let-index="index">
-  <button class="btn btn-outline-primary btn-sm my-sm-n3" (click)="clickAction(row, col, index)">Click me!</button>
+  <button
+    *ngIf="index !== undefined"
+    class="btn btn-outline-primary btn-sm"
+    (click)="clickAction(row, col, index)"
+  >
+    Click me!
+  </button>
 </ng-template>
 <ng-template #color let-row="row" let-col="col">
-  <div [style.background]="row[col.key]" style="width: 1.5rem; height: 1.5rem; border-radius: 50%"></div>
+  <div
+    [style.background]="row[col.key]"
+    style="width: 1.5rem; height: 1.5rem; border-radius: 50%"
+  ></div>
 </ng-template>`,
     language: 'xml',
   },

@@ -84,6 +84,7 @@
 </div>
 <ng-template #actions let-row="row" let-col="col" let-index="index">
   <button
+    *ngIf="index !== undefined"
     class="btn btn-outline-primary btn-sm"
     (click)="clickAction(row, col, index)"
   >

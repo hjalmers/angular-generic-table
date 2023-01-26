@@ -36,6 +36,7 @@ export class SimpleComponent {
     },
   ];
   config: TableConfig<BasicData> = {
+    class: 'table table-striped table-bordered',
     columns: {
       firstName: {},
       lastName: {},

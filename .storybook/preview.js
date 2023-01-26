@@ -3,6 +3,12 @@ import docJson from "../documentation.json";
 
 setCompodocJson(docJson);
 
+const menuOrder = {
+  introduction: 0,
+  "concepts-api-sorting": 1,
+  examples: 2,
+};
+
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {
@@ -12,6 +18,30 @@ export const parameters = {
     },
   },
   docs: { inlineStories: true },
+  options: {
+    storySort: {
+      includeName: false,
+      order: [
+        "Introduction",
+        "Examples",
+        [
+          "Basic",
+          "Sorting",
+          "Nested data",
+          "Row click & hover",
+          "Pagination",
+          "Custom templates",
+          "Table footer",
+          "Horizontal layout",
+          "Transpose data",
+          "Mobile layout",
+        ],
+      ],
+      //order: (a, b) => console.log(a, b),
+    },
+    //(a, b) =>
+    //menuOrder[a[1].componentId] < menuOrder[b[1].componentId] ? -1 : 1,
+  },
   themes: {
     //default: "Swimbird - Dark",
     default: "Bootstrap",

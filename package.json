@@ -70,6 +70,7 @@
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
+    "@a110/storybook-expand-all": "^1.1.1",
     "@angular-devkit/build-angular": "^15.1.2",
     "@angular-eslint/builder": "15.2.0",
     "@angular-eslint/eslint-plugin": "15.2.0",

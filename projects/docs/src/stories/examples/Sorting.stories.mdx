@@ -1,0 +1,41 @@
+import { Meta, Story } from '@storybook/addon-docs';
+
+import {moduleMetadata} from "@storybook/angular";
+import {BrowserModule} from "@angular/platform-browser";
+import {CommonModule} from "@angular/common";
+import {GenericTableCoreModule} from "../../../../core/src/lib/core.module";
+import {Sorting, SortingComponent} from "../../app/examples/sorting/sorting.component";
+import {ReactiveFormsModule} from "@angular/forms";
+import {TabsComponent} from "../../app/components/tabs/tabs.component";
+import {HttpClientModule} from "@angular/common/http";
+import {GenericTablePaginationModule} from "../../../../core/src/lib/pagination/pagination.module";
+
+<Meta title="Examples/Sorting" decorators={[
+  moduleMetadata({
+    declarations: [TabsComponent, SortingComponent],
+    imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
+  })]}/>
+
+# Sorting
+
+**Sort on multiple columns**<br/>
+Generic table supports sorting on multiple columns by holding "shift" key while sorting. To set or update sort order for a table use `sortOrder` input and pass `GtSortOrder<R>` which should be an array with keys and order to sort on e.g. `[{key: 'firstName', order: 'asc'}, {key: 'gender', order: 'desc'}]`.
+
+**Call sort programmatically**<br/>
+It's also possible to call sort programmatically by calling `sortByKey` method on `GenericTableComponent` instance. The method accepts a row key and an optional mouse event as arguments e.g. `table.sortByKey('firstName', $event)`.
+
+**Toggle sortable columns**<br/>
+The ability to sort columns by clicking on the column header is disabled by default. To enable this feature set `sortable` to `true` in the column configuration.
+
+**Handle sorting externally**<br/>
+It's possible to disable table sorting within the component by setting `disableTableSort` in tableConfig to `true`. This is useful when sorting is handled externally e.g. for server-side pagination. The table will still use `sortOrder` to visually show how the data is sorted but keep in mind that the data should be sorted accordingly when passed to the table.
+
+**Sorting events**<br/>
+Listen to `columnSort` event which emits `GtSortEvent<R>` to get notified when the sort order changes e.g. `(columnSort)=logSortChange($event)` this could be used to trigger sorting externally. `sortOrder` also supports two-way binding e.g. `[(sortOrder)]=sortOrder` to sync `GtSortOrder<R>`.
+
+### Example
+The initial sort order for the table below is set to: `[{ key: 'birthdate', order: 'asc' }, { key: 'gender', order: 'asc' }, { key: 'firstName', order: 'desc' }]` and all columns are sortable with `sortable` set to `true`. Shift + click column headers or the sort button below to sort on multiple columns. It also listens to `columnSort` events which are written to the console.
+
+<Story name="Sorting">
+  {Sorting.bind({})}
+</Story>

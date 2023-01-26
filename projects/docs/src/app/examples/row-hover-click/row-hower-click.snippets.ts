@@ -21,6 +21,7 @@ import { GtRowClickEvent, GtRowHoverEvent } from '@angular-generic-table/core';
         (rowHover)="onRowHover($event)"
         #tableRef
       ></angular-generic-table>
+      {{ clicked }}
     </div>',
   styles: [
     \`
@@ -31,6 +32,7 @@ import { GtRowClickEvent, GtRowHoverEvent } from '@angular-generic-table/core';
   ],
 })
 export class RowHoverClickComponent {
+  clicked = '';
   data = [
     {
       firstName: 'Peter',
@@ -58,6 +60,7 @@ export class RowHoverClickComponent {
 
   onRowClick(event: GtRowClickEvent) {
     console.log('row clicked', event);
+    this.clicked = \`clicked row number: \${event.index}\`;
   }
   onRowHover(event: GtRowHoverEvent) {
     console.log('row hovered', event);

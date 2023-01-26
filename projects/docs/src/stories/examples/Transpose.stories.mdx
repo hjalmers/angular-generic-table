@@ -1,0 +1,24 @@
+import { Meta, Story } from '@storybook/addon-docs';
+
+import {moduleMetadata} from "@storybook/angular";
+import {BrowserModule} from "@angular/platform-browser";
+import {CommonModule} from "@angular/common";
+import {GenericTableCoreModule} from "../../../../core/src/lib/core.module";
+import {ReactiveFormsModule} from "@angular/forms";
+import {TabsComponent} from "../../app/components/tabs/tabs.component";
+import {HttpClientModule} from "@angular/common/http";
+import {GenericTablePaginationModule} from "../../../../core/src/lib/pagination/pagination.module";
+import {Transpose} from '../../app/examples/transpose/transpose.component';
+
+<Meta title="Examples/Transpose data" decorators={[
+  moduleMetadata({
+    declarations: [TabsComponent],
+    imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
+  })]}/>
+
+# Transpose table (flip layout)
+
+Similar to <a href="examples?path=/docs/examples-horizontal-layout--horizontal-layout">horizontal layout example</a> but with <code>search</code> and <code>pagination</code> enabled as well as the ability to switch between row-layout and column-layout.
+<Story name="Transpose data">
+  {Transpose.bind({})}
+</Story>

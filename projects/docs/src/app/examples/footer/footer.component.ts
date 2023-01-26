@@ -47,17 +47,27 @@ export class FooterComponent implements OnInit {
 
   ngOnInit() {
     this.config = {
+      mobileLayout: true,
       columns: {
-        firstName: {},
-        lastName: {},
-        gender: {},
+        firstName: {
+          mobileHeader: true,
+        },
+        lastName: {
+          mobileHeader: true,
+        },
+        gender: {
+          mobileHeader: true,
+        },
         favoriteFood: {
+          mobileHeader: true,
           class: 'text-end flex-end',
         },
         age: {
+          mobileHeader: true,
           class: 'text-end',
         },
         weight: {
+          mobileHeader: true,
           class: 'text-end',
           transform: {
             pipe: DecimalPipe,
@@ -65,6 +75,7 @@ export class FooterComponent implements OnInit {
           },
         },
         height: {
+          mobileHeader: true,
           class: 'text-end',
           templateRef: this.heightTmplRef,
         },

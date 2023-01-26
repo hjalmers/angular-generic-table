@@ -1,0 +1,27 @@
+import { Meta, Story } from '@storybook/addon-docs';
+
+import {moduleMetadata} from "@storybook/angular";
+import {BrowserModule} from "@angular/platform-browser";
+import {CommonModule} from "@angular/common";
+import {GenericTableCoreModule} from "../../../../core/src/lib/core.module";
+import {ReactiveFormsModule} from "@angular/forms";
+import {TabsComponent} from "../../app/components/tabs/tabs.component";
+import {CustomTemplates, CustomTemplatesComponent} from "../../app/examples/custom-templates/custom-templates.component";
+import {HttpClientModule} from "@angular/common/http";
+import {GenericTablePaginationModule} from "../../../../core/src/lib/pagination/pagination.module";
+
+<Meta title="Examples/Custom templates" decorators={[
+  moduleMetadata({
+    declarations: [CustomTemplatesComponent, TabsComponent],
+    imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
+  })]}/>
+
+
+
+# Custom templates
+
+Define custom templates and assign them to different columns using the `templateRef` property when declaring `columns` in `config`.
+
+<Story name="Custom templates">
+  {CustomTemplates.bind({})}
+</Story>
