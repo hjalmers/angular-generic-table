@@ -1,6 +1,9 @@
-import { Order } from '../enums/order.enum';
+import { TableRow } from './table-row.interface';
 
-export interface TableSort {
-  sortBy: string;
-  sortByOrder: Order;
+export type GtSortOrder<R = TableRow> = Array<GtSortConfig<R>>;
+export interface GtSortConfig<R = {}> {
+  key: keyof R;
+  order: GtOrder;
 }
+
+export type GtOrder = 'asc' | 'desc';

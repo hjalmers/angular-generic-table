@@ -8,12 +8,10 @@ import {
 import {
   BehaviorSubject,
   combineLatest,
-  EMPTY,
   isObservable,
   Observable,
   of,
   ReplaySubject,
-  Subject,
 } from 'rxjs';
 import { TableConfig } from './models/table-config.interface';
 import {
@@ -38,14 +36,19 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 import { TableColumn } from './models/table-column.interface';
-import { Order } from './enums/order.enum';
-import { calculate, chunk, search } from './utilities/utilities';
+import {
+  calculate,
+  chunk,
+  search,
+  sortOnMultipleKeys,
+} from './utilities/utilities';
 import { TableRow } from './models/table-row.interface';
-import { TableSort } from './models/table-sort.interface';
+import { GtOrder, GtSortOrder } from './models/table-sort.interface';
 import { TableMeta } from './models/table-meta.interface';
 import {
   GtRowClickEvent,
   GtRowHoverEvent,
+  GtSortEvent,
 } from './models/table-events.interface';
 import { CapitalCasePipe } from './pipes/capital-case.pipe';
 import { SortClassPipe } from './pipes/sort-class.pipe';
@@ -74,6 +77,10 @@ import { HighlightPipe } from './pipes/highlight.pipe';
   ],
 })
 export class CoreComponent {
+  get sortOrder$(): Observable<GtSortOrder> {
+    return this._sortOrder$.asObservable();
+  }
+
   @Input() set loading(isLoading: Observable<boolean> | boolean) {
     this._loading$.next(isLoading);
   }
@@ -97,7 +104,17 @@ export class CoreComponent {
     this._data$.next(data);
   }
 
+  @Input() set sortOrder(sortConfig: GtSortOrder<any>) {
+    if (JSON.stringify(sortConfig) !== JSON.stringify(this._sortOrder$.value)) {
+      this.sortOrderChange.emit(sortConfig);
+      this._sortOrder$.next(sortConfig);
+    }
+  }
+
   @Output() rowClick = new EventEmitter<GtRowClickEvent>();
+  @Output('sortOrderChange') sortOrderChange = new EventEmitter<
+    GtSortOrder<TableRow>
+  >();
 
   _rowClick(row: TableRow, index: number, event: MouseEvent): void {
     this.rowClick.emit({ row, index, event });
@@ -105,6 +122,7 @@ export class CoreComponent {
 
   private _rowHover$ = new ReplaySubject<GtRowHoverEvent>(1);
   @Output() rowHover = new EventEmitter<GtRowHoverEvent>();
+  @Output() columnSort = new EventEmitter<GtSortEvent>();
   rowHover$ = this._rowHover$.asObservable().pipe(
     debounceTime(50),
     distinctUntilChanged((p, q) => p.index === q.index),
@@ -148,11 +166,8 @@ export class CoreComponent {
 
   private _loading$: ReplaySubject<Observable<boolean> | boolean> =
     new ReplaySubject(1);
-  sortBy$: Subject<TableSort> = new Subject();
-  // tslint:disable-next-line:variable-name
-  private _sortBy: TableSort | undefined;
-
-  // tslint:disable-next-line:variable-name
+  private _sortOrder$: BehaviorSubject<GtSortOrder> =
+    new BehaviorSubject<GtSortOrder>([]);
   private _searchBy$: ReplaySubject<Observable<string> | string | null> =
     new ReplaySubject(1);
   searchBy$: Observable<string | null> = this._searchBy$.pipe(
@@ -163,9 +178,9 @@ export class CoreComponent {
   );
 
   // tslint:disable-next-line:variable-name
-  private _tableConfig$: ReplaySubject<
+  private _tableConfig$: BehaviorSubject<
     TableConfig<any> | Observable<TableConfig<any>>
-  > = new ReplaySubject(1);
+  > = new BehaviorSubject({});
   tableConfig$ = this._tableConfig$.pipe(
     map((value) => (isObservable(value) ? value : of(value))),
     switchMap((obs) => obs),
@@ -210,35 +225,20 @@ export class CoreComponent {
       return { data, config };
     }),
     switchMap((obs) =>
-      combineLatest([
-        of(obs),
-        this.sortBy$.pipe(startWith(EMPTY)),
-        this.searchBy$,
-      ])
+      combineLatest([of(obs), this.sortOrder$, this.searchBy$])
     ),
     map(([table, sortBy, searchBy]) => {
       // create a new array reference and sort new array (prevent mutating existing state)
       table.data = [...table.data];
-      return !sortBy
+      return !sortBy.length || table.config?.disableTableSort
         ? searchBy
           ? search(searchBy, false, table.data, table.config)
           : table.data
-        : (searchBy
-            ? search(searchBy, false, table.data, table.config)
-            : table.data
-          )?.sort((a, b) => {
-            // TODO: improve logic
-            const typed = sortBy as TableSort;
-            return a[typed.sortBy] > b[typed.sortBy]
-              ? typed.sortByOrder === Order.ASC
-                ? 1
-                : -1
-              : b[typed.sortBy] > a[typed.sortBy]
-              ? typed.sortByOrder === Order.ASC
-                ? -1
-                : 1
-              : 0;
-          });
+        : searchBy
+        ? search(searchBy, false, table.data, table.config)?.sort(
+            sortOnMultipleKeys(sortBy)
+          )
+        : table.data?.sort(sortOnMultipleKeys(sortBy));
     }),
     shareReplay(1)
   );
@@ -321,19 +321,70 @@ export class CoreComponent {
     shareReplay(1)
   );
 
-  sort(property: string): void {
-    const newSortOrder =
-      this._sortBy?.sortBy !== property ||
-      this._sortBy?.sortByOrder === Order.DESC ||
-      !this._sortBy.sortByOrder
-        ? Order.ASC
-        : Order.DESC;
-    const newSortBy = {
-      sortBy: property,
-      sortByOrder: newSortOrder,
+  /** sortByKey - Sort by key in table row
+   * @param key - key to sort by
+   * @param { MouseEvent } [$event] - Mouse event triggering sort, if shift key is pressed sort key will be added to already present sort keys
+   */
+  sortByKey(key: keyof TableRow, $event?: MouseEvent): void {
+    const shiftKey = $event?.shiftKey;
+    const currentOrder = this._sortOrder$.value;
+    let sortOrder: GtOrder = 'asc';
+    let newOrder: GtSortOrder = [];
+    // if shift key is pressed while sorting...
+    if (shiftKey) {
+      // ...check if key is already sorted
+      const existingSortPosition = currentOrder.findIndex(
+        (value) => value.key === key
+      );
+      if (existingSortPosition === -1) {
+        // ...if key is not sorted, add it to the end of the sort order
+        newOrder = [...currentOrder, { key, order: 'asc' }];
+      } else {
+        // ...if key is already sorted, toggle sort order
+        sortOrder = currentOrder[existingSortPosition].order;
+        const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+        newOrder = [...currentOrder];
+        newOrder[existingSortPosition] = {
+          ...newOrder[existingSortPosition],
+          order: newSortOrder,
+        };
+      }
+    } else {
+      // ...else if shift key is not pressed...
+      if (currentOrder.length > 0) {
+        // ...check if key is already sorted
+        const existingSortPosition = currentOrder.findIndex(
+          (value) => value.key === key
+        );
+        // ...if key is already sorted, toggle sort order
+        if (existingSortPosition === -1) {
+          newOrder = [{ key, order: 'asc' }];
+        } else {
+          sortOrder = currentOrder[existingSortPosition].order;
+          const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+          newOrder = [{ key, order: newSortOrder }];
+        }
+      } else {
+        // ...if key is not sorted set sort order for key to ascending
+        newOrder = [{ key, order: sortOrder }];
+      }
+    }
+    // create sort event
+    const sortEvent: GtSortEvent = {
+      key,
+      order: sortOrder,
+      currentSortOrder: newOrder,
     };
-    this.sortBy$.next(newSortBy);
-    this._sortBy = newSortBy;
+
+    // if event is passed to sort function...
+    if ($event) {
+      // ...emit it as well
+      sortEvent.event = $event;
+    }
+    // emit sort event
+    this.columnSort.emit(sortEvent);
+    // update sort order
+    this.sortOrder = newOrder;
   }
 
   columnOrder = (

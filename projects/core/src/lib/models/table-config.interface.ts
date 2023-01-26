@@ -2,7 +2,8 @@ import { TableColumn } from './table-column.interface';
 import { TableRow } from './table-row.interface';
 
 export interface TableConfig<R = TableRow> {
-  hidden?: boolean;
+  /** Disable sorting of table data, useful when sorting is handled externally e.g. server-side pagination. Table will still use sortOrder to visually show how the data is sorted. <p>**Default:** `false`</p> */
+  disableTableSort?: boolean;
   mobileLayout?: boolean;
   stickyHeaders?: {
     row?: boolean;

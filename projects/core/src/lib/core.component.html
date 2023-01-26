@@ -27,15 +27,20 @@
             column.value.class
           }}"
           [class.disabled]="table.isLoading"
-          [attr.aria-sort]="sortBy$ | async | sortClass: column.key:true"
+          [attr.aria-sort]="sortOrder$ | async | sortClass: column.key:'aria'"
           [class.gt-sortable]="true"
           scope="col"
         >
           <button
             *ngIf="column.value?.sortable"
+            [attr.data-sort-order]="
+              sortOrder$ | async | sortClass: column.key:'order'
+            "
             class="gt-sort"
             (click)="
-              table.isLoading || !column.value.sortable || sort(column.key)
+              table.isLoading ||
+                !column.value.sortable ||
+                sortByKey(column.key, $event)
             "
           >
             <span *ngIf="column.value?.header !== false">{{
@@ -55,12 +60,16 @@
       >
         <th
           class="row-header"
-          [attr.aria-sort]="sortBy$ | async | sortClass: headerRow.key:true"
+          [attr.aria-sort]="
+            sortOrder$ | async | sortClass: headerRow.key:'aria'
+          "
           ngClass="{{ headerRow.value.sortable ? 'sort ' : '' }} {{
-            sortBy$ | async | sortClass: headerRow.key
+            sortOrder$ | async | sortClass: headerRow.key
           }} {{ (headerRow.key | dashCase) + '-column' }}"
           (click)="
-            table.isLoading || !headerRow.value.sortable || sort(headerRow.key)
+            table.isLoading ||
+              !headerRow.value.sortable ||
+              sortByKey(headerRow.key, $event)
           "
           scope="col"
         >

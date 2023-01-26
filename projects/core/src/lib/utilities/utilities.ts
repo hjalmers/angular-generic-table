@@ -1,6 +1,6 @@
 import { TableRow } from '../models/table-row.interface';
 import { TableConfig } from '../models/table-config.interface';
-
+import { GtSortOrder } from '../models/table-sort.interface';
 export let dashed: (s: string) => string;
 dashed = (s: string) => s.replace(/[A-Z]/g, (m) => '-' + m.toLowerCase());
 
@@ -160,5 +160,23 @@ export let calculate = (data: Array<TableRow>, config: TableConfig) => {
         (config.footer?.rowOrder?.indexOf(b) || 0)
     ),
     calculatedColumnsCount: Object.keys(CALCULATED).length || 0,
+  };
+};
+
+/** sortOnMultipleKeys
+ * @param {GtSortOrder} keys - array with sort config objects to sort on, data will be sorted according to array order
+ * @returns sort function
+ */
+export const sortOnMultipleKeys = (
+  keys: GtSortOrder
+): ((a: TableRow, b: TableRow) => number) => {
+  const order = keys.map((key) => (key.order === 'desc' ? -1 : 1));
+  return (a, b) => {
+    for (let i = 0; i < keys.length; i++) {
+      const o = keys[i].key;
+      if (a[o] > b[o]) return order[i];
+      if (a[o] < b[o]) return -order[i];
+    }
+    return 0;
   };
 };
