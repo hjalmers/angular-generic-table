@@ -67,6 +67,7 @@ export class NestedDataComponent implements OnInit {
           mapTo: { path: 'name.first' },
         },
         lastName: {
+          sortable: true,
           mapTo: { path: 'name.last' },
         },
         gender: {
@@ -74,6 +75,7 @@ export class NestedDataComponent implements OnInit {
           templateRef: this.gender,
         },
         favoriteFood: {
+          sortable: true,
           mapTo: { path: 'data.details.favoriteFood', missingValue: 'n/a' },
         },
         missing: {

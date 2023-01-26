@@ -8,6 +8,7 @@ module.exports = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "storybook-addon-themes",
+    "@a110/storybook-expand-all",
   ],
   framework: "@storybook/angular",
   staticDirs: ["../.storybook/assets"],

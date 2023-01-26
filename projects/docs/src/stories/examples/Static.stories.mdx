@@ -1,0 +1,41 @@
+import { Meta, Story } from '@storybook/addon-docs';
+
+import {moduleMetadata} from "@storybook/angular";
+import {BrowserModule} from "@angular/platform-browser";
+import {CommonModule} from "@angular/common";
+import {GenericTableCoreModule} from "../../../../core/src/lib/core.module";
+import {Simple, SimpleComponent} from "../../app/examples/simple/simple.component";
+import {ReactiveFormsModule} from "@angular/forms";
+import {TabsComponent} from "../../app/components/tabs/tabs.component";
+import {HttpClientModule} from "@angular/common/http";
+import {GenericTablePaginationModule} from "../../../../core/src/lib/pagination/pagination.module";
+
+<Meta title="Examples/Basic" decorators={[
+  moduleMetadata({
+    declarations: [ SimpleComponent, TabsComponent, ],
+    imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
+  })]}/>
+
+# Basic example
+
+Pass `data` and `config` to Generic Table to generate a table. The example below uses the minimal configuration needed to generate a table with static data.
+
+<Story name="Basic"
+       args={{
+         data: [
+           {
+             firstName: 'Mark',
+             lastName: 'Parker',
+             gender: 'male',
+             favoriteFood: 'Pasta',
+           },
+           {
+             firstName: 'Mary Jane',
+             lastName: 'Watson',
+             gender: 'female',
+             favoriteFood: 'Pizza',
+           },
+         ]
+       }}>
+  {Simple.bind({})}
+</Story>

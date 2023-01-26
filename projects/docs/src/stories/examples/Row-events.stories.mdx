@@ -1,0 +1,29 @@
+import { Meta, Story } from '@storybook/addon-docs';
+
+import {moduleMetadata} from "@storybook/angular";
+import {BrowserModule} from "@angular/platform-browser";
+import {CommonModule} from "@angular/common";
+import {GenericTableCoreModule} from "../../../../core/src/lib/core.module";
+import {ReactiveFormsModule} from "@angular/forms";
+import {TabsComponent} from "../../app/components/tabs/tabs.component";
+import {HttpClientModule} from "@angular/common/http";
+import {GenericTablePaginationModule} from "../../../../core/src/lib/pagination/pagination.module";
+import { RowHoverClick, RowHoverClickComponent } from '../../app/examples/row-hover-click/row-hover-click.component';
+
+<Meta title="Examples/Row click & hover" decorators={[
+  moduleMetadata({
+    declarations: [TabsComponent, RowHoverClickComponent],
+    imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
+  })]}/>
+
+# Row click and hover
+
+Set `rowClick` and `rowHover` to `true` in `config` to enable row click and hover events which can be used to trigger actions when rows are clicked or hovered. These events are emitted and declared using `@Output rowClick` and `@Output() rowHover`. It's also possible to set hover state on a row using `rowHover` method on the table component (currently it takes a row index as argument), pass null to remove hover state. The later might come in handy when you want to highlight something in the table based on an external source like a chart etc. Note that you should use css if you're only interested in styling the row on row hover, no need to listen to events or set hover state to do that.
+
+### Example
+
+Resize screen to view mobile version
+
+<Story name="Row click & hover">
+  {RowHoverClick.bind({})}
+</Story>

@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Order } from '../enums/order.enum';
+import { GtSortOrder } from '../models/table-sort.interface';
 
 @Pipe({
   name: 'sortClass',
@@ -7,16 +7,29 @@ import { Order } from '../enums/order.enum';
 })
 export class SortClassPipe implements PipeTransform {
   transform(
-    selection: { sortBy: string; sortByOrder: Order } | any,
-    property: string,
-    aria = false
+    sortOrder: GtSortOrder | null,
+    key: string,
+    context: 'class' | 'aria' | 'order' = 'class'
   ): string | null {
-    return selection?.sortBy === property
-      ? !aria
-        ? 'gt-sort-' + selection.sortByOrder
-        : selection.sortByOrder + 'ending'
-      : !aria
-      ? ''
-      : null;
+    const sortIndex = sortOrder
+      ? sortOrder.findIndex((s) => s.key === key)
+      : -1;
+    if (context === 'aria') {
+      if (sortIndex === -1 || !sortOrder) {
+        return null;
+      } else {
+        return `${sortOrder[sortIndex].order}ending`;
+      }
+    } else if (context === 'class') {
+      if (sortIndex === -1 || !sortOrder) {
+        return '';
+      } else {
+        return `gt-sort-${sortOrder[sortIndex].order}`;
+      }
+    } else {
+      return (sortOrder && sortOrder?.length === 1) || sortIndex < 0
+        ? null
+        : sortIndex + 1 + '';
+    }
   }
 }

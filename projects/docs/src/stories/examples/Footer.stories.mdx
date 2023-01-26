@@ -1,0 +1,103 @@
+import { Meta, Story } from '@storybook/addon-docs';
+
+import {moduleMetadata} from "@storybook/angular";
+import {BrowserModule} from "@angular/platform-browser";
+import {CommonModule} from "@angular/common";
+import {GenericTableCoreModule} from "../../../../core/src/lib/core.module";
+import {ReactiveFormsModule} from "@angular/forms";
+import {TabsComponent} from "../../app/components/tabs/tabs.component";
+import {HttpClientModule} from "@angular/common/http";
+import {GenericTablePaginationModule} from "../../../../core/src/lib/pagination/pagination.module";
+import { Footer, FooterComponent } from '../../app/examples/footer/footer.component';
+
+<Meta title="Examples/Table footer" decorators={[
+  moduleMetadata({
+    declarations: [TabsComponent, FooterComponent],
+    imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
+  })]}/>
+
+
+
+
+# Table footer
+
+Use the footer config option to display accumulations like totals, count, min, max etc. or any other content for that matter in the footer of the table. Pass your own data or accumulator function or use the ones provided by Generic Table.
+
+<strong>Footer config</strong>
+
+The footer config has the following options which are described more in detail below.
+```json
+"footer": {
+    "headers"?: {
+      [key: 'sum'|'avg'|'count'|'max'|'min'|string]: string|boolean;
+    };
+    "columns"?: {
+      [key: string]: {
+        [key: 'sum'|'avg'|'count'|'max'|'min'|string]: boolean|number|string|Function;
+      };
+    };
+    "rowOrder"?: Array<'sum'|'avg'|'count'|'max'|'min'|string>;
+    "emptyContent"?: string;
+  };
+```
+
+<strong>Footer config options</strong>
+
+<Preview>
+  <div class="overflow-auto">
+    <table>
+      <thead>
+      <tr>
+        <th>Option</th>
+        <th>Description</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td><code>headers</code></td>
+        <td>Key value pairs for headers, each key corresponds to name of accumulator.</td>
+      </tr>
+      <tr>
+        <td><code>columns</code></td>
+        <td>Key value pairs with columns that should display content/accumulations. Specify which accumulator to use <code>min</code>, <code>max</code>, <code>avg</code>, <code>count</code>, <code>sum</code> or define your own one or add fixed content to display. </td>
+      </tr>
+      <tr>
+        <td><code>rowOrder</code></td>
+        <td>Row order for accumulators.</td>
+      </tr>
+      <tr>
+        <td><code>emptyContent</code></td>
+        <td>Content to display when accumulation is undefined or null for a field.</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</Preview>
+
+<strong>Example config</strong>
+
+```json
+"footer": {
+  "headers": {
+    "customFn": "Custom",
+    "min": true,
+  },
+  "columns": {
+    "foo": {
+      "min": true,
+      "max": true,
+      "customFn": (data: Array<TableRow>, key: string) => ...,
+    }
+  },
+  "rowOrder": ["min", "max", "customFn"],
+}
+```
+
+<strong>Example</strong><br/>
+Take a look at the <a href="examples?path=/docs/examples-multiple-features--multiple-features">Multiple features example</a> to view another configuration.
+<br/>
+<br/>
+
+<Story name="Table footer">
+  {Footer.bind({})}
+</Story>

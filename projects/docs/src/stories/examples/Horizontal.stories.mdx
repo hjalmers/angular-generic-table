@@ -1,0 +1,25 @@
+import { Meta, Story } from '@storybook/addon-docs';
+
+import {moduleMetadata} from "@storybook/angular";
+import {BrowserModule} from "@angular/platform-browser";
+import {CommonModule} from "@angular/common";
+import {GenericTableCoreModule} from "../../../../core/src/lib/core.module";
+import {ReactiveFormsModule} from "@angular/forms";
+import {TabsComponent} from "../../app/components/tabs/tabs.component";
+import {HttpClientModule} from "@angular/common/http";
+import {GenericTablePaginationModule} from "../../../../core/src/lib/pagination/pagination.module";
+import {Horizontal, HorizontalTableComponent} from "../../app/examples/horizontal-table/horizontal-table.component";
+
+<Meta title="Examples/Horizontal layout" decorators={[
+  moduleMetadata({
+    declarations: [HorizontalTableComponent, TabsComponent],
+    imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
+  })]}/>
+
+# Horizontal layout
+
+Declare `rows` instead of `columns` to get a horizontal table where records are added as columns instead of rows. The example below freezes the first column by setting `stickyHeaders.row` to true, it also uses `<gt-delta>` which is a helper component to display the delta between two values (by default it compares against previous row or column).
+
+<Story name="Horizontal layout">
+  {Horizontal.bind({})}
+</Story>

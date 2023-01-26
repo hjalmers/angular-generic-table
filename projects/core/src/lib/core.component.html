@@ -27,15 +27,20 @@
             column.value.class
           }}"
           [class.disabled]="table.isLoading"
-          [attr.aria-sort]="sortBy$ | async | sortClass: column.key:true"
+          [attr.aria-sort]="sortOrder$ | async | sortClass: column.key:'aria'"
           [class.gt-sortable]="true"
           scope="col"
         >
           <button
             *ngIf="column.value?.sortable"
+            [attr.data-sort-order]="
+              sortOrder$ | async | sortClass: column.key:'order'
+            "
             class="gt-sort"
             (click)="
-              table.isLoading || !column.value.sortable || sort(column.key)
+              table.isLoading ||
+                !column.value.sortable ||
+                sortByKey(column.key, $event)
             "
           >
             <span *ngIf="column.value?.header !== false">{{
@@ -55,12 +60,16 @@
       >
         <th
           class="row-header"
-          [attr.aria-sort]="sortBy$ | async | sortClass: headerRow.key:true"
+          [attr.aria-sort]="
+            sortOrder$ | async | sortClass: headerRow.key:'aria'
+          "
           ngClass="{{ headerRow.value.sortable ? 'sort ' : '' }} {{
-            sortBy$ | async | sortClass: headerRow.key
+            sortOrder$ | async | sortClass: headerRow.key
           }} {{ (headerRow.key | dashCase) + '-column' }}"
           (click)="
-            table.isLoading || !headerRow.value.sortable || sort(headerRow.key)
+            table.isLoading ||
+              !headerRow.value.sortable ||
+              sortByKey(headerRow.key, $event)
           "
           scope="col"
         >
@@ -140,15 +149,31 @@
                     ? table.config.footer?.headers?.[calculation] === true ? (calculation | capitalCase) : table.config.footer?.headers?.[calculation]
                     : null
                 "
+                [attr.data-label]="
+                  table.config.mobileLayout && column.value.mobileHeader
+                    ? column.value.mobileHeader !== true
+                      ? column.value.mobileHeader
+                      : (column.value.header || column.key | capitalCase)
+                    : null
+                "
+                [class.gt-no-content]="
+                  !calculations.calculated[column.key][calculation]
+                "
               >
                 <ng-container
                   [ngTemplateOutlet]="
-                    (table.config.columns || {})[column.key].transform
+                    (table.config.columns || {})[column.key].templateRef
+                      ? templateRef
+                      : (table.config.columns || {})[column.key].transform
                       ? transformFooter
                       : rawFooter
                   "
                   [ngTemplateOutletContext]="{
                     value: calculations.calculated[column.key][calculation],
+                    row: calculations.calculated[column.key],
+                    column: calculation,
+                    templateRef: (table.config.columns || {})[column.key]
+                      .templateRef,
                     transform: (table.config.columns || {})[column.key]
                       .transform
                   }"

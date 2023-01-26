@@ -21,6 +21,7 @@ import { NestedDataComponent } from './examples/nested-data/nested-data.componen
 import { TransposeComponent } from './examples/transpose/transpose.component';
 import { RowHoverClickComponent } from './examples/row-hover-click/row-hover-click.component';
 import { FooterComponent } from './examples/footer/footer.component';
+import { SortingComponent } from './examples/sorting/sorting.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { FooterComponent } from './examples/footer/footer.component';
     TransposeComponent,
     RowHoverClickComponent,
     FooterComponent,
+    SortingComponent,
   ],
   imports: [
     BrowserModule,
