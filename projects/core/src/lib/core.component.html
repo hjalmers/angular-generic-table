@@ -149,6 +149,16 @@
                     ? table.config.footer?.headers?.[calculation] === true ? (calculation | capitalCase) : table.config.footer?.headers?.[calculation]
                     : null
                 "
+                [attr.data-label]="
+                  table.config.mobileLayout && column.value.mobileHeader
+                    ? column.value.mobileHeader !== true
+                      ? column.value.mobileHeader
+                      : (column.value.header || column.key | capitalCase)
+                    : null
+                "
+                [class.gt-no-content]="
+                  !calculations.calculated[column.key][calculation]
+                "
               >
                 <ng-container
                   [ngTemplateOutlet]="
