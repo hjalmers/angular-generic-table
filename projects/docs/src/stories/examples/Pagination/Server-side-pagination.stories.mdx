@@ -1,0 +1,43 @@
+import { Meta, Story } from '@storybook/addon-docs';
+
+import {moduleMetadata} from "@storybook/angular";
+import {BrowserModule} from "@angular/platform-browser";
+import {CommonModule} from "@angular/common";
+import {GenericTableCoreModule} from "../../../../../core/src/lib/core.module";
+import {ReactiveFormsModule} from "@angular/forms";
+import {TabsComponent} from "../../../app/components/tabs/tabs.component";
+import {HttpClientModule} from "@angular/common/http";
+import {GenericTablePaginationModule} from "../../../../../core/src/lib/pagination/pagination.module";
+import {
+  ServerSidePaginationComponent, ServerSidePagination
+} from '../../../app/examples/server-side-pagination/server-side-pagination.component';
+
+<Meta title="Examples/Pagination" decorators={[
+  moduleMetadata({
+    declarations: [ServerSidePaginationComponent, TabsComponent],
+    imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
+  })]}/>
+
+# Server side example
+
+The example below shows a setup where pagination is handled server-side, i.e data for each page is returned by backend.
+
+<Preview>
+  <div className={'alert alert-info'}>
+    <strong>Mocked backend</strong>
+    <p>The backend used in this example uses static data and not all methods and options have been implemented. For example, data is not correct for all pages and it's not possible to sort on all properties or use search as it's just meant to showcase how things can be implemented. You can view the network tab in your browser to see what requests are made and the response they return. The blueprint and docs for the API is also available <a href={'https://generictableapi.docs.apiary.io/'} target={'_blank'}>here</a>.</p>
+    <p><strong>Some things that do work that you can try:</strong>
+    <ul className={'mt-3'}>
+      <li className={'text-reset'}>Sort ascending/descending on <strong>Id</strong> (only first page is correct when sort is descending)</li>
+      <li className={'text-reset'}>Sort ascending on <strong>Last name</strong> (only first page is correct)</li>
+      <li className={'text-reset'}>Sort ascending on <strong>Last name</strong> followed by <strong>Gender</strong> (hold shift key to sort on second property, only first page is correct)</li>
+    </ul>
+    </p>
+  </div>
+</Preview>
+
+### Example
+
+<Story name="Server-side">
+  {ServerSidePagination.bind({})}
+</Story>

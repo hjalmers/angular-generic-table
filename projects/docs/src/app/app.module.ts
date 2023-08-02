@@ -22,6 +22,7 @@ import { TransposeComponent } from './examples/transpose/transpose.component';
 import { RowHoverClickComponent } from './examples/row-hover-click/row-hover-click.component';
 import { FooterComponent } from './examples/footer/footer.component';
 import { SortingComponent } from './examples/sorting/sorting.component';
+import { ServerSidePaginationComponent } from './examples/server-side-pagination/server-side-pagination.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { SortingComponent } from './examples/sorting/sorting.component';
     RowHoverClickComponent,
     FooterComponent,
     SortingComponent,
+    ServerSidePaginationComponent,
   ],
   imports: [
     BrowserModule,

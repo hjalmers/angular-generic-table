@@ -41,7 +41,7 @@
   <angular-generic-table
     [data]="data$"
     [config]="tableConfig$"
-    [page]="(currentPage$ | async)!"
+    [paginationIndex]="(currentPage$ | async)!"
     [search]="search$"
     [loading]="loading$"
     #table
