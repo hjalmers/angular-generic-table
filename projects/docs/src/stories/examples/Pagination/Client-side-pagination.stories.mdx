@@ -1,0 +1,27 @@
+import { Meta, Story } from '@storybook/addon-docs';
+
+import {moduleMetadata} from "@storybook/angular";
+import {BrowserModule} from "@angular/platform-browser";
+import {CommonModule} from "@angular/common";
+import {GenericTableCoreModule} from "../../../../../core/src/lib/core.module";
+import {ReactiveFormsModule} from "@angular/forms";
+import {TabsComponent} from "../../../app/components/tabs/tabs.component";
+import {Pagination, PaginationComponent} from "../../../app/examples/pagination/pagination.component";
+import {HttpClientModule} from "@angular/common/http";
+import {GenericTablePaginationModule} from "../../../../../core/src/lib/pagination/pagination.module";
+
+<Meta title="Examples/Pagination" decorators={[
+  moduleMetadata({
+    declarations: [PaginationComponent, TabsComponent],
+    imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
+  })]}/>
+
+# Client side example
+
+The example below shows a simple example when pagination is done and handled client side, i.e. the table has all the data it can display.
+
+### Example
+
+<Story name="Client-side">
+  {Pagination.bind({})}
+</Story>

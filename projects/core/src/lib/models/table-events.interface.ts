@@ -18,4 +18,9 @@ export interface GtSortEvent<R = TableRow> {
   order: GtOrder;
   currentSortOrder: GtSortOrder<R>;
   event?: MouseEvent;
+  addSortKey: boolean /** Add additional key to sort on multiple properties? True if the user is holding shift while sorting */;
+}
+
+export interface GtPageChangeEvent {
+  index: number;
 }

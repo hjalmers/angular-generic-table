@@ -1,7 +1,7 @@
 <ng-container
   *ngIf="{
-    links: pagination$ | async,
-    currentPosition: table?.currentPage$ | async
+    links: paginationListItems$ | async,
+    currentPosition: table?.currentPaginationIndex$ | async
   } as pagination"
 >
   <nav
@@ -26,7 +26,7 @@
           <button
             [class]="classes.button"
             [attr.aria-label]="ariaLabels.button + position"
-            (click)="goto(position)"
+            (click)="goToPage(position)"
           >
             {{ position }}
           </button>

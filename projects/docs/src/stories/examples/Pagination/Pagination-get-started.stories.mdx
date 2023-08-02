@@ -3,20 +3,20 @@ import { Meta, Story } from '@storybook/addon-docs';
 import {moduleMetadata} from "@storybook/angular";
 import {BrowserModule} from "@angular/platform-browser";
 import {CommonModule} from "@angular/common";
-import {GenericTableCoreModule} from "../../../../core/src/lib/core.module";
+import {GenericTableCoreModule} from "../../../../../core/src/lib/core.module";
 import {ReactiveFormsModule} from "@angular/forms";
-import {TabsComponent} from "../../app/components/tabs/tabs.component";
-import {Pagination, PaginationComponent} from "../../app/examples/pagination/pagination.component";
+import {TabsComponent} from "../../../app/components/tabs/tabs.component";
+import {Pagination, PaginationComponent} from "../../../app/examples/pagination/pagination.component";
 import {HttpClientModule} from "@angular/common/http";
-import {GenericTablePaginationModule} from "../../../../core/src/lib/pagination/pagination.module";
+import {GenericTablePaginationModule} from "../../../../../core/src/lib/pagination/pagination.module";
 
-<Meta title="Examples/Pagination" decorators={[
+<Meta title="Examples/Pagination/Setup" decorators={[
   moduleMetadata({
     declarations: [PaginationComponent, TabsComponent],
     imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
   })]}/>
 
-# Pagination
+# Pagination - Get started
 
 What would a table be without pagination? To simplify things for you, Angular Generic Table provides a basic pagination component. Just pass a reference to the table like this:
 ```markup
@@ -24,6 +24,7 @@ What would a table be without pagination? To simplify things for you, Angular Ge
 <angular-generic-table-pagination [table]="tableRef"/>
 ```
 
+### Inputs
 
 <Preview>
   <div class="overflow-auto">
@@ -41,6 +42,22 @@ What would a table be without pagination? To simplify things for you, Angular Ge
       <td><code>table</code></td>
       <td>Table connected to the pagination control.</td>
       <td>Table component</td>
+      <td><code>n/a</code></td>
+    </tr>
+    <tr>
+      <td><code>pagingInfo</code></td>
+      <td>Pass pagination data when pagination is done server-side.
+        <br/>
+        <code>&#123;<br/>
+          &nbsp;pagePrevious: null,<br/>
+          &nbsp;pageCurrent: 1,<br/>
+          &nbsp;pageNext: 2,<br/>
+          &nbsp;pageSize: 10,<br/>
+          &nbsp;numberOfRecords: 100<br/>
+          &#125;
+        </code>
+      </td>
+      <td><code>GtPaginationInfo</code></td>
       <td><code>n/a</code></td>
     </tr>
     <tr>
@@ -97,8 +114,3 @@ import { GenericTableCoreModule, GenericTablePaginationModule } from '@angular-g
 export class SharedModule {}
 ```
 
-### Example
-
-<Story name="Pagination">
-  {Pagination.bind({})}
-</Story>

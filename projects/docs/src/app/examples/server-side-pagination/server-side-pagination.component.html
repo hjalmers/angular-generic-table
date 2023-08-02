@@ -1,0 +1,37 @@
+<form [formGroup]="paginationForm">
+  <div class="row gy-3">
+    <div class="form-group col-12 col-sm-auto">
+      <label for="search_input">Search</label>
+      <input
+        id="search_input"
+        formControlName="search"
+        type="text"
+        class="form-control"
+      />
+    </div>
+  </div>
+</form>
+<div class="mx-n3 mx-sm-0 my-3 overflow-auto">
+  <angular-generic-table
+    [data]="data$"
+    [config]="tableConfig$"
+    [search]="search$"
+    [loading]="loading$"
+    [pagingInfo]="paging$ | async"
+    (pageChange)="onPageChange($event)"
+    (columnSort)="onSortOrderChange($event)"
+    [sortOrder]="sorting$ | async"
+    #table
+  >
+    <div
+      class="table-loading gt-skeleton-loader"
+      [style.--gt-skeleton-height]="
+        ((table.table$ | async)?.info?.pageSize ?? 0) * 41 - 11 + 'px'
+      "
+    ></div>
+    <div class="table-no-data alert alert-info mt-3">Table is empty</div>
+  </angular-generic-table>
+</div>
+<angular-generic-table-pagination [table]="table">
+</angular-generic-table-pagination>
+<docs-tabs [content]="SNIPPETS"></docs-tabs>

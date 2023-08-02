@@ -1,6 +1,7 @@
 import { TableRow } from '../models/table-row.interface';
 import { TableConfig } from '../models/table-config.interface';
-import { GtSortOrder } from '../models/table-sort.interface';
+import { GtSortConfig, GtSortOrder } from '../models/table-sort.interface';
+import { GtSortEvent } from '../models/table-events.interface';
 export let dashed: (s: string) => string;
 dashed = (s: string) => s.replace(/[A-Z]/g, (m) => '-' + m.toLowerCase());
 
@@ -164,6 +165,7 @@ export let calculate = (data: Array<TableRow>, config: TableConfig) => {
 };
 
 /** sortOnMultipleKeys
+ * @description Sort data on multiple keys
  * @param {GtSortOrder} keys - array with sort config objects to sort on, data will be sorted according to array order
  * @returns sort function
  */
@@ -179,4 +181,43 @@ export const sortOnMultipleKeys = (
     }
     return 0;
   };
+};
+
+/** parseSortOrderParams
+ * @description Convert sort order query param to array with sort config objects
+ * @param sortParams - Query param string where each sort config object is separated by comma and order is indicated by + (ascending) or - (descending), e.g. _'name,-age'_
+ * @returns GtSortOrder - Array with sort config objects
+ */
+export const parseSortOrderParams = (sortParams: string): GtSortOrder => {
+  const sortParamsArray = sortParams.split(',');
+  return sortParamsArray.map((sortParam) => {
+    const [key, order] = sortParam.split(':');
+    return {
+      key: key.replace(/^[+-]/, ''),
+      order: order === 'desc' ? 'desc' : 'asc',
+    };
+  });
+};
+
+/** sortOrderConfigToParam
+ * @description Convert sort config object to string that can be used as query param when sorting is implemented server side
+ * @param sortConfig - Sort config object
+ * @returns string - Query param string where order is indicated by + (ascending) or - (descending), e.g. _'-name'_
+ */
+export const sortOrderConfigToParam = (
+  sortConfig: GtSortEvent | GtSortConfig
+): string => {
+  const order = sortConfig.order === 'desc' ? '-' : '+';
+  return `${order}${sortConfig.key}`;
+};
+
+/** sortOrderToParams
+ * @description Convert sort order array to string that can be used as query param when sorting is implemented server side
+ * @param sortOrder - Array with sort config objects
+ * @returns string - Query param string where each sort config object is separated by comma and order is indicated by + (ascending) or - (descending), e.g. _'name,-age'_
+ */
+export const sortOrderToParams = (sortOrder: GtSortOrder): string => {
+  return sortOrder
+    .map((sortConfig) => sortOrderConfigToParam(sortConfig))
+    .join(',');
 };

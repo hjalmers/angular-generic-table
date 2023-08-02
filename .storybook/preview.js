@@ -20,7 +20,8 @@ export const parameters = {
   docs: { inlineStories: true },
   options: {
     storySort: {
-      includeName: false,
+      method: "configure",
+      includeNames: true,
       order: [
         "Introduction",
         "Examples",
@@ -30,6 +31,7 @@ export const parameters = {
           "Nested data",
           "Row click & hover",
           "Pagination",
+          ["Setup", "Client-side", "Server-side"],
           "Custom templates",
           "Table footer",
           "Horizontal layout",
