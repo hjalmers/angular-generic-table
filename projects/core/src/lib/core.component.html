@@ -192,7 +192,9 @@
       <ng-container *ngIf="table.config.columns">
         <tr
           *ngFor="
-            let row of table!.data![(currentPage$ | async) || 0];
+            let row of table!.data![
+              table.info.lazyLoaded ? 0 : (currentPaginationIndex$ | async) || 0
+            ];
             let i = index
           "
           [attr.id]="'tableRow_' + i"
@@ -236,7 +238,11 @@
                   templateRef: (table.config.columns || {})[column.key]
                     .templateRef,
                   index: i,
-                  data: table.data[(currentPage$ | async) || 0]
+                  data: table.data[
+                    table.info.lazyLoaded
+                      ? 0
+                      : (currentPaginationIndex$ | async) || 0
+                  ]
                 }"
               ></ng-container>
             </td>
@@ -282,7 +288,11 @@
                   transform: (table.config.rows || {})[row.key].transform,
                   templateRef: (table.config.rows || {})[row.key].templateRef,
                   index: table.config.rows ? y : i,
-                  data: table.data[(currentPage$ | async) || 0]
+                  data: table.data[
+                    table.info.lazyLoaded
+                      ? 0
+                      : (currentPaginationIndex$ | async) || 0
+                  ]
                 }"
               >
               </ng-container>

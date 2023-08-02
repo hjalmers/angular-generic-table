@@ -27,6 +27,7 @@ import {
 import {
   debounceTime,
   distinctUntilChanged,
+  filter,
   map,
   shareReplay,
   startWith,
@@ -46,6 +47,7 @@ import { TableRow } from './models/table-row.interface';
 import { GtOrder, GtSortOrder } from './models/table-sort.interface';
 import { TableMeta } from './models/table-meta.interface';
 import {
+  GtPageChangeEvent,
   GtRowClickEvent,
   GtRowHoverEvent,
   GtSortEvent,
@@ -55,6 +57,8 @@ import { SortClassPipe } from './pipes/sort-class.pipe';
 import { DashCasePipe } from './pipes/dash-case.pipe';
 import { DynamicPipe } from './pipes/dynamic.pipe';
 import { HighlightPipe } from './pipes/highlight.pipe';
+import { GtPaginationInfo } from './models/gt-pagination';
+import { TableInfo } from './models/table-info.interface';
 
 @Component({
   selector: 'angular-generic-table',
@@ -85,12 +89,24 @@ export class CoreComponent {
     this._loading$.next(isLoading);
   }
   @Input()
-  set page(page: number) {
-    this._currentPage$.next(page);
+  set paginationIndex(pageIndex: number) {
+    this._currentPaginationIndex$.next(pageIndex);
+  }
+
+  @Input() set pagingInfo(value: GtPaginationInfo | null) {
+    if (value) {
+      this._pagingInfo$.next(value);
+      if (
+        value.pageCurrent !== this._currentPaginationIndex$.getValue() + 1 &&
+        value.pageCurrent !== null
+      ) {
+        this.paginationIndex = value.pageCurrent - 1;
+      }
+    }
   }
 
   @Input()
-  set search(string: Observable<string> | string | null) {
+  set search(string: Observable<string | null> | string | null) {
     this._searchBy$.next(string);
   }
 
@@ -104,7 +120,7 @@ export class CoreComponent {
     this._data$.next(data);
   }
 
-  @Input() set sortOrder(sortConfig: GtSortOrder<any>) {
+  @Input() set sortOrder(sortConfig: GtSortOrder<TableRow> | any) {
     if (JSON.stringify(sortConfig) !== JSON.stringify(this._sortOrder$.value)) {
       this.sortOrderChange.emit(sortConfig);
       this._sortOrder$.next(sortConfig);
@@ -112,9 +128,7 @@ export class CoreComponent {
   }
 
   @Output() rowClick = new EventEmitter<GtRowClickEvent>();
-  @Output('sortOrderChange') sortOrderChange = new EventEmitter<
-    GtSortOrder<TableRow>
-  >();
+  @Output() sortOrderChange = new EventEmitter<GtSortOrder<TableRow>>();
 
   _rowClick(row: TableRow, index: number, event: MouseEvent): void {
     this.rowClick.emit({ row, index, event });
@@ -123,6 +137,8 @@ export class CoreComponent {
   private _rowHover$ = new ReplaySubject<GtRowHoverEvent>(1);
   @Output() rowHover = new EventEmitter<GtRowHoverEvent>();
   @Output() columnSort = new EventEmitter<GtSortEvent>();
+  /** page change event - emitted when current page/index changes for pagination */
+  @Output() pageChange = new EventEmitter<GtPageChangeEvent>();
   rowHover$ = this._rowHover$.asObservable().pipe(
     debounceTime(50),
     distinctUntilChanged((p, q) => p.index === q.index),
@@ -168,7 +184,7 @@ export class CoreComponent {
     new ReplaySubject(1);
   private _sortOrder$: BehaviorSubject<GtSortOrder> =
     new BehaviorSubject<GtSortOrder>([]);
-  private _searchBy$: ReplaySubject<Observable<string> | string | null> =
+  private _searchBy$: ReplaySubject<Observable<string | null> | string | null> =
     new ReplaySubject(1);
   searchBy$: Observable<string | null> = this._searchBy$.pipe(
     startWith(''),
@@ -176,6 +192,17 @@ export class CoreComponent {
     switchMap((obs) => obs),
     shareReplay(1)
   );
+
+  private _pagingInfo$ = new BehaviorSubject<GtPaginationInfo>({
+    pageCurrent: null,
+    pageNext: null,
+    pagePrevious: null,
+    pageSize: null,
+    numberOfRecords: null,
+    //recordsAfterFilter: null,
+    //recordsAfterSearch: null,
+    //recordsAll: null,
+  });
 
   // tslint:disable-next-line:variable-name
   private _tableConfig$: BehaviorSubject<
@@ -230,11 +257,11 @@ export class CoreComponent {
     map(([table, sortBy, searchBy]) => {
       // create a new array reference and sort new array (prevent mutating existing state)
       table.data = [...table.data];
-      return !sortBy.length || table.config?.disableTableSort
-        ? searchBy
+      return !sortBy?.length || table.config?.disableTableSort
+        ? searchBy && !this.tableInfo?.lazyLoaded
           ? search(searchBy, false, table.data, table.config)
           : table.data
-        : searchBy
+        : searchBy && !this.tableInfo?.lazyLoaded
         ? search(searchBy, false, table.data, table.config)?.sort(
             sortOnMultipleKeys(sortBy)
           )
@@ -251,44 +278,88 @@ export class CoreComponent {
   table$: Observable<TableMeta> = combineLatest([
     this.data$,
     this.tableConfig$,
+    this._pagingInfo$,
   ]).pipe(
-    map(([sorted, config]) => {
+    map(([sorted, config, pagingInfo]) => {
+      if (
+        pagingInfo.pageCurrent !== null &&
+        pagingInfo.numberOfRecords !== null &&
+        pagingInfo.pageSize !== null
+      ) {
+        return {
+          data: [sorted],
+          config,
+          info: <TableInfo>{
+            lazyLoaded: true,
+            numberOfRecords: pagingInfo.numberOfRecords,
+            pageSize: pagingInfo.pageSize,
+            pageTotal:
+              pagingInfo.pageTotal ??
+              Math.ceil(pagingInfo.numberOfRecords / pagingInfo.pageSize),
+          },
+        };
+      }
       // if pagination is disabled...
       if (!config.pagination || config.pagination.length === 0) {
         // ...return unaltered array
         return {
           data: [sorted],
           config,
-          info: { records: sorted.length, pageTotal: 1 },
+          info: <TableInfo>{ numberOfRecords: sorted.length, pageTotal: 1 },
         };
       }
       // return record set
       return {
         data: chunk(sorted, +(config.pagination.length || 0)),
         config,
-        info: {
-          records: sorted.length,
+        info: <TableInfo>{
+          numberOfRecords: sorted.length,
           pageTotal: Math.ceil(
             sorted.length / +(config.pagination.length || 0)
           ),
         },
       };
     }),
+    tap((meta) => this._tableInfo$.next(meta.info)),
     shareReplay(1)
   );
 
-  private _currentPage$: BehaviorSubject<number> = new BehaviorSubject(0);
-  currentPage$ = combineLatest([this._currentPage$, this.table$]).pipe(
+  /** tableInfo$ - returns observable for table info
+   * @return Observable<TableInfo> */
+  get tableInfo$(): Observable<TableInfo | undefined> {
+    return this._tableInfo$.asObservable().pipe(
+      filter((info) => !!info),
+      shareReplay(1)
+    );
+  }
+
+  /** tableInfo - returns the current table info
+   * @return TableInfo */
+  get tableInfo(): TableInfo | undefined {
+    return this._tableInfo$.getValue();
+  }
+
+  private _tableInfo$ = new BehaviorSubject<TableInfo | undefined>(undefined);
+
+  private _currentPaginationIndex$: BehaviorSubject<number> =
+    new BehaviorSubject(0);
+  currentPaginationIndex$ = combineLatest([
+    this._currentPaginationIndex$,
+    this.table$,
+  ]).pipe(
     map(([page, table]: any) => {
       // determine last page
       const lastPage =
         Math.ceil(
           table.info.records /
-            (table.config?.pagination?.length || table.info.records)
+            (table.info.recordLength ??
+              (table.config?.pagination?.length || table.info.records))
         ) - 1;
-      // determine max/min position
+      // determine min/max position
       return +page < 0 ? 0 : +page > lastPage ? lastPage : +page;
     }),
+    distinctUntilChanged(),
+    tap((index) => this.pageChange.emit({ index })),
     shareReplay(1)
   );
 
@@ -326,7 +397,7 @@ export class CoreComponent {
    * @param { MouseEvent } [$event] - Mouse event triggering sort, if shift key is pressed sort key will be added to already present sort keys
    */
   sortByKey(key: keyof TableRow, $event?: MouseEvent): void {
-    const shiftKey = $event?.shiftKey;
+    const shiftKey = $event?.shiftKey === true;
     const currentOrder = this._sortOrder$.value;
     let sortOrder: GtOrder = 'asc';
     let newOrder: GtSortOrder = [];
@@ -374,6 +445,7 @@ export class CoreComponent {
       key,
       order: sortOrder,
       currentSortOrder: newOrder,
+      addSortKey: shiftKey,
     };
 
     // if event is passed to sort function...
@@ -383,8 +455,12 @@ export class CoreComponent {
     }
     // emit sort event
     this.columnSort.emit(sortEvent);
-    // update sort order
-    this.sortOrder = newOrder;
+
+    // if table is not lazy loaded (sorting is then handled server-side)...
+    if (!this.tableInfo?.lazyLoaded) {
+      // ...update sort order
+      this.sortOrder = newOrder;
+    }
   }
 
   columnOrder = (
