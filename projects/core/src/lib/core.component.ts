@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Input,
   Output,
+  TrackByFunction,
 } from '@angular/core';
 import {
   BehaviorSubject,
@@ -103,6 +104,36 @@ export class CoreComponent {
         this.paginationIndex = value.pageCurrent - 1;
       }
     }
+  }
+
+  /** rowIdKey
+   * @description row key to use as unique id for table row. If passed, table won't generate unique ids for each row but instead use key to retrieve unique id from row.
+   * @type {string}
+   */
+  @Input() rowIdKey: string | undefined;
+
+  /** generateRowId
+   * @description Whether or not to generate a unique id for each row in the table. Defaults to `true`.
+   * @type {boolean}
+   */
+  @Input() generateRowId: boolean = true;
+
+  /** trackRowByFn
+   * @description A function that returns a unique identifier for each row in the table to optimize rendering when data is added or removed.
+   * @type fn - TrackByFunction to retrieve unique id based on index and/or row. Defaults to using `row[this.rowIdKey]`.
+   */
+  @Input() set trackRowByFn(fn: TrackByFunction<TableRow>) {
+    this._trackRowByFn = fn;
+  }
+  get trackRowByFn(): TrackByFunction<TableRow> {
+    return this._trackRowByFn;
+  }
+
+  private _trackRowByFn(
+    index: number,
+    row: TableRow
+  ): TrackByFunction<TableRow> {
+    return this.rowIdKey ? row[this.rowIdKey] : row?._id;
   }
 
   @Input()
@@ -248,6 +279,13 @@ export class CoreComponent {
           newData[i] = { ...row, ...newKeys };
         }
         data = newData;
+      }
+      if (this.generateRowId && !this.rowIdKey && data.length > 0) {
+        const dataWithId = [];
+        for (let i = 0; i < data.length; i++) {
+          dataWithId[i] = { ...data[i], _id: i };
+        }
+        data = dataWithId;
       }
       return { data, config };
     }),

@@ -195,6 +195,7 @@
             let row of table!.data![
               table.info.lazyLoaded ? 0 : (currentPaginationIndex$ | async) || 0
             ];
+            trackBy: trackRowByFn;
             let i = index
           "
           [attr.id]="'tableRow_' + i"
