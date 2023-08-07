@@ -8,24 +8,24 @@ import { GtRowClickEvent, GtRowHoverEvent } from '@angular-generic-table/core';
 @Component({
   selector: 'row-hover-click-table',
   template: '<div class="overflow-auto">
-      <button class="btn btn-secondary me-3" (click)="tableRef.hoverRow(1)">
-        Set hover state to second row
+      <button class="btn btn-outline-primary me-3" (click)="tableRef.hoverRow(1)">
+        Mark second row as active
       </button>
-      <button class="btn btn-secondary" (click)="tableRef.hoverRow(null)">
-        Remove hover state
+      <button class="btn btn-outline-primary" (click)="tableRef.hoverRow(null)">
+        Remove active state
       </button>
       <angular-generic-table
         [data]="data"
         [config]="config"
         (rowClick)="onRowClick($event)"
-        (rowHover)="onRowHover($event)"
+        (rowActive)="onRowHover($event)"
         #tableRef
       ></angular-generic-table>
       {{ clicked }}
     </div>',
   styles: [
     \`
-      :host ::ng-deep .gt-hover {
+      :host ::ng-deep .gt-active {
         background-color: var(--bs-highlight-bg);
       }
     \`,
@@ -55,7 +55,7 @@ export class RowHoverClickComponent {
       favoriteFood: {},
     },
     rowClick: true,
-    rowHover: true,
+    activateRowOnHover: true,
   };
 
   onRowClick(event: GtRowClickEvent) {

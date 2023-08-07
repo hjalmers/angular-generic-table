@@ -1,0 +1,31 @@
+import { Meta, Story } from '@storybook/addon-docs';
+
+import {moduleMetadata} from "@storybook/angular";
+import {BrowserModule} from "@angular/platform-browser";
+import {CommonModule} from "@angular/common";
+import {GenericTableCoreModule} from "../../../../core/src/lib/core.module";
+import {ReactiveFormsModule} from "@angular/forms";
+import {TabsComponent} from "../../app/components/tabs/tabs.component";
+import {HttpClientModule} from "@angular/common/http";
+import {GenericTablePaginationModule} from "../../../../core/src/lib/pagination/pagination.module";
+import { RowSelect, RowSelectComponent } from '../../app/examples/row-select/row-select.component';
+
+<Meta title="Examples/Row selection" decorators={[
+  moduleMetadata({
+    declarations: [TabsComponent, RowSelectComponent],
+    imports: [BrowserModule, CommonModule, GenericTableCoreModule, GenericTablePaginationModule, ReactiveFormsModule, HttpClientModule],
+  })]}/>
+
+# Row selection
+
+##### Determining if row is selected or not
+Pass a function using `isRowSelectedFn` input to determine if row is selected or not, e.g. `isRowSelectedFn: (row: any) => boolean = (row) => row.selected;` if row data contains information about selected state or `isRowSelectedFn: (row: any, selection: any) => boolean = (row) => selection[row.id]` if state is not known by row but stored separately. The active selection can be passed to the table using `selection` input. It's also possible to listen to row select events using `rowSelect` output.
+
+##### Keyboard navigation and row selection
+The example below shows one of multiple ways to implement row selection. It also shows how setting config options `activateRowOnHover` and `activateRowOnKeyboardNavigation` to true allows users to activate rows by hovering rows or using keyboard navigation (arrow keys and home and end) while table has focus. While navigating with a keyboard, rows can be selected using selection keys that can be passed using `selectKeys` input (defaults to `['Enter', ' ']`). In the example below it's also possible to select rows by clicking them.
+### Example
+
+
+<Story name="Row selection">
+  {RowSelect.bind({})}
+</Story>

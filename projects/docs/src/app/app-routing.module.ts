@@ -12,6 +12,7 @@ import { RowHoverClickComponent } from './examples/row-hover-click/row-hover-cli
 import { FooterComponent } from './examples/footer/footer.component';
 import { SortingComponent } from './examples/sorting/sorting.component';
 import { ServerSidePaginationComponent } from './examples/server-side-pagination/server-side-pagination.component';
+import { RowSelectComponent } from './examples/row-select/row-select.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,10 @@ const routes: Routes = [
   {
     path: 'row-hover-click',
     component: RowHoverClickComponent,
+  },
+  {
+    path: 'row-select',
+    component: RowSelectComponent,
   },
   {
     path: 'horizontal-table',

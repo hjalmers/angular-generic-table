@@ -23,6 +23,7 @@ import { RowHoverClickComponent } from './examples/row-hover-click/row-hover-cli
 import { FooterComponent } from './examples/footer/footer.component';
 import { SortingComponent } from './examples/sorting/sorting.component';
 import { ServerSidePaginationComponent } from './examples/server-side-pagination/server-side-pagination.component';
+import { RowSelectComponent } from './examples/row-select/row-select.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { ServerSidePaginationComponent } from './examples/server-side-pagination
     FooterComponent,
     SortingComponent,
     ServerSidePaginationComponent,
+    RowSelectComponent,
   ],
   imports: [
     BrowserModule,

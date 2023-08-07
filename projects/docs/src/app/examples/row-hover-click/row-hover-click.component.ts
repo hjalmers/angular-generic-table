@@ -1,23 +1,33 @@
 import { Component } from '@angular/core';
 import { Story } from '@storybook/angular/types-6-0';
 import { ROW_HOVER_CLICK_SNIPPETS } from './row-hower-click.snippets';
-import { GtRowClickEvent, GtRowHoverEvent } from '@angular-generic-table/core';
+import {
+  GtRowClickEvent,
+  GtRowActiveEvent,
+  TableConfig,
+} from '@angular-generic-table/core';
 
 @Component({
   selector: 'docs-row-hover-click',
   template: `
     <div class="overflow-auto">
-      <button class="btn btn-secondary me-3" (click)="tableRef.hoverRow(1)">
-        Set hover state to second row
+      <button
+        class="btn btn-outline-primary me-3"
+        (click)="tableRef.activateRow(1)"
+      >
+        Mark second row as active
       </button>
-      <button class="btn btn-secondary" (click)="tableRef.hoverRow(null)">
-        Remove hover state
+      <button
+        class="btn btn-outline-primary"
+        (click)="tableRef.activateRow(null)"
+      >
+        Remove active state
       </button>
       <angular-generic-table
         [data]="data"
         [config]="config"
         (rowClick)="onRowClick($event)"
-        (rowHover)="onRowHover($event)"
+        (rowActive)="onRowHover($event)"
         #tableRef
       ></angular-generic-table>
     </div>
@@ -26,7 +36,7 @@ import { GtRowClickEvent, GtRowHoverEvent } from '@angular-generic-table/core';
   `,
   styles: [
     `
-      :host ::ng-deep .gt-hover {
+      :host ::ng-deep .gt-active {
         background-color: var(--bs-highlight-bg);
       }
     `,
@@ -48,7 +58,7 @@ export class RowHoverClickComponent {
       favoriteFood: 'Pizza',
     },
   ];
-  config = {
+  config: TableConfig = {
     columns: {
       firstName: {},
       lastName: {},
@@ -56,14 +66,14 @@ export class RowHoverClickComponent {
       favoriteFood: {},
     },
     rowClick: true,
-    rowHover: true,
+    activateRowOnHover: true,
   };
 
   onRowClick(event: GtRowClickEvent) {
     console.log('row clicked', event);
     this.clicked = `clicked row number: ${event.index}`;
   }
-  onRowHover(event: GtRowHoverEvent) {
+  onRowHover(event: GtRowActiveEvent) {
     console.log('row hovered', event);
   }
 
