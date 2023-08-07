@@ -266,7 +266,6 @@ export class CoreComponent implements OnDestroy {
   /** page change event - emitted when current page/index changes for pagination */
   @Output() pageChange = new EventEmitter<GtPageChangeEvent>();
   rowActive$ = this._rowActive$.asObservable().pipe(
-    debounceTime(50),
     distinctUntilChanged((p, q) => {
       if (this.rowIdKey && p.row && q.row) {
         return p.row[this.rowIdKey] === q.row[this.rowIdKey];
