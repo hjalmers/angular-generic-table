@@ -7,6 +7,7 @@ import { HighlightPipe } from './pipes/highlight.pipe';
 import { CapitalCasePipe } from './pipes/capital-case.pipe';
 import { DynamicPipe } from './pipes/dynamic.pipe';
 import { GtDeltaComponent } from './gt-delta/gt-delta.component';
+import { RowSelectionPipe } from './pipes/row-selection.pipe';
 
 @NgModule({
   imports: [
@@ -15,11 +16,13 @@ import { GtDeltaComponent } from './gt-delta/gt-delta.component';
     SortClassPipe,
     DashCasePipe,
     HighlightPipe,
+    RowSelectionPipe,
     CapitalCasePipe,
     CapitalCasePipe,
     DynamicPipe,
     GtDeltaComponent,
   ],
   exports: [CoreComponent, GtDeltaComponent],
+  declarations: [],
 })
 export class GenericTableCoreModule {}

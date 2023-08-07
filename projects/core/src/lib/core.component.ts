@@ -49,8 +49,9 @@ import { GtOrder, GtSortOrder } from './models/table-sort.interface';
 import { TableMeta } from './models/table-meta.interface';
 import {
   GtPageChangeEvent,
+  GtRowSelectEvent,
   GtRowClickEvent,
-  GtRowHoverEvent,
+  GtRowActiveEvent,
   GtSortEvent,
 } from './models/table-events.interface';
 import { CapitalCasePipe } from './pipes/capital-case.pipe';
@@ -58,6 +59,7 @@ import { SortClassPipe } from './pipes/sort-class.pipe';
 import { DashCasePipe } from './pipes/dash-case.pipe';
 import { DynamicPipe } from './pipes/dynamic.pipe';
 import { HighlightPipe } from './pipes/highlight.pipe';
+import { RowSelectionPipe } from './pipes/row-selection.pipe';
 import { GtPaginationInfo } from './models/gt-pagination';
 import { TableInfo } from './models/table-info.interface';
 
@@ -71,6 +73,7 @@ import { TableInfo } from './models/table-info.interface';
     KeyValuePipe,
     SortClassPipe,
     DashCasePipe,
+    RowSelectionPipe,
     AsyncPipe,
     NgTemplateOutlet,
     SlicePipe,
@@ -105,6 +108,44 @@ export class CoreComponent {
       }
     }
   }
+
+  /** customClasses
+   * @description An object that contains custom classes for various elements in the table.
+   * @type {object} - { selectedRow: string, activeRow: string } - default classes are 'gt-selected' and 'gt-active'
+   */
+  @Input() set customClasses(classes: Partial<typeof this._customClasses>) {
+    this._customClasses = { ...this._customClasses, ...classes };
+  }
+
+  get customClasses(): typeof this._customClasses {
+    return this._customClasses;
+  }
+
+  private _customClasses = {
+    selectedRow: 'gt-selected',
+    activeRow: 'gt-active',
+  };
+
+  /** isRowSelectedFn
+   * @description Function to determine if row is selected or not.
+   * @type {fn} A function that receives a row object and optional state for current selection that can be used to determine if row should be marked as selected or not. */
+  @Input() set isRowSelectedFn(
+    fn: (row: TableRow | any, selection?: any) => boolean
+  ) {
+    this._isRowSelectedFn = fn;
+  }
+
+  get isRowSelectedFn(): any {
+    return this._isRowSelectedFn;
+  }
+
+  private _isRowSelectedFn: any;
+
+  /** selection
+   * @description An object that contains the currently selected row(s) in the table. It's passed to the selection function to determine which rows should be selected.
+   * @type {any}
+   */
+  @Input() selection: any = {};
 
   /** rowIdKey
    * @description row key to use as unique id for table row. If passed, table won't generate unique ids for each row but instead use key to retrieve unique id from row.
@@ -159,47 +200,67 @@ export class CoreComponent {
   }
 
   @Output() rowClick = new EventEmitter<GtRowClickEvent>();
+  @Output() rowSelect = new EventEmitter<GtRowSelectEvent>();
   @Output() sortOrderChange = new EventEmitter<GtSortOrder<TableRow>>();
 
   _rowClick(row: TableRow, index: number, event: MouseEvent): void {
     this.rowClick.emit({ row, index, event });
   }
 
-  private _rowHover$ = new ReplaySubject<GtRowHoverEvent>(1);
-  @Output() rowHover = new EventEmitter<GtRowHoverEvent>();
+  _rowActive(row: TableRow, index: number, event: KeyboardEvent): void {
+    this.rowSelect.emit({ row, index, event });
+  }
+
+  private _rowActive$ = new ReplaySubject<GtRowActiveEvent>(1);
+  @Output() rowActive = new EventEmitter<GtRowActiveEvent>();
   @Output() columnSort = new EventEmitter<GtSortEvent>();
   /** page change event - emitted when current page/index changes for pagination */
   @Output() pageChange = new EventEmitter<GtPageChangeEvent>();
-  rowHover$ = this._rowHover$.asObservable().pipe(
+  rowActive$ = this._rowActive$.asObservable().pipe(
     debounceTime(50),
-    distinctUntilChanged((p, q) => p.index === q.index),
-    tap((event) => this.rowHover.emit(event)),
+    distinctUntilChanged((p, q) => {
+      if (this.rowIdKey && p.row && q.row) {
+        return p.row[this.rowIdKey] === q.row[this.rowIdKey];
+      } else if (this.generateRowId && p.row && q.row) {
+        return p.row._id === q.row._id;
+      } else {
+        return p.index === q.index;
+      }
+    }),
+    tap((event) => (this.activeRowIndex = event.index)),
+    tap((event) => this.rowActive.emit(event)),
     shareReplay(1)
   );
 
-  hoverRow(id: string): void;
-  hoverRow(index: number): void;
-  hoverRow(none: null): void;
-  hoverRow(arg: string | number | null): void {
+  activeRowIndex: number | null = null;
+  activateRow(id: string, event?: MouseEvent | KeyboardEvent): void;
+  activateRow(index: number, event?: MouseEvent | KeyboardEvent): void;
+  activateRow(none: null, event?: MouseEvent | KeyboardEvent): void;
+  activateRow(
+    arg: string | number | null,
+    event?: MouseEvent | KeyboardEvent
+  ): void {
     if (typeof arg === 'number') {
-      this.data$
+      this.table$
         .pipe(
-          map((data) => data[arg]),
-          take(1)
+          pluck('data'),
+          map((data) => data[this.paginationIndex][arg]),
+          take(1),
+          takeUntil(this.unsubscribe$)
         )
-        .subscribe((row) => this._hoverRow(row, arg));
+        .subscribe((row) => this._activateRow(row, arg, event));
     } else if (typeof arg === 'string') {
       // TODO: implement hover by id
     } else {
-      this._hoverRow(null, null);
+      this._activateRow(null, null);
     }
   }
-  _hoverRow(
+  protected _activateRow(
     row: TableRow | null,
     index: number | null,
-    event?: MouseEvent
+    event?: MouseEvent | KeyboardEvent
   ): void {
-    this._rowHover$.next({ row, index, event });
+    this._rowActive$.next({ row, index, event });
   }
 
   get loading$(): Observable<boolean> {

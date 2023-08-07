@@ -200,9 +200,23 @@
           "
           [attr.id]="'tableRow_' + i"
           (click)="table?.config?.rowClick && _rowClick(row, i, $event)"
-          (mouseover)="table?.config?.rowHover && _hoverRow(row, i, $event)"
-          (mouseout)="table?.config?.rowHover && _hoverRow(null, null, $event)"
-          [class.gt-hover]="(rowHover$ | async)?.index === i"
+          (mouseenter)="
+            table?.config?.activateRowOnHover && _activateRow(row, i, $event)
+          "
+          (mouseleave)="
+            table?.config?.activateRowOnHover &&
+              _activateRow(null, null, $event)
+          "
+          [ngClass]="[
+            !!isRowSelectedFn
+              ? (row
+                | rowSelection
+                  : selection
+                  : isRowSelectedFn
+                  : customClasses.selectedRow)
+              : '',
+            (rowActive$ | async)?.index === i ? customClasses.activeRow : ''
+          ]"
         >
           <ng-container
             *ngFor="let column of table.config?.columns | keyvalue: columnOrder"
@@ -262,11 +276,23 @@
             [attr.id]="'tableRow_' + i"
             ngClass="{{ (row.key | dashCase) + '-row' }}"
             (click)="table?.config?.rowClick && _rowClick(row, i, $event)"
-            (mouseover)="table?.config?.rowHover && _hoverRow(row, i, $event)"
-            (mouseout)="
-              table?.config?.rowHover && _hoverRow(null, null, $event)
+            (mouseenter)="
+              table?.config?.activateRowOnHover && _activateRow(row, i, $event)
             "
-            [class.gt-hover]="(rowHover$ | async)?.index === i"
+            (mouseleave)="
+              table?.config?.activateRowOnHover &&
+                _activateRow(null, null, $event)
+            "
+            [ngClass]="[
+              !!isRowSelectedFn
+                ? (row
+                  | rowSelection
+                    : selection
+                    : isRowSelectedFn
+                    : customClasses.selectedRow)
+                : '',
+              (rowActive$ | async)?.index === i ? customClasses.activeRow : ''
+            ]"
           >
             <th class="row-header" scope="row">
               {{ row.value.header || row.key | capitalCase }}

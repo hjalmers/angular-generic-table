@@ -12,7 +12,6 @@ export interface TableConfig<R = TableRow> {
     column?: boolean;
   };
   /** Add one or more CSS classes to the table element e.g. `table table-striped table-bordered`. <p>**Default:** `table`</p>*/
-
   class?: string;
   rows?: {
     [Property in keyof R]: TableColumn<R>;
@@ -24,7 +23,8 @@ export interface TableConfig<R = TableRow> {
     length?: number;
   };
   rowClick?: boolean;
-  rowHover?: boolean;
+  /** Toggle row active state on mouse enter/leave (hover) <p>**Default:** `false`</p>*/
+  activateRowOnHover?: boolean;
   footer?: {
     headers?: {
       [key: FooterCalculation | string]: string | boolean;

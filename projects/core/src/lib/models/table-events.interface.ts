@@ -7,10 +7,16 @@ export interface GtRowClickEvent<R = TableRow> {
   event: MouseEvent;
 }
 
-export interface GtRowHoverEvent<R = TableRow> {
+export interface GtRowActiveEvent<R = TableRow> {
   row: R | null;
   index: number | null;
-  event?: MouseEvent;
+  event?: MouseEvent | KeyboardEvent;
+}
+
+export interface GtRowSelectEvent<R = TableRow> {
+  row: R | null;
+  index: number | null;
+  event?: KeyboardEvent;
 }
 
 export interface GtSortEvent<R = TableRow> {
