@@ -3,16 +3,19 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   Output,
   TrackByFunction,
 } from '@angular/core';
 import {
   BehaviorSubject,
   combineLatest,
+  fromEvent,
   isObservable,
   Observable,
   of,
   ReplaySubject,
+  Subject,
 } from 'rxjs';
 import { TableConfig } from './models/table-config.interface';
 import {
@@ -30,10 +33,12 @@ import {
   distinctUntilChanged,
   filter,
   map,
+  pluck,
   shareReplay,
   startWith,
   switchMap,
   take,
+  takeUntil,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
@@ -84,7 +89,43 @@ import { TableInfo } from './models/table-info.interface';
     NgForOf,
   ],
 })
-export class CoreComponent {
+export class CoreComponent implements OnDestroy {
+  unsubscribe$ = new Subject();
+  get navigationKeys(): typeof this._navigationKeys {
+    return this._navigationKeys;
+  }
+
+  /** navigationKeys
+   * @description An array of keyboard keys that will trigger navigation and active row, currently only supports arrow keys, home and end (omit key name from array to disable it)
+   * @type {string[]}
+   * @default ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Home', 'End']
+   */
+  @Input() set navigationKeys(value: typeof this._navigationKeys) {
+    this._navigationKeys = value;
+  }
+
+  private _navigationKeys = [
+    'ArrowDown',
+    'ArrowUp',
+    'ArrowLeft',
+    'ArrowRight',
+    'Home',
+    'End',
+  ];
+  get selectKeys(): string[] {
+    return this._selectKeys;
+  }
+
+  /** selectKeys
+   * @description An array of keyboard keys that will trigger row selection (omit key name from array to disable it)
+   * @type {string[]}
+   * @default ['Enter', ' ']
+   */
+  @Input() set selectKeys(value: string[]) {
+    this._selectKeys = value;
+  }
+
+  private _selectKeys = ['Enter', ' '];
   get sortOrder$(): Observable<GtSortOrder> {
     return this._sortOrder$.asObservable();
   }
@@ -95,6 +136,10 @@ export class CoreComponent {
   @Input()
   set paginationIndex(pageIndex: number) {
     this._currentPaginationIndex$.next(pageIndex);
+  }
+
+  get paginationIndex(): number {
+    return this._currentPaginationIndex$.getValue();
   }
 
   @Input() set pagingInfo(value: GtPaginationInfo | null) {
@@ -187,9 +232,13 @@ export class CoreComponent {
     this._tableConfig$.next(config);
   }
 
+  private _tableConfig: TableConfig<any> | undefined;
+
   @Input()
-  set data(data: Observable<Array<TableRow>> | Array<TableRow>) {
-    this._data$.next(data);
+  set data(data: Observable<Array<TableRow>> | Array<TableRow> | null) {
+    if (data) {
+      this._data$.next(data);
+    }
   }
 
   @Input() set sortOrder(sortConfig: GtSortOrder<TableRow> | any) {
@@ -303,6 +352,7 @@ export class CoreComponent {
   tableConfig$ = this._tableConfig$.pipe(
     map((value) => (isObservable(value) ? value : of(value))),
     switchMap((obs) => obs),
+    tap((config) => (this._tableConfig = config)),
     shareReplay(1)
   );
 
@@ -413,6 +463,7 @@ export class CoreComponent {
         config,
         info: <TableInfo>{
           numberOfRecords: sorted.length,
+          pageSize: +(config.pagination.length || 0),
           pageTotal: Math.ceil(
             sorted.length / +(config.pagination.length || 0)
           ),
@@ -581,5 +632,157 @@ export class CoreComponent {
         (index === levels.length - 1 ? missingValue : {}),
       object
     );
+  }
+
+  private _unsubscribeFromKeyboardEvents$ = new Subject();
+  private _keyboardArrowEvent$ = fromEvent<KeyboardEvent>(
+    document,
+    'keydown'
+  ).pipe(
+    filter(
+      (event) =>
+        [...this._navigationKeys, ...this._selectKeys].indexOf(event.key) > -1
+    )
+  );
+
+  protected listenToKeyboardEvents(): void {
+    if (!this._tableConfig?.activateRowOnKeyboardNavigation) {
+      return;
+    }
+
+    this._unsubscribeFromKeyboardEvents$.next(true);
+    this._keyboardArrowEvent$
+      .pipe(
+        withLatestFrom(
+          this.data$,
+          this.currentPaginationIndex$,
+          this.tableInfo$
+        ),
+        takeUntil(this._unsubscribeFromKeyboardEvents$),
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe(([event, rows, currentPage, tableInfo]) => {
+        const selectEvent = this._selectKeys.includes(event.key);
+        if (selectEvent && this.activeRowIndex !== null) {
+          const rowIndex =
+            this.activeRowIndex + currentPage * (tableInfo?.pageSize ?? 0);
+          this._rowActive(rows[rowIndex], rowIndex, event);
+          return;
+        }
+
+        const navigationEvent = this._navigationKeys.includes(event.key);
+        if (navigationEvent) {
+          this._handleNavigationEvent(event, rows, currentPage, tableInfo);
+        }
+      });
+  }
+  unsubscribeFromKeyboardEvents(tableRef: HTMLTableElement): void {
+    if (!this._tableConfig?.activateRowOnKeyboardNavigation) {
+      return;
+    }
+    // only unsubscribe if table is not focused
+    if (tableRef !== document.activeElement) {
+      if (this._tableConfig?.activateRowOnHover) {
+        // unset active row
+        this.activateRow(null);
+      }
+      this._unsubscribeFromKeyboardEvents$.next(true);
+    }
+  }
+
+  private _handleNavigationEvent(
+    event: KeyboardEvent,
+    rows: any[],
+    currentPage: number,
+    tableInfo: any
+  ): void {
+    const hasPagination = (tableInfo?.pageTotal || 0) > 1 && tableInfo;
+    const lastRowIndex = rows.length - 1;
+    let newIndex = this.activeRowIndex;
+    let indexModifier = 0;
+
+    if (event.key === 'Home') {
+      this.paginationIndex = 0;
+      this.activateRow(0, event);
+      return;
+    }
+
+    if (event.key === 'End') {
+      const indexOfLastRecord = hasPagination
+        ? rows.length - (tableInfo.pageTotal - 1) * tableInfo.pageSize - 1
+        : lastRowIndex;
+      if (tableInfo?.pageTotal) {
+        this.paginationIndex = tableInfo.pageTotal - 1;
+      }
+      this.activateRow(indexOfLastRecord, event);
+      return;
+    }
+
+    if (event.key === 'ArrowDown') {
+      indexModifier = 1;
+    } else if (event.key === 'ArrowUp') {
+      indexModifier = -1;
+    }
+
+    if (newIndex === null) {
+      newIndex = 0;
+    } else if (
+      newIndex + indexModifier >= 0 &&
+      newIndex + indexModifier <= lastRowIndex
+    ) {
+      newIndex = newIndex + indexModifier;
+    }
+
+    if (hasPagination && tableInfo?.pageSize) {
+      const isNotLastPage = currentPage + 1 < tableInfo.pageTotal;
+      const recordsOnLastPage =
+        rows.length - (tableInfo.pageTotal - 1) * tableInfo.pageSize - 1;
+      const maxIndex = isNotLastPage
+        ? tableInfo?.pageSize - 1
+        : recordsOnLastPage;
+
+      if (event.key === 'ArrowLeft' && currentPage > 0) {
+        this.paginationIndex = currentPage - 1;
+        this.activateRow(newIndex, event);
+        return;
+      } else if (event.key === 'ArrowRight' && isNotLastPage) {
+        if (
+          currentPage + 1 === tableInfo.pageTotal - 1 &&
+          newIndex > recordsOnLastPage
+        ) {
+          this.activateRow(recordsOnLastPage, event);
+        }
+        this.paginationIndex = currentPage + 1;
+        this.activateRow(newIndex, event);
+        return;
+      }
+
+      if (
+        currentPage > 0 &&
+        indexModifier < 0 &&
+        newIndex + indexModifier <= lastRowIndex &&
+        (this.activeRowIndex || 0) + indexModifier < 0
+      ) {
+        // set last row of previous page as active
+        this.activateRow(tableInfo?.pageSize - 1, event);
+        this.paginationIndex = currentPage - 1;
+        return;
+      }
+
+      const pageIndex = newIndex % tableInfo?.pageSize;
+
+      if (newIndex > maxIndex && currentPage + 1 < tableInfo.pageTotal) {
+        this.paginationIndex = currentPage + 1;
+      }
+      this.activateRow(pageIndex > maxIndex ? maxIndex : pageIndex, event);
+      return;
+    }
+
+    this.activateRow(newIndex, event);
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next(true);
+    this.unsubscribe$.complete();
   }
 }

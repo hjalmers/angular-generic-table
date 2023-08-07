@@ -25,6 +25,9 @@ export interface TableConfig<R = TableRow> {
   rowClick?: boolean;
   /** Toggle row active state on mouse enter/leave (hover) <p>**Default:** `false`</p>*/
   activateRowOnHover?: boolean;
+  /** Toggle row active state on keyboard navigation <p>**Default:** `false`</p>*/
+  activateRowOnKeyboardNavigation?: boolean;
+  deactivateRowOnLostFocus?: boolean;
   footer?: {
     headers?: {
       [key: FooterCalculation | string]: string | boolean;

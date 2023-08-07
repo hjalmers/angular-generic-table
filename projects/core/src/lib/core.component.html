@@ -10,6 +10,12 @@
     (tableConfig$ | async)?.stickyHeaders?.column
   "
   [attr.aria-busy]="(loading$ | async) === true ? true : null"
+  [tabindex]="(tableConfig$ | async)?.activateRowOnKeyboardNavigation ? 0 : -1"
+  #tableRef
+  (focus)="listenToKeyboardEvents()"
+  (focusout)="unsubscribeFromKeyboardEvents(tableRef)"
+  (mouseenter)="listenToKeyboardEvents()"
+  (mouseleave)="unsubscribeFromKeyboardEvents(tableRef)"
 >
   <thead>
     <tr
