@@ -51,7 +51,6 @@ import {
 } from './utilities/utilities';
 import { TableRow } from './models/table-row.interface';
 import { GtOrder, GtSortOrder } from './models/table-sort.interface';
-import { TableMeta } from './models/table-meta.interface';
 import {
   GtPageChangeEvent,
   GtRowSelectEvent,
@@ -423,7 +422,7 @@ export class CoreComponent implements OnDestroy {
     shareReplay(1)
   );
 
-  table$: Observable<TableMeta> = combineLatest([
+  table$ = combineLatest([
     this.data$,
     this.tableConfig$,
     this._pagingInfo$,
@@ -490,19 +489,18 @@ export class CoreComponent implements OnDestroy {
 
   private _tableInfo$ = new BehaviorSubject<TableInfo | undefined>(undefined);
 
-  private _currentPaginationIndex$: BehaviorSubject<number> =
-    new BehaviorSubject(0);
+  private _currentPaginationIndex$ = new BehaviorSubject(0);
   currentPaginationIndex$ = combineLatest([
     this._currentPaginationIndex$,
     this.table$,
   ]).pipe(
-    map(([page, table]: any) => {
+    map(([page, table]) => {
       // determine last page
       const lastPage =
         Math.ceil(
-          table.info.records /
-            (table.info.recordLength ??
-              (table.config?.pagination?.length || table.info.records))
+          table.info.numberOfRecords /
+            (table.info.pageSize ??
+              (table.config?.pagination?.length || table.info.numberOfRecords))
         ) - 1;
       // determine min/max position
       return +page < 0 ? 0 : +page > lastPage ? lastPage : +page;
