@@ -176,6 +176,9 @@ export const sortOnMultipleKeys = (
   return (a, b) => {
     for (let i = 0; i < keys.length; i++) {
       const o = keys[i].key;
+      if (a[o] === b[o]) return 0;
+      if (a[o] === null) return 1;
+      if (b[o] === null) return -1;
       if (a[o] > b[o]) return order[i];
       if (a[o] < b[o]) return -order[i];
     }
