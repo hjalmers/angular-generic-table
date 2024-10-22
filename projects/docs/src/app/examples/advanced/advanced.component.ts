@@ -35,6 +35,7 @@ export class AdvancedComponent implements OnInit {
   loading$ = new BehaviorSubject(true);
   data$: BehaviorSubject<any> = new BehaviorSubject([
     {
+      index: 1,
       firstName: 'Peter',
       lastName: 'Parker',
       gender: 'male',
@@ -42,6 +43,7 @@ export class AdvancedComponent implements OnInit {
       favoriteFood: 'Pasta',
     },
     {
+      index: 2,
       firstName: 'Mary Jane',
       lastName: 'Watson',
       gender: 'female',
@@ -104,6 +106,7 @@ export class AdvancedComponent implements OnInit {
   randomRecord(): TableRow {
     const random = Math.floor(Math.random() * 2);
     const newRecord = {
+      index: this.data$.value.length + 1,
       firstName: random
         ? this.maleFirstNames[
             Math.floor(Math.random() * this.maleFirstNames.length)
@@ -111,8 +114,9 @@ export class AdvancedComponent implements OnInit {
         : this.femaleFirstNames[
             Math.floor(Math.random() * this.femaleFirstNames.length)
           ],
-      lastName:
-        this.lastNames[Math.floor(Math.random() * this.lastNames.length)],
+      lastName: random
+        ? null
+        : this.lastNames[Math.floor(Math.random() * this.lastNames.length)],
       gender: random ? 'male' : 'female',
       favoriteColor:
         this.colors[Math.floor(Math.random() * this.colors.length)],
@@ -146,6 +150,9 @@ export class AdvancedComponent implements OnInit {
       class: 'table text-nowrap mb-0',
       mobileLayout: true,
       columns: {
+        index: {
+          sortable: true,
+        },
         firstName: {
           header: 'First name',
           mobileHeader: true,

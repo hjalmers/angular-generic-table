@@ -96,6 +96,7 @@ export class AdvancedComponent implements OnInit {
   loading$ = new BehaviorSubject(true);
   data$: BehaviorSubject<any> = new BehaviorSubject([
     {
+      index: 1,
       firstName: 'Peter',
       lastName: 'Parker',
       gender: 'male',
@@ -103,6 +104,7 @@ export class AdvancedComponent implements OnInit {
       favoriteFood: 'Pasta',
     },
     {
+      index: 2,
       firstName: 'Mary Jane',
       lastName: 'Watson',
       gender: 'female',
@@ -144,6 +146,7 @@ export class AdvancedComponent implements OnInit {
   randomRecord(): TableRow {
     const random = Math.floor(Math.random() * 2);
     const newRecord = {
+      index: this.data$.value.length + 1,
       firstName: random
         ? this.maleFirstNames[Math.floor(Math.random() * this.maleFirstNames.length)]
         : this.femaleFirstNames[Math.floor(Math.random() * this.femaleFirstNames.length)],
@@ -177,8 +180,12 @@ export class AdvancedComponent implements OnInit {
         });
       });
     this.tableConfig$.next({
-      class: 'table table-mobile text-nowrap mb-0',
+      class: 'table text-nowrap mb-0',
+      mobileLayout: true,
       columns: {
+        index: {
+          sortable: true,
+        },
         firstName: {
           header: 'First name',
           mobileHeader: true,
@@ -217,6 +224,7 @@ export class AdvancedComponent implements OnInit {
           header: false,
           templateRef: this.actions,
           order: 6,
+          class: 'py-1 text-end',
         },
       },
       pagination: {
