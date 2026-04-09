@@ -1,21 +1,13 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { Story } from '@storybook/angular/types-6-0';
-import {
-  TableConfig,
-  TableRow,
-  TableColumn,
-} from '@angular-generic-table/core';
-import { ReplaySubject } from 'rxjs';
+import { CoreComponent, TableConfig, TableRow, TableColumn } from '@angular-generic-table/core';
+import { TabsComponent } from '../../components/tabs/tabs.component';
 import { CUSTOM_TEMPLATES_DOCS } from './custom-templates.snippets';
 
 @Component({
   selector: 'docs-custom-templates',
   template: `
     <div class="overflow-auto">
-      <angular-generic-table
-        [data]="data"
-        [config]="config$"
-      ></angular-generic-table>
+      <angular-generic-table [data]="data" [config]="config"></angular-generic-table>
     </div>
     <ng-template #actions let-row="row" let-col="col" let-index="index">
       <button
@@ -34,6 +26,7 @@ import { CUSTOM_TEMPLATES_DOCS } from './custom-templates.snippets';
     {{ clicked }}
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
   `,
+  imports: [CoreComponent, TabsComponent],
 })
 export class CustomTemplatesComponent implements OnInit {
   @ViewChild('actions', { static: true }) actions: TemplateRef<any> | undefined;
@@ -41,53 +34,28 @@ export class CustomTemplatesComponent implements OnInit {
   clicked = '';
 
   data = [
-    {
-      firstName: 'Peter',
-      lastName: 'Parker',
-      gender: 'male',
-      favoriteColor: '#26BFAF',
-      favoriteFood: 'Pasta',
-    },
-    {
-      firstName: 'Mary Jane',
-      lastName: 'Watson',
-      gender: 'female',
-      favoriteColor: '#0f0',
-      favoriteFood: 'Pizza',
-    },
+    { firstName: 'Peter', lastName: 'Parker', gender: 'male', favoriteColor: '#26BFAF', favoriteFood: 'Pasta' },
+    { firstName: 'Mary Jane', lastName: 'Watson', gender: 'female', favoriteColor: '#0f0', favoriteFood: 'Pizza' },
   ];
-  config$: ReplaySubject<TableConfig> = new ReplaySubject(1);
+  config: TableConfig = {};
 
   SNIPPETS = CUSTOM_TEMPLATES_DOCS;
+
   ngOnInit(): void {
-    this.config$.next({
+    this.config = {
       columns: {
         firstName: {},
         lastName: {},
         gender: {},
-        favoriteColor: {
-          templateRef: this.color,
-        },
+        favoriteColor: { templateRef: this.color },
         favoriteFood: {},
-        action: {
-          templateRef: this.actions,
-        },
+        action: { templateRef: this.actions },
       },
-    });
+    };
   }
-  clickAction(
-    row: TableRow,
-    column: { key: string; value: TableColumn },
-    index: number
-  ): void {
+
+  clickAction(row: TableRow, column: { key: string; value: TableColumn }, index: number): void {
     console.log('clicked row:', row, 'col:', column);
     this.clicked = `clicked row number: ${index}`;
   }
 }
-
-export const CustomTemplates: Story<CustomTemplatesComponent> = (
-  args: CustomTemplatesComponent
-) => ({
-  props: args,
-  component: CustomTemplatesComponent,
-});

@@ -2,7 +2,7 @@
 @use 'bootstrap/scss/bootstrap' with (
   $enable-negative-margins: true
 );
-@use 'projects/core/src/lib/scss' as generic-table-styles;
+@use '../../core/src/lib/scss' as generic-table-styles;
 @include generic-table-styles.styles();
 
 /*!

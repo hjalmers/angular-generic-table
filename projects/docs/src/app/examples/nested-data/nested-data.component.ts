@@ -1,18 +1,12 @@
-import { NESTED_SNIPPETS } from './nested.snippets';
-import { Story } from '@storybook/angular/types-6-0';
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { TableConfig } from '@angular-generic-table/core';
+import { NgSwitch, NgSwitchCase } from '@angular/common';
+import { CoreComponent, TableConfig } from '@angular-generic-table/core';
+import { TabsComponent } from '../../components/tabs/tabs.component';
+import { NESTED_SNIPPETS } from './nested.snippets';
+
 interface NestedData {
-  name: {
-    first: string;
-    last: string;
-  };
-  data: {
-    details?: {
-      gender: 'male' | 'female';
-      favoriteFood: 'Pasta' | 'Pizza';
-    };
-  };
+  name: { first: string; last: string };
+  data: { details?: { gender: 'male' | 'female'; favoriteFood: 'Pasta' | 'Pizza' } };
 }
 
 interface Data {
@@ -22,26 +16,20 @@ interface Data {
   favoriteFood: 'Pasta' | 'Pizza';
   missing: string;
 }
+
 @Component({
   selector: 'nested-data',
   template: `
     <div class="row gy-3">
       <div class="col col-sm-auto">
-        <button class="btn btn-outline-primary mb-3" (click)="loadData()">
-          Load other data
-        </button>
+        <button class="btn btn-outline-primary mb-3" (click)="loadData()">Load other data</button>
       </div>
       <div class="col col-sm-auto">
-        <button class="btn btn-outline-primary mb-3" (click)="resetData()">
-          Reset
-        </button>
+        <button class="btn btn-outline-primary mb-3" (click)="resetData()">Reset</button>
       </div>
     </div>
     <div class="overflow-auto">
-      <angular-generic-table
-        [data]="data"
-        [config]="config"
-      ></angular-generic-table>
+      <angular-generic-table [data]="data" [config]="config"></angular-generic-table>
     </div>
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
     <ng-template #gender let-row="row" let-col="col">
@@ -51,111 +39,40 @@ interface Data {
       </div>
     </ng-template>
   `,
-  styles: [],
+  imports: [CoreComponent, TabsComponent, NgSwitch, NgSwitchCase],
 })
 export class NestedDataComponent implements OnInit {
   @ViewChild('gender', { static: true }) gender: TemplateRef<any> | undefined;
-
   config: TableConfig<Data> = {};
   data: Array<NestedData> = [];
+
   ngOnInit(): void {
     this.resetData();
     this.config = {
       columns: {
-        firstName: {
-          sortable: true,
-          mapTo: { path: 'name.first' },
-        },
-        lastName: {
-          sortable: true,
-          mapTo: { path: 'name.last' },
-        },
-        gender: {
-          mapTo: { path: 'data.details.gender' },
-          templateRef: this.gender,
-        },
-        favoriteFood: {
-          sortable: true,
-          mapTo: { path: 'data.details.favoriteFood', missingValue: 'n/a' },
-        },
-        missing: {
-          mapTo: { path: 'data.missingKey.noMatch', missingValue: 'n/a' },
-        },
+        firstName: { sortable: true, mapTo: { path: 'name.first' } },
+        lastName: { sortable: true, mapTo: { path: 'name.last' } },
+        gender: { mapTo: { path: 'data.details.gender' }, templateRef: this.gender },
+        favoriteFood: { sortable: true, mapTo: { path: 'data.details.favoriteFood', missingValue: 'n/a' } },
+        missing: { mapTo: { path: 'data.missingKey.noMatch', missingValue: 'n/a' } },
       },
     };
   }
 
   resetData() {
     this.data = [
-      {
-        name: {
-          first: 'Peter',
-          last: 'Parker',
-        },
-        data: {
-          details: {
-            gender: 'male',
-            favoriteFood: 'Pasta',
-          },
-        },
-      },
-      {
-        name: {
-          first: 'Mary Jane',
-          last: 'Watson',
-        },
-        data: {
-          details: {
-            gender: 'female',
-            favoriteFood: 'Pizza',
-          },
-        },
-      },
+      { name: { first: 'Peter', last: 'Parker' }, data: { details: { gender: 'male', favoriteFood: 'Pasta' } } },
+      { name: { first: 'Mary Jane', last: 'Watson' }, data: { details: { gender: 'female', favoriteFood: 'Pizza' } } },
     ];
   }
 
   loadData(): void {
     this.data = [
-      {
-        name: {
-          first: 'John',
-          last: 'Doe',
-        },
-        data: {
-          details: {
-            gender: 'male',
-            favoriteFood: 'Pasta',
-          },
-        },
-      },
-      {
-        name: {
-          first: 'Jane',
-          last: 'Doe',
-        },
-        data: {
-          details: {
-            gender: 'female',
-            favoriteFood: 'Pizza',
-          },
-        },
-      },
-      {
-        name: {
-          first: 'Foo',
-          last: 'Bar',
-        },
-        data: {},
-      },
+      { name: { first: 'John', last: 'Doe' }, data: { details: { gender: 'male', favoriteFood: 'Pasta' } } },
+      { name: { first: 'Jane', last: 'Doe' }, data: { details: { gender: 'female', favoriteFood: 'Pizza' } } },
+      { name: { first: 'Foo', last: 'Bar' }, data: {} },
     ];
   }
 
   SNIPPETS = NESTED_SNIPPETS;
 }
-
-export const Nested: Story<NestedDataComponent> = (
-  args: NestedDataComponent
-) => ({
-  props: args,
-  component: NestedDataComponent,
-});

@@ -1,82 +1,64 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
-import { UntypedFormBuilder } from '@angular/forms';
-import { TableConfig } from '@angular-generic-table/core';
-import { pluck, tap, withLatestFrom } from 'rxjs/operators';
-import { Story } from '@storybook/angular/types-6-0';
-import { ADVANCED_DOCS } from './pagination.snippets';
+import { Component, OnInit, inject } from '@angular/core';
+import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { DatePipe, formatDate } from '@angular/common';
+import { CoreComponent, PaginationComponent as GtPaginationComponent, TableConfig } from '@angular-generic-table/core';
+import { TabsComponent } from '../../components/tabs/tabs.component';
+import { ADVANCED_DOCS } from './pagination.snippets';
 
 @Component({
   selector: 'docs-pagination',
   templateUrl: './pagination.component.html',
-  styles: [],
+  imports: [CoreComponent, GtPaginationComponent, ReactiveFormsModule, TabsComponent],
 })
 export class PaginationComponent implements OnInit {
-  constructor(private fb: UntypedFormBuilder, private http: HttpClient) {}
-  @ViewChild('actions', { static: true }) actions: TemplateRef<any> | undefined;
-  @ViewChild('color', { static: true }) color: TemplateRef<any> | undefined;
+  private fb = inject(FormBuilder);
+  private http = inject(HttpClient);
+
   paginationForm = this.fb.group({
     length: [10],
     search: [''],
   });
-  search$ = this.paginationForm.get('search')
-    ?.valueChanges as Observable<string>;
-  loading$ = new BehaviorSubject(true);
-  data$: Observable<any> = this.http
-    .get('https://private-730c61-generictable.apiary-mock.com/data')
-    .pipe(
-      pluck('data'),
-      tap((_) => this.loading$.next(false))
-    );
 
-  tableConfig$: ReplaySubject<TableConfig> = new ReplaySubject(1);
+  loading = true;
+  searchValue: string | null = null;
+  data: any[] = [];
+  tableConfig: TableConfig = {};
+
   SNIPPETS = ADVANCED_DOCS;
 
   ngOnInit(): void {
-    this.paginationForm
-      .get('length')
-      ?.valueChanges.pipe(withLatestFrom(this.tableConfig$))
-      .subscribe(([length, config]) => {
-        length = +length;
-        this.tableConfig$.next({
-          ...config,
-          pagination: { ...config.pagination, length },
-        });
+    this.http
+      .get<{ data: any[] }>('https://private-730c61-generictable.apiary-mock.com/data')
+      .subscribe((res) => {
+        this.data = res.data;
+        this.loading = false;
       });
-    this.tableConfig$.next({
+
+    this.paginationForm.get('length')?.valueChanges.subscribe((length) => {
+      this.tableConfig = {
+        ...this.tableConfig,
+        pagination: { ...this.tableConfig.pagination, length: +(length || 0) },
+      };
+    });
+    this.paginationForm.get('search')?.valueChanges.subscribe((value) => {
+      this.searchValue = value;
+    });
+
+    this.tableConfig = {
       class: 'table text-nowrap',
       columns: {
-        first_name: {
-          sortable: true,
-        },
-        last_name: {
-          sortable: true,
-        },
-        gender: {
-          sortable: true,
-        },
+        first_name: { sortable: true },
+        last_name: { sortable: true },
+        gender: { sortable: true },
         birthday: {
           sortable: true,
           class: 'text-end justify-content-end',
           search: (row, column) => formatDate(row[column], 'longDate', 'en'),
-          transform: {
-            pipe: DatePipe,
-            args: ['longDate'],
-          },
+          transform: { pipe: DatePipe, args: ['longDate'] },
         },
       },
-      pagination: {
-        length: this.paginationForm.get('length')?.value || 0,
-      },
-    });
+      pagination: { length: this.paginationForm.get('length')?.value || 0 },
+    };
   }
 }
-
-export const Pagination: Story<PaginationComponent> = (
-  args: PaginationComponent
-) => ({
-  props: args,
-  component: PaginationComponent,
-});

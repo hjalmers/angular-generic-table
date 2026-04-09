@@ -1,39 +1,28 @@
 import { Component } from '@angular/core';
-import { Story } from '@storybook/angular/types-6-0';
+import { CoreComponent, TableConfig } from '@angular-generic-table/core';
+import { TabsComponent } from '../../components/tabs/tabs.component';
 import { SIMPLE_SNIPPETS } from './simple.snippets';
-import { TableConfig } from '@angular-generic-table/core';
+
 interface BasicData {
   firstName: string;
   lastName: string;
   gender: 'male' | 'female';
   favoriteFood: string;
 }
+
 @Component({
   template: `
     <div class="overflow-auto">
-      <angular-generic-table
-        [data]="data"
-        [config]="config"
-      ></angular-generic-table>
+      <angular-generic-table [data]="data" [config]="config"></angular-generic-table>
     </div>
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
   `,
-  styles: [],
+  imports: [CoreComponent, TabsComponent],
 })
 export class SimpleComponent {
   data: Array<BasicData> = [
-    {
-      firstName: 'Peter',
-      lastName: 'Parker',
-      gender: 'male',
-      favoriteFood: 'Pasta',
-    },
-    {
-      firstName: 'Mary Jane',
-      lastName: 'Watson',
-      gender: 'female',
-      favoriteFood: 'Pizza',
-    },
+    { firstName: 'Peter', lastName: 'Parker', gender: 'male', favoriteFood: 'Pasta' },
+    { firstName: 'Mary Jane', lastName: 'Watson', gender: 'female', favoriteFood: 'Pizza' },
   ];
   config: TableConfig<BasicData> = {
     class: 'table table-striped table-bordered',
@@ -44,11 +33,5 @@ export class SimpleComponent {
       favoriteFood: {},
     },
   };
-
   SNIPPETS = SIMPLE_SNIPPETS;
 }
-
-export const Simple: Story<SimpleComponent> = (args: SimpleComponent) => ({
-  props: args,
-  component: SimpleComponent,
-});

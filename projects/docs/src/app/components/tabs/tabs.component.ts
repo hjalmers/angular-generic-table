@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Story } from '@storybook/angular/types-6-0';
 import hljs from 'highlight.js/lib/core';
 import { HighlightResult } from 'highlight.js';
 
@@ -15,35 +14,29 @@ hljs.registerLanguage('xml', xml);
   selector: 'docs-tabs',
   template: `
     <ul class="nav nav-tabs mt-4 flex-nowrap text-nowrap overflow-auto">
-      <li class="nav-item" *ngFor="let item of content; let i = index">
-        <button
-          class="nav-link btn-link"
-          [class.active]="activeIndex === i"
-          (click)="view(i)"
-        >
-          {{ item.name }}
-        </button>
-      </li>
+      @for (item of content; track $index; let i = $index) {
+        <li class="nav-item">
+          <button
+            class="nav-link btn-link"
+            [class.active]="activeIndex === i"
+            (click)="view(i)"
+          >
+            {{ item.name }}
+          </button>
+        </li>
+      }
     </ul>
-    <ng-container *ngIf="activeContent">
+    @if (activeContent) {
       <pre><code [innerHTML]="activeContent.value" class="{{'language-' + activeContent.language}}"></code></pre>
-    </ng-container>
+    }
   `,
   styleUrls: ['./tabs.component.scss'],
 })
 export class TabsComponent implements OnInit {
-  get content(): any {
-    return this._content;
-  }
-
-  @Input() set content(value: any) {
-    this._content = value;
-  }
-  constructor() {}
+  @Input() content: Array<{ name: string; code: string; language: string }> = [];
   activeIndex = 0;
   activeContent: HighlightResult | undefined;
 
-  private _content: Array<{}> = [];
   ngOnInit(): void {
     this.activeContent = hljs.highlight(this.content[this.activeIndex].code, {
       language: this.content[this.activeIndex].language,
@@ -57,8 +50,3 @@ export class TabsComponent implements OnInit {
     });
   }
 }
-
-export const Tabs: Story<TabsComponent> = (args: TabsComponent) => ({
-  props: args,
-  component: TabsComponent,
-});
