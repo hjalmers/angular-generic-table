@@ -1,44 +1,35 @@
-<ng-container
-  *ngIf="{
-    links: paginationListItems$ | async,
-    currentPosition: table?.currentPaginationIndex$ | async
-  } as pagination"
->
+@let links = paginationListItems();
+@let currentPos = currentPosition();
+@let classesValue = classes();
+@let ariaLabelsValue = ariaLabels();
+
+@if (links && links.length > 1) {
   <nav
-    *ngIf="pagination.links && pagination.links.length > 1"
     role="navigation"
-    [attr.aria-label]="ariaLabels.nav"
+    [attr.aria-label]="ariaLabelsValue.nav"
     class="gt-pagination"
-    [class]="classes.nav"
+    [class]="classesValue.nav"
   >
-    <ul [class]="classes.ul">
-      <ng-container
-        *ngFor="
-          let position of pagination!.links;
-          let i = index;
-          let last = last
-        "
-      >
+    <ul [class]="classesValue.ul">
+      @for (position of links; track position; let i = $index; let last = $last) {
         <li
-          [class]="classes.li"
-          [class.active]="position === (pagination!.currentPosition || 0) + 1"
+          [class]="classesValue.li"
+          [class.active]="position === (currentPos || 0) + 1"
         >
           <button
-            [class]="classes.button"
-            [attr.aria-label]="ariaLabels.button + position"
+            [class]="classesValue.button"
+            [attr.aria-label]="ariaLabelsValue.button + position"
             (click)="goToPage(position)"
           >
             {{ position }}
           </button>
         </li>
-        <li
-          [class]="classes.li"
-          class="gt-ellipsis"
-          *ngIf="position + 1 !== pagination!.links![i + 1] && !last"
-        >
-          <button [class]="classes.button" disabled tabindex="-1"></button>
-        </li>
-      </ng-container>
+        @if (position + 1 !== links[i + 1] && !last) {
+          <li [class]="classesValue.li" class="gt-ellipsis">
+            <button [class]="classesValue.button" disabled tabindex="-1"></button>
+          </li>
+        }
+      }
     </ul>
   </nav>
-</ng-container>
+}

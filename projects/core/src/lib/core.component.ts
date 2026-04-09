@@ -1,47 +1,35 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  Input,
+  computed,
+  DestroyRef,
+  effect,
+  inject,
+  input,
+  linkedSignal,
   OnDestroy,
-  Output,
+  output,
+  signal,
   TrackByFunction,
 } from '@angular/core';
 import {
-  BehaviorSubject,
-  combineLatest,
   fromEvent,
-  isObservable,
   Observable,
-  of,
-  ReplaySubject,
   Subject,
 } from 'rxjs';
+import {
+  filter,
+  takeUntil,
+  withLatestFrom,
+} from 'rxjs/operators';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { TableConfig } from './models/table-config.interface';
 import {
-  AsyncPipe,
   KeyValue,
   KeyValuePipe,
-  NgClass,
-  NgForOf,
-  NgIf,
   NgTemplateOutlet,
   SlicePipe,
 } from '@angular/common';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  map,
-  pluck,
-  shareReplay,
-  startWith,
-  switchMap,
-  take,
-  takeUntil,
-  tap,
-  withLatestFrom,
-} from 'rxjs/operators';
 import { TableColumn } from './models/table-column.interface';
 import {
   calculate,
@@ -66,220 +54,340 @@ import { HighlightPipe } from './pipes/highlight.pipe';
 import { RowSelectionPipe } from './pipes/row-selection.pipe';
 import { GtPaginationInfo } from './models/gt-pagination';
 import { TableInfo } from './models/table-info.interface';
+import { TableMeta } from './models/table-meta.interface';
 
 @Component({
   selector: 'angular-generic-table',
   templateUrl: './core.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
   imports: [
     CapitalCasePipe,
     KeyValuePipe,
     SortClassPipe,
     DashCasePipe,
     RowSelectionPipe,
-    AsyncPipe,
     NgTemplateOutlet,
     SlicePipe,
     DynamicPipe,
     HighlightPipe,
-    NgClass,
-    NgIf,
-    NgForOf,
   ],
 })
 export class CoreComponent implements OnDestroy {
-  unsubscribe$ = new Subject();
-  get navigationKeys(): typeof this._navigationKeys {
-    return this._navigationKeys;
-  }
+  private _destroyRef = inject(DestroyRef);
+  private _unsubscribe$ = new Subject<void>();
 
-  /** navigationKeys
-   * @description An array of keyboard keys that will trigger navigation and active row, currently only supports arrow keys, home and end (omit key name from array to disable it)
-   * @type {string[]}
-   * @default ['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight', 'Home', 'End']
-   */
-  @Input() set navigationKeys(value: typeof this._navigationKeys) {
-    this._navigationKeys = value;
-  }
+  // ─── Inputs ───
 
-  private _navigationKeys = [
+  readonly navigationKeys = input([
     'ArrowDown',
     'ArrowUp',
     'ArrowLeft',
     'ArrowRight',
     'Home',
     'End',
-  ];
-  get selectKeys(): string[] {
-    return this._selectKeys;
-  }
+  ]);
+  readonly selectKeys = input(['Enter', ' ']);
+  readonly config = input<TableConfig<any>>({});
+  readonly data = input<Array<TableRow>>([]);
+  readonly searchTerm = input<string | null>(null, { alias: 'search' });
+  readonly loading = input(false);
+  readonly sortOrderInput = input<GtSortOrder<any>>([], { alias: 'sortOrder' });
+  readonly paginationIndexInput = input(0, { alias: 'paginationIndex' });
+  readonly pagingInfo = input<GtPaginationInfo | null>(null);
+  readonly selection = input<any>({});
+  readonly rowIdKey = input<string | undefined>(undefined);
+  readonly generateRowId = input(true);
+  readonly trackRowByFnInput = input<TrackByFunction<TableRow> | undefined>(
+    undefined,
+    { alias: 'trackRowByFn' }
+  );
+  readonly isRowSelectedFn = input<
+    ((row: TableRow | any, selection?: any) => boolean) | undefined
+  >(undefined);
+  readonly customClassesInput = input<
+    Partial<{ selectedRow: string; activeRow: string }>
+  >({}, { alias: 'customClasses' });
 
-  /** selectKeys
-   * @description An array of keyboard keys that will trigger row selection (omit key name from array to disable it)
-   * @type {string[]}
-   * @default ['Enter', ' ']
-   */
-  @Input() set selectKeys(value: string[]) {
-    this._selectKeys = value;
-  }
+  // ─── Outputs ───
 
-  private _selectKeys = ['Enter', ' '];
-  get sortOrder$(): Observable<GtSortOrder> {
-    return this._sortOrder$.asObservable();
-  }
+  readonly rowClick = output<GtRowClickEvent>();
+  readonly rowSelect = output<GtRowSelectEvent>();
+  readonly sortOrderChange = output<GtSortOrder<TableRow>>();
+  readonly rowActiveOutput = output<GtRowActiveEvent>({ alias: 'rowActive' });
+  readonly columnSort = output<GtSortEvent>();
+  readonly pageChange = output<GtPageChangeEvent>();
 
-  @Input() set loading(isLoading: Observable<boolean> | boolean) {
-    this._loading$.next(isLoading);
-  }
-  @Input()
-  set paginationIndex(pageIndex: number) {
-    this._currentPaginationIndex$.next(pageIndex);
-  }
+  // ─── Linked Signals (two-way state) ───
 
-  get paginationIndex(): number {
-    return this._currentPaginationIndex$.getValue();
-  }
+  protected sortOrder = linkedSignal(() => this.sortOrderInput());
+  protected currentPaginationIndex = linkedSignal(() =>
+    this.paginationIndexInput()
+  );
 
-  @Input() set pagingInfo(value: GtPaginationInfo | null) {
-    if (value) {
-      this._pagingInfo$.next(value);
-      if (
-        value.pageCurrent !== this._currentPaginationIndex$.getValue() + 1 &&
-        value.pageCurrent !== null
-      ) {
-        this.paginationIndex = value.pageCurrent - 1;
-      }
-    }
-  }
+  // ─── Computed Signals ───
 
-  /** customClasses
-   * @description An object that contains custom classes for various elements in the table.
-   * @type {object} - { selectedRow: string, activeRow: string } - default classes are 'gt-selected' and 'gt-active'
-   */
-  @Input() set customClasses(classes: Partial<typeof this._customClasses>) {
-    this._customClasses = { ...this._customClasses, ...classes };
-  }
-
-  get customClasses(): typeof this._customClasses {
-    return this._customClasses;
-  }
-
-  private _customClasses = {
+  protected customClasses = computed(() => ({
     selectedRow: 'gt-selected',
     activeRow: 'gt-active',
-  };
+    ...this.customClassesInput(),
+  }));
 
-  /** isRowSelectedFn
-   * @description Function to determine if row is selected or not.
-   * @type {fn} A function that receives a row object and optional state for current selection that can be used to determine if row should be marked as selected or not. */
-  @Input() set isRowSelectedFn(
-    fn: (row: TableRow | any, selection?: any) => boolean
-  ) {
-    this._isRowSelectedFn = fn;
-  }
-
-  get isRowSelectedFn(): any {
-    return this._isRowSelectedFn;
-  }
-
-  private _isRowSelectedFn: any;
-
-  /** selection
-   * @description An object that contains the currently selected row(s) in the table. It's passed to the selection function to determine which rows should be selected.
-   * @type {any}
-   */
-  @Input() selection: any = {};
-
-  /** rowIdKey
-   * @description row key to use as unique id for table row. If passed, table won't generate unique ids for each row but instead use key to retrieve unique id from row.
-   * @type {string}
-   */
-  @Input() rowIdKey: string | undefined;
-
-  /** generateRowId
-   * @description Whether or not to generate a unique id for each row in the table. Defaults to `true`.
-   * @type {boolean}
-   */
-  @Input() generateRowId: boolean = true;
-
-  /** trackRowByFn
-   * @description A function that returns a unique identifier for each row in the table to optimize rendering when data is added or removed.
-   * @type fn - TrackByFunction to retrieve unique id based on index and/or row. Defaults to using `row[this.rowIdKey]`.
-   */
-  @Input() set trackRowByFn(fn: TrackByFunction<TableRow>) {
-    this._trackRowByFn = fn;
-  }
-  get trackRowByFn(): TrackByFunction<TableRow> {
-    return this._trackRowByFn;
-  }
-
-  private _trackRowByFn(
+  trackRowByFn: TrackByFunction<TableRow> = (
     index: number,
     row: TableRow
-  ): TrackByFunction<TableRow> {
-    return this.rowIdKey ? row[this.rowIdKey] : row?._id;
-  }
+  ) => {
+    const customFn = this.trackRowByFnInput();
+    if (customFn) return customFn(index, row);
+    const idKey = this.rowIdKey();
+    return idKey ? row[idKey] : row?._id;
+  };
 
-  @Input()
-  set search(string: Observable<string | null> | string | null) {
-    this._searchBy$.next(string);
-  }
+  /** Data with mapTo expansions and row IDs applied */
+  private expandedData = computed(() => {
+    let data = [...this.data()];
+    const config = this.config();
 
-  @Input()
-  set config(config: Observable<TableConfig<any>> | TableConfig<any>) {
-    this._tableConfig$.next(config);
-  }
-
-  private _tableConfig: TableConfig<any> | undefined;
-
-  @Input()
-  set data(data: Observable<Array<TableRow>> | Array<TableRow> | null) {
-    if (data) {
-      this._data$.next(data);
+    // mapTo expansion
+    if (
+      (config.columns &&
+        !!Object.values(config.columns).find((column) => !!column.mapTo)) ||
+      (config.rows &&
+        !!Object.values(config.rows).find((column) => !!column.mapTo))
+    ) {
+      const newData: TableRow[] = [];
+      for (let i = 0; i < data.length; i++) {
+        const row = data[i];
+        const newKeys = Object.entries(config.columns || config.rows || [])
+          .filter(([key, value]) => !!value.mapTo)
+          .reduce(
+            (previousValue, [key, value]) => ({
+              ...previousValue,
+              [key]: this.nestedValue(
+                row,
+                value.mapTo!.path,
+                value.mapTo?.missingValue
+              ),
+            }),
+            {}
+          );
+        newData[i] = { ...row, ...newKeys };
+      }
+      data = newData;
     }
-  }
 
-  @Input() set sortOrder(sortConfig: GtSortOrder<TableRow> | any) {
-    if (JSON.stringify(sortConfig) !== JSON.stringify(this._sortOrder$.value)) {
-      this.sortOrderChange.emit(sortConfig);
-      this._sortOrder$.next(sortConfig);
+    // Generate row IDs
+    if (this.generateRowId() && !this.rowIdKey() && data.length > 0) {
+      const dataWithId = [];
+      for (let i = 0; i < data.length; i++) {
+        dataWithId[i] = { ...data[i], _id: i };
+      }
+      data = dataWithId;
     }
+
+    return data;
+  });
+
+  /** Sorted and searched data */
+  private processedData = computed(() => {
+    const data = [...this.expandedData()];
+    const sortBy = this.sortOrder();
+    const searchBy = this.searchTerm();
+    const config = this.config();
+    const lazyLoaded = this.pagingInfo() !== null;
+
+    if (!sortBy?.length || config?.disableTableSort) {
+      return searchBy && !lazyLoaded
+        ? search(searchBy, false, data, config)
+        : data;
+    }
+    return searchBy && !lazyLoaded
+      ? search(searchBy, false, data, config)?.sort(
+          sortOnMultipleKeys(sortBy)
+        )
+      : data.sort(sortOnMultipleKeys(sortBy));
+  });
+
+  /** Table meta: chunked data + config + pagination info */
+  protected table = computed<TableMeta>(() => {
+    const sorted = this.processedData();
+    const config = this.config();
+    const pi = this.pagingInfo();
+
+    if (
+      pi !== null &&
+      pi.pageCurrent !== null &&
+      pi.numberOfRecords !== null &&
+      pi.pageSize !== null
+    ) {
+      return {
+        data: [sorted],
+        config,
+        info: {
+          lazyLoaded: true,
+          numberOfRecords: pi.numberOfRecords,
+          pageSize: pi.pageSize,
+          pageTotal:
+            pi.pageTotal ?? Math.ceil(pi.numberOfRecords / pi.pageSize),
+        },
+      };
+    }
+
+    if (!config.pagination || config.pagination.length === 0) {
+      return {
+        data: [sorted],
+        config,
+        info: { numberOfRecords: sorted.length, pageTotal: 1 },
+      };
+    }
+
+    return {
+      data: chunk(sorted, +(config.pagination.length || 0)),
+      config,
+      info: {
+        numberOfRecords: sorted.length,
+        pageSize: +(config.pagination.length || 0),
+        pageTotal: Math.ceil(
+          sorted.length / +(config.pagination.length || 0)
+        ),
+      },
+    };
+  });
+
+  /** Current table info */
+  readonly tableInfoSignal = computed<TableInfo>(() => this.table().info);
+
+  /** Get tableInfo synchronously */
+  get tableInfo(): TableInfo | undefined {
+    return this.tableInfoSignal();
   }
 
-  @Output() rowClick = new EventEmitter<GtRowClickEvent>();
-  @Output() rowSelect = new EventEmitter<GtRowSelectEvent>();
-  @Output() sortOrderChange = new EventEmitter<GtSortOrder<TableRow>>();
+  /** Calculations for footer */
+  protected calculations = computed(() =>
+    calculate(this.processedData(), this.config())
+  );
+
+  /** Bounded pagination index (clamped to valid range) */
+  readonly boundedPaginationIndex = computed(() => {
+    const page = this.currentPaginationIndex();
+    const info = this.tableInfoSignal();
+    const pageSize =
+      info.pageSize ?? this.config()?.pagination?.length ?? info.numberOfRecords;
+    const lastPage = Math.ceil(info.numberOfRecords / pageSize) - 1;
+    return +page < 0 ? 0 : +page > lastPage ? lastPage : +page;
+  });
+
+  /** Number of visible columns */
+  protected colspan = computed(() => {
+    const config = this.config();
+    if (config.columns) {
+      return Object.values(config.columns || config.rows || {}).filter(
+        (value) => value.hidden !== true
+      ).length;
+    }
+    return this.processedData().length + 1;
+  });
+
+  /** Number of footer columns */
+  protected footerColspan = computed(() => {
+    const config = this.config();
+    let colspan = 0;
+    Object.values(config?.footer?.columns || {}).forEach((calculations) => {
+      if (
+        Object.values(calculations).filter((value) => value !== false).length >=
+        0
+      ) {
+        colspan += 1;
+      }
+    });
+    return colspan;
+  });
+
+  // ─── Row Active State ───
+
+  protected rowActiveState = signal<GtRowActiveEvent>({
+    row: null,
+    index: null,
+  });
+  activeRowIndex: number | null = null;
+
+  // Emit rowActive output and track index
+  private _rowActiveEffect = effect(() => {
+    const event = this.rowActiveState();
+    this.activeRowIndex = event.index;
+    this.rowActiveOutput.emit(event);
+  });
+
+  // Emit pageChange output when bounded index changes
+  private _pageChangeEffect = effect(() => {
+    const index = this.boundedPaginationIndex();
+    this.pageChange.emit({ index });
+  });
+
+  // ─── Public Observable Getters (backward compat) ───
+
+  get sortOrder$(): Observable<GtSortOrder> {
+    return toObservable(this.sortOrder);
+  }
+
+  get loading$(): Observable<boolean> {
+    return toObservable(this.loading);
+  }
+
+  get searchBy$(): Observable<string | null> {
+    return toObservable(this.searchTerm);
+  }
+
+  get tableConfig$(): Observable<TableConfig> {
+    return toObservable(this.config);
+  }
+
+  get data$(): Observable<Array<TableRow>> {
+    return toObservable(this.processedData);
+  }
+
+  get table$(): Observable<TableMeta> {
+    return toObservable(this.table);
+  }
+
+  get tableInfo$(): Observable<TableInfo> {
+    return toObservable(this.tableInfoSignal);
+  }
+
+  get currentPaginationIndex$(): Observable<number> {
+    return toObservable(this.boundedPaginationIndex);
+  }
+
+  get calculations$(): Observable<ReturnType<typeof calculate>> {
+    return toObservable(this.calculations);
+  }
+
+  get rowActive$(): Observable<GtRowActiveEvent> {
+    return toObservable(this.rowActiveState);
+  }
+
+  get colspan$(): Observable<number> {
+    return toObservable(this.colspan);
+  }
+
+  // ─── Pagination ───
+
+  get paginationIndex(): number {
+    return this.currentPaginationIndex();
+  }
+  set paginationIndex(value: number) {
+    this.currentPaginationIndex.set(value);
+  }
+
+  // ─── Methods ───
 
   _rowClick(row: TableRow, index: number, event: MouseEvent): void {
     this.rowClick.emit({ row, index, event });
   }
 
-  _rowActive(row: TableRow, index: number, event: KeyboardEvent): void {
+  _rowSelect(row: TableRow, index: number, event: KeyboardEvent): void {
     this.rowSelect.emit({ row, index, event });
   }
 
-  private _rowActive$ = new ReplaySubject<GtRowActiveEvent>(1);
-  @Output() rowActive = new EventEmitter<GtRowActiveEvent>();
-  @Output() columnSort = new EventEmitter<GtSortEvent>();
-  /** page change event - emitted when current page/index changes for pagination */
-  @Output() pageChange = new EventEmitter<GtPageChangeEvent>();
-  rowActive$ = this._rowActive$.asObservable().pipe(
-    distinctUntilChanged((p, q) => {
-      if (this.rowIdKey && p.row && q.row) {
-        return p.row[this.rowIdKey] === q.row[this.rowIdKey];
-      } else if (this.generateRowId && p.row && q.row) {
-        return p.row._id === q.row._id;
-      } else {
-        return p.index === q.index;
-      }
-    }),
-    tap((event) => (this.activeRowIndex = event.index)),
-    tap((event) => this.rowActive.emit(event)),
-    shareReplay(1)
-  );
-
-  activeRowIndex: number | null = null;
   activateRow(id: string, event?: MouseEvent | KeyboardEvent): void;
   activateRow(index: number, event?: MouseEvent | KeyboardEvent): void;
   activateRow(none: null, event?: MouseEvent | KeyboardEvent): void;
@@ -288,279 +396,57 @@ export class CoreComponent implements OnDestroy {
     event?: MouseEvent | KeyboardEvent
   ): void {
     if (typeof arg === 'number') {
-      this.table$
-        .pipe(
-          pluck('data'),
-          map((data) => data[this.paginationIndex][arg]),
-          take(1),
-          takeUntil(this.unsubscribe$)
-        )
-        .subscribe((row) => this._activateRow(row, arg, event));
+      const tableData = this.table();
+      const pageData = tableData.data[this.paginationIndex];
+      if (pageData && pageData[arg]) {
+        this._activateRow(pageData[arg], arg, event);
+      }
     } else if (typeof arg === 'string') {
       // TODO: implement hover by id
     } else {
       this._activateRow(null, null);
     }
   }
+
   protected _activateRow(
     row: TableRow | null,
     index: number | null,
     event?: MouseEvent | KeyboardEvent
   ): void {
-    this._rowActive$.next({ row, index, event });
-  }
+    const current = this.rowActiveState();
+    const idKey = this.rowIdKey();
 
-  get loading$(): Observable<boolean> {
-    return this._loading$.pipe(
-      startWith(false),
-      map((value) => (isObservable(value) ? value : of(value))),
-      switchMap((obs) => obs),
-      shareReplay(1)
-    );
-  }
-
-  private _loading$: ReplaySubject<Observable<boolean> | boolean> =
-    new ReplaySubject(1);
-  private _sortOrder$: BehaviorSubject<GtSortOrder> =
-    new BehaviorSubject<GtSortOrder>([]);
-  private _searchBy$: ReplaySubject<Observable<string | null> | string | null> =
-    new ReplaySubject(1);
-  searchBy$: Observable<string | null> = this._searchBy$.pipe(
-    startWith(''),
-    map((value) => (isObservable(value) ? value : of(value))),
-    switchMap((obs) => obs),
-    shareReplay(1)
-  );
-
-  private _pagingInfo$ = new BehaviorSubject<GtPaginationInfo>({
-    pageCurrent: null,
-    pageNext: null,
-    pagePrevious: null,
-    pageSize: null,
-    numberOfRecords: null,
-    //recordsAfterFilter: null,
-    //recordsAfterSearch: null,
-    //recordsAll: null,
-  });
-
-  // tslint:disable-next-line:variable-name
-  private _tableConfig$: BehaviorSubject<
-    TableConfig<any> | Observable<TableConfig<any>>
-  > = new BehaviorSubject({});
-  tableConfig$ = this._tableConfig$.pipe(
-    map((value) => (isObservable(value) ? value : of(value))),
-    switchMap((obs) => obs),
-    tap((config) => (this._tableConfig = config)),
-    shareReplay(1)
-  );
-
-  private _data$: ReplaySubject<Array<TableRow> | Observable<Array<TableRow>>> =
-    new ReplaySubject(1);
-  data$: Observable<Array<TableRow>> = this._data$.pipe(
-    map((value) => (isObservable(value) ? value : of(value))),
-    switchMap((obs) => combineLatest([obs])),
-    withLatestFrom(this.tableConfig$),
-    map(([[data], config]) => {
-      // if columns or rows contains config for mapTo...
+    // distinctUntilChanged equivalent
+    if (current.row && row) {
+      if (idKey && current.row[idKey] === row[idKey]) return;
       if (
-        (config.columns &&
-          !!Object.values(config.columns).find((column) => !!column.mapTo)) ||
-        (config.rows &&
-          !!Object.values(config.rows).find((column) => !!column.mapTo))
-      ) {
-        // ...map data to new keys on row...
-        const newData: TableRow[] = [];
-        for (let i = 0; i < data.length; i++) {
-          const row = data[i];
-          const newKeys = Object.entries(config.columns || config.rows || [])
-            .filter(([key, value]) => !!value.mapTo) // add keys for columns with mapTo config...
-            .reduce(
-              (previousValue, [key, value]) => ({
-                ...previousValue,
-                [key]: this.nestedValue(
-                  row,
-                  value.mapTo!.path,
-                  value.mapTo?.missingValue
-                ),
-              }),
-              {}
-            );
-          newData[i] = { ...row, ...newKeys };
-        }
-        data = newData;
-      }
-      if (this.generateRowId && !this.rowIdKey && data.length > 0) {
-        const dataWithId = [];
-        for (let i = 0; i < data.length; i++) {
-          dataWithId[i] = { ...data[i], _id: i };
-        }
-        data = dataWithId;
-      }
-      return { data, config };
-    }),
-    switchMap((obs) =>
-      combineLatest([of(obs), this.sortOrder$, this.searchBy$])
-    ),
-    map(([table, sortBy, searchBy]) => {
-      // create a new array reference and sort new array (prevent mutating existing state)
-      table.data = [...table.data];
-      return !sortBy?.length || table.config?.disableTableSort
-        ? searchBy && !this.tableInfo?.lazyLoaded
-          ? search(searchBy, false, table.data, table.config)
-          : table.data
-        : searchBy && !this.tableInfo?.lazyLoaded
-        ? search(searchBy, false, table.data, table.config)?.sort(
-            sortOnMultipleKeys(sortBy)
-          )
-        : table.data?.sort(sortOnMultipleKeys(sortBy));
-    }),
-    shareReplay(1)
-  );
+        !idKey &&
+        this.generateRowId() &&
+        current.row._id === row._id
+      )
+        return;
+    }
+    if (!current.row && !row && current.index === index) return;
 
-  calculations$ = combineLatest([this.data$, this.tableConfig$]).pipe(
-    map(([data, config]) => calculate(data, config)),
-    shareReplay(1)
-  );
-
-  table$ = combineLatest([
-    this.data$,
-    this.tableConfig$,
-    this._pagingInfo$,
-  ]).pipe(
-    map(([sorted, config, pagingInfo]) => {
-      if (
-        pagingInfo.pageCurrent !== null &&
-        pagingInfo.numberOfRecords !== null &&
-        pagingInfo.pageSize !== null
-      ) {
-        return {
-          data: [sorted],
-          config,
-          info: <TableInfo>{
-            lazyLoaded: true,
-            numberOfRecords: pagingInfo.numberOfRecords,
-            pageSize: pagingInfo.pageSize,
-            pageTotal:
-              pagingInfo.pageTotal ??
-              Math.ceil(pagingInfo.numberOfRecords / pagingInfo.pageSize),
-          },
-        };
-      }
-      // if pagination is disabled...
-      if (!config.pagination || config.pagination.length === 0) {
-        // ...return unaltered array
-        return {
-          data: [sorted],
-          config,
-          info: <TableInfo>{ numberOfRecords: sorted.length, pageTotal: 1 },
-        };
-      }
-      // return record set
-      return {
-        data: chunk(sorted, +(config.pagination.length || 0)),
-        config,
-        info: <TableInfo>{
-          numberOfRecords: sorted.length,
-          pageSize: +(config.pagination.length || 0),
-          pageTotal: Math.ceil(
-            sorted.length / +(config.pagination.length || 0)
-          ),
-        },
-      };
-    }),
-    tap((meta) => this._tableInfo$.next(meta.info)),
-    shareReplay(1)
-  );
-
-  /** tableInfo$ - returns observable for table info
-   * @return Observable<TableInfo> */
-  get tableInfo$(): Observable<TableInfo | undefined> {
-    return this._tableInfo$.asObservable().pipe(
-      filter((info) => !!info),
-      shareReplay(1)
-    );
+    this.rowActiveState.set({ row, index, event });
   }
 
-  /** tableInfo - returns the current table info
-   * @return TableInfo */
-  get tableInfo(): TableInfo | undefined {
-    return this._tableInfo$.getValue();
-  }
-
-  private _tableInfo$ = new BehaviorSubject<TableInfo | undefined>(undefined);
-
-  private _currentPaginationIndex$ = new BehaviorSubject(0);
-  currentPaginationIndex$ = combineLatest([
-    this._currentPaginationIndex$,
-    this.table$,
-  ]).pipe(
-    map(([page, table]) => {
-      // determine last page
-      const lastPage =
-        Math.ceil(
-          table.info.numberOfRecords /
-            (table.info.pageSize ??
-              (table.config?.pagination?.length || table.info.numberOfRecords))
-        ) - 1;
-      // determine min/max position
-      return +page < 0 ? 0 : +page > lastPage ? lastPage : +page;
-    }),
-    distinctUntilChanged(),
-    tap((index) => this.pageChange.emit({ index })),
-    shareReplay(1)
-  );
-
-  colspan$ = this.tableConfig$.pipe(
-    switchMap((config) =>
-      config.columns
-        ? of(
-            Object.values(config.columns || config.rows || {}).filter(
-              (value) => value.hidden !== true
-            ).length
-          )
-        : this.data$.pipe(map((data) => data.length + 1))
-    ),
-    shareReplay(1)
-  );
-
-  footerColspan$ = this.tableConfig$.pipe(
-    map((config) => {
-      let colspan = 0;
-      Object.values(config?.footer?.columns || {}).forEach((calculations) => {
-        if (
-          Object.values(calculations).filter((value) => value !== false)
-            .length >= 0
-        ) {
-          colspan += 1;
-        }
-      }, {});
-      return colspan;
-    }),
-    shareReplay(1)
-  );
-
-  /** sortByKey - Sort by key in table row
-   * @param key - key to sort by
-   * @param { MouseEvent } [$event] - Mouse event triggering sort, if shift key is pressed sort key will be added to already present sort keys
-   */
+  /** sortByKey - Sort by key in table row */
   sortByKey(key: keyof TableRow, $event?: MouseEvent): void {
     const shiftKey = $event?.shiftKey === true;
-    const currentOrder = this._sortOrder$.value;
-    let sortOrder: GtOrder = 'asc';
+    const currentOrder = this.sortOrder();
+    let sortOrderVal: GtOrder = 'asc';
     let newOrder: GtSortOrder = [];
-    // if shift key is pressed while sorting...
+
     if (shiftKey) {
-      // ...check if key is already sorted
       const existingSortPosition = currentOrder.findIndex(
         (value) => value.key === key
       );
       if (existingSortPosition === -1) {
-        // ...if key is not sorted, add it to the end of the sort order
         newOrder = [...currentOrder, { key, order: 'asc' }];
       } else {
-        // ...if key is already sorted, toggle sort order
-        sortOrder = currentOrder[existingSortPosition].order;
-        const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+        sortOrderVal = currentOrder[existingSortPosition].order;
+        const newSortOrder = sortOrderVal === 'asc' ? 'desc' : 'asc';
         newOrder = [...currentOrder];
         newOrder[existingSortPosition] = {
           ...newOrder[existingSortPosition],
@@ -568,45 +454,37 @@ export class CoreComponent implements OnDestroy {
         };
       }
     } else {
-      // ...else if shift key is not pressed...
       if (currentOrder.length > 0) {
-        // ...check if key is already sorted
         const existingSortPosition = currentOrder.findIndex(
           (value) => value.key === key
         );
-        // ...if key is already sorted, toggle sort order
         if (existingSortPosition === -1) {
           newOrder = [{ key, order: 'asc' }];
         } else {
-          sortOrder = currentOrder[existingSortPosition].order;
-          const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+          sortOrderVal = currentOrder[existingSortPosition].order;
+          const newSortOrder = sortOrderVal === 'asc' ? 'desc' : 'asc';
           newOrder = [{ key, order: newSortOrder }];
         }
       } else {
-        // ...if key is not sorted set sort order for key to ascending
-        newOrder = [{ key, order: sortOrder }];
+        newOrder = [{ key, order: sortOrderVal }];
       }
     }
-    // create sort event
+
     const sortEvent: GtSortEvent = {
       key,
-      order: sortOrder,
+      order: sortOrderVal,
       currentSortOrder: newOrder,
       addSortKey: shiftKey,
     };
 
-    // if event is passed to sort function...
     if ($event) {
-      // ...emit it as well
       sortEvent.event = $event;
     }
-    // emit sort event
     this.columnSort.emit(sortEvent);
 
-    // if table is not lazy loaded (sorting is then handled server-side)...
     if (!this.tableInfo?.lazyLoaded) {
-      // ...update sort order
-      this.sortOrder = newOrder;
+      this.sortOrder.set(newOrder);
+      this.sortOrderChange.emit(newOrder);
     }
   }
 
@@ -631,59 +509,59 @@ export class CoreComponent implements OnDestroy {
     );
   }
 
-  private _unsubscribeFromKeyboardEvents$ = new Subject();
+  // ─── Keyboard Navigation ───
+
+  private _unsubscribeFromKeyboardEvents$ = new Subject<void>();
   private _keyboardArrowEvent$ = fromEvent<KeyboardEvent>(
     document,
     'keydown'
   ).pipe(
     filter(
       (event) =>
-        [...this._navigationKeys, ...this._selectKeys].indexOf(event.key) > -1
+        [...this.navigationKeys(), ...this.selectKeys()].indexOf(event.key) > -1
     )
   );
 
   protected listenToKeyboardEvents(): void {
-    if (!this._tableConfig?.activateRowOnKeyboardNavigation) {
+    if (!this.config()?.activateRowOnKeyboardNavigation) {
       return;
     }
 
-    this._unsubscribeFromKeyboardEvents$.next(true);
+    this._unsubscribeFromKeyboardEvents$.next();
     this._keyboardArrowEvent$
       .pipe(
-        withLatestFrom(
-          this.data$,
-          this.currentPaginationIndex$,
-          this.tableInfo$
-        ),
         takeUntil(this._unsubscribeFromKeyboardEvents$),
-        takeUntil(this.unsubscribe$)
+        takeUntil(this._unsubscribe$)
       )
-      .subscribe(([event, rows, currentPage, tableInfo]) => {
-        const selectEvent = this._selectKeys.includes(event.key);
+      .subscribe((event) => {
+        const rows = this.processedData();
+        const currentPage = this.boundedPaginationIndex();
+        const tableInfo = this.tableInfo;
+
+        const selectEvent = this.selectKeys().includes(event.key);
         if (selectEvent && this.activeRowIndex !== null) {
           const rowIndex =
             this.activeRowIndex + currentPage * (tableInfo?.pageSize ?? 0);
-          this._rowActive(rows[rowIndex], rowIndex, event);
+          this._rowSelect(rows[rowIndex], rowIndex, event);
           return;
         }
 
-        const navigationEvent = this._navigationKeys.includes(event.key);
+        const navigationEvent = this.navigationKeys().includes(event.key);
         if (navigationEvent) {
           this._handleNavigationEvent(event, rows, currentPage, tableInfo);
         }
       });
   }
+
   unsubscribeFromKeyboardEvents(tableRef: HTMLTableElement): void {
-    if (!this._tableConfig?.activateRowOnKeyboardNavigation) {
+    if (!this.config()?.activateRowOnKeyboardNavigation) {
       return;
     }
-    // only unsubscribe if table is not focused
     if (tableRef !== document.activeElement) {
-      if (this._tableConfig?.activateRowOnHover) {
-        // unset active row
+      if (this.config()?.activateRowOnHover) {
         this.activateRow(null);
       }
-      this._unsubscribeFromKeyboardEvents$.next(true);
+      this._unsubscribeFromKeyboardEvents$.next();
     }
   }
 
@@ -760,7 +638,6 @@ export class CoreComponent implements OnDestroy {
         newIndex + indexModifier <= lastRowIndex &&
         (this.activeRowIndex || 0) + indexModifier < 0
       ) {
-        // set last row of previous page as active
         this.activateRow(tableInfo?.pageSize - 1, event);
         this.paginationIndex = currentPage - 1;
         return;
@@ -779,7 +656,9 @@ export class CoreComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    this.unsubscribe$.next(true);
-    this.unsubscribe$.complete();
+    this._unsubscribe$.next();
+    this._unsubscribe$.complete();
+    this._unsubscribeFromKeyboardEvents$.next();
+    this._unsubscribeFromKeyboardEvents$.complete();
   }
 }

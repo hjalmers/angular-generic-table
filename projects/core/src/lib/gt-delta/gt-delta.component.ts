@@ -1,41 +1,47 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  Input,
-  OnChanges,
-  SimpleChanges,
+  computed,
+  input,
   TemplateRef,
 } from '@angular/core';
 import { TableRow } from '../models/table-row.interface';
-import { NgIf, NgTemplateOutlet, PercentPipe } from '@angular/common';
+import { NgTemplateOutlet, PercentPipe } from '@angular/common';
 
 export interface GtDelta {
   relative: number | string;
   absolute: number;
 }
+
 @Component({
   selector: 'gt-delta',
-  template: `<span
-      *ngIf="value as delta"
-      [class]="[
-        classes.span,
-        delta.absolute > 0
-          ? classes.positive
-          : delta.absolute < 0
-          ? classes.negative
-          : null
-      ]"
-      [class.gt-delta-positive]="delta.absolute > 0"
-      [class.gt-delta-negative]="delta.absolute < 0"
-      ><ng-container
-        *ngTemplateOutlet="deltaTemplate || defaultTemplate; context: { delta }"
-      ></ng-container>
-    </span>
-    <ng-template #defaultTemplate let-delta="delta">
-      <span *ngIf="delta.relative">{{
-        delta.relative | percent: '1.0-2'
-      }}</span>
-    </ng-template>`,
+  template: `
+    @let delta = value();
+    @if (delta) {
+      <span
+        [class]="[
+          classes().span,
+          delta.absolute > 0
+            ? classes().positive
+            : delta.absolute < 0
+            ? classes().negative
+            : null
+        ]"
+        [class.gt-delta-positive]="delta.absolute > 0"
+        [class.gt-delta-negative]="delta.absolute < 0"
+      >
+        <ng-container
+          [ngTemplateOutlet]="deltaTemplate() || defaultTemplate"
+          [ngTemplateOutletContext]="{ delta }"
+        ></ng-container>
+      </span>
+      <ng-template #defaultTemplate let-delta="delta">
+        @if (delta.relative) {
+          <span>{{ delta.relative | percent: '1.0-2' }}</span>
+        }
+      </ng-template>
+    }
+  `,
   styles: [
     `
       :host {
@@ -44,76 +50,58 @@ export interface GtDelta {
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  standalone: true,
-  imports: [PercentPipe, NgIf, NgTemplateOutlet],
+  imports: [PercentPipe, NgTemplateOutlet],
 })
-export class GtDeltaComponent implements OnChanges {
-  get value() {
-    return this._value;
-  }
-
-  set value(value) {
-    this._value = value;
-  }
-  get deltaTemplate(): TemplateRef<any> {
-    return this._deltaTemplate;
-  }
-  constructor() {}
-  @Input() set deltaTemplate(deltaTemplate: TemplateRef<any>) {
-    this._deltaTemplate = deltaTemplate;
-  }
-  Math = Math;
-  Number = Number;
-  @Input() data: Array<TableRow> = [];
-  @Input() index: number = 0;
-  @Input() baseIndex?: number;
-  @Input() classes = {
+export class GtDeltaComponent {
+  readonly data = input<Array<TableRow>>([]);
+  readonly index = input(0);
+  readonly baseIndex = input<number | undefined>(undefined);
+  readonly classes = input({
     span: 'gt-delta',
     positive: 'text-success',
     negative: 'text-danger',
-  };
-  @Input() key: string = 'value';
-  @Input() notApplicableValue: string | null = null;
-  @Input() initialValue: string | number | null = null;
-  private _value?: GtDelta;
-  private _deltaTemplate?: any;
-  ngOnChanges(changes: SimpleChanges): void {
-    if (!changes.data.currentValue) {
-      return;
-    }
-    const data = changes.data?.currentValue;
-    const index = changes.index?.currentValue || this.index;
-    const baseIndex = changes.baseIndex?.currentValue;
-    const key = changes.key?.currentValue || this.key;
-    const initialValue =
-      changes.initialValue?.currentValue || this.initialValue;
+  });
+  readonly key = input('value');
+  readonly notApplicableValue = input<string | null>(null);
+  readonly initialValue = input<string | number | null>(null);
+  readonly deltaTemplate = input<TemplateRef<any> | undefined>(undefined);
+
+  readonly value = computed<GtDelta | undefined>(() => {
+    const data = this.data();
+    if (!data || data.length === 0) return undefined;
+
+    const index = this.index();
+    const baseIndex = this.baseIndex();
+    const key = this.key();
+    const initialValue = this.initialValue();
 
     const deltaValue =
       index === 0
         ? initialValue
-        : data[index][key] -
+        : (data[index][key] as number) -
           (baseIndex === undefined
-            ? data[index - 1][key]
-            : data[baseIndex][key]);
+            ? (data[index - 1][key] as number)
+            : (data[baseIndex][key] as number));
     const baseValue =
       index === 0
         ? 1
         : baseIndex === undefined
-        ? data[index - 1][key]
-        : data[baseIndex][key];
+        ? (data[index - 1][key] as number)
+        : (data[baseIndex][key] as number);
 
     const relative =
       index === 0
         ? initialValue
-        : Math.sign(deltaValue) * Math.abs(deltaValue / baseValue);
+        : Math.sign(deltaValue as number) *
+          Math.abs((deltaValue as number) / baseValue);
 
-    this.value = {
+    return {
       relative: Number.isFinite(relative)
-        ? relative
+        ? (relative as number)
         : index === 0
-        ? initialValue
-        : changes.notApplicableValue?.currentValue || this.notApplicableValue,
-      absolute: deltaValue,
+        ? (initialValue as number | string)
+        : (this.notApplicableValue() as string),
+      absolute: deltaValue as number,
     };
-  }
+  });
 }

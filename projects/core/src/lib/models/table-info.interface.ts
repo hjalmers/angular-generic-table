@@ -1,6 +1,6 @@
 export interface TableInfo {
   numberOfRecords: number;
-  pageSize: number;
+  pageSize?: number;
   pageTotal: number;
   lazyLoaded?: boolean;
 }
