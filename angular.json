@@ -44,38 +44,24 @@
       "prefix": "docs",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/docs",
             "index": "projects/docs/src/index.html",
-            "main": "projects/docs/src/main.ts",
-            "polyfills": "projects/docs/src/polyfills.ts",
+            "browser": "projects/docs/src/main.ts",
+            "polyfills": ["zone.js"],
             "tsConfig": "projects/docs/tsconfig.app.json",
             "assets": ["projects/docs/src/favicon.ico", "projects/docs/src/assets"],
             "styles": ["projects/docs/src/styles.scss"],
             "scripts": [],
-            "vendorChunk": true,
-            "extractLicenses": false,
-            "buildOptimizer": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true
+            "sourceMap": true
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "projects/docs/src/environments/environment.ts",
-                  "with": "projects/docs/src/environments/environment.prod.ts"
-                }
-              ],
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -95,34 +81,27 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "docs:build"
+            "buildTarget": "docs:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "docs:build:production"
+              "buildTarget": "docs:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "docs:build"
+            "buildTarget": "docs:build"
           }
         },
-        "storybook": {
-          "builder": "@storybook/angular:start-storybook",
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "browserTarget": "docs:build",
-            "port": 4400,
-            "styles": [".storybook/scss-loader.scss"]
-          }
-        },
-        "build-storybook": {
-          "builder": "@storybook/angular:build-storybook",
-          "options": {
-            "browserTarget": "docs:build",
-            "outputDir": "dist/storybook",
-            "styles": [".storybook/scss-loader.scss"]
+            "lintFilePatterns": [
+              "projects/docs/src/**/*.ts",
+              "projects/docs/src/**/*.html"
+            ]
           }
         }
       }
