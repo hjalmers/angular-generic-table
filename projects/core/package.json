@@ -8,8 +8,8 @@
     "url": "https://github.com/hjalmers/angular-generic-table.git"
   },
   "peerDependencies": {
-    "@angular/common": "^17.0.0 || ^18.0.0 || ^19.0.0",
-    "@angular/core": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "@angular/common": "^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0",
+    "@angular/core": "^17.0.0 || ^18.0.0 || ^19.0.0 || ^20.0.0",
     "rxjs": "^7.0.0"
   },
   "dependencies": {

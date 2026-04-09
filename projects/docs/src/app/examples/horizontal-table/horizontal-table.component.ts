@@ -1,5 +1,4 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { NgSwitch, NgSwitchCase } from '@angular/common';
 import { CoreComponent, GtDeltaComponent, TableConfig } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
 import { HORIZONTAL_TABLE_SNIPPETS } from './horizontal-table.snippets';
@@ -17,12 +16,12 @@ import { HORIZONTAL_TABLE_SNIPPETS } from './horizontal-table.snippets';
       </angular-generic-table>
     </div>
     <ng-template #feelings let-row="row" let-col="col">
-      <div [ngSwitch]="row[col.key]">
-        <ng-container *ngSwitchCase="'thrilled'">😀</ng-container>
-        <ng-container *ngSwitchCase="'positive'">🙂</ng-container>
-        <ng-container *ngSwitchCase="'neutral'">😐</ng-container>
-        <ng-container *ngSwitchCase="'negative'">😭</ng-container>
-      </div>
+      @switch (row[col.key]) {
+        @case ('thrilled') { 😀 }
+        @case ('positive') { 🙂 }
+        @case ('neutral') { 😐 }
+        @case ('negative') { 😭 }
+      }
     </ng-template>
     <ng-template #delta let-data="data" let-index="index">
       <gt-delta [index]="index" [data]="data"></gt-delta>
@@ -32,7 +31,7 @@ import { HORIZONTAL_TABLE_SNIPPETS } from './horizontal-table.snippets';
     </ng-template>
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
   `,
-  imports: [CoreComponent, GtDeltaComponent, TabsComponent, NgSwitch, NgSwitchCase],
+  imports: [CoreComponent, GtDeltaComponent, TabsComponent],
 })
 export class HorizontalTableComponent implements OnInit {
   @ViewChild('feelings', { static: true }) feelings: TemplateRef<any> | undefined;

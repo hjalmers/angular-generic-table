@@ -1,5 +1,4 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { NgSwitch, NgSwitchCase } from '@angular/common';
 import { CoreComponent, TableConfig } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
 import { NESTED_SNIPPETS } from './nested.snippets';
@@ -33,13 +32,13 @@ interface Data {
     </div>
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
     <ng-template #gender let-row="row" let-col="col">
-      <div [ngSwitch]="row[col.key]">
-        <ng-container *ngSwitchCase="'male'">♂️</ng-container>
-        <ng-container *ngSwitchCase="'female'">♀️</ng-container>
-      </div>
+      @switch (row[col.key]) {
+        @case ('male') { ♂️ }
+        @case ('female') { ♀️ }
+      }
     </ng-template>
   `,
-  imports: [CoreComponent, TabsComponent, NgSwitch, NgSwitchCase],
+  imports: [CoreComponent, TabsComponent],
 })
 export class NestedDataComponent implements OnInit {
   @ViewChild('gender', { static: true }) gender: TemplateRef<any> | undefined;
