@@ -8,12 +8,12 @@
 </form>
 <div class="mx-n3 mx-sm-0 my-3 overflow-auto">
   <angular-generic-table
-    [data]="data"
-    [config]="tableConfig"
-    [search]="searchValue"
-    [loading]="loading"
-    [pagingInfo]="pagingInfo"
-    [sortOrder]="sorting"
+    [data]="data()"
+    [config]="tableConfig()"
+    [search]="searchValue()"
+    [loading]="loading()"
+    [pagingInfo]="pagingInfo()"
+    [sortOrder]="sorting()"
     (pageChange)="onPageChange($event)"
     (columnSort)="onSortOrderChange($event)"
     #table

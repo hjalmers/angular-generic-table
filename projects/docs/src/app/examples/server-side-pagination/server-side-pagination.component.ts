@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { DatePipe, formatDate } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -44,13 +44,13 @@ export class ServerSidePaginationComponent implements OnInit {
   private http = inject(HttpClient);
 
   paginationForm = this.fb.group({ search: [''] });
-  searchValue: string | null = null;
+  searchValue = signal<string | null>(null);
 
-  loading = true;
-  data: Array<LazyLoadingData> = [];
-  pagingInfo: GtPaginationInfo | null = null;
-  sorting: GtSortOrder<LazyLoadingData> = [];
-  tableConfig: TableConfig<LazyLoadingData> = {};
+  loading = signal(true);
+  data = signal<Array<LazyLoadingData>>([]);
+  pagingInfo = signal<GtPaginationInfo | null>(null);
+  sorting = signal<GtSortOrder<LazyLoadingData>>([]);
+  tableConfig = signal<TableConfig<LazyLoadingData>>({});
 
   private requestParams$ = new BehaviorSubject({ page: 1, page_size: 10, sort_by: '+id' });
 
@@ -58,12 +58,12 @@ export class ServerSidePaginationComponent implements OnInit {
 
   ngOnInit(): void {
     this.paginationForm.get('search')?.valueChanges.subscribe((value) => {
-      this.searchValue = value;
+      this.searchValue.set(value);
     });
 
     this.requestParams$
       .pipe(
-        tap(() => (this.loading = true)),
+        tap(() => this.loading.set(true)),
         switchMap((params) =>
           this.http.get<LazyLoadingResponse>(
             'https://private-a6da3-generictableapi.apiary-mock.com/data',
@@ -73,13 +73,13 @@ export class ServerSidePaginationComponent implements OnInit {
         shareReplay(1)
       )
       .subscribe((res) => {
-        this.data = res.data;
-        this.pagingInfo = res.paging;
-        this.sorting = res.sorting;
-        this.loading = false;
+        this.data.set(res.data);
+        this.pagingInfo.set(res.paging);
+        this.sorting.set(res.sorting);
+        this.loading.set(false);
       });
 
-    this.tableConfig = {
+    this.tableConfig.set({
       class: 'table text-nowrap',
       columns: {
         id: { sortable: true },
@@ -95,7 +95,7 @@ export class ServerSidePaginationComponent implements OnInit {
         email: { hidden: true },
       },
       pagination: { length: 10 },
-    };
+    });
   }
 
   onPageChange(event: GtPageChangeEvent): void {

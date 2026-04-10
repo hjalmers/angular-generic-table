@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { CoreComponent, GtDeltaComponent, TableConfig } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
 import { HORIZONTAL_TABLE_SNIPPETS } from './horizontal-table.snippets';
@@ -10,7 +10,7 @@ import { HORIZONTAL_TABLE_SNIPPETS } from './horizontal-table.snippets';
     <button class="btn btn-outline-danger mx-3" (click)="empty()">Empty</button>
     <button class="btn btn-outline-primary" (click)="load()">Reset</button>
     <div class="overflow-auto">
-      <angular-generic-table [data]="data" [config]="config" [loading]="loading">
+      <angular-generic-table [data]="data()" [config]="config()" [loading]="loading()">
         <div class="table-loading gt-skeleton-loader"></div>
         <div class="table-no-data alert alert-info mt-3">Table is empty</div>
       </angular-generic-table>
@@ -38,12 +38,12 @@ export class HorizontalTableComponent implements OnInit {
   @ViewChild('delta', { static: true }) delta: TemplateRef<any> | undefined;
   @ViewChild('deltaIndex', { static: true }) deltaIndex: TemplateRef<any> | undefined;
 
-  loading = false;
-  config: TableConfig = {};
-  data: any = [];
+  loading = signal(false);
+  config = signal<TableConfig>({});
+  data = signal<any>([]);
 
   ngOnInit(): void {
-    this.config = {
+    this.config.set({
       stickyHeaders: { row: true },
       mobileLayout: true,
       rows: {
@@ -53,25 +53,25 @@ export class HorizontalTableComponent implements OnInit {
         deltaIndex: { header: 'Since inception %', templateRef: this.deltaIndex, class: 'text-end' },
         feeling: { templateRef: this.feelings, class: 'text-end' },
       },
-    };
+    });
     this.load();
   }
 
   simulateLoad(): void {
-    this.loading = true;
-    setTimeout(() => (this.loading = false), 2000);
+    this.loading.set(true);
+    setTimeout(() => this.loading.set(false), 2000);
   }
 
-  empty(): void { this.data = []; }
+  empty(): void { this.data.set([]); }
 
   load(): void {
-    this.data = [
+    this.data.set([
       { year: '2017', value: 50, feeling: 'neutral' },
       { year: '2018', value: 75, feeling: 'positive' },
       { year: '2019', value: 100, feeling: 'thrilled' },
       { year: '2020', value: 250, feeling: 'thrilled' },
       { year: '2021', value: 50, feeling: 'negative' },
-    ];
+    ]);
   }
 
   SNIPPETS = HORIZONTAL_TABLE_SNIPPETS;

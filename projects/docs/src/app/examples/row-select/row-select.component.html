@@ -34,9 +34,9 @@
 </div>
 <div class="mx-n3 mx-sm-0 my-3 overflow-auto">
   <angular-generic-table
-    [data]="data"
-    [config]="config"
-    [loading]="loading"
+    [data]="data()"
+    [config]="config()"
+    [loading]="loading()"
     [isRowSelectedFn]="isSelected"
     [customClasses]="customClassNames"
     (rowClick)="selectRow($event)"

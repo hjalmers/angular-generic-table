@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CoreComponent, GtRowClickEvent, GtRowActiveEvent, TableConfig } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
 import { ROW_HOVER_CLICK_SNIPPETS } from './row-hower-click.snippets';
@@ -17,7 +17,7 @@ import { ROW_HOVER_CLICK_SNIPPETS } from './row-hower-click.snippets';
         #tableRef
       ></angular-generic-table>
     </div>
-    {{ clicked }}
+    {{ clicked() }}
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
   `,
   styles: [`
@@ -26,7 +26,7 @@ import { ROW_HOVER_CLICK_SNIPPETS } from './row-hower-click.snippets';
   imports: [CoreComponent, TabsComponent],
 })
 export class RowHoverClickComponent {
-  clicked = '';
+  clicked = signal('');
   data = [
     { firstName: 'Peter', lastName: 'Parker', gender: 'male', favoriteFood: 'Pasta' },
     { firstName: 'Mary Jane', lastName: 'Watson', gender: 'female', favoriteFood: 'Pizza' },
@@ -39,7 +39,7 @@ export class RowHoverClickComponent {
 
   onRowClick(event: GtRowClickEvent) {
     console.log('row clicked', event);
-    this.clicked = `clicked row number: ${event.index}`;
+    this.clicked.set(`clicked row number: ${event.index}`);
   }
   onRowHover(event: GtRowActiveEvent) {
     console.log('row hovered', event);

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { DatePipe, formatDate } from '@angular/common';
@@ -20,10 +20,10 @@ export class PaginationComponent implements OnInit {
     search: [''],
   });
 
-  loading = true;
-  searchValue: string | null = null;
-  data: any[] = [];
-  tableConfig: TableConfig = {};
+  loading = signal(true);
+  searchValue = signal<string | null>(null);
+  data = signal<any[]>([]);
+  tableConfig = signal<TableConfig>({});
 
   SNIPPETS = ADVANCED_DOCS;
 
@@ -31,21 +31,21 @@ export class PaginationComponent implements OnInit {
     this.http
       .get<{ data: any[] }>('https://private-730c61-generictable.apiary-mock.com/data')
       .subscribe((res) => {
-        this.data = res.data;
-        this.loading = false;
+        this.data.set(res.data);
+        this.loading.set(false);
       });
 
     this.paginationForm.get('length')?.valueChanges.subscribe((length) => {
-      this.tableConfig = {
-        ...this.tableConfig,
-        pagination: { ...this.tableConfig.pagination, length: +(length || 0) },
-      };
+      this.tableConfig.set({
+        ...this.tableConfig(),
+        pagination: { ...this.tableConfig().pagination, length: +(length || 0) },
+      });
     });
     this.paginationForm.get('search')?.valueChanges.subscribe((value) => {
-      this.searchValue = value;
+      this.searchValue.set(value);
     });
 
-    this.tableConfig = {
+    this.tableConfig.set({
       class: 'table text-nowrap',
       columns: {
         first_name: { sortable: true },
@@ -59,6 +59,6 @@ export class PaginationComponent implements OnInit {
         },
       },
       pagination: { length: this.paginationForm.get('length')?.value || 0 },
-    };
+    });
   }
 }

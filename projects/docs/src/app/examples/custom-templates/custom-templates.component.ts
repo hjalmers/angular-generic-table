@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { CoreComponent, TableConfig, TableRow, TableColumn } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
 import { CUSTOM_TEMPLATES_DOCS } from './custom-templates.snippets';
@@ -7,7 +7,7 @@ import { CUSTOM_TEMPLATES_DOCS } from './custom-templates.snippets';
   selector: 'docs-custom-templates',
   template: `
     <div class="overflow-auto">
-      <angular-generic-table [data]="data" [config]="config"></angular-generic-table>
+      <angular-generic-table [data]="data" [config]="config()"></angular-generic-table>
     </div>
     <ng-template #actions let-row="row" let-col="col" let-index="index">
       <button
@@ -23,7 +23,7 @@ import { CUSTOM_TEMPLATES_DOCS } from './custom-templates.snippets';
         style="width: 1.5rem; height: 1.5rem; border-radius: 50%"
       ></div>
     </ng-template>
-    {{ clicked }}
+    {{ clicked() }}
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
   `,
   imports: [CoreComponent, TabsComponent],
@@ -31,18 +31,18 @@ import { CUSTOM_TEMPLATES_DOCS } from './custom-templates.snippets';
 export class CustomTemplatesComponent implements OnInit {
   @ViewChild('actions', { static: true }) actions: TemplateRef<any> | undefined;
   @ViewChild('color', { static: true }) color: TemplateRef<any> | undefined;
-  clicked = '';
+  clicked = signal('');
 
   data = [
     { firstName: 'Peter', lastName: 'Parker', gender: 'male', favoriteColor: '#26BFAF', favoriteFood: 'Pasta' },
     { firstName: 'Mary Jane', lastName: 'Watson', gender: 'female', favoriteColor: '#0f0', favoriteFood: 'Pizza' },
   ];
-  config: TableConfig = {};
+  config = signal<TableConfig>({});
 
   SNIPPETS = CUSTOM_TEMPLATES_DOCS;
 
   ngOnInit(): void {
-    this.config = {
+    this.config.set({
       columns: {
         firstName: {},
         lastName: {},
@@ -51,11 +51,11 @@ export class CustomTemplatesComponent implements OnInit {
         favoriteFood: {},
         action: { templateRef: this.actions },
       },
-    };
+    });
   }
 
   clickAction(row: TableRow, column: { key: string; value: TableColumn }, index: number): void {
     console.log('clicked row:', row, 'col:', column);
-    this.clicked = `clicked row number: ${index}`;
+    this.clicked.set(`clicked row number: ${index}`);
   }
 }

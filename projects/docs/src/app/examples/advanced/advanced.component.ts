@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { CoreComponent, TableConfig, TableRow, TableColumn } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
@@ -18,16 +18,16 @@ export class AdvancedComponent implements OnInit {
     search: [''],
   });
 
-  loading = true;
-  currentPage = 0;
-  searchValue: string | null = null;
-  data: Array<TableRow> = [
+  loading = signal(true);
+  currentPage = signal(0);
+  searchValue = signal<string | null>(null);
+  data = signal<Array<TableRow>>([
     { index: 1, firstName: 'Peter', lastName: 'Parker', gender: 'male', favoriteColor: '#26BFAF', favoriteFood: 'Pasta' },
     { index: 2, firstName: 'Mary Jane', lastName: 'Watson', gender: 'female', favoriteColor: '#0f0', favoriteFood: 'Pizza' },
-  ];
-  tableConfig: TableConfig = {};
+  ]);
+  tableConfig = signal<TableConfig>({});
 
-  clicked = '';
+  clicked = signal('');
   maleFirstNames = ['Peter', 'Clark', 'Ruben', 'John', 'Jack', 'Roscoe'];
   femaleFirstNames = ['Mary Jane', 'Kim', 'Sarah', 'Michelle', 'Ann'];
   lastNames = ['Andersson', 'Smith', 'Parker', 'Kent', 'Rogers', 'Lane', 'Jackson'];
@@ -39,27 +39,27 @@ export class AdvancedComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
 
   addData(): void {
-    this.data = [...this.data, this.randomRecord()];
+    this.data.set([...this.data(), this.randomRecord()]);
   }
 
   removeData(): void {
-    this.data = [];
+    this.data.set([]);
   }
 
   simulateLoad(): void {
-    this.loading = true;
-    setTimeout(() => (this.loading = false), 2000);
+    this.loading.set(true);
+    setTimeout(() => this.loading.set(false), 2000);
   }
 
   clickAction(row: TableRow, column: { key: string; value: TableColumn }, index: number): void {
     console.log('clicked row:', row, 'col:', column);
-    this.clicked = `clicked row number: ${index}`;
+    this.clicked.set(`clicked row number: ${index}`);
   }
 
   randomRecord(): TableRow {
     const random = Math.floor(Math.random() * 2);
     return {
-      index: this.data.length + 1,
+      index: this.data().length + 1,
       firstName: random
         ? this.maleFirstNames[Math.floor(Math.random() * this.maleFirstNames.length)]
         : this.femaleFirstNames[Math.floor(Math.random() * this.femaleFirstNames.length)],
@@ -70,21 +70,21 @@ export class AdvancedComponent implements OnInit {
     };
   }
 
-  next = () => { this.currentPage++; };
-  prev = () => { this.currentPage--; };
+  next = () => { this.currentPage.set(this.currentPage() + 1); };
+  prev = () => { this.currentPage.set(this.currentPage() - 1); };
 
   ngOnInit(): void {
     this.simulateLoad();
     this.paginationForm.get('length')?.valueChanges.subscribe((length) => {
-      this.tableConfig = {
-        ...this.tableConfig,
-        pagination: { ...this.tableConfig.pagination, length: +(length || 0) },
-      };
+      this.tableConfig.set({
+        ...this.tableConfig(),
+        pagination: { ...this.tableConfig().pagination, length: +(length || 0) },
+      });
     });
     this.paginationForm.get('search')?.valueChanges.subscribe((value) => {
-      this.searchValue = value;
+      this.searchValue.set(value);
     });
-    this.tableConfig = {
+    this.tableConfig.set({
       class: 'table text-nowrap mb-0',
       mobileLayout: true,
       columns: {
@@ -113,6 +113,6 @@ export class AdvancedComponent implements OnInit {
           action: { count: (data, key) => `Total: ${data.length}` },
         },
       },
-    };
+    });
   }
 }

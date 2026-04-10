@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import {
   CoreComponent,
   GtDeltaComponent,
@@ -49,10 +49,10 @@ interface YearData extends RawData {
       <div class="overflow-auto">
         <angular-generic-table
           #table
-          [data]="data"
-          [config]="tableConfig"
-          [loading]="loading"
-          [search]="searchValue"
+          [data]="data()"
+          [config]="tableConfig()"
+          [loading]="loading()"
+          [search]="searchValue()"
         >
           <div class="table-loading gt-skeleton-loader"></div>
           <div class="table-no-data alert alert-info mt-3">Table is empty</div>
@@ -88,10 +88,10 @@ export class TransposeComponent implements OnInit {
   @ViewChild('deltaIndex', { static: true }) deltaIndex: TemplateRef<any> | undefined;
   @ViewChild('combined', { static: true }) combined: TemplateRef<any> | undefined;
 
-  loading = false;
-  searchValue: string | null = null;
-  tableConfig: TableConfig<YearData> = {};
-  data: Array<RawData> = [];
+  loading = signal(false);
+  searchValue = signal<string | null>(null);
+  tableConfig = signal<TableConfig<YearData>>({});
+  data = signal<Array<RawData>>([]);
 
   reactiveForm = this.fb.group({
     length: [10],
@@ -104,27 +104,27 @@ export class TransposeComponent implements OnInit {
     this.transpose();
     this.load();
     this.reactiveForm.get('length')?.valueChanges.subscribe((length) => {
-      this.tableConfig = {
-        ...this.tableConfig,
-        pagination: { ...this.tableConfig.pagination, length: +(length || 0) },
-      };
+      this.tableConfig.set({
+        ...this.tableConfig(),
+        pagination: { ...this.tableConfig().pagination, length: +(length || 0) },
+      });
     });
     this.reactiveForm.get('search')?.valueChanges.subscribe((value) => {
-      this.searchValue = value;
+      this.searchValue.set(value);
     });
   }
 
   simulateLoad(): void {
-    this.loading = true;
-    setTimeout(() => (this.loading = false), 2000);
+    this.loading.set(true);
+    setTimeout(() => this.loading.set(false), 2000);
   }
 
   empty(): void {
-    this.data = [];
+    this.data.set([]);
   }
 
   load(): void {
-    this.data = [
+    this.data.set([
       { year: '2010', value: 15 },
       { year: '2011', value: 30 },
       { year: '2012', value: 25 },
@@ -137,12 +137,12 @@ export class TransposeComponent implements OnInit {
       { year: '2020', value: 250 },
       { year: '2021', value: 50 },
       { year: '2022', value: 60 },
-    ];
+    ]);
   }
 
   transpose(): void {
-    if (this.tableConfig.columns) {
-      this.tableConfig = {
+    if (this.tableConfig().columns) {
+      this.tableConfig.set({
         stickyHeaders: { row: true, column: true },
         rows: {
           year: { sortable: true, header: false, class: 'text-end' },
@@ -152,9 +152,9 @@ export class TransposeComponent implements OnInit {
           deltaAbsolute: { header: 'Delta', templateRef: this.deltaAbsolute, class: 'text-end' },
           combined: { header: 'Value with change', templateRef: this.combined, class: 'text-end text-nowrap' },
         },
-      };
+      });
     } else {
-      this.tableConfig = {
+      this.tableConfig.set({
         stickyHeaders: { row: true, column: true },
         columns: {
           year: { sortable: true },
@@ -165,7 +165,7 @@ export class TransposeComponent implements OnInit {
           combined: { header: 'Value with change', templateRef: this.combined, class: 'text-end text-nowrap' },
         },
         pagination: { length: this.reactiveForm.get('length')?.value || 0 },
-      };
+      });
     }
   }
 

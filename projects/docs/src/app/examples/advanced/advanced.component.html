@@ -23,11 +23,11 @@
 </form>
 <div class="overflow-scroll mt-3 pb-3">
   <angular-generic-table
-    [data]="data"
-    [config]="tableConfig"
-    [paginationIndex]="currentPage"
-    [search]="searchValue"
-    [loading]="loading"
+    [data]="data()"
+    [config]="tableConfig()"
+    [paginationIndex]="currentPage()"
+    [search]="searchValue()"
+    [loading]="loading()"
     #table
   >
     <div class="table-loading gt-skeleton-loader"></div>
@@ -36,14 +36,14 @@
 </div>
 <div class="row justify-content-center align-items-center gy-3">
   <div class="col-6 col-sm-auto">
-    <button class="btn btn-primary w-100" (click)="prev()" [disabled]="currentPage === 0">Prev</button>
+    <button class="btn btn-primary w-100" (click)="prev()" [disabled]="currentPage() === 0">Prev</button>
   </div>
   <div class="col-6 col-sm-auto">
     <button class="btn btn-primary w-100" (click)="next()">Next</button>
   </div>
-  <div class="col-auto">Current page: {{ currentPage + 1 }}</div>
-  <div class="col-auto">Records: {{ data.length }}</div>
-  <div class="col-auto">{{ clicked }}</div>
+  <div class="col-auto">Current page: {{ currentPage() + 1 }}</div>
+  <div class="col-auto">Records: {{ data().length }}</div>
+  <div class="col-auto">{{ clicked() }}</div>
 </div>
 <ng-template #actions let-row="row" let-col="col" let-index="index">
   @if (index !== undefined) {

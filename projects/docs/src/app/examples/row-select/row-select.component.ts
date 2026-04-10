@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { KeyValuePipe } from '@angular/common';
@@ -38,12 +38,12 @@ export class RowSelectComponent implements OnInit {
 
   activateOnRowHover = true;
   activateOnNavigation = true;
-  loading = true;
+  loading = signal(true);
   activeRow: RowData | null = null;
   customClassNames = { selectedRow: 'table-active' };
   lengthCtrl = new FormControl(15);
-  data: TableRow[] = [];
-  config: TableConfig = {};
+  data = signal<TableRow[]>([]);
+  config = signal<TableConfig>({});
   selection: { [key: string]: boolean } = {};
 
   SNIPPETS = ROW_SELECT_SNIPPETS;
@@ -52,19 +52,19 @@ export class RowSelectComponent implements OnInit {
     this.http
       .get<{ data: TableRow[] }>('https://private-730c61-generictable.apiary-mock.com/data')
       .subscribe((res) => {
-        this.data = res.data;
-        this.loading = false;
+        this.data.set(res.data);
+        this.loading.set(false);
       });
 
     this.lengthCtrl.valueChanges.subscribe((length) => {
       const len = length ? (length < 0 ? 0 : length) : 0;
-      this.config = {
-        ...this.config,
+      this.config.set({
+        ...this.config(),
         pagination: { length: len },
-      };
+      });
     });
 
-    this.config = {
+    this.config.set({
       columns: {
         id: { sortable: true },
         first_name: { sortable: true },
@@ -76,17 +76,17 @@ export class RowSelectComponent implements OnInit {
       rowClick: true,
       activateRowOnHover: this.activateOnRowHover,
       activateRowOnKeyboardNavigation: this.activateOnNavigation,
-    };
+    });
   }
 
   toggleRowHover(): void {
     this.activateOnRowHover = !this.activateOnRowHover;
-    this.config = { ...this.config, activateRowOnHover: this.activateOnRowHover };
+    this.config.set({ ...this.config(), activateRowOnHover: this.activateOnRowHover });
   }
 
   toggleRowNavigation(): void {
     this.activateOnNavigation = !this.activateOnNavigation;
-    this.config = { ...this.config, activateRowOnKeyboardNavigation: this.activateOnNavigation };
+    this.config.set({ ...this.config(), activateRowOnKeyboardNavigation: this.activateOnNavigation });
   }
 
   setActiveRow(event: GtRowActiveEvent): void {
@@ -122,7 +122,7 @@ export class RowSelectComponent implements OnInit {
       return;
     }
     const selection = { ...this.selection };
-    this.data.forEach((row, index) => {
+    this.data().forEach((row, index) => {
       selection[index] = true;
     });
     this.selection = selection;

@@ -12,10 +12,10 @@
 </form>
 <div class="mx-n3 mx-sm-0 my-3 overflow-auto">
   <angular-generic-table
-    [data]="data"
-    [config]="tableConfig"
-    [search]="searchValue"
-    [loading]="loading"
+    [data]="data()"
+    [config]="tableConfig()"
+    [search]="searchValue()"
+    [loading]="loading()"
     #table
   >
     <div class="table-loading gt-skeleton-loader"></div>
