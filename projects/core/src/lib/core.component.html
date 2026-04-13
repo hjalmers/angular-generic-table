@@ -27,7 +27,7 @@
   <thead>
     <tr>
       @if (configValue?.columns) {
-        @for (column of configValue.columns | keyvalue: columnOrder; track column.key) {
+        @for (column of orderedColumns(); track column.key) {
           @if (!column.value?.hidden) {
             <th
               class="{{ (column.key | dashCase) + '-column' }} {{ column.value.class }}"
@@ -54,7 +54,7 @@
         }
       }
       @if (configValue?.rows) {
-        @let headerRow = ((configValue.rows | keyvalue: columnOrder) || [])[0];
+        @let headerRow = orderedRows()[0];
         @if (headerRow) {
           <th
             class="row-header"
@@ -116,7 +116,7 @@
                 rowActiveValue?.index === i ? customClasses().activeRow : ''
               ]"
             >
-              @for (column of configValue.columns | keyvalue: columnOrder; track column.key) {
+              @for (column of orderedColumns(); track column.key) {
                 @if (!column.value?.hidden) {
                   <td
                     class="{{ (column.key | dashCase) + '-column' }} {{ column.value.class }}"
@@ -155,7 +155,7 @@
           }
         }
         @if (configValue?.rows) {
-          @for (row of configValue.rows | keyvalue: columnOrder | slice: 1; track row.key; let i = $index) {
+          @for (row of orderedRows() | slice: 1; track row.key; let i = $index) {
             @if (!row.value?.hidden) {
               <tr
                 [attr.id]="'tableRow_' + i"
@@ -224,7 +224,7 @@
               }
             </th>
           }
-          @for (column of configValue?.columns | keyvalue: columnOrder; track column.key) {
+          @for (column of orderedColumns(); track column.key) {
             @if (!column.value?.hidden && calculationsValue.calculated[column.key]) {
               <td
                 class="{{ (column.key | dashCase) + '-column' }} {{ column.value.class }}"

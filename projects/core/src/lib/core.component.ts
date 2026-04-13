@@ -26,7 +26,6 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { TableConfig } from './models/table-config.interface';
 import {
   KeyValue,
-  KeyValuePipe,
   NgTemplateOutlet,
   SlicePipe,
 } from '@angular/common';
@@ -62,7 +61,6 @@ import { TableMeta } from './models/table-meta.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CapitalCasePipe,
-    KeyValuePipe,
     SortClassPipe,
     DashCasePipe,
     RowSelectionPipe,
@@ -187,24 +185,28 @@ export class CoreComponent implements OnDestroy {
     return data;
   });
 
-  /** Sorted and searched data */
-  private processedData = computed(() => {
+  /** Filtered data (search applied, no sort) */
+  private searchedData = computed(() => {
     const data = [...this.expandedData()];
-    const sortBy = this.sortOrder();
     const searchBy = this.searchTerm();
     const config = this.config();
     const lazyLoaded = this.pagingInfo() !== null;
 
-    if (!sortBy?.length || config?.disableTableSort) {
-      return searchBy && !lazyLoaded
-        ? search(searchBy, false, data, config)
-        : data;
-    }
     return searchBy && !lazyLoaded
-      ? search(searchBy, false, data, config)?.sort(
-          sortOnMultipleKeys(sortBy)
-        )
-      : data.sort(sortOnMultipleKeys(sortBy));
+      ? search(searchBy, false, data, config)
+      : data;
+  });
+
+  /** Sorted (and already searched) data */
+  private processedData = computed(() => {
+    const data = this.searchedData();
+    const sortBy = this.sortOrder();
+    const config = this.config();
+
+    if (!sortBy?.length || config?.disableTableSort) {
+      return data;
+    }
+    return [...data].sort(sortOnMultipleKeys(sortBy));
   });
 
   /** Table meta: chunked data + config + pagination info */
@@ -317,56 +319,62 @@ export class CoreComponent implements OnDestroy {
     this.rowActiveOutput.emit(event);
   });
 
-  // Emit pageChange output when bounded index changes
-  private _pageChangeEffect = effect(() => {
-    const index = this.boundedPaginationIndex();
-    this.pageChange.emit({ index });
-  });
 
-  // ─── Public Observable Getters (backward compat) ───
+  // ─── Public Observable Getters (backward compat, lazy-cached) ───
 
+  private _sortOrder$?: Observable<GtSortOrder>;
   get sortOrder$(): Observable<GtSortOrder> {
-    return toObservable(this.sortOrder);
+    return (this._sortOrder$ ??= toObservable(this.sortOrder));
   }
 
+  private _loading$?: Observable<boolean>;
   get loading$(): Observable<boolean> {
-    return toObservable(this.loading);
+    return (this._loading$ ??= toObservable(this.loading));
   }
 
+  private _searchBy$?: Observable<string | null>;
   get searchBy$(): Observable<string | null> {
-    return toObservable(this.searchTerm);
+    return (this._searchBy$ ??= toObservable(this.searchTerm));
   }
 
+  private _tableConfig$?: Observable<TableConfig>;
   get tableConfig$(): Observable<TableConfig> {
-    return toObservable(this.config);
+    return (this._tableConfig$ ??= toObservable(this.config));
   }
 
+  private _data$?: Observable<Array<TableRow>>;
   get data$(): Observable<Array<TableRow>> {
-    return toObservable(this.processedData);
+    return (this._data$ ??= toObservable(this.processedData));
   }
 
+  private _table$?: Observable<TableMeta>;
   get table$(): Observable<TableMeta> {
-    return toObservable(this.table);
+    return (this._table$ ??= toObservable(this.table));
   }
 
+  private _tableInfo$?: Observable<TableInfo>;
   get tableInfo$(): Observable<TableInfo> {
-    return toObservable(this.tableInfoSignal);
+    return (this._tableInfo$ ??= toObservable(this.tableInfoSignal));
   }
 
+  private _currentPaginationIndex$?: Observable<number>;
   get currentPaginationIndex$(): Observable<number> {
-    return toObservable(this.boundedPaginationIndex);
+    return (this._currentPaginationIndex$ ??= toObservable(this.boundedPaginationIndex));
   }
 
+  private _calculations$?: Observable<ReturnType<typeof calculate>>;
   get calculations$(): Observable<ReturnType<typeof calculate>> {
-    return toObservable(this.calculations);
+    return (this._calculations$ ??= toObservable(this.calculations));
   }
 
+  private _rowActive$?: Observable<GtRowActiveEvent>;
   get rowActive$(): Observable<GtRowActiveEvent> {
-    return toObservable(this.rowActiveState);
+    return (this._rowActive$ ??= toObservable(this.rowActiveState));
   }
 
+  private _colspan$?: Observable<number>;
   get colspan$(): Observable<number> {
-    return toObservable(this.colspan);
+    return (this._colspan$ ??= toObservable(this.colspan));
   }
 
   // ─── Pagination ───
@@ -376,6 +384,7 @@ export class CoreComponent implements OnDestroy {
   }
   set paginationIndex(value: number) {
     this.currentPaginationIndex.set(value);
+    this.pageChange.emit({ index: this.boundedPaginationIndex() });
   }
 
   // ─── Methods ───
@@ -488,12 +497,28 @@ export class CoreComponent implements OnDestroy {
     }
   }
 
-  columnOrder = (
+  private _columnOrder = (
     a: KeyValue<string, TableColumn>,
     b: KeyValue<string, TableColumn>
   ): number => {
     return (a.value.order || 0) - (b.value.order || 0);
   };
+
+  protected orderedColumns = computed(() => {
+    const config = this.config();
+    if (!config.columns) return [];
+    return Object.entries(config.columns)
+      .map(([key, value]) => ({ key, value }) as KeyValue<string, TableColumn>)
+      .sort(this._columnOrder);
+  });
+
+  protected orderedRows = computed(() => {
+    const config = this.config();
+    if (!config.rows) return [];
+    return Object.entries(config.rows)
+      .map(([key, value]) => ({ key, value }) as KeyValue<string, TableColumn>)
+      .sort(this._columnOrder);
+  });
 
   nestedValue(
     object: any,
