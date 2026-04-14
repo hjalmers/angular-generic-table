@@ -36,8 +36,12 @@ export interface GtDelta {
         ></ng-container>
       </span>
       <ng-template #defaultTemplate let-delta="delta">
-        @if (delta.relative) {
-          <span>{{ delta.relative | percent: '1.0-2' }}</span>
+        @if (delta.relative !== null && delta.relative !== undefined) {
+          @if (typeof delta.relative === 'number') {
+            <span>{{ delta.relative | percent: '1.0-2' }}</span>
+          } @else {
+            <span>{{ delta.relative }}</span>
+          }
         }
       </ng-template>
     }

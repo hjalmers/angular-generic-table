@@ -94,18 +94,20 @@ describe('GtDeltaComponent', () => {
     expect(delta!.absolute).toBe(50);
   });
 
-  it('should compute notApplicableValue for division by zero', () => {
+  it('should render notApplicableValue for division by zero', () => {
     fixture.componentRef.setInput('data', [
       { value: 0 },
       { value: 10 },
     ]);
     fixture.componentRef.setInput('index', 1);
     fixture.componentRef.setInput('notApplicableValue', 'N/A');
-    // Don't call detectChanges — the PercentPipe in the template
-    // throws on non-numeric relative values. Test the computed directly.
+    fixture.detectChanges();
+
     const delta = component.value();
     expect(delta!.absolute).toBe(10);
     expect(delta!.relative).toBe('N/A');
+    // Should render the string directly, not through PercentPipe
+    expect(fixture.nativeElement.textContent).toContain('N/A');
   });
 
   it('should render positive delta with correct CSS class', () => {
