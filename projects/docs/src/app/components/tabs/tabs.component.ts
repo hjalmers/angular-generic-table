@@ -39,8 +39,10 @@ export class TabsComponent implements OnInit {
 
   private static readonly STRIP_PATTERNS = [
     /^import \{ SOURCE_TABS \} from '.*\/_source';\n?/m,
+    /^import \{ TabsComponent \} from '.*\/tabs\.component';\n?/m,
     /\s*SNIPPETS = SOURCE_TABS;\n?/,
     /\s*<docs-tabs \[content\]="SNIPPETS"><\/docs-tabs>\n?/,
+    /,?\s*TabsComponent(?=[\s,\]])/,
   ];
 
   private clean(code: string): string {
