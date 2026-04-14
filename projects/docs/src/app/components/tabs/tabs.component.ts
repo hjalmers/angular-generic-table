@@ -37,16 +37,31 @@ export class TabsComponent implements OnInit {
   activeIndex = 0;
   activeContent: HighlightResult | undefined;
 
+  private static readonly STRIP_PATTERNS = [
+    /^import \{ SOURCE_TABS \} from '.*\/_source';\n?/m,
+    /\s*SNIPPETS = SOURCE_TABS;\n?/,
+    /\s*<docs-tabs \[content\]="SNIPPETS"><\/docs-tabs>\n?/,
+  ];
+
+  private clean(code: string): string {
+    return TabsComponent.STRIP_PATTERNS.reduce(
+      (result, pattern) => result.replace(pattern, ''),
+      code
+    );
+  }
+
   ngOnInit(): void {
-    this.activeContent = hljs.highlight(this.content[this.activeIndex].code, {
-      language: this.content[this.activeIndex].language,
+    const item = this.content[this.activeIndex];
+    this.activeContent = hljs.highlight(this.clean(item.code), {
+      language: item.language,
     });
   }
 
   view(index: number): void {
     this.activeIndex = index;
-    this.activeContent = hljs.highlight(this.content[index].code, {
-      language: this.content[index].language,
+    const item = this.content[index];
+    this.activeContent = hljs.highlight(this.clean(item.code), {
+      language: item.language,
     });
   }
 }
