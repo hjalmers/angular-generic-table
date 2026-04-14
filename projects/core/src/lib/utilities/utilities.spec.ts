@@ -388,7 +388,7 @@ describe('sortOnMultipleKeys', () => {
     expect(sorted.map((r) => r.name)).toEqual(['Charlie', 'Bob', 'Alice']);
   });
 
-  it('should sort on multiple keys with primary key taking precedence', () => {
+  it('should tiebreak on secondary key when primary key is equal', () => {
     const data: TableRow[] = [
       { city: 'Paris', name: 'Bob' },
       { city: 'Berlin', name: 'Charlie' },
@@ -399,9 +399,11 @@ describe('sortOnMultipleKeys', () => {
       { key: 'name', order: 'asc' },
     ];
     const sorted = [...data].sort(sortOnMultipleKeys(sortOrder));
-    // Berlin rows come before Paris (primary key works)
-    expect(sorted[0].city).toBe('Berlin');
-    expect(sorted[2].city).toBe('Paris');
+    expect(sorted).toEqual([
+      { city: 'Berlin', name: 'Alice' },
+      { city: 'Berlin', name: 'Charlie' },
+      { city: 'Paris', name: 'Bob' },
+    ]);
   });
 
   it('should handle null values by placing them last', () => {
@@ -447,17 +449,48 @@ describe('sortOnMultipleKeys', () => {
 
   it('should handle mixed asc/desc on multiple keys', () => {
     const data: TableRow[] = [
-      { city: 'Paris', age: 30 },
       { city: 'Berlin', age: 25 },
+      { city: 'Berlin', age: 35 },
+      { city: 'Paris', age: 30 },
     ];
     const sortOrder: GtSortOrder = [
       { key: 'city', order: 'asc' },
       { key: 'age', order: 'desc' },
     ];
     const sorted = [...data].sort(sortOnMultipleKeys(sortOrder));
-    // Primary sort: Berlin (asc) before Paris
-    expect(sorted[0].city).toBe('Berlin');
-    expect(sorted[1].city).toBe('Paris');
+    expect(sorted).toEqual([
+      { city: 'Berlin', age: 35 },
+      { city: 'Berlin', age: 25 },
+      { city: 'Paris', age: 30 },
+    ]);
+  });
+
+  it('should sort strings alphanumerically (natural sort)', () => {
+    const data: TableRow[] = [
+      { name: 'Item 10' },
+      { name: 'Item 2' },
+      { name: 'Item 1' },
+      { name: 'Item 20' },
+    ];
+    const sortOrder: GtSortOrder = [{ key: 'name', order: 'asc' }];
+    const sorted = [...data].sort(sortOnMultipleKeys(sortOrder));
+    expect(sorted.map((r) => r.name)).toEqual([
+      'Item 1',
+      'Item 2',
+      'Item 10',
+      'Item 20',
+    ]);
+  });
+
+  it('should sort strings case-insensitively', () => {
+    const data: TableRow[] = [
+      { name: 'banana' },
+      { name: 'Apple' },
+      { name: 'cherry' },
+    ];
+    const sortOrder: GtSortOrder = [{ key: 'name', order: 'asc' }];
+    const sorted = [...data].sort(sortOnMultipleKeys(sortOrder));
+    expect(sorted.map((r) => r.name)).toEqual(['Apple', 'banana', 'cherry']);
   });
 });
 

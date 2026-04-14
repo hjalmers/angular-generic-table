@@ -165,7 +165,7 @@ export let calculate = (data: Array<TableRow>, config: TableConfig) => {
 };
 
 /** sortOnMultipleKeys
- * @description Sort data on multiple keys
+ * @description Sort data on multiple keys with locale-aware alphanumeric comparison
  * @param {GtSortOrder} keys - array with sort config objects to sort on, data will be sorted according to array order
  * @returns sort function
  */
@@ -176,11 +176,18 @@ export const sortOnMultipleKeys = (
   return (a, b) => {
     for (let i = 0; i < keys.length; i++) {
       const o = keys[i].key;
-      if (a[o] === b[o]) return 0;
-      if (a[o] === null) return 1;
-      if (b[o] === null) return -1;
-      if (a[o] > b[o]) return order[i];
-      if (a[o] < b[o]) return -order[i];
+      const aVal = a[o];
+      const bVal = b[o];
+      if (aVal === bVal) continue;
+      if (aVal === null || aVal === undefined) return 1;
+      if (bVal === null || bVal === undefined) return -1;
+      if (typeof aVal === 'string' && typeof bVal === 'string') {
+        const cmp = aVal.localeCompare(bVal, undefined, { numeric: true, sensitivity: 'base' });
+        if (cmp !== 0) return cmp * order[i];
+        continue;
+      }
+      if (aVal > bVal) return order[i];
+      if (aVal < bVal) return -order[i];
     }
     return 0;
   };
