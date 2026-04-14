@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
+  { path: '', redirectTo: 'simple', pathMatch: 'full' },
   { path: 'advanced', loadComponent: () => import('./examples/advanced/advanced.component').then((m) => m.AdvancedComponent) },
   { path: 'pagination', loadComponent: () => import('./examples/pagination/pagination.component').then((m) => m.PaginationComponent) },
   { path: 'lazy-loading', loadComponent: () => import('./examples/server-side-pagination/server-side-pagination.component').then((m) => m.ServerSidePaginationComponent) },

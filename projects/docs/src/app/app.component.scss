@@ -1,0 +1,23 @@
+@media (min-width: 768px) {
+  nav {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+}
+
+.nav-link {
+  color: var(--bs-body-color);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.875rem;
+
+  &:hover {
+    background-color: var(--bs-tertiary-bg);
+  }
+
+  &.active {
+    background-color: var(--bs-primary);
+    color: #fff;
+  }
+}
