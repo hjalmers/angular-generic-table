@@ -12,7 +12,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version-file: '.nvmrc'
           cache: npm
 
       - name: Get branch name
@@ -25,6 +25,9 @@ jobs:
 
       - name: Build library
         run: npm run build
+
+      - name: Run tests
+        run: npm test
 
       - name: Run semantic release and publish new version to npm
         env:
