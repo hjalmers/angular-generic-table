@@ -3,7 +3,7 @@ import { JsonPipe } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { CoreComponent, GtSortEvent, GtSortOrder, TableConfig } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
-import { SIMPLE_SNIPPETS } from './sorting.snippets';
+import { SOURCE_TABS } from './_source';
 
 interface SortingData {
   firstName: string;
@@ -71,5 +71,5 @@ export class SortingComponent {
   logSortChange(sortEvent: GtSortEvent<SortingData>) { console.log(sortEvent); }
   resetSort() { this.sortOrder = this.initialSortOrder; }
 
-  SNIPPETS = SIMPLE_SNIPPETS;
+  SNIPPETS = SOURCE_TABS;
 }

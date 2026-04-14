@@ -7,7 +7,7 @@ import {
 } from '@angular-generic-table/core';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { TabsComponent } from '../../components/tabs/tabs.component';
-import { TRANSPOSE_SNIPPETS } from './transpose.snippets';
+import { SOURCE_TABS } from './_source';
 
 interface RawData {
   year: string;
@@ -169,5 +169,5 @@ export class TransposeComponent implements OnInit {
     }
   }
 
-  SNIPPETS = TRANSPOSE_SNIPPETS;
+  SNIPPETS = SOURCE_TABS;
 }

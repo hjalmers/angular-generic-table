@@ -1,7 +1,7 @@
 import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { CoreComponent, TableConfig, TableRow, TableColumn } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
-import { CUSTOM_TEMPLATES_DOCS } from './custom-templates.snippets';
+import { SOURCE_TABS } from './_source';
 
 @Component({
   selector: 'docs-custom-templates',
@@ -39,7 +39,7 @@ export class CustomTemplatesComponent implements OnInit {
   ];
   config = signal<TableConfig>({});
 
-  SNIPPETS = CUSTOM_TEMPLATES_DOCS;
+  SNIPPETS = SOURCE_TABS;
 
   ngOnInit(): void {
     this.config.set({

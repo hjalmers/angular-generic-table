@@ -15,7 +15,7 @@ import {
 import { BehaviorSubject } from 'rxjs';
 import { shareReplay, switchMap, tap } from 'rxjs/operators';
 import { TabsComponent } from '../../components/tabs/tabs.component';
-import { LAZY_LOADING_DOCS } from './server-side-pagination.snippets';
+import { SOURCE_TABS } from './_source';
 
 interface LazyLoadingData {
   birthday: string;
@@ -54,7 +54,7 @@ export class ServerSidePaginationComponent implements OnInit {
 
   private requestParams$ = new BehaviorSubject({ page: 1, page_size: 10, sort_by: '+id' });
 
-  SNIPPETS = LAZY_LOADING_DOCS;
+  SNIPPETS = SOURCE_TABS;
 
   ngOnInit(): void {
     this.paginationForm.get('search')?.valueChanges.subscribe((value) => {

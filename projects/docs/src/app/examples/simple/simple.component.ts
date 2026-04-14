@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CoreComponent, TableConfig } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
-import { SIMPLE_SNIPPETS } from './simple.snippets';
+import { SOURCE_TABS } from './_source';
 
 interface BasicData {
   firstName: string;
@@ -33,5 +33,5 @@ export class SimpleComponent {
       favoriteFood: {},
     },
   };
-  SNIPPETS = SIMPLE_SNIPPETS;
+  SNIPPETS = SOURCE_TABS;
 }

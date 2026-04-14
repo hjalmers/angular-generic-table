@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CoreComponent, TableConfig, TableRow } from '@angular-generic-table/core';
 import { DecimalPipe } from '@angular/common';
 import { TabsComponent } from '../../components/tabs/tabs.component';
-import { SIMPLE_SNIPPETS } from './simple.snippets';
+import { SOURCE_TABS } from './_source';
 
 @Component({
   selector: 'docs-footer',
@@ -69,5 +69,5 @@ export class FooterComponent implements OnInit {
     };
   }
 
-  SNIPPETS = SIMPLE_SNIPPETS;
+  SNIPPETS = SOURCE_TABS;
 }

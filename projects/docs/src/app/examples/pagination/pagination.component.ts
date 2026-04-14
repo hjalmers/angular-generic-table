@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { DatePipe, formatDate } from '@angular/common';
 import { CoreComponent, PaginationComponent as GtPaginationComponent, TableConfig } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
-import { ADVANCED_DOCS } from './pagination.snippets';
+import { SOURCE_TABS } from './_source';
 
 @Component({
   selector: 'docs-pagination',
@@ -25,7 +25,7 @@ export class PaginationComponent implements OnInit {
   data = signal<any[]>([]);
   tableConfig = signal<TableConfig>({});
 
-  SNIPPETS = ADVANCED_DOCS;
+  SNIPPETS = SOURCE_TABS;
 
   ngOnInit(): void {
     this.http

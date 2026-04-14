@@ -1,7 +1,7 @@
 import { Component, Pipe, PipeTransform, signal, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CoreComponent, TableColumn, TableConfig, TableRow } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
-import { MOBILE_LAYOUT_SNIPPETS } from './mobileLayout.snippets';
+import { SOURCE_TABS } from './_source';
 
 @Pipe({ name: 'genderPipe' })
 export class GenderPipe implements PipeTransform {
@@ -59,7 +59,7 @@ export class MobileLayoutComponent {
     },
   });
 
-  SNIPPETS = MOBILE_LAYOUT_SNIPPETS;
+  SNIPPETS = SOURCE_TABS;
 
   toggleLayout(): void {
     this.mobileLayout.set(!this.mobileLayout());

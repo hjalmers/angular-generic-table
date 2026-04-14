@@ -1,7 +1,7 @@
 import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { CoreComponent, TableConfig } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
-import { NESTED_SNIPPETS } from './nested.snippets';
+import { SOURCE_TABS } from './_source';
 
 interface NestedData {
   name: { first: string; last: string };
@@ -73,5 +73,5 @@ export class NestedDataComponent implements OnInit {
     ]);
   }
 
-  SNIPPETS = NESTED_SNIPPETS;
+  SNIPPETS = SOURCE_TABS;
 }

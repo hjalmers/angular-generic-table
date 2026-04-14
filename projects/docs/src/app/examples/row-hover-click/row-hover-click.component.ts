@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { CoreComponent, GtRowClickEvent, GtRowActiveEvent, TableConfig } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
-import { ROW_HOVER_CLICK_SNIPPETS } from './row-hower-click.snippets';
+import { SOURCE_TABS } from './_source';
 
 @Component({
   selector: 'docs-row-hover-click',
@@ -45,5 +45,5 @@ export class RowHoverClickComponent {
     console.log('row hovered', event);
   }
 
-  SNIPPETS = ROW_HOVER_CLICK_SNIPPETS;
+  SNIPPETS = SOURCE_TABS;
 }

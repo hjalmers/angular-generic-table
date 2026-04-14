@@ -12,7 +12,7 @@ import {
   TableRow,
 } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
-import { ROW_SELECT_SNIPPETS } from './row-select.snippets';
+import { SOURCE_TABS } from './_source';
 
 interface RowData {
   birthday: string;
@@ -46,7 +46,7 @@ export class RowSelectComponent implements OnInit {
   config = signal<TableConfig>({});
   selection: { [key: string]: boolean } = {};
 
-  SNIPPETS = ROW_SELECT_SNIPPETS;
+  SNIPPETS = SOURCE_TABS;
 
   ngOnInit(): void {
     this.http

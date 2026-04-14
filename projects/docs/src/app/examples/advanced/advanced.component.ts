@@ -2,7 +2,7 @@ import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { CoreComponent, TableConfig, TableRow, TableColumn } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
-import { ADVANCED_DOCS } from './advanced.snippets';
+import { SOURCE_TABS } from './_source';
 
 @Component({
   selector: 'docs-advanced',
@@ -34,7 +34,7 @@ export class AdvancedComponent implements OnInit {
   foods = ['Pizza', 'Pasta', 'Hamburger', 'Pancakes', 'Tacos', 'Lasagna', 'Meatloaf'];
   colors = ['#33d60b', '#dcafff', '#3fc9ff', '#ff1600', '#5238b1', '#fff'];
 
-  SNIPPETS = ADVANCED_DOCS;
+  SNIPPETS = SOURCE_TABS;
 
   constructor(private fb: FormBuilder) {}
 

@@ -6,6 +6,7 @@
     "start": "ng serve --host=0.0.0.0",
     "build": "ng build core --configuration production",
     "postbuild": "npx copyfiles projects/core/src/lib/scss/**/* dist/core/scss -f",
+    "prebuild:docs": "node scripts/generate-sources.mjs",
     "build:docs": "ng build docs --configuration production",
     "test": "cd projects/core && vitest run",
     "lint": "ng lint --fix --force",

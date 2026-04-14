@@ -47,3 +47,6 @@ testem.log
 Thumbs.db
 
 projects/core/node_modules/.vite/
+
+# generated source tabs for docs examples
+projects/docs/src/app/examples/**/_source.ts

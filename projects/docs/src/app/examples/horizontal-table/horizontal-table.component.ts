@@ -1,7 +1,7 @@
 import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { CoreComponent, GtDeltaComponent, TableConfig } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
-import { HORIZONTAL_TABLE_SNIPPETS } from './horizontal-table.snippets';
+import { SOURCE_TABS } from './_source';
 
 @Component({
   selector: 'docs-horizontal-table',
@@ -74,5 +74,5 @@ export class HorizontalTableComponent implements OnInit {
     ]);
   }
 
-  SNIPPETS = HORIZONTAL_TABLE_SNIPPETS;
+  SNIPPETS = SOURCE_TABS;
 }
