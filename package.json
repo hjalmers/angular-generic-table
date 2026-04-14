@@ -15,10 +15,7 @@
     "format-all": "prettier --config ./.prettierrc --write \"projects/**/src/{app,environments,assets}/**/*{.ts,.js,.json,.css,.scss}\"",
     "format-staged": "pretty-quick --staged",
     "format-check": "prettier --config ./.prettierrc --list-different \"src/{app,environments,assets}/**/*{.ts,.js,.json,.css,.scss}\"",
-    "precommit": "npm run format-staged && npm run lint --fix --force",
-    "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
-    "storybook": "ng run docs:storybook",
-    "build-storybook": "ng run docs:build-storybook"
+    "precommit": "npm run format-staged && npm run lint --fix --force"
   },
   "config": {
     "commitizen": {
