@@ -26,6 +26,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { TableConfig } from './models/table-config.interface';
 import {
   KeyValue,
+  NgComponentOutlet,
   NgTemplateOutlet,
   SlicePipe,
 } from '@angular/common';
@@ -64,6 +65,7 @@ import { TableMeta } from './models/table-meta.interface';
     SortClassPipe,
     DashCasePipe,
     RowSelectionPipe,
+    NgComponentOutlet,
     NgTemplateOutlet,
     SlicePipe,
     DynamicPipe,

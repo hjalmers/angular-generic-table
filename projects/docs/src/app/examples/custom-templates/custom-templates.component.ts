@@ -1,7 +1,25 @@
-import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, signal, TemplateRef, ViewChild, input } from '@angular/core';
 import { CoreComponent, TableConfig, TableRow, TableColumn } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
 import { SOURCE_TABS } from './_source';
+
+@Component({
+  selector: 'docs-color-cell',
+  template: `
+    <div
+      [style.background]="row()[col().key]"
+      style="width: 1.5rem; height: 1.5rem; border-radius: 50%"
+    ></div>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class ColorCellComponent {
+  readonly row = input.required<any>();
+  readonly col = input.required<{ key: string; value: TableColumn }>();
+  readonly index = input.required<number>();
+  readonly data = input<any[]>();
+  readonly search = input<string | null>(null);
+}
 
 @Component({
   selector: 'docs-custom-templates',
@@ -17,12 +35,6 @@ import { SOURCE_TABS } from './_source';
         Click me!
       </button>
     </ng-template>
-    <ng-template #color let-row="row" let-col="col">
-      <div
-        [style.background]="row[col.key]"
-        style="width: 1.5rem; height: 1.5rem; border-radius: 50%"
-      ></div>
-    </ng-template>
     {{ clicked() }}
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
   `,
@@ -30,7 +42,6 @@ import { SOURCE_TABS } from './_source';
 })
 export class CustomTemplatesComponent implements OnInit {
   @ViewChild('actions', { static: true }) actions: TemplateRef<any> | undefined;
-  @ViewChild('color', { static: true }) color: TemplateRef<any> | undefined;
   clicked = signal('');
 
   data = [
@@ -47,7 +58,7 @@ export class CustomTemplatesComponent implements OnInit {
         firstName: {},
         lastName: {},
         gender: {},
-        favoriteColor: { templateRef: this.color },
+        favoriteColor: { component: ColorCellComponent },
         favoriteFood: {},
         action: { templateRef: this.actions },
       },

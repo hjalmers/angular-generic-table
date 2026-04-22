@@ -69,22 +69,36 @@
           </th>
           @for (column of (tableData?.data || [])[0]; track $index) {
             <th class="{{ headerRow.value.class }}">
-              <ng-container
-                [ngTemplateOutlet]="
-                  (configValue.rows || {})[headerRow.key].templateRef
-                    ? templateRef
-                    : (configValue.rows || {})[headerRow.key].transform
-                    ? transformData
-                    : rawData
-                "
-                [ngTemplateOutletContext]="{
-                  row: column,
-                  column: headerRow,
-                  transform: (configValue.rows || {})[headerRow.key].transform,
-                  templateRef: (configValue.rows || {})[headerRow.key].templateRef,
-                  index: 0
-                }"
-              ></ng-container>
+              @if ((configValue.rows || {})[headerRow.key].component) {
+                <ng-container
+                  [ngComponentOutlet]="(configValue.rows || {})[headerRow.key].component!"
+                  [ngComponentOutletInputs]="{
+                    row: column,
+                    col: headerRow,
+                    index: 0,
+                    data: (tableData?.data || [])[0],
+                    search: searchValue,
+                    ...((configValue.rows || {})[headerRow.key].componentInputs || {})
+                  }"
+                ></ng-container>
+              } @else {
+                <ng-container
+                  [ngTemplateOutlet]="
+                    (configValue.rows || {})[headerRow.key].templateRef
+                      ? templateRef
+                      : (configValue.rows || {})[headerRow.key].transform
+                      ? transformData
+                      : rawData
+                  "
+                  [ngTemplateOutletContext]="{
+                    row: column,
+                    column: headerRow,
+                    transform: (configValue.rows || {})[headerRow.key].transform,
+                    templateRef: (configValue.rows || {})[headerRow.key].templateRef,
+                    index: 0
+                  }"
+                ></ng-container>
+              }
             </th>
           }
         }
@@ -128,26 +142,40 @@
                         : null
                     "
                   >
-                    <ng-container
-                      [ngTemplateOutlet]="
-                        searchValue && !(configValue.columns || {})[column.key].templateRef
-                          ? highlighted
-                          : (configValue.columns || {})[column.key].templateRef
-                          ? templateRef
-                          : (configValue.columns || {})[column.key].transform
-                          ? transformData
-                          : rawData
-                      "
-                      [ngTemplateOutletContext]="{
-                        row: row,
-                        column: column,
-                        search: searchValue,
-                        transform: (configValue.columns || {})[column.key].transform,
-                        templateRef: (configValue.columns || {})[column.key].templateRef,
-                        index: i,
-                        data: tableData.data[tableData.info.lazyLoaded ? 0 : paginationIdx]
-                      }"
-                    ></ng-container>
+                    @if ((configValue.columns || {})[column.key].component) {
+                      <ng-container
+                        [ngComponentOutlet]="(configValue.columns || {})[column.key].component!"
+                        [ngComponentOutletInputs]="{
+                          row: row,
+                          col: column,
+                          index: i,
+                          data: tableData.data[tableData.info.lazyLoaded ? 0 : paginationIdx],
+                          search: searchValue,
+                          ...((configValue.columns || {})[column.key].componentInputs || {})
+                        }"
+                      ></ng-container>
+                    } @else {
+                      <ng-container
+                        [ngTemplateOutlet]="
+                          searchValue && !(configValue.columns || {})[column.key].templateRef
+                            ? highlighted
+                            : (configValue.columns || {})[column.key].templateRef
+                            ? templateRef
+                            : (configValue.columns || {})[column.key].transform
+                            ? transformData
+                            : rawData
+                        "
+                        [ngTemplateOutletContext]="{
+                          row: row,
+                          column: column,
+                          search: searchValue,
+                          transform: (configValue.columns || {})[column.key].transform,
+                          templateRef: (configValue.columns || {})[column.key].templateRef,
+                          index: i,
+                          data: tableData.data[tableData.info.lazyLoaded ? 0 : paginationIdx]
+                        }"
+                      ></ng-container>
+                    }
                   </td>
                 }
               }
@@ -175,23 +203,37 @@
                 </th>
                 @for (column of (tableData?.data || [])[0]; track $index; let y = $index) {
                   <td class="{{ row.value.class }}">
-                    <ng-container
-                      [ngTemplateOutlet]="
-                        (configValue.rows || {})[row.key].templateRef
-                          ? templateRef
-                          : (configValue.rows || {})[row.key].transform
-                          ? transformData
-                          : rawData
-                      "
-                      [ngTemplateOutletContext]="{
-                        row: column,
-                        column: row,
-                        transform: (configValue.rows || {})[row.key].transform,
-                        templateRef: (configValue.rows || {})[row.key].templateRef,
-                        index: configValue.rows ? y : i,
-                        data: tableData.data[tableData.info.lazyLoaded ? 0 : paginationIdx]
-                      }"
-                    ></ng-container>
+                    @if ((configValue.rows || {})[row.key].component) {
+                      <ng-container
+                        [ngComponentOutlet]="(configValue.rows || {})[row.key].component!"
+                        [ngComponentOutletInputs]="{
+                          row: column,
+                          col: row,
+                          index: configValue.rows ? y : i,
+                          data: tableData.data[tableData.info.lazyLoaded ? 0 : paginationIdx],
+                          search: searchValue,
+                          ...((configValue.rows || {})[row.key].componentInputs || {})
+                        }"
+                      ></ng-container>
+                    } @else {
+                      <ng-container
+                        [ngTemplateOutlet]="
+                          (configValue.rows || {})[row.key].templateRef
+                            ? templateRef
+                            : (configValue.rows || {})[row.key].transform
+                            ? transformData
+                            : rawData
+                        "
+                        [ngTemplateOutletContext]="{
+                          row: column,
+                          column: row,
+                          transform: (configValue.rows || {})[row.key].transform,
+                          templateRef: (configValue.rows || {})[row.key].templateRef,
+                          index: configValue.rows ? y : i,
+                          data: tableData.data[tableData.info.lazyLoaded ? 0 : paginationIdx]
+                        }"
+                      ></ng-container>
+                    }
                   </td>
                 }
               </tr>
@@ -242,22 +284,37 @@
                 "
                 [class.gt-no-content]="!calculationsValue.calculated[column.key][calculation]"
               >
-                <ng-container
-                  [ngTemplateOutlet]="
-                    (configValue?.columns || {})[column.key].templateRef
-                      ? templateRef
-                      : (configValue?.columns || {})[column.key].transform
-                      ? transformFooter
-                      : rawFooter
-                  "
-                  [ngTemplateOutletContext]="{
-                    value: calculationsValue.calculated[column.key][calculation],
-                    row: calculationsValue.calculated[column.key],
-                    column: calculation,
-                    templateRef: (configValue?.columns || {})[column.key].templateRef,
-                    transform: (configValue?.columns || {})[column.key].transform
-                  }"
-                ></ng-container>
+                @if ((configValue?.columns || {})[column.key].component) {
+                  <ng-container
+                    [ngComponentOutlet]="(configValue?.columns || {})[column.key].component!"
+                    [ngComponentOutletInputs]="{
+                      value: calculationsValue.calculated[column.key][calculation],
+                      row: calculationsValue.calculated[column.key],
+                      col: column,
+                      column: calculation,
+                      index: i,
+                      search: searchValue,
+                      ...((configValue?.columns || {})[column.key].componentInputs || {})
+                    }"
+                  ></ng-container>
+                } @else {
+                  <ng-container
+                    [ngTemplateOutlet]="
+                      (configValue?.columns || {})[column.key].templateRef
+                        ? templateRef
+                        : (configValue?.columns || {})[column.key].transform
+                        ? transformFooter
+                        : rawFooter
+                    "
+                    [ngTemplateOutletContext]="{
+                      value: calculationsValue.calculated[column.key][calculation],
+                      row: calculationsValue.calculated[column.key],
+                      column: calculation,
+                      templateRef: (configValue?.columns || {})[column.key].templateRef,
+                      transform: (configValue?.columns || {})[column.key].transform
+                    }"
+                  ></ng-container>
+                }
               </td>
             }
           }

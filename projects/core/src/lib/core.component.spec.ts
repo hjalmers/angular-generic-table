@@ -1,7 +1,33 @@
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { initTestBed } from '../test-setup';
 import { CoreComponent } from './core.component';
 import { TableConfig } from './models/table-config.interface';
+
+@Component({
+  selector: 'test-cell',
+  template: `<span class="test-cell">{{ row().name }} ({{ index() }})</span>`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+class TestCellComponent {
+  readonly row = input.required<any>();
+  readonly col = input.required<any>();
+  readonly index = input.required<number>();
+  readonly data = input<any[]>();
+  readonly search = input<string | null>(null);
+}
+
+@Component({
+  selector: 'test-cell-extras',
+  template: `<span class="test-extras">{{ label() }}</span>`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+class TestCellExtrasComponent {
+  readonly row = input.required<any>();
+  readonly col = input.required<any>();
+  readonly index = input.required<number>();
+  readonly label = input('');
+}
 
 initTestBed();
 
@@ -364,6 +390,60 @@ describe('CoreComponent', () => {
       fixture.detectChanges();
 
       expect(component.tableInfo?.pageTotal).toBe(3);
+    });
+  });
+
+  // ─── Component Rendering ───
+
+  describe('component rendering', () => {
+    it('should render a component in a cell', () => {
+      fixture.componentRef.setInput('data', SAMPLE_DATA);
+      fixture.componentRef.setInput('config', {
+        columns: {
+          id: {},
+          name: { component: TestCellComponent },
+          age: {},
+          city: {},
+        },
+      });
+      fixture.detectChanges();
+
+      const cells = el.querySelectorAll('.test-cell');
+      expect(cells.length).toBe(3);
+      expect(cells[0].textContent).toBe('Alice (0)');
+      expect(cells[1].textContent).toBe('Bob (1)');
+    });
+
+    it('should pass componentInputs as extra inputs', () => {
+      fixture.componentRef.setInput('data', SAMPLE_DATA);
+      fixture.componentRef.setInput('config', {
+        columns: {
+          name: { component: TestCellExtrasComponent, componentInputs: { label: 'custom' } },
+        },
+      });
+      fixture.detectChanges();
+
+      const cells = el.querySelectorAll('.test-extras');
+      expect(cells.length).toBe(3);
+      expect(cells[0].textContent).toBe('custom');
+    });
+
+    it('should bypass search highlighting when component is set', () => {
+      fixture.componentRef.setInput('data', SAMPLE_DATA);
+      fixture.componentRef.setInput('config', {
+        columns: {
+          name: { component: TestCellComponent },
+        },
+      });
+      fixture.componentRef.setInput('search', 'Alice');
+      fixture.detectChanges();
+
+      // Component should still render (not replaced by highlight template)
+      const cells = el.querySelectorAll('.test-cell');
+      expect(cells.length).toBeGreaterThan(0);
+      // No highlight spans should be present in component cells
+      const highlights = el.querySelectorAll('.gt-highlight-search');
+      expect(highlights.length).toBe(0);
     });
   });
 });
