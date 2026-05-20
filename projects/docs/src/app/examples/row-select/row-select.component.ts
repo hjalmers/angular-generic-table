@@ -28,7 +28,7 @@ interface RowData {
   templateUrl: './row-select.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [`
-    :host ::ng-deep .gt-active { background-color: var(--bs-highlight-bg); }
+    :host ::ng-deep .gt-active { --bs-table-bg-state: var(--bs-highlight-bg); }
     :host ::ng-deep .table > tbody > tr { cursor: pointer; }
   `],
   imports: [CoreComponent, PaginationComponent, ReactiveFormsModule, KeyValuePipe, TabsComponent],

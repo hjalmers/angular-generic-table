@@ -21,7 +21,7 @@ import { SOURCE_TABS } from './_source';
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
   `,
   styles: [`
-    :host ::ng-deep .gt-active { background-color: var(--bs-highlight-bg); }
+    :host ::ng-deep .gt-active { --bs-table-bg-state: var(--bs-highlight-bg); }
   `],
   imports: [CoreComponent, TabsComponent],
 })
