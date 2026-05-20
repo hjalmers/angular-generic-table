@@ -179,7 +179,7 @@ test.describe('Navigation', () => {
   test('sidebar shows all example links', async ({ page }) => {
     await page.goto('/');
     const navLinks = page.locator('nav .nav-link');
-    await expect(navLinks).toHaveCount(15);
+    await expect(navLinks).toHaveCount(16);
   });
 
   test('active link is highlighted', async ({ page }) => {

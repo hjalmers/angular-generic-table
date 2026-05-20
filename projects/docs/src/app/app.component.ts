@@ -59,6 +59,10 @@ export class AppComponent {
       ],
     },
     {
+      heading: 'Reference',
+      items: [{ path: '/api', label: 'API reference' }],
+    },
+    {
       heading: 'Examples',
       items: [
         { path: '/simple', label: 'Simple' },
