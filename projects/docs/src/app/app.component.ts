@@ -20,6 +20,13 @@ interface NavSection {
   items: NavItem[];
 }
 
+interface ResourceLink {
+  kind: 'github' | 'changelog';
+  label: string;
+  path?: string;
+  href?: string;
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -69,5 +76,10 @@ export class AppComponent {
         { path: '/footer', label: 'Footer' },
       ],
     },
+  ];
+
+  resourceLinks: ResourceLink[] = [
+    { kind: 'changelog', label: 'Changelog', path: '/changelog' },
+    { kind: 'github', label: 'GitHub', href: 'https://github.com/hjalmers/angular-generic-table' },
   ];
 }

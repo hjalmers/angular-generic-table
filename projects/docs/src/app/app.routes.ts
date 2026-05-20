@@ -4,6 +4,7 @@ export const routes: Routes = [
   { path: '', redirectTo: 'intro', pathMatch: 'full' },
   { path: 'intro', loadComponent: () => import('./pages/intro/intro.component').then((m) => m.IntroComponent) },
   { path: 'get-started', loadComponent: () => import('./pages/get-started/get-started.component').then((m) => m.GetStartedComponent) },
+  { path: 'changelog', loadComponent: () => import('./pages/changelog/changelog.component').then((m) => m.ChangelogComponent) },
   { path: 'simple', data: { title: 'Simple' }, loadComponent: () => import('./examples/simple/simple.component').then((m) => m.SimpleComponent) },
   { path: 'advanced', data: { title: 'Advanced' }, loadComponent: () => import('./examples/advanced/advanced.component').then((m) => m.AdvancedComponent) },
   { path: 'sorting', data: { title: 'Sorting' }, loadComponent: () => import('./examples/sorting/sorting.component').then((m) => m.SortingComponent) },
