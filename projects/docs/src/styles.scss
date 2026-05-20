@@ -1,6 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @use 'bootstrap/scss/bootstrap' with (
-  $enable-negative-margins: true
+  $enable-negative-margins: true,
+  $primary: #028085,
+  $info: #00989e,
+  $success: #0ad406,
+  $warning: #ffb103,
+  $danger: #b45869
 );
 @use '../../core/src/lib/scss' as generic-table-styles;
 @include generic-table-styles.styles();
