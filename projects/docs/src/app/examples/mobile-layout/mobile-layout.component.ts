@@ -13,10 +13,17 @@ export class GenderPipe implements PipeTransform {
 @Component({
   selector: 'docs-mobile-layout',
   template: `
+    <div class="alert alert-info" role="alert">
+      The mobile layout kicks in via a media query &mdash; by default below
+      <code>576px</code> wide. Resize your browser (or use device emulation in
+      dev tools) to see it in action. The breakpoint can be customized by
+      overriding <code>$mobile-style-max-width</code> in the library&rsquo;s SCSS.
+    </div>
     <div class="d-flex justify-content-end mb-1 align-items-center">
       {{ clicked() }}
-      <button class="btn btn-link d-sm-none" (click)="toggleLayout()">
-        {{ mobileLayout() ? 'Desktop ' : 'Mobile ' }} layout
+      <button class="btn btn-link" (click)="toggleLayout()">
+        Toggle <code>mobileLayout</code> &mdash; currently
+        <strong>{{ mobileLayout() ? 'on' : 'off' }}</strong>
       </button>
     </div>
     <div [class.overflow-auto]="!mobileLayout()">
