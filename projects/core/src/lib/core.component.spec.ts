@@ -29,6 +29,31 @@ class TestCellExtrasComponent {
   readonly label = input('');
 }
 
+@Component({
+  selector: 'test-header',
+  template: `<span class="test-header">{{ column().key }} header</span>`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+class TestHeaderComponent {
+  readonly column = input.required<any>();
+  readonly sortable = input(false);
+  readonly sortOrder = input<any[]>([]);
+  readonly search = input<string | null>(null);
+}
+
+@Component({
+  selector: 'test-header-full',
+  template: `<button class="test-header-full" (click)="sort()?.($event)">{{ column().key }}</button>`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+class TestHeaderFullComponent {
+  readonly column = input.required<any>();
+  readonly sortable = input(false);
+  readonly sortOrder = input<any[]>([]);
+  readonly search = input<string | null>(null);
+  readonly sort = input<((event: MouseEvent) => void) | undefined>();
+}
+
 initTestBed();
 
 const SAMPLE_DATA = [
@@ -444,6 +469,94 @@ describe('CoreComponent', () => {
       // No highlight spans should be present in component cells
       const highlights = el.querySelectorAll('.gt-highlight-search');
       expect(highlights.length).toBe(0);
+    });
+  });
+
+  // ─── Header Component/Template Rendering ───
+
+  describe('header rendering', () => {
+    it('should render headerComponent inside sort button by default', () => {
+      fixture.componentRef.setInput('data', SAMPLE_DATA);
+      fixture.componentRef.setInput('config', {
+        columns: {
+          name: { sortable: true, headerComponent: TestHeaderComponent },
+        },
+      });
+      fixture.detectChanges();
+
+      // The sort button should still exist
+      const sortButton = el.querySelector('.gt-sort');
+      expect(sortButton).toBeTruthy();
+      // The custom header component should be inside the button
+      const header = sortButton?.querySelector('.test-header');
+      expect(header).toBeTruthy();
+      expect(header?.textContent).toBe('name header');
+    });
+
+    it('should render headerComponent without sort button when headerReplaceFull is true', () => {
+      fixture.componentRef.setInput('data', SAMPLE_DATA);
+      fixture.componentRef.setInput('config', {
+        columns: {
+          name: { sortable: true, headerComponent: TestHeaderFullComponent, headerReplaceFull: true },
+        },
+      });
+      fixture.detectChanges();
+
+      // No sort button should exist
+      const sortButton = el.querySelector('.gt-sort');
+      expect(sortButton).toBeNull();
+      // The full-control component should render directly in the th
+      const header = el.querySelector('.test-header-full');
+      expect(header).toBeTruthy();
+    });
+
+    it('should render headerComponent on non-sortable column', () => {
+      fixture.componentRef.setInput('data', SAMPLE_DATA);
+      fixture.componentRef.setInput('config', {
+        columns: {
+          name: { headerComponent: TestHeaderComponent },
+        },
+      });
+      fixture.detectChanges();
+
+      const header = el.querySelector('.test-header');
+      expect(header).toBeTruthy();
+      expect(header?.textContent).toBe('name header');
+      // No sort button should exist
+      expect(el.querySelector('.gt-sort')).toBeNull();
+    });
+
+    it('should pass sort callback in full-control mode', () => {
+      fixture.componentRef.setInput('data', SAMPLE_DATA);
+      fixture.componentRef.setInput('config', {
+        columns: {
+          name: { sortable: true, headerComponent: TestHeaderFullComponent, headerReplaceFull: true },
+        },
+      });
+      fixture.detectChanges();
+
+      let emitted: any;
+      component.columnSort.subscribe((event) => (emitted = event));
+
+      const button = el.querySelector('.test-header-full') as HTMLButtonElement;
+      button?.click();
+      fixture.detectChanges();
+
+      expect(emitted).toBeDefined();
+      expect(emitted.currentSortOrder.length).toBe(1);
+    });
+
+    it('should fall back to text when no headerComponent or headerTemplateRef', () => {
+      fixture.componentRef.setInput('data', SAMPLE_DATA);
+      fixture.componentRef.setInput('config', {
+        columns: {
+          name: { sortable: true, header: 'Custom Name' },
+        },
+      });
+      fixture.detectChanges();
+
+      const span = el.querySelector('.gt-sort span');
+      expect(span?.textContent?.trim()).toBe('Custom Name');
     });
   });
 });

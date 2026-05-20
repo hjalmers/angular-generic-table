@@ -1,5 +1,6 @@
 import { TemplateRef, Type } from '@angular/core';
 import { TableRow } from './table-row.interface';
+import { GtSortOrder } from './table-sort.interface';
 
 export interface GtCellContext<R = TableRow> {
   row: R;
@@ -9,8 +10,20 @@ export interface GtCellContext<R = TableRow> {
   search: string | null;
 }
 
+export interface GtHeaderContext<R = TableRow> {
+  column: { key: string; value: TableColumn<R> };
+  sortable: boolean;
+  sortOrder: GtSortOrder<R>;
+  search: string | null;
+  sort?: (event: MouseEvent) => void;
+}
+
 export interface TableColumn<R = TableRow> {
   header?: string | false;
+  headerTemplateRef?: TemplateRef<any>;
+  headerComponent?: Type<any>;
+  headerComponentInputs?: Record<string, unknown>;
+  headerReplaceFull?: boolean;
   mobileHeader?: string | boolean;
   hidden?: boolean;
   sortable?: boolean;

@@ -391,6 +391,10 @@ export class CoreComponent implements OnDestroy {
 
   // ─── Methods ───
 
+  protected headerSortFn(key: string): (event: MouseEvent) => void {
+    return (event: MouseEvent) => this.sortByKey(key, event);
+  }
+
   _rowClick(row: TableRow, index: number, event: MouseEvent): void {
     this.rowClick.emit({ row, index, event });
   }

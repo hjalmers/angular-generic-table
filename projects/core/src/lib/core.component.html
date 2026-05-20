@@ -36,18 +36,87 @@
               [class.gt-sortable]="true"
               scope="col"
             >
-              @if (column.value?.sortable) {
+              @if (column.value?.headerReplaceFull && (column.value?.headerComponent || column.value?.headerTemplateRef)) {
+                @if (column.value.headerComponent) {
+                  <ng-container
+                    [ngComponentOutlet]="column.value.headerComponent!"
+                    [ngComponentOutletInputs]="{
+                      column: column,
+                      sortable: !!column.value.sortable,
+                      sortOrder: sortOrderValue,
+                      search: searchValue,
+                      sort: headerSortFn(column.key),
+                      ...(column.value.headerComponentInputs || {})
+                    }"
+                  ></ng-container>
+                } @else {
+                  <ng-container
+                    [ngTemplateOutlet]="column.value.headerTemplateRef!"
+                    [ngTemplateOutletContext]="{
+                      column: column,
+                      sortable: !!column.value.sortable,
+                      sortOrder: sortOrderValue,
+                      search: searchValue,
+                      sort: headerSortFn(column.key)
+                    }"
+                  ></ng-container>
+                }
+              } @else if (column.value?.sortable) {
                 <button
                   [attr.data-sort-order]="sortOrderValue | sortClass: column.key:'order'"
                   class="gt-sort"
                   (click)="isLoading || !column.value.sortable || sortByKey(column.key, $event)"
                 >
-                  @if (column.value?.header !== false) {
+                  @if (column.value?.headerComponent) {
+                    <ng-container
+                      [ngComponentOutlet]="column.value.headerComponent!"
+                      [ngComponentOutletInputs]="{
+                        column: column,
+                        sortable: true,
+                        sortOrder: sortOrderValue,
+                        search: searchValue,
+                        ...(column.value.headerComponentInputs || {})
+                      }"
+                    ></ng-container>
+                  } @else if (column.value?.headerTemplateRef) {
+                    <ng-container
+                      [ngTemplateOutlet]="column.value.headerTemplateRef"
+                      [ngTemplateOutletContext]="{
+                        column: column,
+                        sortable: true,
+                        sortOrder: sortOrderValue,
+                        search: searchValue
+                      }"
+                    ></ng-container>
+                  } @else if (column.value?.header !== false) {
                     <span>{{ column.value.header || column.key | capitalCase }}</span>
                   }
                 </button>
-              } @else if (column.value?.header !== false) {
-                <span>{{ column.value.header || column.key | capitalCase }}</span>
+              } @else {
+                @if (column.value?.headerComponent) {
+                  <ng-container
+                    [ngComponentOutlet]="column.value.headerComponent!"
+                    [ngComponentOutletInputs]="{
+                      column: column,
+                      sortable: false,
+                      sortOrder: sortOrderValue,
+                      search: searchValue,
+                      ...(column.value.headerComponentInputs || {})
+                    }"
+                  ></ng-container>
+                } @else if (column.value?.headerTemplateRef) {
+                  <ng-container
+                    [ngTemplateOutlet]="column.value.headerTemplateRef"
+                    [ngTemplateOutletContext]="{
+                      column: column,
+                      sortable: false,
+                      sortOrder: sortOrderValue,
+                      search: searchValue
+                    }"
+                  ></ng-container>
+                } @else if (column.value?.header !== false) {
+                  <span>{{ column.value.header || column.key | capitalCase }}</span>
+                }
               }
             </th>
           }
@@ -63,7 +132,30 @@
             (click)="isLoading || !headerRow.value.sortable || sortByKey(headerRow.key, $event)"
             scope="col"
           >
-            @if (headerRow?.value?.header !== false) {
+            @if (headerRow.value?.headerComponent) {
+              <ng-container
+                [ngComponentOutlet]="headerRow.value.headerComponent!"
+                [ngComponentOutletInputs]="{
+                  column: headerRow,
+                  sortable: !!headerRow.value.sortable,
+                  sortOrder: sortOrderValue,
+                  search: searchValue,
+                  sort: headerSortFn(headerRow.key),
+                  ...(headerRow.value.headerComponentInputs || {})
+                }"
+              ></ng-container>
+            } @else if (headerRow.value?.headerTemplateRef) {
+              <ng-container
+                [ngTemplateOutlet]="headerRow.value.headerTemplateRef"
+                [ngTemplateOutletContext]="{
+                  column: headerRow,
+                  sortable: !!headerRow.value.sortable,
+                  sortOrder: sortOrderValue,
+                  search: searchValue,
+                  sort: headerSortFn(headerRow.key)
+                }"
+              ></ng-container>
+            } @else if (headerRow?.value?.header !== false) {
               {{ headerRow?.value?.header || headerRow.key | capitalCase }}
             }
           </th>
@@ -199,7 +291,30 @@
                 ]"
               >
                 <th class="row-header" scope="row">
-                  {{ row.value.header || row.key | capitalCase }}
+                  @if (row.value?.headerComponent) {
+                    <ng-container
+                      [ngComponentOutlet]="row.value.headerComponent!"
+                      [ngComponentOutletInputs]="{
+                        column: row,
+                        sortable: false,
+                        sortOrder: sortOrderValue,
+                        search: searchValue,
+                        ...(row.value.headerComponentInputs || {})
+                      }"
+                    ></ng-container>
+                  } @else if (row.value?.headerTemplateRef) {
+                    <ng-container
+                      [ngTemplateOutlet]="row.value.headerTemplateRef"
+                      [ngTemplateOutletContext]="{
+                        column: row,
+                        sortable: false,
+                        sortOrder: sortOrderValue,
+                        search: searchValue
+                      }"
+                    ></ng-container>
+                  } @else {
+                    {{ row.value.header || row.key | capitalCase }}
+                  }
                 </th>
                 @for (column of (tableData?.data || [])[0]; track $index; let y = $index) {
                   <td class="{{ row.value.class }}">
