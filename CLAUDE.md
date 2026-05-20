@@ -25,6 +25,7 @@ npm run build:docs                            # build docs app
 npm test                                      # run vitest (core library)
 ng serve docs                                 # serve docs app locally
 npm run commit                                # commitizen interactive commit
+npx agent-browser install                     # one-time: fetch Chromium for the agent-browser skill
 ```
 
 ## Project structure

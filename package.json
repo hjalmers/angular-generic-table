@@ -75,6 +75,7 @@
     "@playwright/test": "^1.59.1",
     "@types/marked": "^5.0.2",
     "@types/node": "^22.0.0",
+    "agent-browser": "^0.27.0",
     "commitizen": "^4.2.4",
     "copyfiles": "^2.4.1",
     "highlight.js": "^11.3.1",
