@@ -22,6 +22,18 @@ export class ColorCellComponent {
 }
 
 @Component({
+  selector: 'docs-color-header',
+  template: `<span>&#127912; {{ column().value.header || column().key }}</span>`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class ColorHeaderComponent {
+  readonly column = input.required<{ key: string; value: TableColumn }>();
+  readonly sortable = input(false);
+  readonly sortOrder = input<any[]>([]);
+  readonly search = input<string | null>(null);
+}
+
+@Component({
   selector: 'docs-custom-templates',
   template: `
     <div class="overflow-auto">
@@ -58,7 +70,7 @@ export class CustomTemplatesComponent implements OnInit {
         firstName: {},
         lastName: {},
         gender: {},
-        favoriteColor: { component: ColorCellComponent },
+        favoriteColor: { component: ColorCellComponent, headerComponent: ColorHeaderComponent, header: 'Color' },
         favoriteFood: {},
         action: { templateRef: this.actions },
       },

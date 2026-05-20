@@ -1,16 +1,26 @@
 <div class="container-fluid">
   <div class="row">
-    <nav class="col-12 col-md-3 col-lg-2 bg-body-tertiary border-end vh-md-100 p-3">
+    <nav
+      class="col-12 col-md-3 col-lg-2 bg-body-tertiary border-end vh-md-100 p-3"
+    >
       <h5 class="mb-3">
-        <a routerLink="/simple" class="text-decoration-none text-body">Angular Generic Table</a>
+        <a
+          routerLink="/simple"
+          class="text-decoration-none text-body text-nowrap"
+          >Angular Generic Table</a
+        >
       </h5>
       <ul class="nav nav-pills flex-column">
         @for (example of examples; track example.path) {
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="example.path" routerLinkActive="active">
-              {{ example.label }}
-            </a>
-          </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            [routerLink]="example.path"
+            routerLinkActive="active"
+          >
+            {{ example.label }}
+          </a>
+        </li>
         }
       </ul>
     </nav>
