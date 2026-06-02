@@ -19,7 +19,7 @@ Two workspace projects:
 ## Commands
 
 ```bash
-nvm use 20                                    # requires Node >=20.19
+nvm use 22                                    # requires Node >=22.14 (semantic-release 25)
 npm run build                                 # build core library (ng-packagr)
 npm run build:docs                            # build docs app
 npm test                                      # run vitest (core library)
