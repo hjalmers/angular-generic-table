@@ -7,7 +7,7 @@
     "build": "ng build core --configuration production",
     "postbuild": "npx copyfiles projects/core/src/lib/scss/**/* dist/core/scss -f",
     "prebuild:docs": "node scripts/generate-sources.mjs",
-    "build:docs": "ng build docs --configuration production",
+    "build:docs": "ng build docs --configuration production --base-href=/angular-generic-table/",
     "test": "cd projects/core && vitest run",
     "lint": "ng lint --fix --force",
     "e2e": "playwright test",
@@ -33,7 +33,7 @@
     "pkgRoot": "./dist/core",
     "branches": [
       "+([0-9])?(.{+([0-9]),x}).x",
-      "master",
+      "main",
       "next",
       "next-major",
       {

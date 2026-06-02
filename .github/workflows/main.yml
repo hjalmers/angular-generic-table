@@ -15,11 +15,6 @@ jobs:
           node-version-file: '.nvmrc'
           cache: npm
 
-      - name: Get branch name
-        shell: bash
-        run: echo "branch=$(echo ${GITHUB_REF##*/})" >> $GITHUB_OUTPUT
-        id: branch
-
       - name: Install dependencies
         run: npm ci
 
@@ -29,15 +24,31 @@ jobs:
       - name: Run tests
         run: npm test
 
+      - name: Build docs
+        run: npm run build:docs
+
       - name: Run semantic release and publish new version to npm
+        if: github.ref == 'refs/heads/main'
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm run semantic-release
 
-      - name: Get last release
-        id: version
-        uses: abatilo/release-info-action@v1.3.0
+      - name: Prepare docs for static hosting
+        if: github.ref == 'refs/heads/main'
+        run: |
+          cp dist/docs/browser/index.html dist/docs/browser/404.html
+          touch dist/docs/browser/.nojekyll
+
+      - name: Deploy docs to gh-pages
+        if: github.ref == 'refs/heads/main'
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          owner: hjalmers
-          repo: angular-generic-table
+          branch: gh-pages
+          folder: dist/docs/browser
+          clean: true
+          clean-exclude: |
+            legacy
+            ivy-rebuild
+            merge
+            rc

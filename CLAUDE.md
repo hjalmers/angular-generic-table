@@ -51,7 +51,7 @@ projects/docs/src/app/
 ## Conventions
 
 - **Commits**: Angular conventional commits via commitizen + commitlint. Types: `feat`, `fix`, `refactor`, `perf`, `test`, `chore`, `ci`, `docs`. Scope examples: `core`, `docs`, `deps`.
-- **Releases**: semantic-release from `master` branch, publishes to npm from `dist/core`
+- **Releases**: semantic-release from `main` branch, publishes to npm from `dist/core`. Docs deploy to gh-pages on push to `main` (old root docs archived under `/legacy/`).
 - **Formatting**: prettier + pretty-quick on staged files
 - **Change detection**: always use `signal()` for properties that change asynchronously in OnPush components — plain properties won't trigger re-renders under the OnPush root
 
