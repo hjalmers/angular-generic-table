@@ -15,9 +15,8 @@ export class GenderPipe implements PipeTransform {
   template: `
     <div class="alert alert-info" role="alert">
       The mobile layout kicks in via a media query &mdash; by default below
-      <code>576px</code> wide. Resize your browser (or use device emulation in
-      dev tools) to see it in action. The breakpoint can be customized by
-      overriding <code>$mobile-style-max-width</code> in the library&rsquo;s SCSS.
+      <code>576px</code> wide. Resize your browser (or use device emulation in dev tools) to see it in action. The
+      breakpoint can be customized by overriding <code>$mobile-style-max-width</code> in the library&rsquo;s SCSS.
     </div>
     <div class="d-flex justify-content-end mb-1 align-items-center">
       {{ clicked() }}
@@ -30,18 +29,19 @@ export class GenderPipe implements PipeTransform {
       <angular-generic-table [data]="data" [config]="config()"></angular-generic-table>
     </div>
     <ng-template #actions let-row="row" let-col="col" let-index="index">
-      <button
-        class="btn btn-outline-primary btn-sm my-sm-n3 text-nowrap"
-        (click)="clickAction(row, col, index)"
-      >
+      <button class="btn btn-outline-primary btn-sm my-sm-n3 text-nowrap" (click)="clickAction(row, col, index)">
         Click me!
       </button>
     </ng-template>
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
   `,
-  styles: [`
-    .table th { white-space: nowrap; }
-  `],
+  styles: [
+    `
+      .table th {
+        white-space: nowrap;
+      }
+    `,
+  ],
   encapsulation: ViewEncapsulation.None,
   imports: [CoreComponent, TabsComponent],
 })

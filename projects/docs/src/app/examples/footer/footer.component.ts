@@ -22,8 +22,24 @@ import { SOURCE_TABS } from './_source';
 export class FooterComponent implements OnInit {
   @ViewChild('heightTmplRef', { static: true }) heightTmplRef: TemplateRef<any> | undefined;
   data = [
-    { firstName: 'Peter', lastName: 'Parker', gender: 'male', favoriteFood: 'Pasta', age: 27, weight: 85.457, height: 1.85 },
-    { firstName: 'Mary Jane', lastName: 'Watson', gender: 'female', favoriteFood: 'Pizza', age: 25, weight: 60.123, height: 1.65 },
+    {
+      firstName: 'Peter',
+      lastName: 'Parker',
+      gender: 'male',
+      favoriteFood: 'Pasta',
+      age: 27,
+      weight: 85.457,
+      height: 1.85,
+    },
+    {
+      firstName: 'Mary Jane',
+      lastName: 'Watson',
+      gender: 'female',
+      favoriteFood: 'Pizza',
+      age: 25,
+      weight: 60.123,
+      height: 1.65,
+    },
   ];
   config: TableConfig = {};
 
@@ -41,8 +57,15 @@ export class FooterComponent implements OnInit {
       },
       footer: {
         headers: {
-          sum: 'Total', numberOfWomen: 'Number of women', numberOfMen: 'Number of men',
-          min: true, max: true, avg: true, count: true, static: true, first: true,
+          sum: 'Total',
+          numberOfWomen: 'Number of women',
+          numberOfMen: 'Number of men',
+          min: true,
+          max: true,
+          avg: true,
+          count: true,
+          static: true,
+          first: true,
         },
         rowOrder: ['first', 'numberOfWomen', 'numberOfMen', 'min', 'max', 'sum', 'avg', 'count'],
         columns: {
@@ -51,12 +74,16 @@ export class FooterComponent implements OnInit {
           gender: {
             numberOfWomen: (data: Array<TableRow>, key) => {
               let count = 0;
-              for (let i = 0; i < data.length; i++) { if (data[i][key] === 'female') count++; }
+              for (let i = 0; i < data.length; i++) {
+                if (data[i][key] === 'female') count++;
+              }
               return count;
             },
             numberOfMen: (data: Array<TableRow>, key) => {
               let count = 0;
-              for (let i = 0; i < data.length; i++) { if (data[i][key] === 'male') count++; }
+              for (let i = 0; i < data.length; i++) {
+                if (data[i][key] === 'male') count++;
+              }
               return count;
             },
           },

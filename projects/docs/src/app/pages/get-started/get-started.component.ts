@@ -47,9 +47,7 @@ export class PeopleComponent {
   template: `
     <div class="py-4">
       <h1 class="mb-3">Get started</h1>
-      <p class="lead mb-4">
-        Install the package, pull in the styles, and drop the component into a template.
-      </p>
+      <p class="lead mb-4">Install the package, pull in the styles, and drop the component into a template.</p>
 
       <h2 class="h5 mt-4 mb-2">1. Install</h2>
       <p>Add the library to your Angular project:</p>
@@ -57,21 +55,20 @@ export class PeopleComponent {
 
       <h2 class="h5 mt-5 mb-2">2. Add styles</h2>
       <p>
-        Import the SCSS in your global stylesheet. Override the exposed variables
-        in the <code>with(...)</code> block if you want to theme it:
+        Import the SCSS in your global stylesheet. Override the exposed variables in the <code>with(...)</code> block if
+        you want to theme it:
       </p>
       <docs-tabs [content]="scssTabs"></docs-tabs>
 
       <h2 class="h5 mt-5 mb-2">3. Use the component</h2>
       <p>
-        Import <code>CoreComponent</code> in any standalone component and pass it
-        a <code>data</code> array plus a <code>config</code> describing the columns:
+        Import <code>CoreComponent</code> in any standalone component and pass it a <code>data</code> array plus a
+        <code>config</code> describing the columns:
       </p>
       <docs-tabs [content]="usageTabs"></docs-tabs>
 
       <p class="mt-5">
-        Next: explore the <a routerLink="/simple">examples</a> to see sorting,
-        pagination, custom templates, and more.
+        Next: explore the <a routerLink="/simple">examples</a> to see sorting, pagination, custom templates, and more.
       </p>
     </div>
   `,

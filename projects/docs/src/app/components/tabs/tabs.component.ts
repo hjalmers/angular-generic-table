@@ -16,11 +16,7 @@ hljs.registerLanguage('xml', xml);
     <ul class="nav nav-tabs mt-4 flex-nowrap text-nowrap overflow-auto">
       @for (item of content; track $index; let i = $index) {
         <li class="nav-item">
-          <button
-            class="nav-link btn-link"
-            [class.active]="activeIndex === i"
-            (click)="view(i)"
-          >
+          <button class="nav-link btn-link" [class.active]="activeIndex === i" (click)="view(i)">
             {{ item.name }}
           </button>
         </li>
@@ -46,10 +42,7 @@ export class TabsComponent implements OnInit {
   ];
 
   private clean(code: string): string {
-    return TabsComponent.STRIP_PATTERNS.reduce(
-      (result, pattern) => result.replace(pattern, ''),
-      code
-    );
+    return TabsComponent.STRIP_PATTERNS.reduce((result, pattern) => result.replace(pattern, ''), code);
   }
 
   ngOnInit(): void {

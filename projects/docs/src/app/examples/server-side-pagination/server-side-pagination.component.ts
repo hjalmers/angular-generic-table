@@ -65,12 +65,9 @@ export class ServerSidePaginationComponent implements OnInit {
       .pipe(
         tap(() => this.loading.set(true)),
         switchMap((params) =>
-          this.http.get<LazyLoadingResponse>(
-            'https://private-a6da3-generictableapi.apiary-mock.com/data',
-            { params }
-          )
+          this.http.get<LazyLoadingResponse>('https://private-a6da3-generictableapi.apiary-mock.com/data', { params }),
         ),
-        shareReplay(1)
+        shareReplay(1),
       )
       .subscribe((res) => {
         this.data.set(res.data);

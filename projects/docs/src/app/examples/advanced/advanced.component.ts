@@ -22,8 +22,22 @@ export class AdvancedComponent implements OnInit {
   currentPage = signal(0);
   searchValue = signal<string | null>(null);
   data = signal<Array<TableRow>>([
-    { index: 1, firstName: 'Peter', lastName: 'Parker', gender: 'male', favoriteColor: '#26BFAF', favoriteFood: 'Pasta' },
-    { index: 2, firstName: 'Mary Jane', lastName: 'Watson', gender: 'female', favoriteColor: '#0f0', favoriteFood: 'Pizza' },
+    {
+      index: 1,
+      firstName: 'Peter',
+      lastName: 'Parker',
+      gender: 'male',
+      favoriteColor: '#26BFAF',
+      favoriteFood: 'Pasta',
+    },
+    {
+      index: 2,
+      firstName: 'Mary Jane',
+      lastName: 'Watson',
+      gender: 'female',
+      favoriteColor: '#0f0',
+      favoriteFood: 'Pizza',
+    },
   ]);
   tableConfig = signal<TableConfig>({});
 
@@ -70,8 +84,12 @@ export class AdvancedComponent implements OnInit {
     };
   }
 
-  next = () => { this.currentPage.set(this.currentPage() + 1); };
-  prev = () => { this.currentPage.set(this.currentPage() - 1); };
+  next = () => {
+    this.currentPage.set(this.currentPage() + 1);
+  };
+  prev = () => {
+    this.currentPage.set(this.currentPage() - 1);
+  };
 
   ngOnInit(): void {
     this.simulateLoad();
@@ -92,7 +110,15 @@ export class AdvancedComponent implements OnInit {
         firstName: { header: 'First name', mobileHeader: true, sortable: true, order: 0 },
         lastName: { header: 'Last name', mobileHeader: true, hidden: false, sortable: true },
         gender: { mobileHeader: 'Sex', sortable: true, order: 1 },
-        favoriteColor: { header: 'Favorite color', mobileHeader: true, templateRef: this.color, sortable: false, order: 2, search: false, class: 'custom-class' },
+        favoriteColor: {
+          header: 'Favorite color',
+          mobileHeader: true,
+          templateRef: this.color,
+          sortable: false,
+          order: 2,
+          search: false,
+          class: 'custom-class',
+        },
         favoriteFood: { mobileHeader: true, header: 'Favorite food', hidden: false, sortable: true, order: 0 },
         action: { mobileHeader: false, header: false, templateRef: this.actions, order: 6, class: 'py-1 text-end' },
       },
@@ -101,7 +127,8 @@ export class AdvancedComponent implements OnInit {
         columns: {
           gender: {
             count: (data, key) => {
-              let men = 0, women = 0;
+              let men = 0,
+                women = 0;
               for (let i = 0; i < data.length; i++) {
                 if (data[i][key] === 'female') women++;
                 else if (data[i][key] === 'male') men++;

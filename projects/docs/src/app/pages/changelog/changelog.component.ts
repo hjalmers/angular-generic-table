@@ -1,9 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { marked } from 'marked';
 
@@ -16,10 +11,8 @@ interface Release {
   bodyHtml: string;
 }
 
-const RELEASES_URL =
-  'https://api.github.com/repos/hjalmers/angular-generic-table/releases';
-const RELEASES_PAGE =
-  'https://github.com/hjalmers/angular-generic-table/releases';
+const RELEASES_URL = 'https://api.github.com/repos/hjalmers/angular-generic-table/releases';
+const RELEASES_PAGE = 'https://github.com/hjalmers/angular-generic-table/releases';
 
 @Component({
   selector: 'docs-changelog',
@@ -27,8 +20,7 @@ const RELEASES_PAGE =
     <div class="py-4">
       <h1 class="mb-3">Changelog</h1>
       <p class="lead mb-4">
-        Recent releases of <code>&#64;angular-generic-table/core</code>, fetched
-        live from GitHub.
+        Recent releases of <code>&#64;angular-generic-table/core</code>, fetched live from GitHub.
       </p>
 
       @if (releases() === null && !error()) {
@@ -46,12 +38,7 @@ const RELEASES_PAGE =
         <article class="card mb-3">
           <div class="card-body">
             <h2 class="h5 card-title mb-1">
-              <a
-                [href]="release.html_url"
-                target="_blank"
-                rel="noopener"
-                class="text-decoration-none"
-              >
+              <a [href]="release.html_url" target="_blank" rel="noopener" class="text-decoration-none">
                 {{ release.name || release.tag_name }}
               </a>
             </h2>
@@ -70,9 +57,7 @@ const RELEASES_PAGE =
 
       @if (releases()?.length) {
         <p class="mt-4">
-          <a [href]="releasesPage" target="_blank" rel="noopener">
-            View all releases on GitHub &rarr;
-          </a>
+          <a [href]="releasesPage" target="_blank" rel="noopener"> View all releases on GitHub &rarr; </a>
         </p>
       }
     </div>
@@ -124,9 +109,7 @@ export class ChangelogComponent implements OnInit {
       this.releases.set(
         data.map((r) => ({
           ...r,
-          bodyHtml: r.body?.trim()
-            ? (marked.parse(r.body, { gfm: true, breaks: false }) as string)
-            : '',
+          bodyHtml: r.body?.trim() ? (marked.parse(r.body, { gfm: true, breaks: false }) as string) : '',
         })),
       );
     } catch (err) {

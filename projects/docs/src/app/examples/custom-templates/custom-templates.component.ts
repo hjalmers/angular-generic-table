@@ -6,10 +6,7 @@ import { SOURCE_TABS } from './_source';
 @Component({
   selector: 'docs-color-cell',
   template: `
-    <div
-      [style.background]="row()[col().key]"
-      style="width: 1.5rem; height: 1.5rem; border-radius: 50%"
-    ></div>
+    <div [style.background]="row()[col().key]" style="width: 1.5rem; height: 1.5rem; border-radius: 50%"></div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -40,10 +37,7 @@ export class ColorHeaderComponent {
       <angular-generic-table [data]="data" [config]="config()"></angular-generic-table>
     </div>
     <ng-template #actions let-row="row" let-col="col" let-index="index">
-      <button
-        class="btn btn-outline-primary btn-sm my-sm-n3 text-nowrap"
-        (click)="clickAction(row, col, index)"
-      >
+      <button class="btn btn-outline-primary btn-sm my-sm-n3 text-nowrap" (click)="clickAction(row, col, index)">
         Click me!
       </button>
     </ng-template>

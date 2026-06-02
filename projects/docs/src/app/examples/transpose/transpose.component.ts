@@ -1,10 +1,5 @@
 import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
-import {
-  CoreComponent,
-  GtDeltaComponent,
-  PaginationComponent,
-  TableConfig,
-} from '@angular-generic-table/core';
+import { CoreComponent, GtDeltaComponent, PaginationComponent, TableConfig } from '@angular-generic-table/core';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { TabsComponent } from '../../components/tabs/tabs.component';
 import { SOURCE_TABS } from './_source';

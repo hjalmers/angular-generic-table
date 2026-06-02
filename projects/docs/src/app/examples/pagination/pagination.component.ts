@@ -28,12 +28,10 @@ export class PaginationComponent implements OnInit {
   SNIPPETS = SOURCE_TABS;
 
   ngOnInit(): void {
-    this.http
-      .get<{ data: any[] }>('https://private-730c61-generictable.apiary-mock.com/data')
-      .subscribe((res) => {
-        this.data.set(res.data);
-        this.loading.set(false);
-      });
+    this.http.get<{ data: any[] }>('https://private-730c61-generictable.apiary-mock.com/data').subscribe((res) => {
+      this.data.set(res.data);
+      this.loading.set(false);
+    });
 
     this.paginationForm.get('length')?.valueChanges.subscribe((length) => {
       this.tableConfig.set({

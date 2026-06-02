@@ -33,7 +33,9 @@ interface SortingData {
       </div>
     </div>
     <strong>Current sort order</strong>
-    <p><code>{{ sortOrder | json }}</code></p>
+    <p>
+      <code>{{ sortOrder | json }}</code>
+    </p>
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
   `,
   imports: [CoreComponent, TabsComponent, JsonPipe],
@@ -68,8 +70,12 @@ export class SortingComponent {
     },
   };
 
-  logSortChange(sortEvent: GtSortEvent<SortingData>) { console.log(sortEvent); }
-  resetSort() { this.sortOrder = this.initialSortOrder; }
+  logSortChange(sortEvent: GtSortEvent<SortingData>) {
+    console.log(sortEvent);
+  }
+  resetSort() {
+    this.sortOrder = this.initialSortOrder;
+  }
 
   SNIPPETS = SOURCE_TABS;
 }

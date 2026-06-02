@@ -27,10 +27,16 @@ interface RowData {
 @Component({
   templateUrl: './row-select.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [`
-    :host ::ng-deep .gt-active { --bs-table-bg-state: var(--bs-highlight-bg); }
-    :host ::ng-deep .table > tbody > tr { cursor: pointer; }
-  `],
+  styles: [
+    `
+      :host ::ng-deep .gt-active {
+        --bs-table-bg-state: var(--bs-highlight-bg);
+      }
+      :host ::ng-deep .table > tbody > tr {
+        cursor: pointer;
+      }
+    `,
+  ],
   imports: [CoreComponent, PaginationComponent, ReactiveFormsModule, KeyValuePipe, TabsComponent],
 })
 export class RowSelectComponent implements OnInit {
@@ -49,12 +55,10 @@ export class RowSelectComponent implements OnInit {
   SNIPPETS = SOURCE_TABS;
 
   ngOnInit(): void {
-    this.http
-      .get<{ data: TableRow[] }>('https://private-730c61-generictable.apiary-mock.com/data')
-      .subscribe((res) => {
-        this.data.set(res.data);
-        this.loading.set(false);
-      });
+    this.http.get<{ data: TableRow[] }>('https://private-730c61-generictable.apiary-mock.com/data').subscribe((res) => {
+      this.data.set(res.data);
+      this.loading.set(false);
+    });
 
     this.lengthCtrl.valueChanges.subscribe((length) => {
       const len = length ? (length < 0 ? 0 : length) : 0;

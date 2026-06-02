@@ -17,10 +17,18 @@ import { SOURCE_TABS } from './_source';
     </div>
     <ng-template #feelings let-row="row" let-col="col">
       @switch (row[col.key]) {
-        @case ('thrilled') { 😀 }
-        @case ('positive') { 🙂 }
-        @case ('neutral') { 😐 }
-        @case ('negative') { 😭 }
+        @case ('thrilled') {
+          😀
+        }
+        @case ('positive') {
+          🙂
+        }
+        @case ('neutral') {
+          😐
+        }
+        @case ('negative') {
+          😭
+        }
       }
     </ng-template>
     <ng-template #delta let-data="data" let-index="index">
@@ -62,7 +70,9 @@ export class HorizontalTableComponent implements OnInit {
     setTimeout(() => this.loading.set(false), 2000);
   }
 
-  empty(): void { this.data.set([]); }
+  empty(): void {
+    this.data.set([]);
+  }
 
   load(): void {
     this.data.set([

@@ -7,9 +7,8 @@ import { RouterLink } from '@angular/router';
     <div class="py-4">
       <h1 class="display-5 fw-semibold mb-3">Angular Generic Table</h1>
       <p class="lead mb-4">
-        A configurable Angular table component built on native HTML tables.
-        Rebuilt from the ground up for Angular's modern signals-based reactivity
-        — fast by default, easy to customize, and just a few lines of code to drop in.
+        A configurable Angular table component built on native HTML tables. Rebuilt from the ground up for Angular's
+        modern signals-based reactivity — fast by default, easy to customize, and just a few lines of code to drop in.
       </p>
 
       <h2 class="h5 mt-5 mb-3">Features</h2>
@@ -36,7 +35,9 @@ import { RouterLink } from '@angular/router';
           <tbody>
             @for (row of compatibility; track row.version) {
               <tr>
-                <th scope="row"><code>{{ row.version }}</code></th>
+                <th scope="row">
+                  <code>{{ row.version }}</code>
+                </th>
                 <td>{{ row.angular }}</td>
               </tr>
             }

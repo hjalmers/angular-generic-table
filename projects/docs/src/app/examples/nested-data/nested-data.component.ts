@@ -33,8 +33,12 @@ interface Data {
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
     <ng-template #gender let-row="row" let-col="col">
       @switch (row[col.key]) {
-        @case ('male') { ♂️ }
-        @case ('female') { ♀️ }
+        @case ('male') {
+          ♂️
+        }
+        @case ('female') {
+          ♀️
+        }
       }
     </ng-template>
   `,
