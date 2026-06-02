@@ -51,9 +51,12 @@ jobs:
             merge
             rc
 
+      # npm publishing uses OIDC trusted publishing (no NPM_TOKEN): the
+      # @semantic-release/npm plugin exchanges the GitHub Actions OIDC token
+      # (id-token: write, above) for a short-lived npm token via the package's
+      # configured trusted publisher, and publishes with provenance.
       - name: Run semantic release and publish new version to npm
         if: github.ref == 'refs/heads/main'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm run semantic-release
