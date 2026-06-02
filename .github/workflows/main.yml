@@ -6,6 +6,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
 
@@ -27,13 +32,6 @@ jobs:
       - name: Build docs
         run: npm run build:docs
 
-      - name: Run semantic release and publish new version to npm
-        if: github.ref == 'refs/heads/main'
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm run semantic-release
-
       - name: Prepare docs for static hosting
         if: github.ref == 'refs/heads/main'
         run: |
@@ -52,3 +50,10 @@ jobs:
             ivy-rebuild
             merge
             rc
+
+      - name: Run semantic release and publish new version to npm
+        if: github.ref == 'refs/heads/main'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm run semantic-release
