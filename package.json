@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "prestart": "node scripts/generate-sources.mjs",
     "start": "ng serve --host=0.0.0.0",
     "build": "ng build core --configuration production",
     "postbuild": "npx copyfiles projects/core/src/lib/scss/**/* dist/core/scss -f",

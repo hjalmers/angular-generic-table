@@ -20,7 +20,10 @@ export interface TableConfig<R = TableRow> {
     [Property in keyof R]: TableColumn<R>;
   };
   pagination?: {
-    length?: number;
+    /** Rows per page. Use a number for a fixed page size, or `'auto'` to display
+     * as many rows as fit the available height. For `'auto'` to work the table
+     * must be placed inside a height-constrained container/wrapper. <p>**Default:** `undefined`</p>*/
+    length?: number | 'auto';
   };
   rowClick?: boolean;
   /** Toggle row active state on mouse enter/leave (hover) <p>**Default:** `false`</p>*/

@@ -1,9 +1,12 @@
 import {
+  afterNextRender,
+  afterRenderEffect,
   ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
   effect,
+  ElementRef,
   inject,
   input,
   linkedSignal,
@@ -74,7 +77,11 @@ import { TableMeta } from './models/table-meta.interface';
 })
 export class CoreComponent implements OnDestroy {
   private _destroyRef = inject(DestroyRef);
+  private _host = inject(ElementRef<HTMLElement>);
   private _unsubscribe$ = new Subject<void>();
+
+  /** Initial page size used by `length: 'auto'` before the container is measured */
+  private static readonly DEFAULT_AUTO_ROWS = 10;
 
   // ─── Inputs ───
 
@@ -124,7 +131,15 @@ export class CoreComponent implements OnDestroy {
     this.paginationIndexInput()
   );
 
+  /** Page size measured from the container height, used when `length: 'auto'` */
+  private autoPageSize = signal<number | null>(null);
+
   // ─── Computed Signals ───
+
+  /** Whether pagination is in auto (fit-to-container) mode */
+  protected isAutoPagination = computed(
+    () => this.config().pagination?.length === 'auto'
+  );
 
   protected customClasses = computed(() => ({
     selectedRow: 'gt-selected',
@@ -236,7 +251,8 @@ export class CoreComponent implements OnDestroy {
       };
     }
 
-    if (!config.pagination || config.pagination.length === 0) {
+    const pag = config.pagination;
+    if (!pag || pag.length === 0) {
       return {
         data: [sorted],
         config,
@@ -244,15 +260,18 @@ export class CoreComponent implements OnDestroy {
       };
     }
 
+    const pageSize =
+      pag.length === 'auto'
+        ? (this.autoPageSize() ?? CoreComponent.DEFAULT_AUTO_ROWS)
+        : +(pag.length || 0);
+
     return {
-      data: chunk(sorted, +(config.pagination.length || 0)),
+      data: chunk(sorted, pageSize),
       config,
       info: {
         numberOfRecords: sorted.length,
-        pageSize: +(config.pagination.length || 0),
-        pageTotal: Math.ceil(
-          sorted.length / +(config.pagination.length || 0)
-        ),
+        pageSize,
+        pageTotal: Math.ceil(sorted.length / pageSize),
       },
     };
   });
@@ -274,8 +293,11 @@ export class CoreComponent implements OnDestroy {
   readonly boundedPaginationIndex = computed(() => {
     const page = this.currentPaginationIndex();
     const info = this.tableInfoSignal();
+    const configLength = this.config()?.pagination?.length;
     const pageSize =
-      info.pageSize ?? this.config()?.pagination?.length ?? info.numberOfRecords;
+      info.pageSize ??
+      (typeof configLength === 'number' ? configLength : undefined) ??
+      info.numberOfRecords;
     const lastPage = Math.ceil(info.numberOfRecords / pageSize) - 1;
     return +page < 0 ? 0 : +page > lastPage ? lastPage : +page;
   });
@@ -320,6 +342,60 @@ export class CoreComponent implements OnDestroy {
     this.activeRowIndex = event.index;
     this.rowActiveOutput.emit(event);
   });
+
+  // ─── Auto pagination (fit rows to container height) ───
+
+  private _resizeObserver?: ResizeObserver;
+
+  // Observe container/table size changes to recompute the auto page size
+  private _setupAutoPagination = afterNextRender(() => {
+    if (typeof ResizeObserver === 'undefined') {
+      return;
+    }
+    const host = this._host.nativeElement;
+    this._resizeObserver = new ResizeObserver(() => {
+      if (this.isAutoPagination()) {
+        this._measureAutoPageSize();
+      }
+    });
+    this._resizeObserver.observe(host);
+    const table = host.querySelector('table');
+    if (table) {
+      this._resizeObserver.observe(table);
+    }
+    this._destroyRef.onDestroy(() => this._resizeObserver?.disconnect());
+  });
+
+  // Re-measure after render when data/config changes (e.g. async data load)
+  private _autoPaginationEffect = afterRenderEffect(() => {
+    this.processedData();
+    if (this.isAutoPagination()) {
+      this._measureAutoPageSize();
+    }
+  });
+
+  /** Measure available height and derive how many rows fit (auto pagination) */
+  private _measureAutoPageSize(): void {
+    const host = this._host.nativeElement;
+    const table = host.querySelector('table');
+    if (!table) {
+      return;
+    }
+    const sampleRow = table.querySelector('tbody tr') as HTMLElement | null;
+    if (!sampleRow) {
+      return;
+    }
+    const rowH = sampleRow.offsetHeight;
+    const available = host.clientHeight;
+    // Skip when not measurable (SSR/jsdom, hidden, or unconstrained container)
+    if (rowH <= 0 || available <= 0) {
+      return;
+    }
+    const headH = table.tHead?.offsetHeight ?? 0;
+    const footH = table.tFoot?.offsetHeight ?? 0;
+    const fit = Math.max(1, Math.floor((available - headH - footH) / rowH));
+    this.autoPageSize.set(fit);
+  }
 
 
   // ─── Public Observable Getters (backward compat, lazy-cached) ───

@@ -37,6 +37,12 @@ export const routes: Routes = [
     loadComponent: () => import('./examples/pagination/pagination.component').then((m) => m.PaginationComponent),
   },
   {
+    path: 'auto-pagination',
+    data: { title: 'Auto pagination' },
+    loadComponent: () =>
+      import('./examples/auto-pagination/auto-pagination.component').then((m) => m.AutoPaginationComponent),
+  },
+  {
     path: 'lazy-loading',
     data: { title: 'Server-side pagination' },
     loadComponent: () =>
