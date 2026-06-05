@@ -302,6 +302,42 @@ describe('CoreComponent', () => {
 
       expect(component.boundedPaginationIndex()).toBeLessThanOrEqual(1);
     });
+
+    it('should fall back to the default page size for auto mode before measuring', () => {
+      // jsdom reports zero element heights, so measurement no-ops and the
+      // default initial page size is used.
+      const data = Array.from({ length: 25 }, (_, i) => ({ name: `Item ${i}` }));
+      fixture.componentRef.setInput('data', data);
+      fixture.componentRef.setInput('config', {
+        columns: { name: {} },
+        pagination: { length: 'auto' },
+      });
+      fixture.detectChanges();
+
+      const rows = el.querySelectorAll('tbody tr');
+      expect(rows.length).toBe(10);
+      expect(component.tableInfo?.pageSize).toBe(10);
+      expect(component.tableInfo?.pageTotal).toBe(3);
+    });
+
+    it('should re-chunk auto mode according to the measured page size', () => {
+      const data = Array.from({ length: 25 }, (_, i) => ({ name: `Item ${i}` }));
+      fixture.componentRef.setInput('data', data);
+      fixture.componentRef.setInput('config', {
+        columns: { name: {} },
+        pagination: { length: 'auto' },
+      });
+      fixture.detectChanges();
+
+      // Simulate a measurement result (DOM measurement is unavailable in jsdom).
+      (component as any).autoPageSize.set(4);
+      fixture.detectChanges();
+
+      const rows = el.querySelectorAll('tbody tr');
+      expect(rows.length).toBe(4);
+      expect(component.tableInfo?.pageSize).toBe(4);
+      expect(component.tableInfo?.pageTotal).toBe(7);
+    });
   });
 
   // ─── Search ───

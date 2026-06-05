@@ -65,6 +65,11 @@ $skeleton-height: var(--gt-skeleton-height, 169px) !default;
 }
 
 @mixin default-style {
+  // Custom elements default to inline; make the host a block so its height can
+  // be constrained by a wrapper (required for `pagination: { length: 'auto' }`).
+  angular-generic-table {
+    display: block;
+  }
   #{$style-selector} {
     thead tr th {
       // sort button

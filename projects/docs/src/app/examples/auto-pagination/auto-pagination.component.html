@@ -1,0 +1,34 @@
+<form [formGroup]="controls">
+  <div class="row gy-3">
+    <div class="form-group col-12 col-sm-auto">
+      <label for="height_input">Container height (px)</label>
+      <input id="height_input" formControlName="height" type="number" class="form-control" min="120" step="20" />
+    </div>
+    <div class="form-group col-12 col-sm-auto">
+      <label for="search_input">Search</label>
+      <input id="search_input" formControlName="search" type="text" class="form-control" />
+    </div>
+  </div>
+</form>
+<p class="text-body-secondary small mt-3 mb-1">
+  The table fills the height-constrained wrapper below — change the height to see the number of rows adapt.
+</p>
+<div
+  class="border rounded my-2 d-flex flex-column"
+  [style.height.px]="containerHeight()"
+>
+  <angular-generic-table
+    class="flex-grow-1 overflow-hidden"
+    style="min-height: 0"
+    [data]="data()"
+    [config]="tableConfig()"
+    [search]="searchValue()"
+    [loading]="loading()"
+    #table
+  >
+    <div class="table-loading gt-skeleton-loader"></div>
+    <div class="table-no-data alert alert-info mt-3">Table is empty</div>
+  </angular-generic-table>
+  <angular-generic-table-pagination [table]="table" class="border-top p-2"></angular-generic-table-pagination>
+</div>
+<docs-tabs [content]="SNIPPETS"></docs-tabs>

@@ -62,6 +62,7 @@ export class AppComponent {
         { path: '/advanced', label: 'Advanced' },
         { path: '/sorting', label: 'Sorting' },
         { path: '/pagination', label: 'Pagination' },
+        { path: '/auto-pagination', label: 'Auto pagination' },
         { path: '/lazy-loading', label: 'Server-side pagination' },
         { path: '/row-hover-click', label: 'Row hover & click' },
         { path: '/row-select', label: 'Row selection' },
