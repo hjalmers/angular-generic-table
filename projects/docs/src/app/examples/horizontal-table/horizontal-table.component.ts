@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, signal, TemplateRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { CoreComponent, GtDeltaComponent, TableConfig } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
 import { SOURCE_TABS } from './_source';
@@ -39,6 +39,7 @@ import { SOURCE_TABS } from './_source';
     </ng-template>
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CoreComponent, GtDeltaComponent, TabsComponent],
 })
 export class HorizontalTableComponent implements OnInit {

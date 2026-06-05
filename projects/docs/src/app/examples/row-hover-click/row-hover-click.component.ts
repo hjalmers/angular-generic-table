@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CoreComponent, GtRowClickEvent, GtRowActiveEvent, TableConfig } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
 import { SOURCE_TABS } from './_source';
@@ -27,6 +27,7 @@ import { SOURCE_TABS } from './_source';
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CoreComponent, TabsComponent],
 })
 export class RowHoverClickComponent {

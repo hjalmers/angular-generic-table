@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CoreComponent, TableConfig } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
 import { SOURCE_TABS } from './_source';
@@ -17,6 +17,7 @@ interface BasicData {
     </div>
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CoreComponent, TabsComponent],
 })
 export class SimpleComponent {

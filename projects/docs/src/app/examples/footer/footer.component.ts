@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { CoreComponent, TableConfig, TableRow } from '@angular-generic-table/core';
 import { DecimalPipe } from '@angular/common';
 import { TabsComponent } from '../../components/tabs/tabs.component';
@@ -17,6 +17,7 @@ import { SOURCE_TABS } from './_source';
       }
     </ng-template>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CoreComponent, TabsComponent],
 })
 export class FooterComponent implements OnInit {

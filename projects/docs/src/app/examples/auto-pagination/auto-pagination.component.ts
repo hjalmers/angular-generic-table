@@ -7,6 +7,7 @@ import {
   inject,
   signal,
   viewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -18,6 +19,7 @@ import { SOURCE_TABS } from './_source';
 @Component({
   selector: 'docs-auto-pagination',
   templateUrl: './auto-pagination.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CoreComponent, GtPaginationComponent, ReactiveFormsModule, TabsComponent],
 })
 export class AutoPaginationComponent implements OnInit {

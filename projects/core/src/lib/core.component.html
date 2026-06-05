@@ -32,11 +32,13 @@
             <th
               class="{{ (column.key | dashCase) + '-column' }} {{ column.value.class }}"
               [class.disabled]="isLoading"
-              [attr.aria-sort]="sortOrderValue | sortClass: column.key:'aria'"
+              [attr.aria-sort]="sortOrderValue | sortClass: column.key : 'aria'"
               [class.gt-sortable]="true"
               scope="col"
             >
-              @if (column.value?.headerReplaceFull && (column.value?.headerComponent || column.value?.headerTemplateRef)) {
+              @if (
+                column.value?.headerReplaceFull && (column.value?.headerComponent || column.value?.headerTemplateRef)
+              ) {
                 @if (column.value.headerComponent) {
                   <ng-container
                     [ngComponentOutlet]="column.value.headerComponent!"
@@ -46,7 +48,7 @@
                       sortOrder: sortOrderValue,
                       search: searchValue,
                       sort: headerSortFn(column.key),
-                      ...(column.value.headerComponentInputs || {})
+                      ...(column.value.headerComponentInputs || {}),
                     }"
                   ></ng-container>
                 } @else {
@@ -57,13 +59,13 @@
                       sortable: !!column.value.sortable,
                       sortOrder: sortOrderValue,
                       search: searchValue,
-                      sort: headerSortFn(column.key)
+                      sort: headerSortFn(column.key),
                     }"
                   ></ng-container>
                 }
               } @else if (column.value?.sortable) {
                 <button
-                  [attr.data-sort-order]="sortOrderValue | sortClass: column.key:'order'"
+                  [attr.data-sort-order]="sortOrderValue | sortClass: column.key : 'order'"
                   class="gt-sort"
                   (click)="isLoading || !column.value.sortable || sortByKey(column.key, $event)"
                 >
@@ -75,7 +77,7 @@
                         sortable: true,
                         sortOrder: sortOrderValue,
                         search: searchValue,
-                        ...(column.value.headerComponentInputs || {})
+                        ...(column.value.headerComponentInputs || {}),
                       }"
                     ></ng-container>
                   } @else if (column.value?.headerTemplateRef) {
@@ -85,7 +87,7 @@
                         column: column,
                         sortable: true,
                         sortOrder: sortOrderValue,
-                        search: searchValue
+                        search: searchValue,
                       }"
                     ></ng-container>
                   } @else if (column.value?.header !== false) {
@@ -101,7 +103,7 @@
                       sortable: false,
                       sortOrder: sortOrderValue,
                       search: searchValue,
-                      ...(column.value.headerComponentInputs || {})
+                      ...(column.value.headerComponentInputs || {}),
                     }"
                   ></ng-container>
                 } @else if (column.value?.headerTemplateRef) {
@@ -111,7 +113,7 @@
                       column: column,
                       sortable: false,
                       sortOrder: sortOrderValue,
-                      search: searchValue
+                      search: searchValue,
                     }"
                   ></ng-container>
                 } @else if (column.value?.header !== false) {
@@ -127,8 +129,10 @@
         @if (headerRow) {
           <th
             class="row-header"
-            [attr.aria-sort]="sortOrderValue | sortClass: headerRow.key:'aria'"
-            class="{{ headerRow.value.sortable ? 'sort ' : '' }} {{ sortOrderValue | sortClass: headerRow.key }} {{ (headerRow.key | dashCase) + '-column' }}"
+            [attr.aria-sort]="sortOrderValue | sortClass: headerRow.key : 'aria'"
+            class="{{ headerRow.value.sortable ? 'sort ' : '' }} {{ sortOrderValue | sortClass: headerRow.key }} {{
+              (headerRow.key | dashCase) + '-column'
+            }}"
             (click)="isLoading || !headerRow.value.sortable || sortByKey(headerRow.key, $event)"
             scope="col"
           >
@@ -141,7 +145,7 @@
                   sortOrder: sortOrderValue,
                   search: searchValue,
                   sort: headerSortFn(headerRow.key),
-                  ...(headerRow.value.headerComponentInputs || {})
+                  ...(headerRow.value.headerComponentInputs || {}),
                 }"
               ></ng-container>
             } @else if (headerRow.value?.headerTemplateRef) {
@@ -152,7 +156,7 @@
                   sortable: !!headerRow.value.sortable,
                   sortOrder: sortOrderValue,
                   search: searchValue,
-                  sort: headerSortFn(headerRow.key)
+                  sort: headerSortFn(headerRow.key),
                 }"
               ></ng-container>
             } @else if (headerRow?.value?.header !== false) {
@@ -170,7 +174,7 @@
                     index: 0,
                     data: (tableData?.data || [])[0],
                     search: searchValue,
-                    ...((configValue.rows || {})[headerRow.key].componentInputs || {})
+                    ...((configValue.rows || {})[headerRow.key].componentInputs || {}),
                   }"
                 ></ng-container>
               } @else {
@@ -179,15 +183,15 @@
                     (configValue.rows || {})[headerRow.key].templateRef
                       ? templateRef
                       : (configValue.rows || {})[headerRow.key].transform
-                      ? transformData
-                      : rawData
+                        ? transformData
+                        : rawData
                   "
                   [ngTemplateOutletContext]="{
                     row: column,
                     column: headerRow,
                     transform: (configValue.rows || {})[headerRow.key].transform,
                     templateRef: (configValue.rows || {})[headerRow.key].templateRef,
-                    index: 0
+                    index: 0,
                   }"
                 ></ng-container>
               }
@@ -209,7 +213,11 @@
     @if (tableData && (tableData.data[0] || tableData.data).length > 0) {
       <tbody>
         @if (configValue?.columns) {
-          @for (row of tableData.data[tableData.info.lazyLoaded ? 0 : paginationIdx]; track trackRowByFn($index, row); let i = $index) {
+          @for (
+            row of tableData.data[tableData.info.lazyLoaded ? 0 : paginationIdx];
+            track trackRowByFn($index, row);
+            let i = $index
+          ) {
             <tr
               [attr.id]="'tableRow_' + i"
               (click)="configValue?.rowClick && _rowClick(row, i, $event)"
@@ -217,9 +225,9 @@
               (mouseleave)="configValue?.activateRowOnHover && _activateRow(null, null, $event)"
               [class]="[
                 !!isRowSelectedFn()
-                  ? (row | rowSelection: selection(): isRowSelectedFn()!: customClasses().selectedRow)
+                  ? (row | rowSelection: selection() : isRowSelectedFn()! : customClasses().selectedRow)
                   : '',
-                rowActiveValue?.index === i ? customClasses().activeRow : ''
+                rowActiveValue?.index === i ? customClasses().activeRow : '',
               ]"
             >
               @for (column of orderedColumns(); track column.key) {
@@ -243,7 +251,7 @@
                           index: i,
                           data: tableData.data[tableData.info.lazyLoaded ? 0 : paginationIdx],
                           search: searchValue,
-                          ...((configValue.columns || {})[column.key].componentInputs || {})
+                          ...((configValue.columns || {})[column.key].componentInputs || {}),
                         }"
                       ></ng-container>
                     } @else {
@@ -252,10 +260,10 @@
                           searchValue && !(configValue.columns || {})[column.key].templateRef
                             ? highlighted
                             : (configValue.columns || {})[column.key].templateRef
-                            ? templateRef
-                            : (configValue.columns || {})[column.key].transform
-                            ? transformData
-                            : rawData
+                              ? templateRef
+                              : (configValue.columns || {})[column.key].transform
+                                ? transformData
+                                : rawData
                         "
                         [ngTemplateOutletContext]="{
                           row: row,
@@ -264,7 +272,7 @@
                           transform: (configValue.columns || {})[column.key].transform,
                           templateRef: (configValue.columns || {})[column.key].templateRef,
                           index: i,
-                          data: tableData.data[tableData.info.lazyLoaded ? 0 : paginationIdx]
+                          data: tableData.data[tableData.info.lazyLoaded ? 0 : paginationIdx],
                         }"
                       ></ng-container>
                     }
@@ -285,9 +293,9 @@
                 (mouseleave)="configValue?.activateRowOnHover && _activateRow(null, null, $event)"
                 [class]="[
                   !!isRowSelectedFn()
-                    ? (row | rowSelection: selection(): isRowSelectedFn()!: customClasses().selectedRow)
+                    ? (row | rowSelection: selection() : isRowSelectedFn()! : customClasses().selectedRow)
                     : '',
-                  rowActiveValue?.index === i ? customClasses().activeRow : ''
+                  rowActiveValue?.index === i ? customClasses().activeRow : '',
                 ]"
               >
                 <th class="row-header" scope="row">
@@ -299,7 +307,7 @@
                         sortable: false,
                         sortOrder: sortOrderValue,
                         search: searchValue,
-                        ...(row.value.headerComponentInputs || {})
+                        ...(row.value.headerComponentInputs || {}),
                       }"
                     ></ng-container>
                   } @else if (row.value?.headerTemplateRef) {
@@ -309,7 +317,7 @@
                         column: row,
                         sortable: false,
                         sortOrder: sortOrderValue,
-                        search: searchValue
+                        search: searchValue,
                       }"
                     ></ng-container>
                   } @else {
@@ -327,7 +335,7 @@
                           index: configValue.rows ? y : i,
                           data: tableData.data[tableData.info.lazyLoaded ? 0 : paginationIdx],
                           search: searchValue,
-                          ...((configValue.rows || {})[row.key].componentInputs || {})
+                          ...((configValue.rows || {})[row.key].componentInputs || {}),
                         }"
                       ></ng-container>
                     } @else {
@@ -336,8 +344,8 @@
                           (configValue.rows || {})[row.key].templateRef
                             ? templateRef
                             : (configValue.rows || {})[row.key].transform
-                            ? transformData
-                            : rawData
+                              ? transformData
+                              : rawData
                         "
                         [ngTemplateOutletContext]="{
                           row: column,
@@ -345,7 +353,7 @@
                           transform: (configValue.rows || {})[row.key].transform,
                           templateRef: (configValue.rows || {})[row.key].templateRef,
                           index: configValue.rows ? y : i,
-                          data: tableData.data[tableData.info.lazyLoaded ? 0 : paginationIdx]
+                          data: tableData.data[tableData.info.lazyLoaded ? 0 : paginationIdx],
                         }"
                       ></ng-container>
                     }
@@ -372,12 +380,13 @@
         @let showHeader = colspanValue !== footerColspanValue;
         <tr>
           @if (showHeader) {
-            <th
-              [colSpan]="(colspanValue || 0) - (footerColspanValue || 0)"
-              scope="row"
-            >
+            <th [colSpan]="(colspanValue || 0) - (footerColspanValue || 0)" scope="row">
               @if (configValue?.footer?.headers?.[calculation]) {
-                {{ configValue.footer!.headers![calculation] === true ? (calculation | capitalCase) : configValue.footer!.headers![calculation] }}
+                {{
+                  configValue.footer!.headers![calculation] === true
+                    ? (calculation | capitalCase)
+                    : configValue.footer!.headers![calculation]
+                }}
               }
             </th>
           }
@@ -387,7 +396,9 @@
                 class="{{ (column.key | dashCase) + '-column' }} {{ column.value.class }}"
                 [attr.data-header]="
                   !showHeader && configValue?.footer?.headers?.[calculation]
-                    ? configValue.footer!.headers![calculation] === true ? (calculation | capitalCase) : configValue.footer!.headers![calculation]
+                    ? configValue.footer!.headers![calculation] === true
+                      ? (calculation | capitalCase)
+                      : configValue.footer!.headers![calculation]
                     : null
                 "
                 [attr.data-label]="
@@ -409,7 +420,7 @@
                       column: calculation,
                       index: i,
                       search: searchValue,
-                      ...((configValue?.columns || {})[column.key].componentInputs || {})
+                      ...((configValue?.columns || {})[column.key].componentInputs || {}),
                     }"
                   ></ng-container>
                 } @else {
@@ -418,15 +429,15 @@
                       (configValue?.columns || {})[column.key].templateRef
                         ? templateRef
                         : (configValue?.columns || {})[column.key].transform
-                        ? transformFooter
-                        : rawFooter
+                          ? transformFooter
+                          : rawFooter
                     "
                     [ngTemplateOutletContext]="{
                       value: calculationsValue.calculated[column.key][calculation],
                       row: calculationsValue.calculated[column.key],
                       column: calculation,
                       templateRef: (configValue?.columns || {})[column.key].templateRef,
-                      transform: (configValue?.columns || {})[column.key].transform
+                      transform: (configValue?.columns || {})[column.key].transform,
                     }"
                   ></ng-container>
                 }
@@ -438,33 +449,27 @@
     </tfoot>
   }
 </table>
-<ng-template
-  #highlighted
-  let-row="row"
-  let-column="column"
-  let-search="search"
-  let-transform="transform"
->
+<ng-template #highlighted let-row="row" let-column="column" let-search="search" let-transform="transform">
   @if (!transform) {
     <div [innerHTML]="row[column.key] | highlight: search"></div>
   } @else {
-    <div [innerHTML]="row[column.key] | dynamicPipe: transform.pipe:transform?.args | highlight: search"></div>
+    <div
+      [innerHTML]="
+        row[column.key] | dynamicPipe: transform.pipe : transform.args | highlight: search
+      "
+    ></div>
   }
 </ng-template>
 <ng-template #rawData let-row="row" let-column="column">
   {{ row[column.key] }}
 </ng-template>
-<ng-template
-  #transformData
-  let-row="row"
-  let-column="column"
-  let-transform="transform"
-  let-data="data"
->
-  {{ row[column.key] | dynamicPipe: transform.pipe:transform?.args }}
+<ng-template #transformData let-row="row" let-column="column" let-transform="transform" let-data="data">
+  {{ row[column.key] | dynamicPipe: transform.pipe : transform.args }}
 </ng-template>
 <ng-template #transformFooter let-value="value" let-transform="transform">
-  {{ (value | dynamicPipe: transform.pipe:transform?.args) || config()?.footer?.emptyContent }}
+  {{
+    (value | dynamicPipe: transform.pipe : transform.args) || config()?.footer?.emptyContent
+  }}
 </ng-template>
 <ng-template #rawFooter let-value="value">
   {{ value || config()?.footer?.emptyContent }}
@@ -483,7 +488,7 @@
       row: row,
       col: column,
       index: index,
-      data: data
+      data: data,
     }"
   ></ng-container>
 </ng-template>

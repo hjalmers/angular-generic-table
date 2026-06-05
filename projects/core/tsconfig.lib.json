@@ -6,19 +6,18 @@
     "declarationMap": true,
     "inlineSources": true,
     "types": [],
-    "lib": [
-      "dom",
-      "es2018"
-    ]
+    "lib": ["dom", "es2018"]
   },
   "angularCompilerOptions": {
     "skipTemplateCodegen": true,
+    "extendedDiagnostics": {
+      "checks": {
+        "nullishCoalescingNotNullable": "suppress",
+        "optionalChainNotNullable": "suppress"
+      }
+    },
     "strictMetadataEmit": true,
     "enableResourceInlining": true
   },
-  "exclude": [
-    "src/test.ts",
-    "**/*.spec.ts",
-    "**/*.stories.*"
-  ]
+  "exclude": ["src/test.ts", "**/*.spec.ts", "**/*.stories.*"]
 }

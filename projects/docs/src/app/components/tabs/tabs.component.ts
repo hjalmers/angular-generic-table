@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import hljs from 'highlight.js/lib/core';
 import { HighlightResult } from 'highlight.js';
 
@@ -26,6 +26,7 @@ hljs.registerLanguage('xml', xml);
       <pre><code [innerHTML]="activeContent.value" class="{{'language-' + activeContent.language}}"></code></pre>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./tabs.component.scss'],
 })
 export class TabsComponent implements OnInit {

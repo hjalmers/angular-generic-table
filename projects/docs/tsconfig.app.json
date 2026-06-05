@@ -4,11 +4,19 @@
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
     "paths": {
-      "@angular-generic-table/core": ["projects/core/src/public-api.ts"],
+      "@angular-generic-table/core": ["projects/core/src/public-api.ts"]
     },
     "types": []
   },
   "files": ["src/main.ts"],
   "include": ["src/**/*.d.ts", "src/**/*.ts"],
-  "exclude": ["src/stories"]
+  "exclude": ["src/stories"],
+  "angularCompilerOptions": {
+    "extendedDiagnostics": {
+      "checks": {
+        "nullishCoalescingNotNullable": "suppress",
+        "optionalChainNotNullable": "suppress"
+      }
+    }
+  }
 }

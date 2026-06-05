@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { JsonPipe } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { CoreComponent, GtSortEvent, GtSortOrder, TableConfig } from '@angular-generic-table/core';
@@ -38,6 +38,7 @@ interface SortingData {
     </p>
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CoreComponent, TabsComponent, JsonPipe],
 })
 export class SortingComponent {
