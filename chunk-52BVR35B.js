@@ -1,4 +1,4 @@
-import{b as c}from"./chunk-DY3R4EBK.js";import"./chunk-RI6AK356.js";import{a as l}from"./chunk-MQWK62O4.js";import{$a as m,Ha as i,Za as o,_a as s,ab as r,xa as a}from"./chunk-L56K3QBL.js";var p=[{name:"simple.component.ts",code:`import { Component } from '@angular/core';
+import{b as c}from"./chunk-3UXWR73U.js";import"./chunk-QFSOMC5Z.js";import{a as l}from"./chunk-AXENTG2G.js";import{$a as s,Ia as i,_a as o,ab as m,bb as r,xa as a}from"./chunk-UFU3N23S.js";var p=[{name:"simple.component.ts",code:`import { Component } from '@angular/core';
 import { CoreComponent, TableConfig } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
 import { SOURCE_TABS } from './_source';

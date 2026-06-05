@@ -1,4 +1,4 @@
-import{f as c}from"./chunk-MCKWPBYB.js";import"./chunk-YRUNHQKL.js";import{a as p}from"./chunk-MQWK62O4.js";import{$a as n,Ha as m,Za as s,_a as t,ab as l,ub as e,xa as o}from"./chunk-L56K3QBL.js";var g=`// {project}/src/styles.scss
+import{f as c}from"./chunk-QJXJWQVH.js";import"./chunk-MQ66XHXN.js";import{a as p}from"./chunk-AXENTG2G.js";import{$a as t,Ia as m,_a as s,ab as n,bb as l,xa as o,xb as e}from"./chunk-UFU3N23S.js";var g=`// {project}/src/styles.scss
 @use '@angular-generic-table/core/scss' as generic-table-styles;
 @include generic-table-styles.styles(); // all styles
 

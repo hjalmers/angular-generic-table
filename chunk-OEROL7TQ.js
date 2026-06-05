@@ -1,4 +1,4 @@
-import{b as y}from"./chunk-DY3R4EBK.js";import"./chunk-RI6AK356.js";import{a as T}from"./chunk-MQWK62O4.js";import{$a as l,Ha as g,Ma as u,Ta as v,Tb as D,Ua as b,Za as c,_a as r,ab as p,ha as d,hb as f,nb as _,ob as h,pb as C,ub as o,xa as m}from"./chunk-L56K3QBL.js";var P=[{name:"nested-data.component.ts",code:`import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
+import{b as y}from"./chunk-3UXWR73U.js";import"./chunk-QFSOMC5Z.js";import{a as T}from"./chunk-AXENTG2G.js";import{$a as r,Ia as g,Na as u,Ua as v,Va as b,Wb as D,_a as c,ab as l,bb as p,ha as d,ib as f,ob as _,pb as h,qb as C,xa as m,xb as o}from"./chunk-UFU3N23S.js";var P=[{name:"nested-data.component.ts",code:`import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { CoreComponent, TableConfig } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
 import { SOURCE_TABS } from './_source';

@@ -1,4 +1,4 @@
-import{b as _}from"./chunk-DY3R4EBK.js";import"./chunk-RI6AK356.js";import{a as R}from"./chunk-MQWK62O4.js";import{$a as c,Ha as b,Y as v,Z as d,Za as p,_a as a,ab as u,fb as C,ha as f,hb as l,qb as g,ub as s,wb as k,xa as r}from"./chunk-L56K3QBL.js";var h=[{name:"row-hover-click.component.ts",code:`import { Component, signal } from '@angular/core';
+import{b as _}from"./chunk-3UXWR73U.js";import"./chunk-QFSOMC5Z.js";import{a as R}from"./chunk-AXENTG2G.js";import{$a as a,Ia as b,Y as v,Z as d,_a as p,ab as c,bb as u,gb as C,ha as f,ib as l,tb as g,xa as r,xb as s,zb as k}from"./chunk-UFU3N23S.js";var h=[{name:"row-hover-click.component.ts",code:`import { Component, signal } from '@angular/core';
 import { CoreComponent, GtRowClickEvent, GtRowActiveEvent, TableConfig } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
 import { SOURCE_TABS } from './_source';

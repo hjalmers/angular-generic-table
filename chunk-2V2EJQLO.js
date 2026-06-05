@@ -1,4 +1,4 @@
-import{b as N}from"./chunk-DY3R4EBK.js";import"./chunk-RI6AK356.js";import{a as y}from"./chunk-MQWK62O4.js";import{$a as d,Ha as u,Ma as s,Ta as f,Tb as C,Ua as c,Za as m,_a as g,ab as l,nb as p,ob as h,oc as w,pb as b,ub as T,wb as v,xa as i}from"./chunk-L56K3QBL.js";var O=[{name:"footer.component.ts",code:`import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import{b as N}from"./chunk-3UXWR73U.js";import"./chunk-QFSOMC5Z.js";import{a as y}from"./chunk-AXENTG2G.js";import{$a as g,Ia as u,Na as s,Ua as f,Va as c,Wb as C,_a as m,ab as d,bb as l,ob as p,pb as h,qb as b,tc as w,xa as i,xb as T,zb as v}from"./chunk-UFU3N23S.js";var O=[{name:"footer.component.ts",code:`import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CoreComponent, TableConfig, TableRow } from '@angular-generic-table/core';
 import { DecimalPipe } from '@angular/common';
 import { TabsComponent } from '../../components/tabs/tabs.component';

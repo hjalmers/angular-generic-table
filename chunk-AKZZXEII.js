@@ -1,4 +1,4 @@
-import{b as E}from"./chunk-DY3R4EBK.js";import"./chunk-RI6AK356.js";import{a as w}from"./chunk-MQWK62O4.js";import{$a as o,Ha as b,Ob as _,Pb as O,Y as c,Z as f,Za as g,_a as r,ab as h,fb as u,hb as m,lc as F,mc as T,qb as S,ub as n,vb as N,xa as s,xb as v,yb as C,zb as y}from"./chunk-L56K3QBL.js";var k=[{name:"sorting.component.ts",code:`import { Component } from '@angular/core';
+import{b as E}from"./chunk-3UXWR73U.js";import"./chunk-QFSOMC5Z.js";import{a as w}from"./chunk-AXENTG2G.js";import{$a as r,Ab as v,Bb as C,Cb as y,Ia as b,Rb as _,Sb as O,Y as c,Z as f,_a as g,ab as o,bb as h,gb as u,ib as m,qc as F,rc as T,tb as S,xa as s,xb as n,yb as N}from"./chunk-UFU3N23S.js";var k=[{name:"sorting.component.ts",code:`import { Component } from '@angular/core';
 import { JsonPipe } from '@angular/common';
 import { DatePipe } from '@angular/common';
 import { CoreComponent, GtSortEvent, GtSortOrder, TableConfig } from '@angular-generic-table/core';

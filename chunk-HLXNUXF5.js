@@ -1,4 +1,4 @@
-import{b as T,c as S}from"./chunk-DY3R4EBK.js";import"./chunk-RI6AK356.js";import{a as C}from"./chunk-MQWK62O4.js";import{$a as r,Ha as b,Ma as y,Ta as h,Tb as f,Ua as x,Za as s,_a as d,ab as m,ha as c,hb as p,nb as v,ob as u,pb as g,ub as o,xa as _}from"./chunk-L56K3QBL.js";var D=[{name:"horizontal-table.component.ts",code:`import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
+import{b as T,c as S}from"./chunk-3UXWR73U.js";import"./chunk-QFSOMC5Z.js";import{a as C}from"./chunk-AXENTG2G.js";import{$a as d,Ia as b,Na as y,Ua as h,Va as x,Wb as f,_a as s,ab as r,bb as m,ha as c,ib as p,ob as v,pb as u,qb as g,xa as _,xb as o}from"./chunk-UFU3N23S.js";var D=[{name:"horizontal-table.component.ts",code:`import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { CoreComponent, GtDeltaComponent, TableConfig } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
 import { SOURCE_TABS } from './_source';
