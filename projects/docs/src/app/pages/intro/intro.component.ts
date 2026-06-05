@@ -53,7 +53,7 @@ import { RouterLink } from '@angular/router';
 })
 export class IntroComponent {
   compatibility = [
-    { version: '5.x', angular: '17 – 21' },
+    { version: '5.x', angular: '17 – 22' },
     { version: '5.0.0-rc', angular: '12 – 15' },
     { version: '5.0.0-alpha', angular: '7 – 11' },
     { version: '4.x', angular: '4 – 11' },
