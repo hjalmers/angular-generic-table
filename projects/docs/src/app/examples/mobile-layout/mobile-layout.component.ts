@@ -1,4 +1,13 @@
-import { Component, Pipe, PipeTransform, signal, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  Pipe,
+  PipeTransform,
+  signal,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CoreComponent, TableColumn, TableConfig, TableRow } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
 import { SOURCE_TABS } from './_source';
@@ -43,6 +52,7 @@ export class GenderPipe implements PipeTransform {
     `,
   ],
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CoreComponent, TabsComponent],
 })
 export class MobileLayoutComponent {

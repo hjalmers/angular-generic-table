@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { DatePipe, formatDate } from '@angular/common';
@@ -9,6 +9,7 @@ import { SOURCE_TABS } from './_source';
 @Component({
   selector: 'docs-pagination',
   templateUrl: './pagination.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CoreComponent, GtPaginationComponent, ReactiveFormsModule, TabsComponent],
 })
 export class PaginationComponent implements OnInit {

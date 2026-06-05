@@ -44,6 +44,7 @@ export class ColorHeaderComponent {
     {{ clicked() }}
     <docs-tabs [content]="SNIPPETS"></docs-tabs>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CoreComponent, TabsComponent],
 })
 export class CustomTemplatesComponent implements OnInit {

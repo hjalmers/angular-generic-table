@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, signal, TemplateRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { CoreComponent, TableConfig, TableRow, TableColumn } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
@@ -7,6 +7,7 @@ import { SOURCE_TABS } from './_source';
 @Component({
   selector: 'docs-advanced',
   templateUrl: './advanced.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CoreComponent, ReactiveFormsModule, TabsComponent],
 })
 export class AdvancedComponent implements OnInit {

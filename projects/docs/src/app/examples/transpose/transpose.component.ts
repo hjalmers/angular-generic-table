@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, signal, TemplateRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { CoreComponent, GtDeltaComponent, PaginationComponent, TableConfig } from '@angular-generic-table/core';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { TabsComponent } from '../../components/tabs/tabs.component';
@@ -75,6 +75,7 @@ interface YearData extends RawData {
       <docs-tabs [content]="SNIPPETS"></docs-tabs>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CoreComponent, PaginationComponent, GtDeltaComponent, ReactiveFormsModule, TabsComponent],
 })
 export class TransposeComponent implements OnInit {

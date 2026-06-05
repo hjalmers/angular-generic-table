@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, signal, TemplateRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { CoreComponent, TableConfig } from '@angular-generic-table/core';
 import { TabsComponent } from '../../components/tabs/tabs.component';
 import { SOURCE_TABS } from './_source';
@@ -42,6 +42,7 @@ interface Data {
       }
     </ng-template>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CoreComponent, TabsComponent],
 })
 export class NestedDataComponent implements OnInit {
