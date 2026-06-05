@@ -1,4 +1,13 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  ElementRef,
+  OnInit,
+  afterNextRender,
+  inject,
+  signal,
+  viewChild,
+} from '@angular/core';
 import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { DatePipe, formatDate } from '@angular/common';
@@ -14,6 +23,7 @@ import { SOURCE_TABS } from './_source';
 export class AutoPaginationComponent implements OnInit {
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
+  private destroyRef = inject(DestroyRef);
 
   // Container height drives how many rows the table shows in `length: 'auto'` mode.
   controls = this.fb.group({
@@ -27,7 +37,29 @@ export class AutoPaginationComponent implements OnInit {
   data = signal<any[]>([]);
   tableConfig = signal<TableConfig>({});
 
+  // Wrapper element so drag-resizes can be synced back to the height control.
+  resizeBox = viewChild<ElementRef<HTMLElement>>('resizeBox');
+
   SNIPPETS = SOURCE_TABS;
+
+  constructor() {
+    // Keep the height control in sync when the user drags the resize handle.
+    afterNextRender(() => {
+      const el = this.resizeBox()?.nativeElement;
+      if (!el || typeof ResizeObserver === 'undefined') {
+        return;
+      }
+      const observer = new ResizeObserver(() => {
+        const height = Math.round(el.getBoundingClientRect().height);
+        if (height > 0 && height !== this.containerHeight()) {
+          this.containerHeight.set(height);
+          this.controls.get('height')?.setValue(height, { emitEvent: false });
+        }
+      });
+      observer.observe(el);
+      this.destroyRef.onDestroy(() => observer.disconnect());
+    });
+  }
 
   ngOnInit(): void {
     this.http.get<{ data: any[] }>('https://private-730c61-generictable.apiary-mock.com/data').subscribe((res) => {
