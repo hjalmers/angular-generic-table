@@ -8,6 +8,9 @@ Two workspace projects:
 - **`core`** (`projects/core/`) — the library, built with ng-packagr
 - **`docs`** (`projects/docs/`) — standalone Angular app with example components (replaces Storybook)
 
+Plus a standalone (non-Angular) Node package:
+- **`mcp`** (`tools/mcp-server/`) — `@angular-generic-table/mcp`, a Model Context Protocol stdio server that exposes the `TableConfig` schema, an API reference, and config generate/validate tools so AI assistants can wire up the table correctly. Self-contained (own `package.json`/lockfile, built with `tsc`); not part of the Angular workspace.
+
 ## Tech stack
 
 - Angular 21, RxJS 7, TypeScript 5.9, Bootstrap 5
@@ -26,6 +29,8 @@ npm test                                      # run vitest (core library)
 ng serve docs                                 # serve docs app locally
 npm run commit                                # commitizen interactive commit
 npx agent-browser install                     # one-time: fetch Chromium for the agent-browser skill
+npm run build:mcp                             # install + build the MCP server (tools/mcp-server)
+npm run test:mcp                              # run the MCP server's vitest suite
 ```
 
 ## Project structure
@@ -46,6 +51,12 @@ projects/docs/src/app/
   app.routes.ts              # lazy-loaded example routes
   examples/                  # 13 example components
   components/tabs/           # code snippet display with highlight.js
+
+tools/mcp-server/
+  src/index.ts               # MCP server bootstrap (resources + tools)
+  src/schema.ts              # Zod schema — single source of truth, mirrors models/*.interface.ts
+  src/api-reference.ts       # curated markdown API reference
+  src/tools/                 # generate-config + validate-config (pure functions)
 ```
 
 ## Conventions

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "angular-generic-table": {
+      "command": "node",
+      "args": ["tools/mcp-server/dist/index.js"]
+    }
+  }
+}

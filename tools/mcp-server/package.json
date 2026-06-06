@@ -1,0 +1,45 @@
+{
+  "name": "@angular-generic-table/mcp",
+  "version": "0.0.0",
+  "description": "Model Context Protocol server for @angular-generic-table/core — exposes the table config schema, an API reference, and tools to generate and validate TableConfig objects so AI assistants can wire up the table correctly.",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "angular-generic-table",
+    "angular",
+    "ai"
+  ],
+  "homepage": "https://github.com/hjalmers/angular-generic-table/tree/main/tools/mcp-server#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hjalmers/angular-generic-table.git",
+    "directory": "tools/mcp-server"
+  },
+  "bin": {
+    "agt-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "engines": {
+    "node": "^22.22.3 || >=24.15.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.18.0",
+    "zod": "^3.25.0",
+    "zod-to-json-schema": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "~5.9.0",
+    "vitest": "^4.1.4"
+  }
+}

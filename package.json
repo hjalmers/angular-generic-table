@@ -10,6 +10,8 @@
     "prebuild:docs": "node scripts/generate-sources.mjs",
     "build:docs": "ng build docs --configuration production --base-href=/angular-generic-table/",
     "test": "cd projects/core && vitest run",
+    "build:mcp": "cd tools/mcp-server && npm ci && npm run build",
+    "test:mcp": "cd tools/mcp-server && npm test",
     "lint": "ng lint --fix --force",
     "e2e": "playwright test",
     "commit": "git-cz",
