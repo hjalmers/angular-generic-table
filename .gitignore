@@ -10,6 +10,10 @@
 # dependencies
 /node_modules
 
+# MCP server (tools/mcp-server) build output & deps
+/tools/mcp-server/dist
+/tools/mcp-server/node_modules
+
 # profiling files
 chrome-profiler-events*.json
 speed-measure-plugin*.json
