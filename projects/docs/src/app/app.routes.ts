@@ -17,6 +17,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/api/api.component').then((m) => m.ApiComponent),
   },
   {
+    path: 'mcp',
+    data: { title: 'MCP server' },
+    loadComponent: () => import('./pages/mcp/mcp.component').then((m) => m.McpComponent),
+  },
+  {
     path: 'simple',
     data: { title: 'Simple' },
     loadComponent: () => import('./examples/simple/simple.component').then((m) => m.SimpleComponent),

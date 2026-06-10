@@ -53,7 +53,10 @@ export class AppComponent {
     },
     {
       heading: 'Reference',
-      items: [{ path: '/api', label: 'API reference' }],
+      items: [
+        { path: '/api', label: 'API reference' },
+        { path: '/mcp', label: 'MCP server' },
+      ],
     },
     {
       heading: 'Examples',
