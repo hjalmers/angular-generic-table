@@ -62,3 +62,18 @@ The Zod schema in `src/schema.ts` is the single source of truth for validation, 
 resource and the generator. It mirrors the library interfaces in
 `projects/core/src/lib/models/` — keep them in sync (a drift guard test asserts the
 top-level `TableConfig` keys match).
+
+## Releasing
+
+This package is released independently of `@angular-generic-table/core` by the
+`release-mcp` job in `.github/workflows/main.yml`. It uses
+[`semantic-release-monorepo`](https://github.com/pmowrer/semantic-release-monorepo), so a
+release is only cut when files under `tools/mcp-server/` change (driven by
+`feat(mcp):` / `fix(mcp):` commits). Tags are namespaced as
+`@angular-generic-table/mcp-v<version>` so they never collide with the core library's
+`v<version>` tags, and `mcp`-scoped commits are excluded from core releases via the root
+`release.plugins` config.
+
+> **First publish:** npm OIDC trusted publishing can only be configured after the package
+> exists, so the very first release needs a one-off manual `npm publish` (or a temporary
+> `NPM_TOKEN`). Subsequent releases publish via OIDC, like the core library.

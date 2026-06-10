@@ -60,3 +60,51 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run semantic-release
+
+  # Releases @angular-generic-table/mcp (tools/mcp-server) independently of the core
+  # library. semantic-release-monorepo only cuts a release when files under
+  # tools/mcp-server changed since the last mcp tag, so this job safely runs on every
+  # push to main and self-skips otherwise (no workflow-level path filter, which would
+  # also skip the core release/docs deploy on mcp-only pushes).
+  release-mcp:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+    defaults:
+      run:
+        working-directory: tools/mcp-server
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # semantic-release needs full history + tags to determine the next version.
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+          cache-dependency-path: tools/mcp-server/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
+
+      # First publish only: OIDC trusted publishing can be configured on npm after the
+      # package exists, so the initial @angular-generic-table/mcp release needs a one-off
+      # manual `npm publish` or a temporary NPM_TOKEN. Subsequent releases use OIDC, like
+      # the core library above.
+      - name: Run semantic release and publish new version to npm
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm run release
