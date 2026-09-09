@@ -28,6 +28,7 @@ import {
 import { toObservable } from '@angular/core/rxjs-interop';
 import { TableConfig } from './models/table-config.interface';
 import {
+  DOCUMENT,
   KeyValue,
   NgComponentOutlet,
   NgTemplateOutlet,
@@ -78,6 +79,7 @@ import { TableMeta } from './models/table-meta.interface';
 export class CoreComponent implements OnDestroy {
   private _destroyRef = inject(DestroyRef);
   private _host = inject(ElementRef<HTMLElement>);
+  private _document = inject(DOCUMENT);
   private _unsubscribe$ = new Subject<void>();
 
   /** Initial page size used by `length: 'auto'` before the container is measured */
@@ -620,7 +622,7 @@ export class CoreComponent implements OnDestroy {
 
   private _unsubscribeFromKeyboardEvents$ = new Subject<void>();
   private _keyboardArrowEvent$ = fromEvent<KeyboardEvent>(
-    document,
+    this._document,
     'keydown'
   ).pipe(
     filter(

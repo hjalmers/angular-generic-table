@@ -1,25 +1,130 @@
-# Core
+# Angular Generic Table
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.6.
+A lightweight, configurable table component for Angular. It renders native HTML
+tables and supports sorting, pagination, search with highlighting, row
+selection, keyboard navigation, custom cell/header templates and components, and
+footer calculations.
 
-## Code scaffolding
+Built for modern Angular — standalone components, signals, and `OnPush` change
+detection throughout. Compatible with Angular 17 through 22.
 
-Run `ng generate component component-name --project core` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project core`.
+## Install
 
-> Note: Don't forget to add `--project core` or else it will be added to the default project in your `angular.json` file.
+```bash
+npm install @angular-generic-table/core --save
+```
 
-## Build
+## Usage
 
-Run `ng build core` to build the project. The build artifacts will be stored in the `dist/` directory.
+`CoreComponent` is a standalone component (selector: `angular-generic-table`).
+Import it directly into the component where you need it:
 
-## Publishing
+```ts
+import { Component } from '@angular/core';
+import { CoreComponent, TableConfig } from '@angular-generic-table/core';
 
-After building your library with `ng build core`, go to the dist folder `cd dist/core` and run `npm publish`.
+interface Person {
+  firstName: string;
+  lastName: string;
+  favoriteFood: string;
+}
 
-## Running unit tests
+@Component({
+  selector: 'app-people',
+  imports: [CoreComponent],
+  template: `<angular-generic-table [data]="data" [config]="config" />`,
+})
+export class PeopleComponent {
+  data: Array<Person> = [
+    { firstName: 'Peter', lastName: 'Parker', favoriteFood: 'Pasta' },
+    { firstName: 'Mary Jane', lastName: 'Watson', favoriteFood: 'Pizza' },
+  ];
 
-Run `ng test core` to execute the unit tests via [Karma](https://karma-runner.github.io).
+  config: TableConfig<Person> = {
+    class: 'table table-striped table-bordered',
+    columns: {
+      firstName: {},
+      lastName: {},
+      favoriteFood: {},
+    },
+  };
+}
+```
 
-## Further help
+> **Using NgModules?** A backward-compatibility `GenericTableCoreModule` is still
+> exported. Add it to a module's `imports` (e.g. a shared module) to use the
+> table in NgModule-based apps. New apps should prefer importing the standalone
+> `CoreComponent` directly.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Import styling
+
+We recommend setting up your Angular project to use scss (SASS) for css
+preprocessing.
+
+Once configured to use scss, include the library styles in your main styles
+file — typically `styles.scss` at the root of the `src` folder.
+
+### Add scss
+
+`{project}/src/styles.scss`
+
+```scss
+// import base styles from @angular-generic-table/core
+@use '@angular-generic-table/core/scss' as generic-table-styles;
+@include generic-table-styles.styles(); // all styles
+
+// @include generic-table-styles.search-style();     // search (highlight) style
+// @include generic-table-styles.mobile-style();      // mobile layout style
+// @include generic-table-styles.pagination-style();  // pagination styles
+```
+
+> **Note:** The webpack-era `~` import prefix is no longer required (or
+> supported) with Angular's current build system — import the package path
+> directly as shown above.
+
+### Override scss variables
+
+It's possible to override the scss variables used by generic table by passing
+them when importing the scss.
+`{project}/src/styles.scss`
+
+```scss
+// import base styles from @angular-generic-table/core and override scss variables
+@use '@angular-generic-table/core/scss' as generic-table-styles with (
+    $highlight-background-color: purple,
+    $mobile-style-max-width: 375px
+);
+@include generic-table-styles.styles();
+```
+
+**SCSS Variables**
+
+|Name|Default value|
+|:--|:--|
+|$highlight-background-color: | #ffdd00; |
+|$mobile-style-selector: | 'table.table-mobile'; |
+|$mobile-style-max-width: | 576px; |
+|$mobile-style-header-font-weight: | 500; |
+|$mobile-style-header-background-color: | #fff; |
+|$mobile-style-button-selector: | '.btn-sm'; |
+|$mobile-style-border-bottom: | solid 1px #dedede; |
+|$mobile-style-button-font-size: | 1rem; |
+|$mobile-style-button-padding: | 0.5625rem 1rem; |
+|$pagination-ellipsis-content: | '...'; |
+|$pagination-active-color: | #000; |
+|$pagination-justify-content: | center; |
+
+## Examples
+
+The repo ships a docs app with runnable examples (simple, sorting, pagination,
+custom templates, mobile layout, transpose, footers, and more). Run it locally
+with `ng serve docs`, or browse the source under `projects/docs/src/app/examples`.
+
+## Have other needs?
+
+Found a bug or have a feature request? Create an
+[issue over at github](https://github.com/hjalmers/angular-generic-table/issues).
+
+## Sponsored by
+
+Angular Generic Table is sponsored by [Swimbird](https://www.swimbird.com/) - Portfolio Management.
